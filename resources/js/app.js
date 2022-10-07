@@ -7,13 +7,20 @@
 require('./bootstrap');
 
 window.Vue = require('vue').default;
-
+import Vue from 'vue';
+import Vuelidate from 'vuelidate'
 import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
+import Vuetify from 'vuetify'
+
+require('@fortawesome/fontawesome-free/js/all.min.js');
 require('jszip');
 require('datatables.net-bs5');
 require('datatables.net-buttons-bs5');
 require('datatables.net-buttons/js/buttons.html5.js');
 require('datatables.net-responsive-bs5');
+
+Vue.use(Vuetify);
+Vue.use(Vuelidate)
 
 /**
  * The following block of code may be used to automatically register your
@@ -27,6 +34,8 @@ require('datatables.net-responsive-bs5');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('login-component', require('./components/auth/LoginComponent.vue').default);
+Vue.component('registro-component', require('./components/auth/RegistroComponent.vue').default);
 Vue.component('Multiselect', require('@vueform/multiselect/dist/multiselect.vue2.js').default);
 
 Vue.prototype.$tablaGlobal = function(nombreTabla) {
@@ -71,4 +80,5 @@ Vue.prototype.$tablaGlobal = function(nombreTabla) {
 
 const app = new Vue({
     el: '#app',
+    vuetify: new Vuetify(),
 });
