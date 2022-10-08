@@ -5,6 +5,8 @@
  */
 
 require('./bootstrap');
+window.$ = window.jQuery = require('jquery');
+window.Swal = require('sweetalert2');
 
 window.Vue = require('vue').default;
 import Vue from 'vue';
@@ -12,6 +14,9 @@ import Vuelidate from 'vuelidate'
 import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
 import Vuetify from 'vuetify'
 
+import axios from 'axios'
+import { Model } from 'vue-api-query'
+Model.$http = axios
 require('@fortawesome/fontawesome-free/js/all.min.js');
 require('jszip');
 require('datatables.net-bs5');

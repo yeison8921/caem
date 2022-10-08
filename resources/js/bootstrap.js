@@ -1,4 +1,5 @@
 window._ = require('lodash');
+window.Swal = require('sweetalert2');
 
 try {
     window.$ = window.jQuery = require('jquery');
