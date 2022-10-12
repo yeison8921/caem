@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateConveniosEmailTable extends Migration
+class CreateConveniosEmailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateConveniosEmailTable extends Migration
      */
     public function up()
     {
-        Schema::create('convenios_email', function (Blueprint $table) {
+        Schema::create('convenios_emails', function (Blueprint $table) {
             $table->id();
+            $table->string("email");
+            $table->string("nit");
+            $table->foreignId('convenio_id')->constrained('convenios')->onDelete('restrict');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateConveniosEmailTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('convenios_email');
+        Schema::dropIfExists('convenios_emails');
     }
 }

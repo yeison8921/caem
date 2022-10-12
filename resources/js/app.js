@@ -9,10 +9,10 @@ window.$ = window.jQuery = require('jquery');
 window.Swal = require('sweetalert2');
 
 window.Vue = require('vue').default;
+
 import Vue from 'vue';
 import Vuelidate from 'vuelidate'
 import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
-import Vuetify from 'vuetify'
 
 import axios from 'axios'
 import { Model } from 'vue-api-query'
@@ -24,7 +24,6 @@ require('datatables.net-buttons-bs5');
 require('datatables.net-buttons/js/buttons.html5.js');
 require('datatables.net-responsive-bs5');
 
-Vue.use(Vuetify);
 Vue.use(Vuelidate)
 
 /**
@@ -85,5 +84,4 @@ Vue.prototype.$tablaGlobal = function(nombreTabla) {
 
 const app = new Vue({
     el: '#app',
-    vuetify: new Vuetify(),
 });

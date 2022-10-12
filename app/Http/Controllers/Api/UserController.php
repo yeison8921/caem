@@ -55,9 +55,6 @@ class UserController extends Controller
             ->allowedIncludes([
                 'role',
             ])
-            ->allowedAppends([
-                'last_name',
-            ])
             ->allowedSorts([
                 'id',
             ])
@@ -82,13 +79,14 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        var_dump("entra a show");
         return QueryBuilder::for(User::whereId($user->id))
-        ->allowedIncludes([
-            'role',
-        ])
-        ->allowedAppends([
-            'last_name',
-        ])->first();
+            ->allowedIncludes([
+                'role',
+            ])
+            ->allowedAppends([
+                'last_name',
+            ])->first();
     }
 
     /**
@@ -99,7 +97,7 @@ class UserController extends Controller
         return $this->userRepository->create($data->all());
     }
 
-        /**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -112,7 +110,7 @@ class UserController extends Controller
 
         return $user->fresh();
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *

@@ -1,10 +1,10 @@
 import Model from "./Model";
 
-export default class User extends Model {
+export default class Empresa extends Model {
     baseURL() {
         return "/api";
     }
     resource() {
-        return "users"
+        return "empresas"
     }
 }

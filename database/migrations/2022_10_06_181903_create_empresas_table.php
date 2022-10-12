@@ -24,8 +24,8 @@ class CreateEmpresasTable extends Migration
             $table->foreignId('tamano_id')->constrained('parametros')->onDelete('restrict');
             $table->foreignId('departamento_id')->constrained('parametros')->onDelete('restrict');
             $table->foreignId('ciudad_id')->constrained('parametros')->onDelete('restrict');
-            $table->foreignId('convenio_id')->constrained('convenios')->onDelete('restrict');
             $table->foreignId('usuario_actualizo_id')->constrained('users')->onDelete('restrict');
+            $table->foreignId('convenio_id')->constrained('convenios')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();
         });

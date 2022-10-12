@@ -18,8 +18,8 @@ class CreateConveniosTable extends Migration
             $table->string('nombre_convenio');
             $table->string('nombre_entidad');
             $table->string('codigo');
-            $table->string('logo_url');
-            $table->text('texto_legal');
+            $table->string('logo_url')->nullable();
+            $table->text('texto_legal')->nullable();
             $table->foreignId('usuario_actualizo_id')->constrained('users')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();

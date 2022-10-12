@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSoftdeletesToUsersTable extends Migration
+class AddRolIdEmpresaIdSedeIdToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddSoftdeletesToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {            
-            $table->softDeletes();
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('rol_id')->constrained('roles')->onDelete('restrict');
+            $table->foreignId('empresa_id')->nullable()->constrained('empresas')->onDelete('restrict');
+            $table->foreignId('sede_id')->nullable()->constrained('empresas_sedes')->onDelete('restrict');
         });
     }
 

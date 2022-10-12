@@ -20,9 +20,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'phone',
         'email',
         'password',
+        'cargo',
+        'estado',
+        'rol_id',
+        'empresa_id',
+        'sede_id'
     ];
 
     /**
@@ -54,15 +61,7 @@ class User extends Authenticatable
         $this->attributes['password'] =
             (strlen($password) === 60 && preg_match('/^\$2y\$/', $password)) ||
             (strlen($password) === 95 && preg_match('/^\$argon2i\$/', $password)) ?
-                $password :
-                Hash::make($password);
-    }
-
-     /**
-     * @param $password
-     */
-    public function getLastNameAttribute()
-    {
-         return 'Hola';   
+            $password :
+            Hash::make($password);
     }
 }

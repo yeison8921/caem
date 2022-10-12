@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\EmpresaController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\RegisterController;
+use App\Http\Controllers\Api\ParametroController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,9 +29,8 @@ Route::group(['as' => 'auth.'], function () {
     Route::group(['middleware' => 'auth'], function () {
         // Authentication
         Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-        Route::apiResource('users', UserController::class);
     });
-    
+
     Route::group(['middleware' => 'guest'], function () {
         // Authentication
         //Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -37,6 +38,18 @@ Route::group(['as' => 'auth.'], function () {
 
         // Registration
         Route::post('users', [RegisterController::class, 'store']);
+        Route::apiResource('users', UserController::class);
+
+        // Parametros
+        Route::get('getOptionsParametro/{id_parametro}', [ParametroController::class, 'getOptionsParametro']);
+        Route::get('getOptionsCiudad/{departamento_id}', [ParametroController::class, 'getOptionsCiudad']);
+
+        // Empresas
+        Route::apiResource('empresas', EmpresaController::class);
+        Route::get('getOptionsEmpresasSedes/{empresa_id}', [EmpresaController::class, 'getOptionsEmpresasSedes']);
+
+
+
 
         // Password Reset
         /*Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
