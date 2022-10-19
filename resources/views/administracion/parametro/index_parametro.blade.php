@@ -1,0 +1,7 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <index-parametro-component></index-parametro-component>
+</div>
+@endsection

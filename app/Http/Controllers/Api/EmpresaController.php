@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-// use App\Http\Requests\Api\Registration\UpdateRegistrationRequest;
 use App\Http\Requests\Api\Empresa\StoreEmpresaRequest;
+use App\Http\Requests\Api\Empresa\UpdateEmpresaRequest;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
 use App\Models\EmpresaSede;
@@ -24,7 +24,7 @@ class EmpresaController extends Controller
     protected $empresaRepository;
 
     /**
-     * RegisterController constructor.
+     * EmpresaController constructor.
      *
      * @param  EmpresaRepository  $empresaRepository
      */
@@ -54,7 +54,7 @@ class EmpresaController extends Controller
      */
     public function show(Empresa $empresa)
     {
-        return QueryBuilder::for(Empresa::whereId($empresa->id))->first();
+        return QueryBuilder::for(Empresa::whereId($empresa->id))->allowedIncludes("sedes")->first();
     }
 
     /**
@@ -65,24 +65,18 @@ class EmpresaController extends Controller
         return $this->empresaRepository->create($data->all());
     }
 
-    public function getOptionsEmpresasSedes($empresa_id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Empresa $empresa
+     * @return \Illuminate\Http\Response
+     */
+
+    public function update(UpdateEmpresaRequest $request, $empresa)
     {
-        return $this->empresaRepository->getOptionsEmpresasSedes($empresa_id);
+        $this->empresaRepository->update($request, $empresa);
     }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  \App\Models\User  $user
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update(UpdateRegistrationRequest $request, User $user)
-    // {
-    //     $this->userRepository->update($user, $request->all());
-
-    //     return $user->fresh();
-    // }
 
     // /**
     //  * Remove the specified resource from storage.

@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Class StoreEmpresaRequest.
  */
-class StoreEmpresaRequest extends FormRequest
+class UpdateEmpresaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

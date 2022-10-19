@@ -11,13 +11,14 @@ window.Swal = require('sweetalert2');
 window.Vue = require('vue').default;
 
 import Vue from 'vue';
+import XLSX from 'xlsx';
 import Vuelidate from 'vuelidate'
 import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
-
 import axios from 'axios'
 import { Model } from 'vue-api-query'
+
 Model.$http = axios
-require('@fortawesome/fontawesome-free/js/all.min.js');
+require('@fortawesome/fontawesome-free/css/all.min.css');
 require('jszip');
 require('datatables.net-bs5');
 require('datatables.net-buttons-bs5');
@@ -40,6 +41,11 @@ Vue.use(Vuelidate)
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('login-component', require('./components/auth/LoginComponent.vue').default);
 Vue.component('registro-component', require('./components/auth/RegistroComponent.vue').default);
+Vue.component('index-parametro-component', require('./components/administracion/parametro/IndexParametroComponent.vue').default);
+Vue.component('form-parametro-component', require('./components/administracion/parametro/FormParametroComponent.vue').default);
+Vue.component('index-convenio-component', require('./components/administracion/convenio/IndexConvenioComponent.vue').default);
+Vue.component('form-convenio-component', require('./components/administracion/convenio/FormConvenioComponent.vue').default);
+Vue.component('index-proceso-component', require('./components/proceso/IndexProcesoComponent.vue').default);
 Vue.component('Multiselect', require('@vueform/multiselect/dist/multiselect.vue2.js').default);
 
 Vue.prototype.$tablaGlobal = function(nombreTabla) {
@@ -47,6 +53,72 @@ Vue.prototype.$tablaGlobal = function(nombreTabla) {
         $(nombreTabla).DataTable({
             "order": [
                 [0, 'desc']
+            ],
+            responsive: false,
+            dom: "<'row'<'col-sm-12 mb-3'B>><'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            "language": {
+                "lengthMenu": "Ver _MENU_ registros por página",
+                "zeroRecords": "No hay información, lo sentimos.",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(Filtrado de _MAX_ registros totales)",
+                "search": "Filtrar:",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Ultima",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+            buttons: [{
+                "extend": "excelHtml5",
+                "text": "<i class='fas fa-file-excel'></i> Excel",
+                "titleAttr": "Exportar a Excel",
+                "className": "btn btn-success"
+            }, ]
+        });
+    });
+}
+Vue.prototype.$tablaResultados = function(nombreTabla) {
+    this.$nextTick(() => {
+        $(nombreTabla).DataTable({
+            "columnDefs": [
+                { "width": "90%", "targets": 0 }
+            ],
+            responsive: false,
+            dom: "<'row'<'col-sm-12 mb-3'B>><'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            "language": {
+                "lengthMenu": "Ver _MENU_ registros por página",
+                "zeroRecords": "No hay información, lo sentimos.",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(Filtrado de _MAX_ registros totales)",
+                "search": "Filtrar:",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Ultima",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+            buttons: [{
+                "extend": "excelHtml5",
+                "text": "<i class='fas fa-file-excel'></i> Excel",
+                "titleAttr": "Exportar a Excel",
+                "className": "btn btn-success"
+            }, ]
+        });
+    });
+}
+Vue.prototype.$tablaConvenios = function(nombreTabla) {
+    this.$nextTick(() => {
+        $(nombreTabla).DataTable({
+            "columnDefs": [
+                { "width": "10%", "targets": 3 }
             ],
             responsive: false,
             dom: "<'row'<'col-sm-12 mb-3'B>><'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
@@ -84,4 +156,29 @@ Vue.prototype.$tablaGlobal = function(nombreTabla) {
 
 const app = new Vue({
     el: '#app',
+    methods: {
+        mostrarCargando(mensaje) {
+            Swal.fire({
+                title: mensaje,
+                text: "Espere un poco por favor.",
+                imageUrl: "/loading.gif",
+                imageWidth: 70,
+                imageHeight: 70,
+                showConfirmButton: false,
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+            });
+        },
+        mostrarMensaje(titulo, mensaje, icono) {
+            Swal.fire({
+                title: titulo,
+                html: mensaje,
+                icon: icono,
+                showConfirmButton: false,
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                timer: 2000,
+            });
+        },
+    }
 });

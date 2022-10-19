@@ -79,7 +79,6 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        var_dump("entra a show");
         return QueryBuilder::for(User::whereId($user->id))
             ->allowedIncludes([
                 'role',

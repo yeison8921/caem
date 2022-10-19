@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\ConvenioController;
 use App\Http\Controllers\Api\EmpresaController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\ParametroController;
+use App\Http\Controllers\Api\TipoParametroController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,16 +43,21 @@ Route::group(['as' => 'auth.'], function () {
         Route::apiResource('users', UserController::class);
 
         // Parametros
-        Route::get('getOptionsParametro/{id_parametro}', [ParametroController::class, 'getOptionsParametro']);
-        Route::get('getOptionsCiudad/{departamento_id}', [ParametroController::class, 'getOptionsCiudad']);
+        Route::apiResource('tipos', TipoParametroController::class);
+        Route::apiResource('parametros', ParametroController::class);
+        // Route::post('getOptionsTipoParametro', [ParametroController::class, 'getOptionsTipoParametro']);
 
         // Empresas
         Route::apiResource('empresas', EmpresaController::class);
-        Route::get('getOptionsEmpresasSedes/{empresa_id}', [EmpresaController::class, 'getOptionsEmpresasSedes']);
-
-
-
-
+        
+        // Convenios
+        Route::apiResource('convenios', ConvenioController::class);
+        Route::post('agregarCorreosConvenio', [ConvenioController::class, 'agregarCorreosConvenio']);
+        Route::post('verificarEmailConvenio', [ConvenioController::class, 'verificarEmailConvenio']);
+        Route::post('verificarCodigoConvenio', [ConvenioController::class, 'verificarCodigoConvenio']);
+        Route::get('eliminarCorreo/{id_convenio_email}', [ConvenioController::class, 'eliminarCorreo']);
+        Route::post('cambiarEstadoConvenio', [ConvenioController::class, 'cambiarEstadoConvenio']);
+        
         // Password Reset
         /*Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
         Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');

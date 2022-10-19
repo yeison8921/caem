@@ -113,7 +113,11 @@
                             <button
                                 type="button"
                                 class="btn btn-primary"
-                                @click="submit()"
+                                @click="
+                                    codigo_convenio = '';
+                                    verificar_codigo_convenio = false;
+                                    submit();
+                                "
                             >
                                 Siguiente
                             </button>
@@ -126,177 +130,193 @@
                     id="pills-datos-generales"
                     role="tabpanel"
                 >
-                    <div class="mb-3">
-                        <label class="form-label">Nombres</label>
+                    <div class="mb-3" v-if="convenio_id != ''">
+                        <label class="form-label">Código de convenio</label>
                         <div class="input-group">
                             <span class="input-group-text"
-                                ><i class="fa-solid fa-n"></i
-                            ></span>
+                                ><i class="fas fa-sort-numeric-down"></i>
+                            </span>
                             <input
-                                v-model.trim="form.first_name"
+                                v-model="codigo_convenio"
                                 type="text"
                                 class="form-control"
-                                :class="{
-                                    'is-invalid': $v.form.first_name.$error,
-                                    'is-valid': !$v.form.first_name.$invalid,
-                                }"
+                                @change="verificarCodigoConvenio()"
                             />
-                            <div class="invalid-feedback">
-                                <span v-if="!$v.form.first_name.required">{{
-                                    required
-                                }}</span>
-                            </div>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Apellidos</label>
+                    <div v-if="convenio_id == '' || verificar_codigo_convenio">
+                        <div class="mb-3">
+                            <label class="form-label">Nombres</label>
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="fa-solid fa-n"></i
+                                ></span>
+                                <input
+                                    v-model.trim="form.first_name"
+                                    type="text"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': $v.form.first_name.$error,
+                                        'is-valid':
+                                            !$v.form.first_name.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.form.first_name.required">{{
+                                        required
+                                    }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Apellidos</label>
 
-                        <div class="input-group">
-                            <span class="input-group-text"
-                                ><i class="fa-solid fa-a"></i
-                            ></span>
-                            <input
-                                v-model.trim="form.last_name"
-                                type="text"
-                                class="form-control"
-                                :class="{
-                                    'is-invalid': $v.form.last_name.$error,
-                                    'is-valid': !$v.form.last_name.$invalid,
-                                }"
-                            />
-                            <div class="invalid-feedback">
-                                <span v-if="!$v.form.last_name.required">{{
-                                    required
-                                }}</span>
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="fa-solid fa-a"></i
+                                ></span>
+                                <input
+                                    v-model.trim="form.last_name"
+                                    type="text"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': $v.form.last_name.$error,
+                                        'is-valid': !$v.form.last_name.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.form.last_name.required">{{
+                                        required
+                                    }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Celular</label>
-                        <div class="input-group">
-                            <span class="input-group-text"
-                                ><i class="fa-solid fa-mobile"></i
-                            ></span>
-                            <input
-                                v-model.trim="form.phone"
-                                type="text"
-                                class="form-control"
-                                :class="{
-                                    'is-invalid': $v.form.phone.$error,
-                                    'is-valid': !$v.form.phone.$invalid,
-                                }"
-                            />
-                            <div class="invalid-feedback">
-                                <span v-if="!$v.form.phone.required">{{
-                                    required
-                                }}</span>
+                        <div class="mb-3">
+                            <label class="form-label">Celular</label>
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="fa-solid fa-mobile"></i
+                                ></span>
+                                <input
+                                    v-model.trim="form.phone"
+                                    type="text"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': $v.form.phone.$error,
+                                        'is-valid': !$v.form.phone.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.form.phone.required">{{
+                                        required
+                                    }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Correo electrónico</label>
-                        <div class="input-group">
-                            <span class="input-group-text"
-                                ><i class="fa-solid fa-envelope"></i
-                            ></span>
-                            <input
-                                v-model.trim="form.email"
-                                type="email"
-                                class="form-control"
-                                :class="{
-                                    'is-invalid': $v.form.email.$error,
-                                    'is-valid': !$v.form.email.$invalid,
-                                }"
-                            />
-                            <div class="invalid-feedback">
-                                <span v-if="!$v.form.email.required">{{
-                                    required
-                                }}</span>
-                                <span v-if="!$v.form.email.email"
-                                    >Debe ingresar un correo valido</span
-                                >
+                        <div class="mb-3">
+                            <label class="form-label">Correo electrónico</label>
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="fa-solid fa-envelope"></i
+                                ></span>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    :value="email"
+                                    readonly
+                                />
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label"
-                            >Confirmar correo electrónico</label
-                        >
-                        <div class="input-group">
-                            <span class="input-group-text"
-                                ><i class="fa-solid fa-envelope"></i
-                            ></span>
-                            <input
-                                v-model.trim="form.verify_email"
-                                type="email"
-                                class="form-control"
-                                autocomplete="new-text"
-                                :class="{
-                                    'is-invalid': $v.form.verify_email.$error,
-                                    'is-valid':
-                                        form.email != ''
-                                            ? !$v.form.verify_email.$invalid
-                                            : '',
-                                }"
-                            />
-                            <div class="invalid-feedback">
-                                <span v-if="!$v.form.verify_email.sameAsCorreo">
-                                    El correo electrónico no coincide</span
-                                >
+                        <div class="mb-3">
+                            <label class="form-label"
+                                >Confirmar correo electrónico</label
+                            >
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="fa-solid fa-envelope"></i
+                                ></span>
+                                <input
+                                    v-model.trim="form.verify_email"
+                                    type="email"
+                                    class="form-control"
+                                    autocomplete="new-text"
+                                    :class="{
+                                        'is-invalid':
+                                            $v.form.verify_email.$error,
+                                        'is-valid':
+                                            form.email != ''
+                                                ? !$v.form.verify_email.$invalid
+                                                : '',
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span
+                                        v-if="
+                                            !$v.form.verify_email.sameAsCorreo
+                                        "
+                                    >
+                                        El correo electrónico no coincide</span
+                                    >
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Contraseña</label>
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
 
-                        <div class="input-group">
-                            <span class="input-group-text"
-                                ><i class="fa-solid fa-lock"></i
-                            ></span>
-                            <input
-                                v-model.trim="form.password"
-                                type="password"
-                                id="contrasena"
-                                class="form-control"
-                                :class="{
-                                    'is-invalid': $v.form.password.$error,
-                                    'is-valid': !$v.form.password.$invalid,
-                                }"
-                            />
-                            <div class="invalid-feedback">
-                                <span v-if="!$v.form.password.required">{{
-                                    required
-                                }}</span>
-                                <span v-if="!$v.form.password.minLength"
-                                    >Mínimo 8 caracteres</span
-                                >
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="fa-solid fa-lock"></i
+                                ></span>
+                                <input
+                                    v-model.trim="form.password"
+                                    type="password"
+                                    id="contrasena"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': $v.form.password.$error,
+                                        'is-valid': !$v.form.password.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.form.password.required">{{
+                                        required
+                                    }}</span>
+                                    <span v-if="!$v.form.password.minLength"
+                                        >Mínimo 8 caracteres</span
+                                    >
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Confirmar contraseña</label>
-                        <div class="input-group">
-                            <span class="input-group-text"
-                                ><i class="fa-solid fa-lock"></i
-                            ></span>
-                            <input
-                                v-model.trim="form.verify_password"
-                                type="password"
-                                id="verify_password"
-                                class="form-control"
-                                :class="{
-                                    'is-invalid':
-                                        $v.form.verify_password.$error,
-                                    'is-valid':
-                                        form.password != ''
-                                            ? !$v.form.verify_password.$invalid
-                                            : '',
-                                }"
-                            />
-                            <div class="invalid-feedback">
-                                <span v-if="!$v.form.verify_password.required">
-                                    La contraseña no coincide</span
-                                >
+                        <div class="mb-3">
+                            <label class="form-label"
+                                >Confirmar contraseña</label
+                            >
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="fa-solid fa-lock"></i
+                                ></span>
+                                <input
+                                    v-model.trim="form.verify_password"
+                                    type="password"
+                                    id="verify_password"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid':
+                                            $v.form.verify_password.$error,
+                                        'is-valid':
+                                            form.password != ''
+                                                ? !$v.form.verify_password
+                                                      .$invalid
+                                                : '',
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span
+                                        v-if="!$v.form.verify_password.required"
+                                    >
+                                        La contraseña no coincide</span
+                                    >
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -375,7 +395,8 @@
                             v-model.trim="form_empresa.codigo_ciiu_id"
                             :options="options_ciiu"
                             placeholder="Seleccione una opción"
-                            required
+                            valueProp="id"
+                            label="nombre"
                             :class="{
                                 'is-invalid':
                                     $v.form_empresa.codigo_ciiu_id.$error,
@@ -400,7 +421,8 @@
                             v-model.trim="form_empresa.sector_id"
                             :options="options_sector"
                             placeholder="Seleccione una opción"
-                            required
+                            valueProp="id"
+                            label="nombre"
                             :class="{
                                 'is-invalid': $v.form_empresa.sector_id.$error,
                                 'is-valid':
@@ -421,7 +443,8 @@
                             v-model.trim="form_empresa.empleado_id"
                             :options="options_empleado"
                             placeholder="Seleccione una opción"
-                            required
+                            valueProp="id"
+                            label="nombre"
                             :class="{
                                 'is-invalid':
                                     $v.form_empresa.empleado_id.$error,
@@ -443,7 +466,8 @@
                             v-model.trim="form_empresa.tamano_id"
                             :options="options_tamano"
                             placeholder="Seleccione una opción"
-                            required
+                            valueProp="id"
+                            label="nombre"
                             :class="{
                                 'is-invalid': $v.form_empresa.tamano_id.$error,
                                 'is-valid':
@@ -464,8 +488,9 @@
                             v-model.trim="form_empresa.departamento_id"
                             :options="options_departamento"
                             placeholder="Seleccione una opción"
+                            valueProp="id"
+                            label="nombre"
                             @input="getOptionsCiudad()"
-                            required
                             :class="{
                                 'is-invalid':
                                     $v.form_empresa.departamento_id.$error,
@@ -492,7 +517,8 @@
                             v-model.trim="form_empresa.ciudad_id"
                             :options="options_ciudad"
                             placeholder="Seleccione una opción"
-                            required
+                            valueProp="id"
+                            label="nombre"
                             :class="{
                                 'is-invalid': $v.form_empresa.ciudad_id.$error,
                                 'is-valid':
@@ -513,7 +539,15 @@
                             v-model.trim="form_empresa.sede_id"
                             :options="options_sede"
                             placeholder="Seleccione una opción"
-                            required
+                            valueProp="id"
+                            label="nombre"
+                            :class="{
+                                'is-invalid': $v.form_empresa.sede_id.$error,
+                                'is-valid':
+                                    form_empresa.sede_id != ''
+                                        ? !$v.form_empresa.sede_id.$invalid
+                                        : '',
+                            }"
                         />
                         <div class="invalid-feedback">
                             <span v-if="!$v.form_empresa.sede_id.required">
@@ -618,6 +652,7 @@ import {
 } from "vuelidate/lib/validators";
 import User from "../../models/User";
 import Empresa from "../../models/Empresa";
+import Parametro from "../../models/Parametro";
 
 export default {
     data() {
@@ -633,19 +668,37 @@ export default {
                 verify_password: "",
                 cargo: "",
             }),
-            form_empresa: {},
 
+            empresa: new Empresa({
+                nombre: "",
+                nit: "",
+                telefono: "",
+                codigo_ciiu_id: "",
+                sector_id: "",
+                empleado_id: "",
+                tamano_id: "",
+                departamento_id: "",
+                ciudad_id: "",
+                usuario_actualizo_id: "",
+                convenio_id: "",
+            }),
+
+            form_empresa: {},
+            empresa_existe: "",
             email: "",
             verify_email: "",
-            paso: 2,
+            verificar_codigo_convenio: false,
+            codigo_convenio: "",
+            paso: 1,
             required: "Este campo es requerido",
+            convenio_id: "",
             options_departamento: [],
             options_ciudad: [],
             options_sector: [],
             options_ciiu: [],
             options_tamano: [],
             options_empleado: [],
-            options_sede: [{ value: 0, label: "NUEVA SEDE" }],
+            options_sede: [],
         };
     },
     validations: {
@@ -658,10 +711,6 @@ export default {
             },
             phone: {
                 required,
-            },
-            email: {
-                required,
-                email,
             },
             verify_email: {
                 required,
@@ -728,11 +777,11 @@ export default {
         },
     },
     mounted() {
-        this.getOptionsParametro(1, "departamentos");
-        this.getOptionsParametro(3, "sectores");
-        this.getOptionsParametro(4, "CIIUs");
-        this.getOptionsParametro(5, "tamaños de empresa");
-        this.getOptionsParametro(6, "número de empleados");
+        this.getParametros(1, "options_departamento");
+        this.getParametros(3, "options_sector");
+        this.getParametros(4, "options_ciiu");
+        this.getParametros(5, "options_tamano");
+        this.getParametros(6, "options_empleado");
         //this.getUsers();
         /*
     this.user.name = "nombres";
@@ -741,48 +790,16 @@ export default {
     this.user.save();*/
     },
     methods: {
-        async getOptionsParametro(tipo_parametro_id, nombre_listado) {
-            axios
-                .get("api/getOptionsParametro/" + tipo_parametro_id)
-                .then((response) => {
-                    switch (tipo_parametro_id) {
-                        case 1:
-                            this.options_departamento = response.data;
-                            break;
-                        case 3:
-                            this.options_sector = response.data;
-                            break;
-                        case 4:
-                            this.options_ciiu = response.data;
-                            break;
-                        case 5:
-                            this.options_tamano = response.data;
-                            break;
-                        case 6:
-                            this.options_empleado = response.data;
-                            break;
-                    }
-                })
-                .catch((error) => {
-                    this.mostrarMensaje(
-                        "error",
-                        "No se pudo obtener el listado de " + nombre_listado,
-                        "error"
-                    );
-                });
-            // var parametros = [{ id: 1, value: "options_sector" }];
-            // parametros.forEach((e) => {
-            //     axios
-            //         .get("api/getOptionsParametro/" + e.id)
-            //         .then((response) => {
-            //             this[e.value] = response.data;
-            //         })
-            //         .catch((error) => {
-            //             console.log(
-            //                 "No se puede cargar la información de Listas"
-            //             );
-            //         });
-            // });
+        async getParametros(tipo_parametro_id, variable) {
+            //1 departamentos
+            //3 sectores
+            //4 CIIUs
+            //5 tamaños de empresa
+            //6 número de empleados
+            this[variable] = await Parametro.where(
+                "tipo_parametro_id",
+                tipo_parametro_id
+            ).get();
         },
 
         async getOptionsCiudad() {
@@ -792,21 +809,11 @@ export default {
                 this.form_empresa.departamento_id != null
             ) {
                 this.form_empresa.ciudad_id = "";
-                axios
-                    .get(
-                        "api/getOptionsCiudad/" +
-                            this.form_empresa.departamento_id
-                    )
-                    .then((response) => {
-                        this.options_ciudad = response.data;
-                    })
-                    .catch((error) => {
-                        this.mostrarMensaje(
-                            "error",
-                            "No se pudo obtener el listado de ciudades",
-                            "error"
-                        );
-                    });
+
+                this.options_ciudad = await Parametro.where(
+                    "parametro_id",
+                    this.form_empresa.departamento_id
+                ).get();
             }
         },
 
@@ -839,7 +846,7 @@ export default {
                     ).get();
 
                     if (check_email.length != 0) {
-                        this.mostrarMensaje(
+                        this.$root.mostrarMensaje(
                             "Alerta",
                             "El correo electrónico ingresado ya se encuentra registrado en el sistema, por favor ingrese con el usuario y contraseña previamente creados",
                             "warning"
@@ -850,6 +857,8 @@ export default {
                     } else {
                         this.paso = 2;
                         this.$v.$reset();
+                        this.verificarEmailConvenio();
+                        this.form = {};
                         this.form.email = this.email;
                     }
                 }
@@ -862,21 +871,39 @@ export default {
             }
             if (this.paso == 3) {
                 if (!this.$v.form_empresa.$invalid) {
-                    this.form_empresa.cargo = this.form.cargo;
-                    this.user.first_name = this.form.first_name;
-                    this.user.last_name = this.form.last_name;
-                    this.user.phone = this.form.phone;
-                    this.user.email = this.form.email;
-                    this.user.password = this.form.password;
-                    this.user.cargo = this.form.cargo;
-                    this.user.estado = 0;
-                    this.user.rol_id = 1;
+                    this.empresa.nombre = this.form_empresa.nombre;
+                    this.empresa.nit = this.form_empresa.nit;
+                    this.empresa.telefono = this.form_empresa.telefono;
+                    this.empresa.codigo_ciiu_id =
+                        this.form_empresa.codigo_ciiu_id;
+                    this.empresa.sector_id = this.form_empresa.sector_id;
+                    this.empresa.empleado_id = this.form_empresa.empleado_id;
+                    this.empresa.tamano_id = this.form_empresa.tamano_id;
+                    this.empresa.departamento_id =
+                        this.form_empresa.departamento_id;
+                    this.empresa.ciudad_id = this.form_empresa.ciudad_id;
+                    this.empresa.usuario_actualizo_id = 1;
 
-                    //por validar estado, rol y la creación de empresa y sede
-                    this.user.empresa_id = 1;
-                    this.user.sede_id = 1;
+                    if (this.empresa_existe) {
+                        this.empresa.id = this.form_empresa.id;
+                        this.empresa.convenio_id = this.convenio_id;
+                    }
+                    await this.empresa.save();
+                    // this.form_empresa.cargo = this.form.cargo;
+                    // this.user.first_name = this.form.first_name;
+                    // this.user.last_name = this.form.last_name;
+                    // this.user.phone = this.form.phone;
+                    // this.user.email = this.form.email;
+                    // this.user.password = this.form.password;
+                    // this.user.cargo = this.form.cargo;
+                    // this.user.estado = 0;
+                    // this.user.rol_id = 1;
 
-                    await this.user.save();
+                    // //por validar estado, rol y la creación de empresa y sede
+                    // this.user.empresa_id = 1;
+                    // this.user.sede_id = 1;
+
+                    // await this.user.save();
                     /**
            * llamar todos
            *
@@ -889,54 +916,97 @@ export default {
             }
         },
         async verificarNitEmpresa() {
-            let check_nit = await Empresa.where(
-                "nit",
-                this.form_empresa.nit
-            ).get();
+            //verificar si la persona viene de convenio, si si, verifcar si la empresa existe y traerla, sino crear la empresa en una tabla temporal
+            this.options_sede = [{ id: 0, nombre: "Nueva sede" }];
 
-            if (check_nit.length != 0) {
-                this.form_empresa.departamento_id =
-                    check_nit[0]["departamento_id"];
-                this.getOptionsCiudad();
-                this.form_empresa = check_nit[0];
-                this.getEmpresasSedes();
-            } else {
-                Object.keys(this.form_empresa).forEach((key) => {
-                    if (key != "nit") {
-                        this.form_empresa[key] = "";
-                    }
-                });
+            if (this.convenio_id != "") {
+                let check_nit = await Empresa.where(
+                    "nit",
+                    this.form_empresa.nit
+                ).get();
+
+                if (check_nit.length != 0) {
+                    this.form_empresa.departamento_id =
+                        check_nit[0]["departamento_id"];
+                    this.getOptionsCiudad();
+                    this.form_empresa = check_nit[0];
+                    this.getEmpresasSedes();
+                    this.empresa_existe = true;
+                } else {
+                    Object.keys(this.form_empresa).forEach((key) => {
+                        if (key != "nit") {
+                            this.form_empresa[key] = "";
+                        }
+                    });
+                    this.empresa_existe = false;
+                }
             }
         },
         async getEmpresasSedes() {
+            let empresa = await Empresa.include("sedes").find(
+                this.form_empresa.id
+            );
+
+            empresa.sedes.forEach((e) => {
+                this.options_sede.push(e);
+            });
+        },
+        async verificarEmailConvenio() {
             await axios
-                .get("api/getOptionsEmpresasSedes/" + this.form_empresa.id)
+                .post("api/verificarEmailConvenio", {
+                    email: this.email,
+                })
                 .then((response) => {
-                    response.data.forEach((e) => {
-                        this.options_sede.push(e);
-                    });
+                    this.convenio_id =
+                        response.data == "" ? "" : response.data.id;
                 })
                 .catch((error) => {
-                    this.mostrarMensaje(
+                    this.$root.mostrarMensaje(
                         "error",
-                        "No se pudo obtener el listado de " + nombre_listado,
+                        "No se pudo verificar el convenio",
                         "error"
+                    );
+                });
+        },
+        async verificarCodigoConvenio() {
+            await axios
+                .post("api/verificarCodigoConvenio", {
+                    codigo: this.codigo_convenio,
+                    email: this.email,
+                })
+                .then((response) => {
+                    this.verificar_codigo_convenio = true;
+                })
+                .catch((error) => {
+                    this.verificar_codigo_convenio = false;
+                    this.$root.mostrarMensaje(
+                        "Atención",
+                        "El correo electrónico o el código de convenio no se encuentran registrados en el sistema, por favor verifique que la información esté correcta o contacte al administrador",
+                        "warning"
+                    );
+                });
+        },
+        async verificarNitConvenio() {
+            await axios
+                .post("convenios/api/verificarCodigoConvenio", {
+                    convenio_id: this.convenio_id,
+                    email: this.email,
+                    nit: this.form_empresa.nit,
+                })
+                .then((response) => {
+                    this.verificar_codigo_convenio = true;
+                })
+                .catch((error) => {
+                    this.verificar_codigo_convenio = false;
+                    this.$root.mostrarMensaje(
+                        "Atención",
+                        "El correo electrónico o el código de convenio no se encuentran registrados en el sistema, por favor verifique que la información esté correcta o contacte al administrador",
+                        "warning"
                     );
                 });
         },
         cancelar() {
             window.location.href = "login";
-        },
-        mostrarMensaje(titulo, mensaje, icono) {
-            Swal.fire({
-                title: titulo,
-                html: mensaje,
-                icon: icono,
-                showConfirmButton: false,
-                allowEscapeKey: false,
-                allowOutsideClick: false,
-                timer: 2000,
-            });
         },
     },
 };

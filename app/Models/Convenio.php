@@ -21,10 +21,20 @@ class Convenio extends Model
     ];
 
     /**
-     * Obtiene el usuario que actualiza la empresa.
+     * Obtiene el usuario que actualiza el convenio.
      */
     public function usuarioActualizo()
     {
         return $this->belongsTo(User::class, 'usuario_actualizo_id', 'id');
     }
+    
+    /**
+     * Obtiene los emails asociados al convenio.
+     */
+    public function emails()
+    {
+        return $this->hasMany(ConvenioEmail::class, 'convenio_id', 'id');
+    }
+
+
 }

@@ -13,42 +13,53 @@ export default class Model extends BaseModel {
 
     // Overwrite save method to more easily deal with 422 errors
     async save() {
-        try {
-            let result = null
-            await super.save().then(response => {
-                console.log(response);
-                result = response;
-                Swal.fire({
-                    title: ' ', 
-                    text: 'Updated', 
-                    icon: 'success',
-                    toast: true,
-                    position: 'top-end',
-                    timer: 2000,
-                    showConfirmButton: false,
-                });
-            });
-            return result;
-        } catch ( e ) {
-            console.log(e);
-            if (e.response){
-                if (e.response.status == 422){
-                    var errorText = "";
-                    Object.entries(e.response.data.errors).forEach(([key, value]) => {
-                      value.forEach(errorMessage => {
-                        errorText += "" + errorMessage + " <br>";
-                      });
+            try {
+                let result = null
+                await super.save().then(response => {
+                    result = response;
+                    Swal.fire({
+                        title: "Éxito",
+                        html: "Guardado exitosamente",
+                        icon: "success",
+                        showConfirmButton: false,
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        timer: 2000,
+                        confirmButtonColor: "#28a745",
                     });
-                    Swal.fire('', errorText, 'error');
-                    return e.response;
-                }else{
-                    Swal.fire('', 'Server error', 'error');
+                });
+                return result;
+            } catch (e) {
+                console.log(e);
+                if (e.response) {
+                    if (e.response.status == 422) {
+                        var errorText = "";
+                        Object.entries(e.response.data.errors).forEach(([key, value]) => {
+                            value.forEach(errorMessage => {
+                                errorText += "" + errorMessage + " <br>";
+                            });
+                        });
+                        Swal.fire('', errorText, 'error');
+                        return e.response;
+                    } else {
+                        Swal.fire('', 'Server error', 'error');
+                    }
+                } else {
+                    Swal.fire('', 'Frontend Error', 'error');
                 }
-            }else{
-                Swal.fire('', 'Frontend Error', 'error');
+            } finally {
+                // Stuff I want to do regardless of success/fail
             }
-        } finally {
-            // Stuff I want to do regardless of success/fail
         }
-    }
+        // async update() {
+        //     console.log("entra");
+        //     try {
+        //         await super.patch().then(response => {
+
+    //         })
+
+    //     } catch (e) {
+
+    //     }
+    // }
 }

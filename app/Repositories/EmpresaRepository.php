@@ -48,9 +48,16 @@ class EmpresaRepository extends BaseRepository
         });
     }
 
-    public function getOptionsEmpresasSedes($empresa_id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update($request, $id_empresa)
     {
-        $sedes = EmpresaSede::where("empresa_id", $empresa_id)->get(['id as value', 'nombre as label']);
-        return $sedes;
+        $empresa = Empresa::find($id_empresa);
+        $empresa->update($request->all());
     }
 }
