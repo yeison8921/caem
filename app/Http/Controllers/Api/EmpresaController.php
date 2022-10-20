@@ -75,7 +75,15 @@ class EmpresaController extends Controller
 
     public function update(UpdateEmpresaRequest $request, $empresa)
     {
-        $this->empresaRepository->update($request, $empresa);
+        return $this->empresaRepository->update($request, $empresa);
+    }
+    
+    public function crearEmpresaSede(Request $request){
+        return $this->empresaRepository->crearEmpresaSede($request);
+    }
+    
+    public function CrearEmpresaTemporal(Request $request){
+        return $this->empresaRepository->CrearEmpresaTemporal($request);
     }
 
     // /**

@@ -667,6 +667,10 @@ export default {
                 password: "",
                 verify_password: "",
                 cargo: "",
+                estado: "",
+                rol_id: "",
+                empresa_id: "",
+                sede_id: "",
             }),
 
             empresa: new Empresa({
@@ -871,52 +875,103 @@ export default {
             }
             if (this.paso == 3) {
                 if (!this.$v.form_empresa.$invalid) {
-                    this.empresa.nombre = this.form_empresa.nombre;
-                    this.empresa.nit = this.form_empresa.nit;
-                    this.empresa.telefono = this.form_empresa.telefono;
-                    this.empresa.codigo_ciiu_id =
-                        this.form_empresa.codigo_ciiu_id;
-                    this.empresa.sector_id = this.form_empresa.sector_id;
-                    this.empresa.empleado_id = this.form_empresa.empleado_id;
-                    this.empresa.tamano_id = this.form_empresa.tamano_id;
-                    this.empresa.departamento_id =
-                        this.form_empresa.departamento_id;
-                    this.empresa.ciudad_id = this.form_empresa.ciudad_id;
-                    this.empresa.usuario_actualizo_id = 1;
+                    if (this.convenio_id != "") {
+                        this.limpiarEmpresa();
 
-                    if (this.empresa_existe) {
-                        this.empresa.id = this.form_empresa.id;
+                        this.empresa.nombre = this.form_empresa.nombre;
+                        this.empresa.nit = this.form_empresa.nit;
+                        this.empresa.telefono = this.form_empresa.telefono;
+                        this.empresa.codigo_ciiu_id =
+                            this.form_empresa.codigo_ciiu_id;
+                        this.empresa.sector_id = this.form_empresa.sector_id;
+                        this.empresa.empleado_id =
+                            this.form_empresa.empleado_id;
+                        this.empresa.tamano_id = this.form_empresa.tamano_id;
+                        this.empresa.departamento_id =
+                            this.form_empresa.departamento_id;
+                        this.empresa.ciudad_id = this.form_empresa.ciudad_id;
                         this.empresa.convenio_id = this.convenio_id;
+
+                        if (this.empresa_existe) {
+                            this.empresa.id = this.form_empresa.id;
+                        }
+
+                        var empresa_creada = await this.empresa.save();
+
+                        var empresa_sede_creada = "";
+                        if (this.form_empresa.sede_id == 0) {
+                            await axios
+                                .post("api/crearEmpresaSede", {
+                                    nombre: this.form_empresa.nombre_sede,
+                                    empresa_id: empresa_creada.id,
+                                })
+                                .then((response) => {
+                                    empresa_sede_creada = response.data;
+                                })
+                                .catch((error) => {
+                                    this.$root.mostrarMensaje(
+                                        "error",
+                                        "No se pudo crear la sede, por favor inténtele nuevamente",
+                                        "error"
+                                    );
+                                });
+                        }
+                        this.form.usuario_creacion_id;
+                        this.form.nombre_sede;
                     }
-                    await this.empresa.save();
-                    // this.form_empresa.cargo = this.form.cargo;
-                    // this.user.first_name = this.form.first_name;
-                    // this.user.last_name = this.form.last_name;
-                    // this.user.phone = this.form.phone;
-                    // this.user.email = this.form.email;
-                    // this.user.password = this.form.password;
-                    // this.user.cargo = this.form.cargo;
-                    // this.user.estado = 0;
-                    // this.user.rol_id = 1;
 
-                    // //por validar estado, rol y la creación de empresa y sede
-                    // this.user.empresa_id = 1;
-                    // this.user.sede_id = 1;
+                    this.user.first_name = this.form.first_name;
+                    this.user.last_name = this.form.last_name;
+                    this.user.phone = this.form.phone;
+                    this.user.email = this.form.email;
+                    this.user.password = this.form.password;
+                    this.user.cargo = this.form_empresa.cargo;
+                    this.user.rol_id = 1;
 
-                    // await this.user.save();
-                    /**
-           * llamar todos
-           *
-            this.usuarios = await User.get();
-            this.usuario = await User.include("role")
-            .append("quantity_invoiced")
-            .find(id);
-           */
+                    this.user.estado = this.convenio_id == "" ? 0 : 1;
+                    this.user.empresa_id =
+                        this.convenio_id == "" ? null : empresa_creada.id;
+
+                    this.user.sede_id =
+                        this.convenio_id == "" ? null : empresa_sede_creada;
+
+                    let usuario_creado = await this.user.save();
+
+                    if (this.convenio_id == "") {
+                        this.form_empresa.usuario_creacion_id =
+                            usuario_creado.id;
+
+                        await axios
+                            .post("api/CrearEmpresaTemporal", this.form_empresa)
+                            .then((response) => {
+                                this.$root.mostrarMensaje(
+                                    "Éxito",
+                                    "Usuario creado sin convenio, a la espera de revisión de pago",
+                                    "success"
+                                );
+                            })
+                            .catch((error) => {
+                                this.$root.mostrarMensaje(
+                                    "error",
+                                    "No se pudo verificar el convenio",
+                                    "error"
+                                );
+                            });
+                    } else {
+                        this.$root.mostrarMensaje(
+                            "Éxito",
+                            "Usuario creado por convenio",
+                            "success"
+                        );
+                    }
+
+                    setTimeout(() => {
+                        this.cancelar();
+                    }, 2000);
                 }
             }
         },
         async verificarNitEmpresa() {
-            //verificar si la persona viene de convenio, si si, verifcar si la empresa existe y traerla, sino crear la empresa en una tabla temporal
             this.options_sede = [{ id: 0, nombre: "Nueva sede" }];
 
             if (this.convenio_id != "") {
@@ -958,7 +1013,7 @@ export default {
                 })
                 .then((response) => {
                     this.convenio_id =
-                        response.data == "" ? "" : response.data.id;
+                        response.data == "" ? "" : response.data.convenio_id;
                 })
                 .catch((error) => {
                     this.$root.mostrarMensaje(
@@ -1004,6 +1059,19 @@ export default {
                         "warning"
                     );
                 });
+        },
+        limpiarEmpresa() {
+            this.empresa.nombre = "";
+            this.empresa.nit = "";
+            this.empresa.telefono = "";
+            this.empresa.codigo_ciiu_id = "";
+            this.empresa.sector_id = "";
+            this.empresa.empleado_id = "";
+            this.empresa.tamano_id = "";
+            this.empresa.departamento_id = "";
+            this.empresa.ciudad_id = "";
+            this.empresa.usuario_actualizo_id = "";
+            this.empresa.convenio_id = "";
         },
         cancelar() {
             window.location.href = "login";

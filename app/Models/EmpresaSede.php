@@ -17,4 +17,9 @@ class EmpresaSede extends Model
      * @var string
      */
     protected $table = 'empresas_sedes';
+
+    protected $fillable = [
+        'nombre',
+        'empresa_id',
+    ];
 }

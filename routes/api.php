@@ -49,6 +49,8 @@ Route::group(['as' => 'auth.'], function () {
 
         // Empresas
         Route::apiResource('empresas', EmpresaController::class);
+        Route::post('crearEmpresaSede', [EmpresaController::class, 'crearEmpresaSede']);
+        Route::post('CrearEmpresaTemporal', [EmpresaController::class, 'CrearEmpresaTemporal']);
         
         // Convenios
         Route::apiResource('convenios', ConvenioController::class);

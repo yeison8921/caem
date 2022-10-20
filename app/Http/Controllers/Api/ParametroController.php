@@ -83,7 +83,7 @@ class ParametroController extends Controller
 
     public function update(UpdateParametroRequest $request, $parametro)
     {
-        $this->parametroRepository->update($request, $parametro);
+        return $this->parametroRepository->update($request, $parametro);
     }
 
     /**

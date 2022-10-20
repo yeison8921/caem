@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Exceptions\GeneralException;
 use App\Models\Empresa;
 use App\Models\EmpresaSede;
+use App\Models\EmpresaTemporal;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -59,5 +60,15 @@ class EmpresaRepository extends BaseRepository
     {
         $empresa = Empresa::find($id_empresa);
         $empresa->update($request->all());
+        return $empresa;
+    }
+
+    public function crearEmpresaSede($request){
+        $sede = EmpresaSede::create($request->all());
+        return response()->json($sede->id);
+    }
+    
+    public function CrearEmpresaTemporal($request){
+        EmpresaTemporal::create($request->all());
     }
 }
