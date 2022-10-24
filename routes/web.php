@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\ConvenioController;
+use App\Http\Controllers\Api\EmpresaController;
+use App\Http\Controllers\Api\EmpresaSedeController;
 use App\Http\Controllers\Api\ParametroController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +38,19 @@ Route::get('/convenios',  function () {
 });
 Route::get('/convenios/create', [ConvenioController::class, 'formConvenio']);
 Route::get('/convenios/edit/{id_convenio}', [ConvenioController::class, 'formConvenio']);
+
+// Empresas
+Route::get('/empresas',  function () {
+    return view('administracion/empresa/index_empresa');
+});
+Route::get('/empresas/edit/{id_empresa}', [EmpresaController::class, 'formEmpresa']);
+
+// Sedes
+Route::get('/sedes',  function () {
+    return view('administracion/sede/index_sede');
+});
+Route::get('/sedes/create/{empresa_id}', [EmpresaSedeController::class, 'crearSede']);
+Route::get('/sedes/edit/{id_empresa_sede}', [EmpresaSedeController::class, 'actualizarSede']);
 
 // Proceseo
 Route::get('/procesos',  function () {

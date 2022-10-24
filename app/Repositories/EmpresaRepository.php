@@ -63,12 +63,9 @@ class EmpresaRepository extends BaseRepository
         return $empresa;
     }
 
-    public function crearEmpresaSede($request){
-        $sede = EmpresaSede::create($request->all());
-        return response()->json($sede->id);
-    }
-    
-    public function CrearEmpresaTemporal($request){
-        EmpresaTemporal::create($request->all());
+    public function formEmpresa($id_empresa){
+        $data = [];
+        $data['id_empresa'] = $id_empresa;
+        return view('administracion/empresa/form_empresa', $data);
     }
 }

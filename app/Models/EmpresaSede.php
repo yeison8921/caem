@@ -11,15 +11,34 @@ class EmpresaSede extends Model
     use HasFactory;
     use SoftDeletes;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'empresas_sedes';
-
     protected $fillable = [
         'nombre',
         'empresa_id',
+        'departamento_id',
+        'ciudad_id',
     ];
+
+    /**
+     * Obtiene la empresa de la sede.
+     */
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'empresa_id', 'id');
+    }
+    
+    /**
+     * Obtiene el departamento de la sede.
+     */
+    public function departamento()
+    {
+        return $this->belongsTo(Parametro::class, 'departamento_id', 'id');
+    }
+
+    /**
+     * Obtiene la ciudad de la sede.
+     */
+    public function ciudad()
+    {
+        return $this->belongsTo(Parametro::class, 'ciudad_id', 'id');
+    }
 }

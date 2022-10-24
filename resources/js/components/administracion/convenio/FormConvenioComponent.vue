@@ -279,8 +279,8 @@ export default {
                 texto_legal: "",
             },
             required: "Este campo es requerido",
-            form_empresario: [{ email: "", nit: "" }],
-            array_correos: "",
+            form_empresario: [{ id: "", email: "", nit: "" }],
+            array_correos: [],
             convenio: new Convenio({
                 id: "",
                 nombre_convenio: "",
@@ -323,23 +323,22 @@ export default {
         },
     },
     mounted() {
-        // this.getNombreTipoParametro();
-        // this.getOptionsParametros(1, "options_departamento");
-        // this.form.tipo_parametro_id = this.datos.tipo_parametro_id;
         if (this.datos.accion == "Actualizar") {
             this.getConvenioById();
         }
     },
     methods: {
-        // async getNombreTipoParametro() {
-        //     this.tipo_parametro = await TipoParametro.find(
-        //         this.datos.tipo_parametro_id
-        //     );
-        // },
         async getConvenioById() {
-            let convenio = await Convenio.include("emails").find(
-                this.datos.id_convenio
-            );
+            let convenio = await Convenio.include("emails")
+                .find(this.datos.id_convenio)
+                .catch((error) => {
+                    this.$root.mostrarMensaje(
+                        "error",
+                        "No existe el convenio",
+                        "error"
+                    );
+                    this.$root.redirectIndex("/convenios");
+                });
 
             this.form.id = convenio.id;
             this.form.nombre_convenio = convenio.nombre_convenio;
@@ -348,17 +347,7 @@ export default {
             this.form.texto_legal = convenio.texto_legal;
 
             this.array_correos = convenio.emails;
-            // this.form = await Convenio.include("emails").find(
-            //     this.datos.id_convenio
-            // );
         },
-        // async getOptionsParametros(tipo_parametro_id, variable) {
-        //     //1 departamentos
-        //     this[variable] = await Parametro.where(
-        //         "tipo_parametro_id",
-        //         tipo_parametro_id
-        //     ).get();
-        // },
 
         leerData() {
             var file = document.getElementById("archivo-correos").files[0];
@@ -395,6 +384,7 @@ export default {
         async submit() {
             this.$v.$touch();
             if (!this.$v.form.$invalid) {
+                this.$root.mostrarCargando("Guardando");
                 let convenio_id;
                 this.convenio.nombre_convenio = this.form.nombre_convenio;
                 this.convenio.nombre_entidad = this.form.nombre_entidad;
@@ -422,9 +412,15 @@ export default {
                         .then((response) => {});
                 }
 
-                setTimeout(() => {
-                    window.location.href = "/convenios";
-                }, 2000);
+                Swal.close();
+
+                this.$root.mostrarMensaje(
+                    "Éxito",
+                    "Guardado exitosamente",
+                    "success"
+                );
+
+                this.$root.redirectIndex("/convenios");
             }
         },
         async submitEmpresario() {

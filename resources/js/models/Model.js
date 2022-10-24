@@ -17,16 +17,16 @@ export default class Model extends BaseModel {
                 let result = null
                 await super.save().then(response => {
                     result = response;
-                    Swal.fire({
-                        title: "Éxito",
-                        html: "Guardado exitosamente",
-                        icon: "success",
-                        showConfirmButton: false,
-                        allowEscapeKey: false,
-                        allowOutsideClick: false,
-                        timer: 2000,
-                        confirmButtonColor: "#28a745",
-                    });
+                    // Swal.fire({
+                    //     title: "Éxito",
+                    //     html: "Guardado exitosamente",
+                    //     icon: "success",
+                    //     showConfirmButton: false,
+                    //     allowEscapeKey: false,
+                    //     allowOutsideClick: false,
+                    //     timer: 2000,
+                    //     confirmButtonColor: "#28a745",
+                    // });
                 });
                 return result;
             } catch (e) {

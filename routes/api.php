@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ConvenioController;
 use App\Http\Controllers\Api\EmpresaController;
+use App\Http\Controllers\Api\EmpresaSedeController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\ParametroController;
@@ -43,14 +44,14 @@ Route::group(['as' => 'auth.'], function () {
         Route::apiResource('users', UserController::class);
 
         // Parametros
-        Route::apiResource('tipos', TipoParametroController::class);
+        Route::apiResource('tipo_parametros', TipoParametroController::class);
         Route::apiResource('parametros', ParametroController::class);
-        // Route::post('getOptionsTipoParametro', [ParametroController::class, 'getOptionsTipoParametro']);
 
         // Empresas
         Route::apiResource('empresas', EmpresaController::class);
-        Route::post('crearEmpresaSede', [EmpresaController::class, 'crearEmpresaSede']);
-        Route::post('CrearEmpresaTemporal', [EmpresaController::class, 'CrearEmpresaTemporal']);
+        
+        // Sedes
+        Route::apiResource('empresa_sedes', EmpresaSedeController::class);
         
         // Convenios
         Route::apiResource('convenios', ConvenioController::class);

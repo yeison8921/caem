@@ -19,12 +19,18 @@ class Empresa extends Model
         'sector_id',
         'empleado_id',
         'tamano_id',
-        'departamento_id',
-        'ciudad_id',
         'convenio_id',
         'usuario_actualizo_id',
     ];
 
+    /**
+     * Obtiene el código ciiu de la empresa.
+     */
+    public function codigo()
+    {
+        return $this->belongsTo(Parametro::class, 'codigo_ciiu_id', 'id');
+    }
+    
     /**
      * Obtiene el sector de la empresa.
      */
@@ -47,22 +53,6 @@ class Empresa extends Model
     public function tamano()
     {
         return $this->belongsTo(Parametro::class, 'tamano_id', 'id');
-    }
-
-    /**
-     * Obtiene el departamento de la empresa.
-     */
-    public function departamento()
-    {
-        return $this->belongsTo(Parametro::class, 'departamento_id', 'id');
-    }
-
-    /**
-     * Obtiene la ciudad de la empresa.
-     */
-    public function ciudad()
-    {
-        return $this->belongsTo(Parametro::class, 'ciudad_id', 'id');
     }
 
     /**

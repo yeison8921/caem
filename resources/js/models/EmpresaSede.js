@@ -1,10 +1,10 @@
 import Model from "./Model";
 
-export default class TipoParametro extends Model {
+export default class EmpresaSede extends Model {
     baseURL() {
         return "/api";
     }
     resource() {
-        return "tipo_parametros"
+        return "empresa_sedes"
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmpresasSedesTable extends Migration
+class CreateTipoParametrosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateEmpresasSedesTable extends Migration
      */
     public function up()
     {
-        Schema::create('empresas_sedes', function (Blueprint $table) {
+        Schema::create('tipo_parametros', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->foreignId('empresa_id')->constrained('empresas')->onDelete('restrict');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +28,6 @@ class CreateEmpresasSedesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('empresas_sedes');
+        Schema::dropIfExists('tipo_parametros');
     }
 }

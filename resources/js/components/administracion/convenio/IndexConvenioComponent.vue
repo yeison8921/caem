@@ -158,22 +158,6 @@ export default {
                 }
             });
         },
-        async eliminarParametro(id_parametro) {
-            this.$root.mostrarCargando("Eliminando parámetro");
-            try {
-                let parametro = await Parametro.find(id_parametro);
-                parametro.delete();
-                Swal.close();
-                this.$root.mostrarMensaje(
-                    "Éxito",
-                    "Parámetro eliminado exitosamente",
-                    "success"
-                );
-                setTimeout(() => {
-                    this.getParametros();
-                }, 2000);
-            } catch (e) {}
-        },
     },
 };
 </script>

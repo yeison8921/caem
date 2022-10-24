@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTiposParametrosTable extends Migration
+class AddSoftDeletesToConvenioEmailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,7 @@ class CreateTiposParametrosTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipos_parametros', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre');
-            $table->timestamps();
+        Schema::table('convenio_emails', function (Blueprint $table) {
             $table->softDeletes();
         });
     }
@@ -28,6 +25,8 @@ class CreateTiposParametrosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipos_parametros');
+        Schema::table('convenio_emails', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 }

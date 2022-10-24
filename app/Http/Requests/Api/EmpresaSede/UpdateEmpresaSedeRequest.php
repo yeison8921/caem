@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Api\Empresa;
+namespace App\Http\Requests\Api\EmpresaSede;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class StoreEmpresaRequest.
  */
-class UpdateEmpresaRequest extends FormRequest
+class UpdateEmpresaSedeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,12 +28,9 @@ class UpdateEmpresaRequest extends FormRequest
     {
         return [
             'nombre' => ['required', 'string'],
-            'nit' => ['required', 'string'],
-            'telefono' => ['required', 'string'],
-            'codigo_ciiu_id' => ['required', 'integer'],
-            'sector_id' => ['required', 'integer'],
-            'empleado_id' => ['required', 'integer'],
-            'tamano_id' => ['required', 'integer'],
+            'empresa_id' => ['required', 'integer'],
+            'departamento_id' => ['required', 'integer'],
+            'ciudad_id' => ['required', 'integer'],
         ];
     }
 }

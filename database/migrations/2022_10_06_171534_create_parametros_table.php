@@ -16,7 +16,7 @@ class CreateParametrosTable extends Migration
         Schema::create('parametros', function (Blueprint $table) {
             $table->id();
             $table->text('nombre');
-            $table->foreignId('tipo_parametro_id')->constrained('tipos_parametros')->onDelete('restrict');
+            $table->foreignId('tipo_parametro_id')->constrained('tipo_parametros')->onDelete('restrict');
             $table->integer('parametro_id')->nullable();
             $table->timestamps();
             $table->softDeletes();

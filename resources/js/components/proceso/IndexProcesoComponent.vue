@@ -397,7 +397,7 @@ export default {
                 "Noviembre",
                 "Diciembre",
             ],
-            energeticos: [{ nombre: "" }, { nombre: "" }],
+            energeticos: [{ nombre: "" }, { nombre: "" }, { nombre: "" }],
             required: "Este campo es requerido",
             options: [{ value: 1, label: "1" }],
         };

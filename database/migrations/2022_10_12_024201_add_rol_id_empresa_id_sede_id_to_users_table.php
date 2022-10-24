@@ -16,7 +16,7 @@ class AddRolIdEmpresaIdSedeIdToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->foreignId('rol_id')->constrained('roles')->onDelete('restrict');
             $table->foreignId('empresa_id')->nullable()->constrained('empresas')->onDelete('restrict');
-            $table->foreignId('sede_id')->nullable()->constrained('empresas_sedes')->onDelete('restrict');
+            $table->foreignId('sede_id')->nullable()->constrained('empresa_sedes')->onDelete('restrict');
         });
     }
 

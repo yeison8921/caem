@@ -34,8 +34,6 @@ class StoreEmpresaRequest extends FormRequest
             'sector_id' => ['required', 'integer'],
             'empleado_id' => ['required', 'integer'],
             'tamano_id' => ['required', 'integer'],
-            'departamento_id' => ['required', 'integer'],
-            'ciudad_id' => ['required', 'integer'],
         ];
     }
 }

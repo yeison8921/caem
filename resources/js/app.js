@@ -16,14 +16,18 @@ import Vuelidate from 'vuelidate'
 import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
 import axios from 'axios'
 import { Model } from 'vue-api-query'
+import jszip from 'jszip/dist/jszip';
 
 Model.$http = axios
 require('@fortawesome/fontawesome-free/css/all.min.css');
-require('jszip');
 require('datatables.net-bs5');
-require('datatables.net-buttons-bs5');
-require('datatables.net-buttons/js/buttons.html5.js');
+require('datatables.net-bs5/js/dataTables.bootstrap5.min.js');
+require('datatables.net-buttons/js/dataTables.buttons.min.js');
+require('datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js');
+require('datatables.net-buttons/js/buttons.html5.min.js');
 require('datatables.net-responsive-bs5');
+
+window.JSZip = jszip;
 
 Vue.use(Vuelidate)
 
@@ -45,6 +49,10 @@ Vue.component('index-parametro-component', require('./components/administracion/
 Vue.component('form-parametro-component', require('./components/administracion/parametro/FormParametroComponent.vue').default);
 Vue.component('index-convenio-component', require('./components/administracion/convenio/IndexConvenioComponent.vue').default);
 Vue.component('form-convenio-component', require('./components/administracion/convenio/FormConvenioComponent.vue').default);
+Vue.component('index-empresa-component', require('./components/administracion/empresa/IndexEmpresaComponent.vue').default);
+Vue.component('form-empresa-component', require('./components/administracion/empresa/FormEmpresaComponent.vue').default);
+Vue.component('index-sede-component', require('./components/administracion/sede/IndexSedeComponent.vue').default);
+Vue.component('form-sede-component', require('./components/administracion/sede/FormSedeComponent.vue').default);
 Vue.component('index-proceso-component', require('./components/proceso/IndexProcesoComponent.vue').default);
 Vue.component('Multiselect', require('@vueform/multiselect/dist/multiselect.vue2.js').default);
 
@@ -147,6 +155,73 @@ Vue.prototype.$tablaConvenios = function(nombreTabla) {
         });
     });
 }
+Vue.prototype.$tablaEmpresas = function(nombreTabla) {
+    this.$nextTick(() => {
+        $(nombreTabla).DataTable({
+            "columnDefs": [
+                { "width": "10%", "targets": 4 }
+            ],
+            responsive: false,
+            dom: "<'row'<'col-sm-12 mb-3'B>><'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            "language": {
+                "lengthMenu": "Ver _MENU_ registros por página",
+                "zeroRecords": "No hay información, lo sentimos.",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(Filtrado de _MAX_ registros totales)",
+                "search": "Filtrar:",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Ultima",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+            buttons: [{
+                "extend": "excelHtml5",
+                "text": "<i class='fas fa-file-excel'></i> Excel",
+                "titleAttr": "Exportar a Excel",
+                "className": "btn btn-success"
+            }, ]
+        });
+    });
+}
+
+Vue.prototype.$tablaSedes = function(nombreTabla) {
+    this.$nextTick(() => {
+        $(nombreTabla).DataTable({
+            "columnDefs": [
+                { "width": "10%", "targets": 3 }
+            ],
+            responsive: false,
+            dom: "<'row'<'col-sm-12 mb-3'B>><'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            "language": {
+                "lengthMenu": "Ver _MENU_ registros por página",
+                "zeroRecords": "No hay información, lo sentimos.",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(Filtrado de _MAX_ registros totales)",
+                "search": "Filtrar:",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Ultima",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+            buttons: [{
+                "extend": "excelHtml5",
+                "text": "<i class='fas fa-file-excel'></i> Excel",
+                "titleAttr": "Exportar a Excel",
+                "className": "btn btn-success"
+            }, ]
+        });
+    });
+}
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -180,5 +255,11 @@ const app = new Vue({
                 timer: 2000,
             });
         },
+        redirectIndex(url) {
+            setTimeout(() => {
+                window.location.href = url;
+            }, 2000);
+        },
+
     }
 });

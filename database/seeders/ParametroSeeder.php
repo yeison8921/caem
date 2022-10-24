@@ -27,9 +27,11 @@ class ParametroSeeder extends Seeder
             ['nombre' => 'Número de empleados'],
             ['nombre' => 'Años'],
             ['nombre' => 'Meses'],
+            ['nombre' => 'Equipo de consumo'],
+            ['nombre' => 'Energéticos'],
         ];
 
-        DB::table('tipos_parametros')->insert($parameters);
+        DB::table('tipo_parametros')->insert($parameters);
 
         /**
          * Seeder para tabla parametro

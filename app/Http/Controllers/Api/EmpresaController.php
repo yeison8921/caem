@@ -42,7 +42,8 @@ class EmpresaController extends Controller
     {
         $query = QueryBuilder::for(Empresa::class)->allowedFilters([
             AllowedFilter::exact('nit'),
-        ]);;
+            AllowedFilter::exact('convenio_id'),
+        ])->allowedIncludes("sedes", "convenio");
         return $query->get();
     }
 
@@ -54,7 +55,12 @@ class EmpresaController extends Controller
      */
     public function show(Empresa $empresa)
     {
-        return QueryBuilder::for(Empresa::whereId($empresa->id))->allowedIncludes("sedes")->first();
+        return QueryBuilder::for(Empresa::whereId($empresa->id))->allowedIncludes("codigo",
+        "sector",
+        "empleado",
+        "tamano",
+        "convenio",
+        "convenio", "sedes")->first();
     }
 
     /**
@@ -77,23 +83,8 @@ class EmpresaController extends Controller
     {
         return $this->empresaRepository->update($request, $empresa);
     }
-    
-    public function crearEmpresaSede(Request $request){
-        return $this->empresaRepository->crearEmpresaSede($request);
-    }
-    
-    public function CrearEmpresaTemporal(Request $request){
-        return $this->empresaRepository->CrearEmpresaTemporal($request);
-    }
 
-    // /**
-    //  * Remove the specified resource from storage.
-    //  *
-    //  * @param  \App\Models\User  $user
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function destroy(User $user)
-    // {
-    //     return $user->delete();
-    // }
+    public function formEmpresa($id_empresa){
+        return $this->empresaRepository->formEmpresa($id_empresa);
+    }
 }

@@ -48,12 +48,12 @@ class TipoParametroController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TipoParametro $tipo
+     * @param  \App\Models\TipoParametro $tipo_parametro
      * @return \Illuminate\Http\Response
      */
-    public function show(TipoParametro $tipo)
+    public function show(TipoParametro $tipo_parametro)
     {
-        return QueryBuilder::for(TipoParametro::whereId($tipo->id))
+        return QueryBuilder::for(TipoParametro::whereId($tipo_parametro->id))
         ->first();
     }
 }

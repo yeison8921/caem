@@ -109,29 +109,4 @@ class ConvenioController extends Controller
     public function cambiarEstadoConvenio(Request $request){
         return $this->convenioRepository->cambiarEstadoConvenio($request);
     }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  \App\Models\User  $user
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update(UpdateRegistrationRequest $request, User $user)
-    // {
-    //     $this->userRepository->update($user, $request->all());
-
-    //     return $user->fresh();
-    // }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  *
-    //  * @param  \App\Models\User  $user
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function destroy(User $user)
-    // {
-    //     return $user->delete();
-    // }
 }

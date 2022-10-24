@@ -151,6 +151,7 @@ export default {
         async submit() {
             this.$v.$touch();
             if (!this.$v.form.$invalid) {
+                this.$root.mostrarCargando("Guardando");
                 this.parametro.nombre = this.form.nombre;
                 this.parametro.tipo_parametro_id = this.form.tipo_parametro_id;
 
@@ -163,10 +164,14 @@ export default {
                 }
 
                 await this.parametro.save();
+                Swal.close();
+                this.$root.mostrarMensaje(
+                    "Éxito",
+                    "Guardado exitosamente",
+                    "success"
+                );
 
-                setTimeout(() => {
-                    window.location.href = "/parametros";
-                }, 2000);
+                this.$root.redirectIndex("/parametros");
             }
         },
     },

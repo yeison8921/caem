@@ -1,0 +1,193 @@
+<template>
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="form-group">
+                <br />
+                <h2>Sedes</h2>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="mb-3">
+                    <div class="col-lg-4">
+                        <label class="form-label">Convenio</label>
+                        <Multiselect
+                            v-model="convenio_id"
+                            :options="options_convenio"
+                            placeholder="Seleccione una opción"
+                            :searchable="true"
+                            valueProp="id"
+                            label="nombre_convenio"
+                            @input="getOptionsEmpresas()"
+                        />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="col-lg-4">
+                        <label class="form-label">Empresa</label>
+                        <Multiselect
+                            v-model="empresa_id"
+                            :options="options_empresa"
+                            placeholder="Seleccione una opción"
+                            :searchable="true"
+                            valueProp="id"
+                            label="nombre"
+                            @input="getEmpresasSede()"
+                        />
+                    </div>
+                </div>
+                <div class="mb-3" v-if="empresa_id != '' && empresa_id != null">
+                    <div class="col-lg-1 offset-lg-11">
+                        <div class="d-grid gap-2">
+                            <a
+                                :href="'/sedes/create/' + empresa_id"
+                                class="btn btn-success"
+                                title="Crear parametro"
+                            >
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <table
+                        class="table table-bordered table-hover table-stripered"
+                        id="tabla-sedes"
+                        width="100%"
+                    >
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Departamento</th>
+                                <th>Ciudad</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(s, i) in sedes" v-bind:key="i">
+                                <td>{{ s.nombre }}</td>
+                                <td>{{ s.departamento.nombre }}</td>
+                                <td>
+                                    {{ s.ciudad.nombre }}
+                                </td>
+                                <td>
+                                    <a
+                                        :href="'/sedes/edit/' + s.id"
+                                        class="btn btn-warning"
+                                        title="Actualizar empresa"
+                                    >
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button
+                                        type="button"
+                                        class="btn btn-danger"
+                                        title="Eliminar sede"
+                                        @click="confirmarEliminar(s.id)"
+                                    >
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+import Convenio from "../../../models/Convenio";
+import Empresa from "../../../models/Empresa";
+import EmpresaSede from "../../../models/EmpresaSede";
+
+export default {
+    data() {
+        return {
+            convenio_id: 0,
+            empresa_id: "",
+            options_convenio: [{ id: 0, nombre_convenio: "Todos" }],
+            options_empresa: [],
+            sedes: [],
+        };
+    },
+    mounted() {
+        this.getConvenios();
+        this.getOptionsEmpresas();
+    },
+    methods: {
+        async getConvenios() {
+            let convenios = await Convenio.get();
+            convenios.forEach((e) => {
+                this.options_convenio.push(e);
+            });
+        },
+        async getOptionsEmpresas() {
+            this.empresa_id = "";
+            this.options_empresa = [];
+            this.sedes = [];
+
+            if (this.convenio_id !== "" && this.convenio_id !== null) {
+                let empresas = Empresa.include("convenio");
+                if (this.convenio_id != 0) {
+                    empresas = empresas.where("convenio_id", this.convenio_id);
+                }
+                this.options_empresa = await empresas.get();
+            }
+        },
+        async getEmpresasSede() {
+            this.sedes = [];
+            this.$root.mostrarCargando();
+            if (this.empresa_id !== "" && this.empresa_id !== null) {
+                this.sedes = await EmpresaSede.include(
+                    "empresa",
+                    "departamento",
+                    "ciudad"
+                )
+                    .where("empresa_id", this.empresa_id)
+                    .get();
+            }
+            Swal.close();
+            $("#tabla-sedes").DataTable().clear().destroy();
+            this.$tablaSedes("#tabla-sedes");
+        },
+        async confirmarEliminar(id_sede) {
+            Swal.fire({
+                title: "¿Está seguro que desea eliminar esta sede?",
+                html: "La sede no se mostrará mas en el sistema pero los datos relacionados persistirán",
+                icon: "question",
+                showCancelButton: true,
+                cancelButtonText: "No",
+                confirmButtonText: "Si, eliminar",
+                confirmButtonColor: "rgb(48, 133, 214)",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.eliminarSede(id_sede);
+                }
+            });
+        },
+        async eliminarSede(id_sede) {
+            this.$root.mostrarCargando("Eliminando sede");
+            try {
+                let sede = await EmpresaSede.find(id_sede);
+                sede.delete();
+                Swal.close();
+                this.$root.mostrarMensaje(
+                    "Éxito",
+                    "Sede eliminads exitosamente",
+                    "success"
+                );
+                setTimeout(() => {
+                    this.getEmpresasSede();
+                }, 2000);
+            } catch (e) {}
+        },
+    },
+};
+</script>
+<style>
+.required:after {
+    content: " *";
+    color: red;
+}
+</style>
+<style src="@vueform/multiselect/themes/default.css"></style>

@@ -33,6 +33,10 @@
 
                         <a href="{{ url('convenios') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Convenios</a>
                         
+                        <a href="{{ url('empresas') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Empresas</a>
+                        
+                        <a href="{{ url('sedes') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Sedes</a>
+                        
                         <a href="{{ url('procesos') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Procesos</a>
 
                         @if (Route::has('register'))

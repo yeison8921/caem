@@ -8,13 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ConvenioEmail extends Model
 {
     use SoftDeletes;
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'convenios_emails';
-
+    
     protected $fillable = [
         'email',
         'nit',
