@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <!-- <div class="row justify-content-center">
+ <div class="row justify-content-center">
         <div class="col-md-5">
             <div class="card">
 
@@ -67,7 +67,6 @@
                 </div>
             </div>
         </div>
-    </div> -->
-    <login-component></login-component>
+    </div>
 </div>
 @endsection
