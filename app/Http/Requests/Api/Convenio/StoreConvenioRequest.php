@@ -31,7 +31,6 @@ class StoreConvenioRequest extends FormRequest
             'nombre_entidad' => ['required', 'string'],
             'codigo' => ['required', 'string'],
             'texto_legal' => ['required', 'string'],
-            'usuario_actualizo_id' => ['required', 'integer'],
         ];
     }
 }

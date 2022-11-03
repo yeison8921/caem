@@ -30,7 +30,7 @@ class ParametroController extends Controller
         $this->parametroRepository = $parametroRepository;
     }
 
-        /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -39,8 +39,8 @@ class ParametroController extends Controller
     {
         $query = QueryBuilder::for(Parametro::class)
             ->allowedFilters([
-             'tipo_parametro_id',
-             'parametro_id'
+                'tipo_parametro_id',
+                'parametro_id'
             ])->allowedIncludes([
                 'parametro',
             ]);
@@ -61,8 +61,8 @@ class ParametroController extends Controller
     public function show(Parametro $parametro)
     {
         return QueryBuilder::for(Parametro::whereId($parametro->id))
-        ->allowedFields(['nombre'])
-        ->first();
+            ->allowedFields(['nombre'])
+            ->first();
     }
 
     /**
@@ -97,7 +97,13 @@ class ParametroController extends Controller
         return $parametro->delete();
     }
 
-    public function formParametro($tipo_parametro_id, $id_parametro=''){
+    public function formParametro($tipo_parametro_id, $id_parametro = '')
+    {
         return $this->parametroRepository->formParametro($tipo_parametro_id, $id_parametro);
+    }
+
+    public function getEquiposConsumo()
+    {
+        return $this->parametroRepository->getEquiposConsumo();
     }
 }

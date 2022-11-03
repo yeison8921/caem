@@ -32,6 +32,7 @@
                         <thead>
                             <tr>
                                 <th>Nombre</th>
+                                <th>Nit</th>
                                 <th>Teléfono</th>
                                 <th>Sedes</th>
                                 <th>Convenio</th>
@@ -40,8 +41,23 @@
                         </thead>
                         <tbody>
                             <tr v-for="(e, i) in empresas" v-bind:key="i">
-                                <td>{{ e.nombre }}</td>
-                                <td>{{ e.telefono }}</td>
+                                <td>
+                                    {{
+                                        e.nombre == null
+                                            ? "Sin definir"
+                                            : e.nombre
+                                    }}
+                                </td>
+                                <td>
+                                    {{ e.nit }}
+                                </td>
+                                <td>
+                                    {{
+                                        e.telefono == null
+                                            ? "Sin definir"
+                                            : e.telefono
+                                    }}
+                                </td>
                                 <td>
                                     <ul>
                                         <li
@@ -53,7 +69,14 @@
                                     </ul>
                                 </td>
                                 <td>
-                                    {{ e.convenio.nombre_convenio }}
+                                    <ul>
+                                        <li
+                                            v-for="(c, i) in e.convenios"
+                                            v-bind:key="i"
+                                        >
+                                            {{ c.nombre_convenio }}
+                                        </li>
+                                    </ul>
                                 </td>
                                 <td>
                                     <a
@@ -107,7 +130,13 @@
                             <tbody>
                                 <tr>
                                     <td><b>Nombre:</b></td>
-                                    <td>{{ empresa.nombre }}</td>
+                                    <td>
+                                        {{
+                                            empresa.nombre == null
+                                                ? "Sin definir"
+                                                : empresa.nombre
+                                        }}
+                                    </td>
                                 </tr>
 
                                 <tr>
@@ -116,30 +145,52 @@
                                 </tr>
                                 <tr>
                                     <td><b>Teléfono:</b></td>
-                                    <td>{{ empresa.telefono }}</td>
+                                    <td>
+                                        {{
+                                            empresa.telefono == null
+                                                ? "Sin definir"
+                                                : empresa.telefono
+                                        }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><b>Código CIIU:</b></td>
                                     <td>
-                                        {{ empresa.codigo.nombre }}
+                                        {{
+                                            empresa.codigo == null
+                                                ? "Sin definir"
+                                                : empresa.codigo.nombre
+                                        }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><b>Sector:</b></td>
                                     <td>
-                                        {{ empresa.sector.nombre }}
+                                        {{
+                                            empresa.sector == null
+                                                ? "Sin definir"
+                                                : empresa.sector.nombre
+                                        }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><b>Empleados:</b></td>
                                     <td>
-                                        {{ empresa.empleado.nombre }}
+                                        {{
+                                            empresa.empleado == null
+                                                ? "Sin definir"
+                                                : empresa.empleado.nombre
+                                        }}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><b>Tamaño:</b></td>
                                     <td>
-                                        {{ empresa.tamano.nombre }}
+                                        {{
+                                            empresa.tamano == null
+                                                ? "Sin definir"
+                                                : empresa.tamano.nombre
+                                        }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -158,7 +209,16 @@
                                 <tr>
                                     <td><b>Convenio:</b></td>
                                     <td>
-                                        {{ empresa.convenio.nombre_convenio }}
+                                        <ul>
+                                            <li
+                                                v-for="(
+                                                    c, i
+                                                ) in empresa.convenios"
+                                                v-bind:key="i"
+                                            >
+                                                {{ c.nombre_convenio }}
+                                            </li>
+                                        </ul>
                                     </td>
                                 </tr>
                             </tbody>
@@ -185,8 +245,8 @@ import Empresa from "../../../models/Empresa";
 export default {
     data() {
         return {
-            convenio_id: 0,
-            options_convenio: [{ id: 0, nombre_convenio: "Todos" }],
+            convenio_id: -1,
+            options_convenio: [{ id: -1, nombre_convenio: "Todos" }],
             empresas: "",
             empresa: "",
         };
@@ -196,9 +256,6 @@ export default {
         this.getEmpresas();
     },
     methods: {
-        // async getOptionsTipoParametro() {
-        //     this.options_tipo_parametro = await TipoParametro.get();
-        // },
         async getConvenios() {
             let convenios = await Convenio.get();
             convenios.forEach((e) => {
@@ -208,10 +265,10 @@ export default {
         async getEmpresas() {
             this.empresas = [];
             this.$root.mostrarCargando("");
-            if (this.convenio_id !== "" && this.convenio_id !== null) {
-                let empresas = Empresa.include("sedes", "convenio");
-                if (this.convenio_id != 0) {
-                    empresas = empresas.where("convenio_id", this.convenio_id);
+            if (this.convenio_id != "" && this.convenio_id != null) {
+                let empresas = Empresa.include("sedes", "convenios");
+                if (this.convenio_id != -1) {
+                    empresas = empresas.where("convenios.id", this.convenio_id);
                 }
                 this.empresas = await empresas.get();
             }
@@ -227,8 +284,7 @@ export default {
                 "sector",
                 "empleado",
                 "tamano",
-                "convenio",
-                "convenio",
+                "convenios",
                 "sedes"
             ).find(id_empresa);
         },

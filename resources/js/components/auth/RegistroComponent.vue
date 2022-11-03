@@ -407,7 +407,9 @@
                                 v-model.trim="empresa.nombre"
                                 type="text"
                                 class="form-control"
-                                :disabled="empresa_existe"
+                                :disabled="
+                                    empresa_existe && empresa.nombre != null
+                                "
                                 :class="{
                                     'is-invalid': $v.empresa.nombre.$error,
                                     'is-valid': !$v.empresa.nombre.$invalid,
@@ -426,7 +428,9 @@
                             <Multiselect
                                 v-model.trim="empresa.codigo_ciiu_id"
                                 :options="options_ciiu"
-                                :disabled="empresa_existe"
+                                :disabled="
+                                    empresa_existe && empresa.nombre != null
+                                "
                                 placeholder="Seleccione una opción"
                                 valueProp="id"
                                 label="nombre"
@@ -453,7 +457,9 @@
                             <Multiselect
                                 v-model.trim="empresa.sector_id"
                                 :options="options_sector"
-                                :disabled="empresa_existe"
+                                :disabled="
+                                    empresa_existe && empresa.nombre != null
+                                "
                                 placeholder="Seleccione una opción"
                                 valueProp="id"
                                 label="nombre"
@@ -476,7 +482,9 @@
                             <Multiselect
                                 v-model.trim="empresa.empleado_id"
                                 :options="options_empleado"
-                                :disabled="empresa_existe"
+                                :disabled="
+                                    empresa_existe && empresa.nombre != null
+                                "
                                 placeholder="Seleccione una opción"
                                 valueProp="id"
                                 label="nombre"
@@ -499,7 +507,9 @@
                             <Multiselect
                                 v-model.trim="empresa.tamano_id"
                                 :options="options_tamano"
-                                :disabled="empresa_existe"
+                                :disabled="
+                                    empresa_existe && empresa.nombre != null
+                                "
                                 placeholder="Seleccione una opción"
                                 valueProp="id"
                                 label="nombre"
@@ -523,7 +533,9 @@
                                 v-model.trim="empresa.telefono"
                                 type="text"
                                 class="form-control"
-                                :disabled="empresa_existe"
+                                :disabled="
+                                    empresa_existe && empresa.nombre != null
+                                "
                                 :class="{
                                     'is-invalid': $v.empresa.telefono.$error,
                                     'is-valid': !$v.empresa.telefono.$invalid,
@@ -535,7 +547,7 @@
                                 }}</span>
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" v-if="convenio_id == ''">
                             <label class="form-label required">Sede</label>
                             <Multiselect
                                 v-model="id_sede"
@@ -566,7 +578,7 @@
                                 v-model.trim="sede.nombre"
                                 type="text"
                                 class="form-control"
-                                :disabled="id_sede != 0"
+                                :disabled="id_sede != -1"
                                 :class="{
                                     'is-invalid': $v.sede.nombre.$error,
                                     'is-valid': !$v.sede.nombre.$invalid,
@@ -589,7 +601,7 @@
                                 valueProp="id"
                                 label="nombre"
                                 @input="getOptionsCiudad()"
-                                :disabled="id_sede != 0"
+                                :disabled="id_sede != -1"
                                 :class="{
                                     'is-invalid':
                                         $v.sede.departamento_id.$error,
@@ -615,7 +627,7 @@
                                 placeholder="Seleccione una opción"
                                 valueProp="id"
                                 label="nombre"
-                                :disabled="id_sede != 0"
+                                :disabled="id_sede != -1"
                                 :class="{
                                     'is-invalid': $v.sede.ciudad_id.$error,
                                     'is-valid':
@@ -890,7 +902,7 @@ export default {
 
                     //Sede
                     var empresa_sede = "";
-                    if (this.id_sede == 0) {
+                    if (this.id_sede == -1) {
                         delete this.sede["id"];
                         this.sede.empresa_id = empresa_creada.id;
                         empresa_sede = await this.sede.save();
@@ -929,7 +941,7 @@ export default {
             this.id_sede = null;
             this.limpiarFormSede();
 
-            this.options_sede = [{ id: 0, nombre: "Nueva sede" }];
+            this.options_sede = [{ id: -1, nombre: "Nueva sede" }];
 
             let empresa = await Empresa.where("nit", this.empresa.nit)
                 .include("sedes")
@@ -960,6 +972,8 @@ export default {
                     this.options_sede.push(e);
                 });
 
+                this.id_sede = this.sede_id_empresario;
+                this.getSedeById();
                 this.empresa_existe = true;
             } else {
                 Object.keys(this.empresa).forEach((key) => {
@@ -969,12 +983,28 @@ export default {
                 });
                 this.empresa_existe = false;
             }
+
+            // if (empresa.length != 0) {
+            //     this.empresa = empresa[0];
+            //     empresa[0].sedes.forEach((e) => {
+            //         this.options_sede.push(e);
+            //     });
+
+            //     this.empresa_existe = true;
+            // } else {
+            //     Object.keys(this.empresa).forEach((key) => {
+            //         if (key != "nit") {
+            //             this.empresa[key] = "";
+            //         }
+            //     });
+            //     this.empresa_existe = false;
+            // }
         },
 
         async getSedeById() {
             this.limpiarFormSede();
 
-            if (this.id_sede !== 0 && this.id_sede !== null) {
+            if (this.id_sede != -1 && this.id_sede != null) {
                 let sede = await EmpresaSede.include("empresa").find(
                     this.id_sede
                 );
@@ -996,6 +1026,8 @@ export default {
                     this.convenio_id =
                         response.data == "" ? "" : response.data.convenio_id;
                     this.nit = response.data == "" ? "" : response.data.nit;
+                    this.sede_id_empresario =
+                        response.data == "" ? "" : response.data.sede_id;
                 })
                 .catch((error) => {
                     this.$root.mostrarMensaje(

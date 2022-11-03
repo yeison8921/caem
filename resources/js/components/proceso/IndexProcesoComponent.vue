@@ -188,20 +188,27 @@
                                                 >
                                                 <Multiselect
                                                     v-model.trim="
-                                                        v.equipo.$model
+                                                        v.equipos.$model
                                                     "
-                                                    :options="options"
-                                                    placeholder="Seleccione una opción"
+                                                    mode="tags"
+                                                    :groups="true"
+                                                    :searchable="true"
+                                                    :options="
+                                                        options_equipo_consumo
+                                                    "
+                                                    placeholder="Selección múltiple"
                                                     :class="{
                                                         'is-invalid':
-                                                            v.equipo.$error,
+                                                            v.equipos.$error,
                                                         'is-valid':
-                                                            !v.equipo.$invalid,
+                                                            !v.equipos.$invalid,
                                                     }"
                                                 />
                                                 <div class="invalid-feedback">
                                                     <span
-                                                        v-if="v.equipo.required"
+                                                        v-if="
+                                                            v.equipos.required
+                                                        "
                                                     >
                                                         {{ required }}</span
                                                     >
@@ -370,7 +377,7 @@ export default {
                 {
                     nombre: "Proceso 1",
                     descripcion: "",
-                    equipo: "",
+                    equipos: [],
                     energetico: "",
                 },
             ],
@@ -397,6 +404,7 @@ export default {
                 "Noviembre",
                 "Diciembre",
             ],
+            options_equipo_consumo: [],
             energeticos: [{ nombre: "" }, { nombre: "" }, { nombre: "" }],
             required: "Este campo es requerido",
             options: [{ value: 1, label: "1" }],
@@ -413,7 +421,7 @@ export default {
                 descripcion: {
                     required,
                 },
-                equipo: {
+                equipos: {
                     required,
                 },
                 energetico: {
@@ -425,6 +433,7 @@ export default {
     mounted() {
         this.getParametros(7, "options_anio");
         this.getParametros(8, "options_mes");
+        this.getEquiposConsumo();
     },
     methods: {
         async getParametros(tipo_parametro_id, variable) {
@@ -438,11 +447,25 @@ export default {
                 tipo_parametro_id
             ).get();
         },
+        async getEquiposConsumo() {
+            await axios
+                .post("api/getEquiposConsumo")
+                .then((response) => {
+                    this.options_equipo_consumo = response.data;
+                })
+                .catch((error) => {
+                    this.$root.mostrarMensaje(
+                        "error",
+                        "No se pudo verificar el convenio",
+                        "error"
+                    );
+                });
+        },
         agregarElementoProceso() {
             this.procesos.push({
                 nombre: "",
                 descripcion: "",
-                equipo: "",
+                equipos: [],
                 energetico: "",
             });
         },

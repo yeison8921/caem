@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ConvenioEmail extends Model
 {
     use SoftDeletes;
-    
+
     protected $fillable = [
         'email',
         'nit',
@@ -20,6 +20,14 @@ class ConvenioEmail extends Model
      */
     public function convenio()
     {
-        return $this->belongsTo(Convenio::class, 'convenio_id', 'id');
+        return $this->belongsTo(Convenio::class);
+    }
+
+    /**
+     * Obtiene la sede
+     */
+    public function sede()
+    {
+        return $this->belongsTo(EmpresaSede::class);
     }
 }

@@ -27,7 +27,7 @@ class Convenio extends Model
     {
         return $this->belongsTo(User::class, 'usuario_actualizo_id', 'id');
     }
-    
+
     /**
      * Obtiene los emails asociados al convenio.
      */
@@ -36,5 +36,8 @@ class Convenio extends Model
         return $this->hasMany(ConvenioEmail::class, 'convenio_id', 'id');
     }
 
-
+    public function empresas()
+    {
+        return $this->belongsToMany(Empresa::class);
+    }
 }

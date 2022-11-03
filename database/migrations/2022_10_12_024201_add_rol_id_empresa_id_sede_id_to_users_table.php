@@ -28,7 +28,9 @@ class AddRolIdEmpresaIdSedeIdToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn('rol_id');
+            $table->dropColumn('empresa_id');
+            $table->dropColumn('sede_id');
         });
     }
 }

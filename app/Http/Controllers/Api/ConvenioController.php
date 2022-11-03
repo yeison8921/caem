@@ -41,9 +41,9 @@ class ConvenioController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Convenio::class)
-        ->allowedIncludes([
-            'emails',
-        ]);
+            ->allowedIncludes([
+                'emails.sede',
+            ]);
         return $query->withTrashed()->get();
     }
 
@@ -56,9 +56,8 @@ class ConvenioController extends Controller
     public function show(Convenio $convenio)
     {
         return QueryBuilder::for(Convenio::whereId($convenio->id))->allowedIncludes([
-            'emails',
-        ])
-        ->first();
+            'emails.sede.departamento', 'emails.sede.ciudad'
+        ])->first();
     }
 
     /**
@@ -79,10 +78,11 @@ class ConvenioController extends Controller
 
     public function update(UpdateConvenioRequest $request, $convenio)
     {
-        $this->convenioRepository->update($request, $convenio);
+        return $this->convenioRepository->update($request, $convenio);
     }
 
-    public function formConvenio($id_convenio=''){
+    public function formConvenio($id_convenio = '')
+    {
         return $this->convenioRepository->formConvenio($id_convenio);
     }
 
@@ -90,23 +90,29 @@ class ConvenioController extends Controller
     {
         return $this->convenioRepository->agregarCorreosConvenio($request);
     }
-    
+
     public function verificarEmailConvenio(Request $request)
     {
         return $this->convenioRepository->verificarEmailConvenio($request);
     }
-        
+
     public function verificarCodigoConvenio(Request $request)
     {
         return $this->convenioRepository->verificarCodigoConvenio($request);
     }
-    
+
     public function eliminarCorreo($id_convenio_email)
     {
         return $this->convenioRepository->eliminarCorreo($id_convenio_email);
     }
-    
-    public function cambiarEstadoConvenio(Request $request){
+
+    public function cambiarEstadoConvenio(Request $request)
+    {
         return $this->convenioRepository->cambiarEstadoConvenio($request);
+    }
+
+    public function crearConvenioEmpresa(Request $request)
+    {
+        return $this->convenioRepository->crearConvenioEmpresa($request);
     }
 }

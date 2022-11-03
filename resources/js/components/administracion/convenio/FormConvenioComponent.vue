@@ -14,18 +14,21 @@
                             >Nombre del convenio</label
                         >
                         <input
-                            v-model.trim="form.nombre_convenio"
+                            v-model.trim="convenio.nombre_convenio"
                             type="text"
                             class="form-control"
                             :class="{
-                                'is-invalid': $v.form.nombre_convenio.$error,
-                                'is-valid': !$v.form.nombre_convenio.$invalid,
+                                'is-invalid':
+                                    $v.convenio.nombre_convenio.$error,
+                                'is-valid':
+                                    !$v.convenio.nombre_convenio.$invalid,
                             }"
                         />
                         <div class="invalid-feedback">
-                            <span v-if="!$v.form.nombre_convenio.required">{{
-                                required
-                            }}</span>
+                            <span
+                                v-if="!$v.convenio.nombre_convenio.required"
+                                >{{ required }}</span
+                            >
                         </div>
                     </div>
                     <div class="mb-3">
@@ -33,16 +36,17 @@
                             >Nombre de la entidad</label
                         >
                         <input
-                            v-model.trim="form.nombre_entidad"
+                            v-model.trim="convenio.nombre_entidad"
                             type="text"
                             class="form-control"
                             :class="{
-                                'is-invalid': $v.form.nombre_entidad.$error,
-                                'is-valid': !$v.form.nombre_entidad.$invalid,
+                                'is-invalid': $v.convenio.nombre_entidad.$error,
+                                'is-valid':
+                                    !$v.convenio.nombre_entidad.$invalid,
                             }"
                         />
                         <div class="invalid-feedback">
-                            <span v-if="!$v.form.nombre_entidad.required">{{
+                            <span v-if="!$v.convenio.nombre_entidad.required">{{
                                 required
                             }}</span>
                         </div>
@@ -52,16 +56,16 @@
                             >Código de validación</label
                         >
                         <input
-                            v-model.trim="form.codigo"
+                            v-model.trim="convenio.codigo"
                             type="text"
                             class="form-control"
                             :class="{
-                                'is-invalid': $v.form.codigo.$error,
-                                'is-valid': !$v.form.codigo.$invalid,
+                                'is-invalid': $v.convenio.codigo.$error,
+                                'is-valid': !$v.convenio.codigo.$invalid,
                             }"
                         />
                         <div class="invalid-feedback">
-                            <span v-if="!$v.form.codigo.required">{{
+                            <span v-if="!$v.convenio.codigo.required">{{
                                 required
                             }}</span>
                         </div>
@@ -69,22 +73,22 @@
                     <div class="mb-3">
                         <label class="form-label required">Texto legal</label>
                         <textarea
-                            v-model.trim="form.texto_legal"
+                            v-model.trim="convenio.texto_legal"
                             type="text"
                             class="form-control"
                             :class="{
-                                'is-invalid': $v.form.texto_legal.$error,
-                                'is-valid': !$v.form.texto_legal.$invalid,
+                                'is-invalid': $v.convenio.texto_legal.$error,
+                                'is-valid': !$v.convenio.texto_legal.$invalid,
                             }"
                         >
                         </textarea>
                         <div class="invalid-feedback">
-                            <span v-if="!$v.form.texto_legal.required">{{
+                            <span v-if="!$v.convenio.texto_legal.required">{{
                                 required
                             }}</span>
                         </div>
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label for="formFile" class="form-label"
                             >Selecionar excel empresarios</label
                         >
@@ -95,25 +99,16 @@
                             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                             @change="leerData"
                         />
-                        <!-- <div class="form-inline mb-3">
-                            <div class="form-group mx-sm-1">
-                                <button
-                                    class="btn btn-default"
-                                    type="button"
-                                    id="btn-cargar-archivo"
-                                    @click="leerData"
-                                >
-                                    Cargar archivo
-                                </button>
-                            </div>
-                        </div> -->
-                    </div>
+                    </div> -->
                     <div class="mb-3">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th colspan="2">Correos</th>
+                                    <th colspan="2">Correo</th>
                                     <th>NIT</th>
+                                    <th>Sede</th>
+                                    <th>Departamento</th>
+                                    <th>Ciudad</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -127,27 +122,28 @@
                                         <span
                                             class="badge"
                                             :class="
-                                                ac.id == ''
+                                                ac.id_correo == ''
                                                     ? 'bg-warning'
                                                     : 'bg-success'
                                             "
                                         >
                                             {{
-                                                ac.id == ""
+                                                ac.id_correo == ""
                                                     ? "Correo por agregar"
                                                     : "Correo en sistema"
                                             }}
                                         </span>
                                     </td>
-
                                     <td>{{ ac.nit }}</td>
+                                    <td>{{ ac.nombre_sede }}</td>
+                                    <td>{{ ac.nombre_departamento }}</td>
+                                    <td>{{ ac.nombre_ciudad }}</td>
                                     <td>
                                         <button
                                             type="button"
                                             class="btn btn-danger"
                                             title="Eliminar correo"
                                             @click="eliminarCorreo(i)"
-                                            array_correos
                                         >
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -156,12 +152,11 @@
                             </tbody>
                         </table>
                         <button
-                            v-if="datos.accion == 'Actualizar'"
                             type="button"
                             class="btn btn-secondary"
                             data-bs-toggle="modal"
                             data-bs-target="#modal-agregar-empresario"
-                            @click="$v.form_empresario.$reset()"
+                            @click="resetFormsEmpresario()"
                         >
                             Agregar empresario
                         </button>
@@ -195,52 +190,168 @@
                             ></button>
                         </div>
                         <div class="modal-body">
-                            <div
-                                v-for="(v, i) in $v.form_empresario.$each.$iter"
-                                v-bind:key="i"
-                            >
-                                <div class="mb-3">
-                                    <label class="form-label required"
-                                        >Correo</label
-                                    >
-                                    <input
-                                        v-model.trim="v.email.$model"
-                                        type="text"
-                                        class="form-control"
-                                        :class="{
-                                            'is-invalid': v.email.$error,
-                                            'is-valid': !v.email.$invalid,
-                                        }"
-                                    />
-                                    <div class="invalid-feedback">
-                                        <span v-if="!v.email.required">{{
-                                            required
-                                        }}</span>
-                                        <span v-if="!v.email.email"
-                                            >Debe ingresar un correo
-                                            valido</span
-                                        >
-                                    </div>
+                            <div class="mb-3">
+                                <label class="form-label required">Nit</label>
+                                <Multiselect
+                                    v-model.trim="nit"
+                                    :options="options_empresa"
+                                    placeholder="Seleccione una opción"
+                                    valueProp="id"
+                                    label="nit"
+                                    @input="formularioNit()"
+                                    :class="{
+                                        'is-invalid': $v.nit.$error,
+                                        'is-valid': !$v.nit.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.nit.required">{{
+                                        required
+                                    }}</span>
                                 </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label required"
-                                        >Nit</label
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label required">Nit</label>
+                                <input
+                                    v-model.trim="convenio_email.nit"
+                                    type="text"
+                                    class="form-control"
+                                    :disabled="nit != -1"
+                                    :class="{
+                                        'is-invalid':
+                                            $v.convenio_email.nit.$error,
+                                        'is-valid':
+                                            !$v.convenio_email.nit.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span
+                                        v-if="!$v.convenio_email.nit.required"
+                                        >{{ required }}</span
                                     >
-                                    <input
-                                        v-model.trim="v.nit.$model"
-                                        type="text"
-                                        class="form-control"
-                                        :class="{
-                                            'is-invalid': v.nit.$error,
-                                            'is-valid': !v.nit.$invalid,
-                                        }"
-                                    />
-                                    <div class="invalid-feedback">
-                                        <span v-if="!v.nit.required">{{
-                                            required
-                                        }}</span>
-                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label required"
+                                    >Correo</label
+                                >
+                                <input
+                                    v-model.trim="convenio_email.email"
+                                    type="text"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid':
+                                            $v.convenio_email.email.$error,
+                                        'is-valid':
+                                            !$v.convenio_email.email.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span
+                                        v-if="!$v.convenio_email.email.required"
+                                        >{{ required }}</span
+                                    >
+                                    <span v-if="!$v.convenio_email.email.email"
+                                        >Debe ingresar un correo valido</span
+                                    >
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label required">Sede</label>
+                                <Multiselect
+                                    v-model.trim="sede.id"
+                                    :options="options_sede"
+                                    placeholder="Seleccione una opción"
+                                    valueProp="id"
+                                    label="nombre"
+                                    @input="getSedeById()"
+                                    :class="{
+                                        'is-invalid': $v.sede.id.$error,
+                                        'is-valid':
+                                            sede.id != ''
+                                                ? !$v.sede.id.$invalid
+                                                : '',
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.sede.id.required">
+                                        {{ required }}</span
+                                    >
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label required"
+                                    >Nombre sede</label
+                                >
+                                <input
+                                    v-model.trim="sede.nombre"
+                                    type="text"
+                                    class="form-control"
+                                    :disabled="sede.id != -1"
+                                    :class="{
+                                        'is-invalid': $v.sede.nombre.$error,
+                                        'is-valid': !$v.sede.nombre.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.sede.nombre.required">{{
+                                        required
+                                    }}</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label required"
+                                    >Departamento</label
+                                >
+                                <Multiselect
+                                    v-model.trim="sede.departamento_id"
+                                    :options="options_departamento"
+                                    placeholder="Seleccione una opción"
+                                    valueProp="id"
+                                    label="nombre"
+                                    @input="getOptionsCiudad()"
+                                    :disabled="sede.id != -1"
+                                    :class="{
+                                        'is-invalid':
+                                            $v.sede.departamento_id.$error,
+                                        'is-valid':
+                                            sede.departamento_id != ''
+                                                ? !$v.sede.departamento_id
+                                                      .$invalid
+                                                : '',
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span
+                                        v-if="!$v.sede.departamento_id.required"
+                                    >
+                                        {{ required }}</span
+                                    >
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label required"
+                                    >Ciudad o municipio</label
+                                >
+                                <Multiselect
+                                    v-model.trim="sede.ciudad_id"
+                                    :options="options_ciudad"
+                                    placeholder="Seleccione una opción"
+                                    valueProp="id"
+                                    label="nombre"
+                                    :disabled="sede.id != -1"
+                                    :class="{
+                                        'is-invalid': $v.sede.ciudad_id.$error,
+                                        'is-valid':
+                                            $v.sede.ciudad_id != ''
+                                                ? !$v.sede.ciudad_id.$invalid
+                                                : '',
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.sede.ciudad_id.required">
+                                        {{ required }}</span
+                                    >
                                 </div>
                             </div>
                         </div>
@@ -249,12 +360,12 @@
                                 type="button"
                                 class="btn btn-secondary"
                                 data-bs-dismiss="modal"
-                                ref="cerrarModalAgregarBeneficiario"
+                                ref="cerrarModalAgregarEmpresario"
                             >
                                 Cerrar
                             </button>
                             <button type="submit" class="btn btn-primary">
-                                Guardar
+                                Agregar
                             </button>
                         </div>
                     </form>
@@ -267,20 +378,24 @@
 import * as XLSX from "xlsx";
 import { required, email } from "vuelidate/lib/validators";
 import Convenio from "../../../models/Convenio";
+import ConvenioEmail from "../../../models/ConvenioEmail";
+import Empresa from "../../../models/Empresa";
+import EmpresaSede from "../../../models/EmpresaSede";
+import Parametro from "../../../models/Parametro";
 
 export default {
     data() {
         return {
-            form: {
-                id: "",
-                nombre_convenio: "",
-                nombre_entidad: "",
-                codigo: "",
-                texto_legal: "",
-            },
+            nit: "",
             required: "Este campo es requerido",
-            form_empresario: [{ id: "", email: "", nit: "" }],
+
             array_correos: [],
+            convenio_email: new ConvenioEmail({
+                email: "",
+                nit: "",
+                convenio_id: "",
+                sede_id: "",
+            }),
             convenio: new Convenio({
                 id: "",
                 nombre_convenio: "",
@@ -289,11 +404,26 @@ export default {
                 texto_legal: "",
                 usuario_actualizo_id: "",
             }),
+            sede: new EmpresaSede({
+                id: "",
+                nombre: "",
+                departamento_id: "",
+                ciudad_id: "",
+            }),
+            empresa: new Empresa({
+                nit: "",
+            }),
+
+            empresas: "",
+            options_departamento: [],
+            options_ciudad: [],
+            options_empresa: [],
+            options_sede: [],
         };
     },
     props: ["datos"],
     validations: {
-        form: {
+        convenio: {
             nombre_convenio: {
                 required,
             },
@@ -308,28 +438,55 @@ export default {
             },
         },
 
-        form_empresario: {
-            required,
-
-            $each: {
-                email: {
-                    required,
-                    email,
-                },
-                nit: {
-                    required,
-                },
+        convenio_email: {
+            email: {
+                required,
+                email,
             },
+            nit: {
+                required,
+            },
+        },
+
+        sede: {
+            id: {
+                required,
+            },
+            nombre: {
+                required,
+            },
+            departamento_id: {
+                required,
+            },
+            ciudad_id: {
+                required,
+            },
+        },
+
+        nit: {
+            required,
         },
     },
     mounted() {
         if (this.datos.accion == "Actualizar") {
             this.getConvenioById();
         }
+        this.getParametros(1, "options_departamento");
+        this.getOptionsNit();
     },
     methods: {
+        async getParametros(tipo_parametro_id, variable) {
+            //1 departamentos
+            this[variable] = await Parametro.where(
+                "tipo_parametro_id",
+                tipo_parametro_id
+            ).get();
+        },
         async getConvenioById() {
-            let convenio = await Convenio.include("emails")
+            let convenio = await Convenio.include(
+                "emails.sede.departamento",
+                "emails.sede.ciudad"
+            )
                 .find(this.datos.id_convenio)
                 .catch((error) => {
                     this.$root.mostrarMensaje(
@@ -340,13 +497,41 @@ export default {
                     this.$root.redirectIndex("/convenios");
                 });
 
-            this.form.id = convenio.id;
-            this.form.nombre_convenio = convenio.nombre_convenio;
-            this.form.nombre_entidad = convenio.nombre_entidad;
-            this.form.codigo = convenio.codigo;
-            this.form.texto_legal = convenio.texto_legal;
+            this.convenio.id = convenio.id;
+            this.convenio.nombre_convenio = convenio.nombre_convenio;
+            this.convenio.nombre_entidad = convenio.nombre_entidad;
+            this.convenio.codigo = convenio.codigo;
+            this.convenio.texto_legal = convenio.texto_legal;
 
-            this.array_correos = convenio.emails;
+            this.array_correos = [];
+            convenio.emails.forEach((e) => {
+                this.array_correos.push({
+                    id_correo: e.id,
+                    id_empresa: "",
+                    email: e.email,
+                    nit: e.nit,
+                    id_sede: e.sede_id,
+                    ciudad_id: e.sede.ciudad_id,
+                    departamento_id: e.sede.departamento_id,
+                    nombre_sede: e.sede.nombre,
+                    nombre_departamento: e.sede.departamento.nombre,
+                    nombre_ciudad: e.sede.ciudad.nombre,
+                });
+            });
+        },
+        async getOptionsCiudad() {
+            this.options_ciudad = [];
+            if (
+                this.sede.departamento_id != "" &&
+                this.sede.departamento_id != null
+            ) {
+                this.sede.ciudad_id = "";
+
+                this.options_ciudad = await Parametro.where(
+                    "parametro_id",
+                    this.sede.departamento_id
+                ).get();
+            }
         },
 
         leerData() {
@@ -381,35 +566,80 @@ export default {
             FR.readAsArrayBuffer(file);
         },
 
+        async getOptionsNit() {
+            this.options_empresa = [{ id: -1, nit: "Nuevo nit" }];
+
+            this.empresas = await Empresa.select("id", "nit")
+                .include("sedes")
+                .get();
+
+            this.empresas.forEach((e) => {
+                this.options_empresa.push(e);
+            });
+        },
+
         async submit() {
             this.$v.$touch();
-            if (!this.$v.form.$invalid) {
+            if (!this.$v.convenio.$invalid) {
                 this.$root.mostrarCargando("Guardando");
-                let convenio_id;
-                this.convenio.nombre_convenio = this.form.nombre_convenio;
-                this.convenio.nombre_entidad = this.form.nombre_entidad;
-                this.convenio.codigo = this.form.codigo;
-                this.convenio.texto_legal = this.form.texto_legal;
-                this.convenio.usuario_actualizo_id = 1;
 
-                if (this.datos.accion == "Actualizar") {
-                    this.convenio.id = this.form.id;
+                if (this.datos.accion == "Crear") {
+                    delete this.convenio["id"];
                 }
 
                 let convenio_creado = await this.convenio.save();
+                let id_empresa = "";
 
                 if (this.array_correos.length != 0) {
-                    convenio_id =
-                        this.datos.accion == "Actualizar"
-                            ? this.datos.id_convenio
-                            : convenio_creado.id;
+                    for (const e of this.array_correos) {
+                        if (e.id_correo == "") {
+                            if (e.id_empresa == "") {
+                                this.empresa.nit = e.nit;
+                                let empresa_creada = await this.empresa.save();
+                                id_empresa = empresa_creada.id;
+                            } else {
+                                id_empresa = e.id_empresa;
+                            }
 
-                    await axios
-                        .post("/api/agregarCorreosConvenio", {
-                            convenio_id: convenio_id,
-                            array_correos: this.array_correos,
-                        })
-                        .then((response) => {});
+                            let id_sede = "";
+
+                            if (e.id_sede == -1) {
+                                delete this.sede["id"];
+                                this.sede.empresa_id = id_empresa;
+                                this.sede.ciudad_id = e.ciudad_id;
+                                this.sede.departamento_id = e.departamento_id;
+                                this.sede.nombre = e.nombre_sede;
+                                let sede_creada = await this.sede.save();
+                                id_sede = sede_creada.id;
+                            } else {
+                                id_sede = e.id_sede;
+                            }
+
+                            await axios
+                                .post("/api/agregarCorreosConvenio", {
+                                    id: "",
+                                    email: e.email,
+                                    nit: e.nit,
+                                    convenio_id: convenio_creado.id,
+                                    sede_id: id_sede,
+                                })
+                                .then((response) => {});
+
+                            axios
+                                .post("/api/crearConvenioEmpresa", {
+                                    convenio_id: convenio_creado.id,
+                                    empresa_id: id_empresa,
+                                })
+                                .then((response) => {})
+                                .catch((error) => {
+                                    this.$root.mostrarMensaje(
+                                        "error",
+                                        "No se pudo asociar la empresa al convenio, por favor intentelo de nuevo",
+                                        "error"
+                                    );
+                                });
+                        }
+                    }
                 }
 
                 Swal.close();
@@ -423,31 +653,101 @@ export default {
                 this.$root.redirectIndex("/convenios");
             }
         },
+        formularioNit() {
+            this.limpiarFormSede();
+            this.options_sede = [{ id: -1, nombre: "Nueva sede" }];
+            if (this.nit != -1) {
+                this.empresas.forEach((e, i) => {
+                    if (e.id == this.nit) {
+                        this.convenio_email.nit = e.nit;
+                        this.empresas[i].sedes.forEach((es) => {
+                            this.options_sede.push(es);
+                        });
+                    }
+                });
+            } else {
+            }
+        },
+
+        async getSedeById() {
+            this.sede.nombre = "";
+            this.sede.departamento_id = "";
+            this.sede.ciudad_id = "";
+
+            if (this.sede.id != -1 && this.sede.id != null) {
+                let sede = await EmpresaSede.include("empresa").find(
+                    this.sede.id
+                );
+                this.sede.id = sede.id;
+                this.sede.nombre = sede.nombre;
+                this.sede.empresa_id = sede.empresa_id;
+                this.sede.departamento_id = sede.departamento_id;
+                this.getOptionsCiudad();
+                this.sede.ciudad_id = sede.ciudad_id;
+            }
+        },
+        resetFormsEmpresario() {
+            this.nit = "";
+            this.$v.nit.$reset();
+            this.$v.convenio_email.$reset();
+            this.$v.sede.$reset();
+            this.limpiarFormSede();
+            this.limpiarFormConveniEmail();
+        },
+        limpiarFormSede() {
+            Object.keys(this.sede).forEach((key) => {
+                this.sede[key] = "";
+            });
+        },
+        limpiarFormConveniEmail() {
+            Object.keys(this.convenio_email).forEach((key) => {
+                this.convenio_email[key] = "";
+            });
+        },
+
         async submitEmpresario() {
-            this.$root.mostrarCargando("Guardando empresario");
             this.$v.$touch();
-            if (!this.$v.form_empresario.$invalid) {
-                await axios
-                    .post("/api/agregarCorreosConvenio", {
-                        convenio_id: this.datos.id_convenio,
-                        array_correos: this.form_empresario,
-                    })
-                    .then((response) => {
-                        Swal.close();
-                        this.$root.mostrarMensaje(
-                            "Éxito",
-                            "Empresario agregado correctamente",
-                            "success"
-                        );
-                        this.$refs.cerrarModalAgregarBeneficiario.click();
-                        setTimeout(() => {
-                            this.getConvenioById();
-                        }, 2000);
+            if (!this.$v.convenio_email.$invalid && !this.$v.sede.$invalid) {
+                let option_sede = this.options_sede.filter(
+                    (el) => el.id === this.sede.id
+                );
+
+                let nombre_departamento = this.options_departamento.filter(
+                    (el) => el.id === this.sede.departamento_id
+                );
+
+                let nombre_ciudad = this.options_ciudad.filter(
+                    (el) => el.id === this.sede.ciudad_id
+                );
+
+                let id_empresa = "";
+
+                if (this.nit != -1) {
+                    this.empresas.forEach((e, i) => {
+                        if (e.id == this.nit) {
+                            id_empresa = e.id;
+                        }
                     });
+                }
+
+                this.array_correos.push({
+                    id_correo: "",
+                    id_empresa: id_empresa,
+                    email: this.convenio_email.email,
+                    nit: this.convenio_email.nit,
+                    id_sede: this.sede.id,
+                    ciudad_id: this.sede.ciudad_id,
+                    departamento_id: this.sede.departamento_id,
+                    nombre_sede: this.sede.nombre,
+                    nombre_departamento: nombre_departamento[0].nombre,
+                    nombre_ciudad: nombre_ciudad[0].nombre,
+                });
+                this.$v.convenio.$reset();
+                this.$refs.cerrarModalAgregarEmpresario.click();
             }
         },
         eliminarCorreo(i) {
-            if (this.array_correos[i].id == "") {
+            if (this.array_correos[i].id_correo == "") {
                 this.array_correos.splice(i, 1);
             } else {
                 Swal.fire({
@@ -464,7 +764,7 @@ export default {
                         axios
                             .get(
                                 "/api/eliminarCorreo/" +
-                                    this.array_correos[i].id
+                                    this.array_correos[i].id_correo
                             )
                             .then((response) => {
                                 Swal.close();

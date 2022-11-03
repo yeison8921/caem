@@ -27,7 +27,8 @@ class ParametroSeeder extends Seeder
             ['nombre' => 'Número de empleados'],
             ['nombre' => 'Años'],
             ['nombre' => 'Meses'],
-            ['nombre' => 'Equipo de consumo'],
+            ['nombre' => 'Equipo de consumo fijo'],
+            ['nombre' => 'Equipo de consumo móvil'],
             ['nombre' => 'Energéticos'],
         ];
 
@@ -1737,52 +1738,52 @@ class ParametroSeeder extends Seeder
         ];
 
         DB::table('parametros')->insert($parameters);
-        
+
         //Años
         $parameters = [
-            ['nombre' => 2000, 'valor'=> 2000, 'tipo_parametro_id' => 7],
-            ['nombre' => 2001, 'valor'=> 2001, 'tipo_parametro_id' => 7],
-            ['nombre' => 2002, 'valor'=> 2002, 'tipo_parametro_id' => 7],
-            ['nombre' => 2003, 'valor'=> 2003, 'tipo_parametro_id' => 7],
-            ['nombre' => 2004, 'valor'=> 2004, 'tipo_parametro_id' => 7],
-            ['nombre' => 2005, 'valor'=> 2005, 'tipo_parametro_id' => 7],
-            ['nombre' => 2006, 'valor'=> 2006, 'tipo_parametro_id' => 7],
-            ['nombre' => 2007, 'valor'=> 2007, 'tipo_parametro_id' => 7],
-            ['nombre' => 2008, 'valor'=> 2008, 'tipo_parametro_id' => 7],
-            ['nombre' => 2009, 'valor'=> 2009, 'tipo_parametro_id' => 7],
-            ['nombre' => 2010, 'valor'=> 2010, 'tipo_parametro_id' => 7],
-            ['nombre' => 2011, 'valor'=> 2011, 'tipo_parametro_id' => 7],
-            ['nombre' => 2012, 'valor'=> 2012, 'tipo_parametro_id' => 7],
-            ['nombre' => 2013, 'valor'=> 2013, 'tipo_parametro_id' => 7],
-            ['nombre' => 2014, 'valor'=> 2014, 'tipo_parametro_id' => 7],
-            ['nombre' => 2015, 'valor'=> 2015, 'tipo_parametro_id' => 7],
-            ['nombre' => 2016, 'valor'=> 2016, 'tipo_parametro_id' => 7],
-            ['nombre' => 2017, 'valor'=> 2017, 'tipo_parametro_id' => 7],
-            ['nombre' => 2018, 'valor'=> 2018, 'tipo_parametro_id' => 7],
-            ['nombre' => 2019, 'valor'=> 2019, 'tipo_parametro_id' => 7],
-            ['nombre' => 2020, 'valor'=> 2020, 'tipo_parametro_id' => 7],
-            ['nombre' => 2021, 'valor'=> 2021, 'tipo_parametro_id' => 7],
-            ['nombre' => 2022, 'valor'=> 2022, 'tipo_parametro_id' => 7],
+            ['nombre' => 2000, 'valor' => 2000, 'tipo_parametro_id' => 7],
+            ['nombre' => 2001, 'valor' => 2001, 'tipo_parametro_id' => 7],
+            ['nombre' => 2002, 'valor' => 2002, 'tipo_parametro_id' => 7],
+            ['nombre' => 2003, 'valor' => 2003, 'tipo_parametro_id' => 7],
+            ['nombre' => 2004, 'valor' => 2004, 'tipo_parametro_id' => 7],
+            ['nombre' => 2005, 'valor' => 2005, 'tipo_parametro_id' => 7],
+            ['nombre' => 2006, 'valor' => 2006, 'tipo_parametro_id' => 7],
+            ['nombre' => 2007, 'valor' => 2007, 'tipo_parametro_id' => 7],
+            ['nombre' => 2008, 'valor' => 2008, 'tipo_parametro_id' => 7],
+            ['nombre' => 2009, 'valor' => 2009, 'tipo_parametro_id' => 7],
+            ['nombre' => 2010, 'valor' => 2010, 'tipo_parametro_id' => 7],
+            ['nombre' => 2011, 'valor' => 2011, 'tipo_parametro_id' => 7],
+            ['nombre' => 2012, 'valor' => 2012, 'tipo_parametro_id' => 7],
+            ['nombre' => 2013, 'valor' => 2013, 'tipo_parametro_id' => 7],
+            ['nombre' => 2014, 'valor' => 2014, 'tipo_parametro_id' => 7],
+            ['nombre' => 2015, 'valor' => 2015, 'tipo_parametro_id' => 7],
+            ['nombre' => 2016, 'valor' => 2016, 'tipo_parametro_id' => 7],
+            ['nombre' => 2017, 'valor' => 2017, 'tipo_parametro_id' => 7],
+            ['nombre' => 2018, 'valor' => 2018, 'tipo_parametro_id' => 7],
+            ['nombre' => 2019, 'valor' => 2019, 'tipo_parametro_id' => 7],
+            ['nombre' => 2020, 'valor' => 2020, 'tipo_parametro_id' => 7],
+            ['nombre' => 2021, 'valor' => 2021, 'tipo_parametro_id' => 7],
+            ['nombre' => 2022, 'valor' => 2022, 'tipo_parametro_id' => 7],
         ];
 
         DB::table('parametros')->insert($parameters);
-        
+
         //Años
         $parameters = [
-            ['nombre' => 'Enero', 'valor'=> '01', 'tipo_parametro_id' => 8],
-            ['nombre' => 'Febrero', 'valor'=> '02', 'tipo_parametro_id' => 8],
-            ['nombre' => 'Marzo', 'valor'=> '03', 'tipo_parametro_id' => 8],
-            ['nombre' => 'Abril', 'valor'=> '04', 'tipo_parametro_id' => 8],
-            ['nombre' => 'Mayo', 'valor'=> '05', 'tipo_parametro_id' => 8],
-            ['nombre' => 'Junio', 'valor'=> '06', 'tipo_parametro_id' => 8],
-            ['nombre' => 'Julio', 'valor'=> '07', 'tipo_parametro_id' => 8],
-            ['nombre' => 'Agosto', 'valor'=> '08', 'tipo_parametro_id' => 8],
-            ['nombre' => 'Septiembre', 'valor'=> '09', 'tipo_parametro_id' => 8],
-            ['nombre' => 'Octubre', 'valor'=> '10', 'tipo_parametro_id' => 8],
-            ['nombre' => 'Noviembre', 'valor'=> '11', 'tipo_parametro_id' => 8],
-            ['nombre' => 'Diciembre', 'valor'=> '12', 'tipo_parametro_id' => 8],
+            ['nombre' => 'Enero', 'valor' => '01', 'tipo_parametro_id' => 8],
+            ['nombre' => 'Febrero', 'valor' => '02', 'tipo_parametro_id' => 8],
+            ['nombre' => 'Marzo', 'valor' => '03', 'tipo_parametro_id' => 8],
+            ['nombre' => 'Abril', 'valor' => '04', 'tipo_parametro_id' => 8],
+            ['nombre' => 'Mayo', 'valor' => '05', 'tipo_parametro_id' => 8],
+            ['nombre' => 'Junio', 'valor' => '06', 'tipo_parametro_id' => 8],
+            ['nombre' => 'Julio', 'valor' => '07', 'tipo_parametro_id' => 8],
+            ['nombre' => 'Agosto', 'valor' => '08', 'tipo_parametro_id' => 8],
+            ['nombre' => 'Septiembre', 'valor' => '09', 'tipo_parametro_id' => 8],
+            ['nombre' => 'Octubre', 'valor' => '10', 'tipo_parametro_id' => 8],
+            ['nombre' => 'Noviembre', 'valor' => '11', 'tipo_parametro_id' => 8],
+            ['nombre' => 'Diciembre', 'valor' => '12', 'tipo_parametro_id' => 8],
         ];
-        
+
         DB::table('parametros')->insert($parameters);
     }
 }

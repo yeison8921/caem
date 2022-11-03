@@ -23,9 +23,9 @@ class EmpresaSede extends Model
      */
     public function empresa()
     {
-        return $this->belongsTo(Empresa::class, 'empresa_id', 'id');
+        return $this->belongsTo(Empresa::class);
     }
-    
+
     /**
      * Obtiene el departamento de la sede.
      */

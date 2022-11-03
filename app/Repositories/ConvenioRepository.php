@@ -57,19 +57,19 @@ class ConvenioRepository extends BaseRepository
      */
     public function update($request, $id_convenio)
     {
-        Convenio::find($id_convenio)->update($request->all());
+        $convenio = Convenio::find($id_convenio);
+        $convenio->update($request->all());
+        return $convenio;
     }
 
-    public function agregarCorreosConvenio($request){
-        foreach ($request->array_correos as $value) {
-            if($value["id"] == ""){
-                $convenio = new ConvenioEmail;
-                $convenio->email = $value["email"];
-                $convenio->nit = $value["nit"];
-                $convenio->convenio_id = $request->convenio_id;
-                $convenio->save();
-            }
-        }
+    public function agregarCorreosConvenio($request)
+    {
+        $convenio = new ConvenioEmail;
+        $convenio->email = $request->email;
+        $convenio->nit = $request->nit;
+        $convenio->convenio_id = $request->convenio_id;
+        $convenio->sede_id = $request->sede_id;
+        $convenio->save();
     }
 
     public function verificarEmailConvenio($request)
@@ -77,39 +77,48 @@ class ConvenioRepository extends BaseRepository
         $convenio = ConvenioEmail::where("email", $request->email)->first();
         return $convenio;
     }
-    
+
     public function eliminarCorreo($id_convenio_email)
     {
         ConvenioEmail::find($id_convenio_email)->delete();
     }
-    
+
     public function verificarCodigoConvenio($request)
     {
         $verificar_convenio = Convenio::where("codigo", $request->codigo)->first();
         if (!$verificar_convenio) {
             return response()->json("error", 500);
-        }else{
+        } else {
             $verificar_email_convenio = ConvenioEmail::where([["email", $request->email], ["convenio_id", $verificar_convenio->id]])->first();
-            if(!$verificar_email_convenio){
+            if (!$verificar_email_convenio) {
                 return response()->json("error", 500);
-            }else{
+            } else {
                 return response()->json("success", 200);
             }
         }
     }
 
-    public function formConvenio($id_convenio){
+    public function formConvenio($id_convenio)
+    {
         $data = [];
         $data['id_convenio'] = $id_convenio;
-        if($id_convenio != ''){
+        if ($id_convenio != '') {
             $data['accion'] = 'Actualizar';
-        }else{
+        } else {
             $data['accion'] = 'Crear';
         }
         return view('administracion/convenio/form_convenio', $data);
     }
 
-    public function cambiarEstadoConvenio($request){
+    public function cambiarEstadoConvenio($request)
+    {
         $request->estado ? Convenio::withTrashed()->find($request->id_convenio)->restore() : Convenio::find($request->id_convenio)->delete();
-    } 
+    }
+
+    public function crearConvenioEmpresa($request)
+    {
+        $convenio = Convenio::find($request->convenio_id);
+        $convenio->empresas()->detach($request->empresa_id);
+        $convenio->empresas()->attach($request->empresa_id);
+    }
 }

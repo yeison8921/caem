@@ -103,9 +103,9 @@ import EmpresaSede from "../../../models/EmpresaSede";
 export default {
     data() {
         return {
-            convenio_id: 0,
+            convenio_id: -1,
             empresa_id: "",
-            options_convenio: [{ id: 0, nombre_convenio: "Todos" }],
+            options_convenio: [{ id: -1, nombre_convenio: "Todos" }],
             options_empresa: [],
             sedes: [],
         };
@@ -126,10 +126,10 @@ export default {
             this.options_empresa = [];
             this.sedes = [];
 
-            if (this.convenio_id !== "" && this.convenio_id !== null) {
-                let empresas = Empresa.include("convenio");
-                if (this.convenio_id != 0) {
-                    empresas = empresas.where("convenio_id", this.convenio_id);
+            if (this.convenio_id != "" && this.convenio_id != null) {
+                let empresas = Empresa.include("convenios");
+                if (this.convenio_id != -1) {
+                    empresas = empresas.where("convenios.id", this.convenio_id);
                 }
                 this.options_empresa = await empresas.get();
             }

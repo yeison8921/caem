@@ -27,13 +27,7 @@ class StoreEmpresaRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => ['required', 'string'],
             'nit' => ['required', 'string'],
-            'telefono' => ['required', 'string'],
-            'codigo_ciiu_id' => ['required', 'integer'],
-            'sector_id' => ['required', 'integer'],
-            'empleado_id' => ['required', 'integer'],
-            'tamano_id' => ['required', 'integer'],
         ];
     }
 }

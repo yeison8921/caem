@@ -30,7 +30,7 @@ class Empresa extends Model
     {
         return $this->belongsTo(Parametro::class, 'codigo_ciiu_id', 'id');
     }
-    
+
     /**
      * Obtiene el sector de la empresa.
      */
@@ -56,19 +56,11 @@ class Empresa extends Model
     }
 
     /**
-     * Obtiene el convenio de la empresa.
-     */
-    public function convenio()
-    {
-        return $this->belongsTo(Convenio::class, 'convenio_id', 'id');
-    }
-
-    /**
      * Obtiene las sedes de la empresa.
      */
     public function sedes()
     {
-        return $this->hasMany(EmpresaSede::class, 'empresa_id', 'id');
+        return $this->hasMany(EmpresaSede::class);
     }
 
     /**
@@ -77,5 +69,10 @@ class Empresa extends Model
     public function usuarioActualizo()
     {
         return $this->belongsTo(User::class, 'usuario_actualizo_id', 'id');
+    }
+
+    public function convenios()
+    {
+        return $this->belongsToMany(Convenio::class);
     }
 }

@@ -46,13 +46,14 @@ Route::group(['as' => 'auth.'], function () {
         // Parametros
         Route::apiResource('tipo_parametros', TipoParametroController::class);
         Route::apiResource('parametros', ParametroController::class);
+        Route::post('getEquiposConsumo', [ParametroController::class, 'getEquiposConsumo']);
 
         // Empresas
         Route::apiResource('empresas', EmpresaController::class);
-        
+
         // Sedes
         Route::apiResource('empresa_sedes', EmpresaSedeController::class);
-        
+
         // Convenios
         Route::apiResource('convenios', ConvenioController::class);
         Route::post('agregarCorreosConvenio', [ConvenioController::class, 'agregarCorreosConvenio']);
@@ -60,7 +61,8 @@ Route::group(['as' => 'auth.'], function () {
         Route::post('verificarCodigoConvenio', [ConvenioController::class, 'verificarCodigoConvenio']);
         Route::get('eliminarCorreo/{id_convenio_email}', [ConvenioController::class, 'eliminarCorreo']);
         Route::post('cambiarEstadoConvenio', [ConvenioController::class, 'cambiarEstadoConvenio']);
-        
+        Route::post('crearConvenioEmpresa', [ConvenioController::class, 'crearConvenioEmpresa']);
+
         // Password Reset
         /*Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
         Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
