@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Registration\UpdateRegistrationRequest;
 use App\Http\Requests\Api\UserRegister\StoreRegisterRequest;
+use App\Http\Requests\Api\UserRegister\updateRegisterRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -54,6 +54,8 @@ class UserController extends Controller
         $query = QueryBuilder::for(User::class)
             ->allowedIncludes([
                 'role',
+                'empresa',
+                'empresaSede',
             ])
             ->allowedSorts([
                 'id',
@@ -62,6 +64,7 @@ class UserController extends Controller
             ->allowedFilters([
                 AllowedFilter::exact('name'),
                 AllowedFilter::exact('email'),
+                AllowedFilter::exact('estado'),
             ]);
 
         if (request('limit')) {
@@ -82,6 +85,8 @@ class UserController extends Controller
         return QueryBuilder::for(User::whereId($user->id))
             ->allowedIncludes([
                 'role',
+                'empresa',
+                'empresaSede',
             ])
             ->allowedAppends([
                 'last_name',
@@ -103,7 +108,7 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateRegistrationRequest $request, User $user)
+    public function update(updateRegisterRequest $request, User $user)
     {
         $this->userRepository->update($user, $request->all());
 

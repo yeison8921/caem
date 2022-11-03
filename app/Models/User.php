@@ -14,6 +14,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
+    public const STATUS_UNDEFINED = 0;
+    public const STATUS_APPROVED = 1;
+    public const STATUS_REJECTED = 2;
     /**
      * The attributes that are mass assignable.
      *
@@ -26,7 +29,7 @@ class User extends Authenticatable
         'email',
         'password',
         'cargo',
-        'estado',
+        'estado', // 0 sin aprovar, 1 aprobado, 2 rechazado
         'rol_id',
         'empresa_id',
         'sede_id'
@@ -63,5 +66,19 @@ class User extends Authenticatable
             (strlen($password) === 95 && preg_match('/^\$argon2i\$/', $password)) ?
             $password :
             Hash::make($password);
+    }
+    /**
+     * Obtiene la empresa de la sede.
+     */
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
+    /**
+     * Obtiene la empresa de la sede.
+     */
+    public function empresaSede()
+    {
+        return $this->belongsTo(EmpresaSede::class, 'sede_id', 'id');
     }
 }

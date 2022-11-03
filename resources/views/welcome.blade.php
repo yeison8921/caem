@@ -38,6 +38,8 @@
                         <a href="{{ url('sedes') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Sedes</a>
                         
                         <a href="{{ url('procesos') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Procesos</a>
+                        
+                        <a href="{{ url('autorizaciones') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Autorización</a>
 
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>

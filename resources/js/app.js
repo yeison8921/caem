@@ -18,6 +18,14 @@ import axios from 'axios'
 import { Model } from 'vue-api-query'
 import jszip from 'jszip/dist/jszip';
 
+var moment = require("moment-timezone");
+var momentDurationFormatSetup = require("moment-duration-format");
+momentDurationFormatSetup(moment);
+typeof moment.duration.fn.format === "function";
+typeof moment.duration.format === "function";
+window.moment = moment;
+Vue.prototype.moment = window.moment;
+
 Model.$http = axios
 require('@fortawesome/fontawesome-free/css/all.min.css');
 require('datatables.net-bs5');
@@ -46,6 +54,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('login-component', require('./components/auth/LoginComponent.vue').default);
 Vue.component('registro-component', require('./components/auth/RegistroComponent.vue').default);
 Vue.component('index-parametro-component', require('./components/administracion/parametro/IndexParametroComponent.vue').default);
+Vue.component('index-autorizacion-component', require('./components/administracion/autorizacion/IndexAutorizacionComponent.vue').default);
 Vue.component('form-parametro-component', require('./components/administracion/parametro/FormParametroComponent.vue').default);
 Vue.component('index-convenio-component', require('./components/administracion/convenio/IndexConvenioComponent.vue').default);
 Vue.component('form-convenio-component', require('./components/administracion/convenio/FormConvenioComponent.vue').default);
@@ -190,6 +199,40 @@ Vue.prototype.$tablaEmpresas = function(nombreTabla) {
 }
 
 Vue.prototype.$tablaSedes = function(nombreTabla) {
+    this.$nextTick(() => {
+        $(nombreTabla).DataTable({
+            "columnDefs": [
+                { "width": "10%", "targets": 3 }
+            ],
+            responsive: false,
+            dom: "<'row'<'col-sm-12 mb-3'B>><'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            "language": {
+                "lengthMenu": "Ver _MENU_ registros por página",
+                "zeroRecords": "No hay información, lo sentimos.",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(Filtrado de _MAX_ registros totales)",
+                "search": "Filtrar:",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Ultima",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+            buttons: [{
+                "extend": "excelHtml5",
+                "text": "<i class='fas fa-file-excel'></i> Excel",
+                "titleAttr": "Exportar a Excel",
+                "className": "btn btn-success"
+            }, ]
+        });
+    });
+}
+
+Vue.prototype.$tablaUsuarios = function(nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [

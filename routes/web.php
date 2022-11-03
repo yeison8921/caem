@@ -57,3 +57,8 @@ Route::get('/procesos',  function () {
     return view('proceso/index_proceso');
 });
 
+// Autorizacion
+Route::get('/autorizaciones',  function () {
+    return view('autorizacion/index_autorizacion');
+});
+
