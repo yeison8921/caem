@@ -135,7 +135,7 @@ Vue.prototype.$tablaConvenios = function(nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [
-                { "width": "10%", "targets": 3 }
+                { "width": "15%", "targets": 3 }
             ],
             responsive: false,
             dom: "<'row'<'col-sm-12 mb-3'B>><'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
@@ -168,7 +168,7 @@ Vue.prototype.$tablaEmpresas = function(nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [
-                { "width": "10%", "targets": 4 }
+                { "width": "10%", "targets": 5 }
             ],
             responsive: false,
             dom: "<'row'<'col-sm-12 mb-3'B>><'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +

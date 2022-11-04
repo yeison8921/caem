@@ -100,11 +100,12 @@
                             @change="leerData"
                         />
                     </div> -->
-                    <div class="mb-3">
-                        <table class="table">
+                    <div class="mb-3 table-responsive">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th colspan="2">Correo</th>
+                                    <th>Correo</th>
+                                    <th>Estado</th>
                                     <th>NIT</th>
                                     <th>Sede</th>
                                     <th>Departamento</th>
@@ -135,7 +136,14 @@
                                         </span>
                                     </td>
                                     <td>{{ ac.nit }}</td>
-                                    <td>{{ ac.nombre_sede }}</td>
+                                    <td>
+                                        {{
+                                            ac.id_sede == -1
+                                                ? "Sede nueva - " +
+                                                  ac.nombre_sede
+                                                : ac.nombre_sede
+                                        }}
+                                    </td>
                                     <td>{{ ac.nombre_departamento }}</td>
                                     <td>{{ ac.nombre_ciudad }}</td>
                                     <td>
@@ -143,7 +151,9 @@
                                             type="button"
                                             class="btn btn-danger"
                                             title="Eliminar correo"
-                                            @click="eliminarCorreo(i)"
+                                            @click="
+                                                confirmarEliminacionCorreo(i)
+                                            "
                                         >
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -191,7 +201,9 @@
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label class="form-label required">Nit</label>
+                                <label class="form-label required"
+                                    >Seleccionar nit empresa</label
+                                >
                                 <Multiselect
                                     v-model.trim="nit"
                                     :options="options_empresa"
@@ -615,15 +627,13 @@ export default {
                                 id_sede = e.id_sede;
                             }
 
-                            await axios
-                                .post("/api/agregarCorreosConvenio", {
-                                    id: "",
-                                    email: e.email,
-                                    nit: e.nit,
-                                    convenio_id: convenio_creado.id,
-                                    sede_id: id_sede,
-                                })
-                                .then((response) => {});
+                            this.convenio_email.email = e.email;
+                            this.convenio_email.nit = e.nit;
+                            this.convenio_email.convenio_id =
+                                convenio_creado.id;
+                            this.convenio_email.sede_id = id_sede;
+
+                            await this.convenio_email.save();
 
                             axios
                                 .post("/api/crearConvenioEmpresa", {
@@ -746,7 +756,7 @@ export default {
                 this.$refs.cerrarModalAgregarEmpresario.click();
             }
         },
-        eliminarCorreo(i) {
+        confirmarEliminacionCorreo(i) {
             if (this.array_correos[i].id_correo == "") {
                 this.array_correos.splice(i, 1);
             } else {
@@ -760,26 +770,25 @@ export default {
                     confirmButtonColor: "rgb(48, 133, 214)",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        this.$root.mostrarCargando("Desviculando correo");
-                        axios
-                            .get(
-                                "/api/eliminarCorreo/" +
-                                    this.array_correos[i].id_correo
-                            )
-                            .then((response) => {
-                                Swal.close();
-                                this.$root.mostrarMensaje(
-                                    "Éxito",
-                                    "Correo desvinculado correctamente",
-                                    "success"
-                                );
-                                setTimeout(() => {
-                                    this.getConvenioById();
-                                }, 2000);
-                            });
+                        this.eliminarCorreo(this.array_correos[i].id_correo);
                     }
                 });
             }
+        },
+
+        async eliminarCorreo(id_convenio_email) {
+            this.$root.mostrarCargando("Desviculando correo");
+            let convenio_email = await ConvenioEmail.find(id_convenio_email);
+            convenio_email.delete();
+            Swal.close();
+            this.$root.mostrarMensaje(
+                "Éxito",
+                "Correo desvinculado correctamente",
+                "success"
+            );
+            setTimeout(() => {
+                this.getConvenioById();
+            }, 2000);
         },
     },
 };

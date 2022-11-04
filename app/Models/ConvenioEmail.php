@@ -13,6 +13,7 @@ class ConvenioEmail extends Model
         'email',
         'nit',
         'convenio_id',
+        'sede_id'
     ];
 
     /**
@@ -29,5 +30,10 @@ class ConvenioEmail extends Model
     public function sede()
     {
         return $this->belongsTo(EmpresaSede::class);
+    }
+
+    public function registrado()
+    {
+        return $this->belongsTo(User::class, 'email', 'email');
     }
 }

@@ -40,10 +40,11 @@ class ConvenioController extends Controller
      */
     public function index()
     {
-        $query = QueryBuilder::for(Convenio::class)
-            ->allowedIncludes([
-                'emails.sede',
-            ]);
+        $query = QueryBuilder::for(Convenio::class)->allowedFilters([
+            AllowedFilter::exact('codigo'),
+        ])->allowedIncludes([
+            'emails.sede',
+        ]);
         return $query->withTrashed()->get();
     }
 
@@ -84,26 +85,6 @@ class ConvenioController extends Controller
     public function formConvenio($id_convenio = '')
     {
         return $this->convenioRepository->formConvenio($id_convenio);
-    }
-
-    public function agregarCorreosConvenio(Request $request)
-    {
-        return $this->convenioRepository->agregarCorreosConvenio($request);
-    }
-
-    public function verificarEmailConvenio(Request $request)
-    {
-        return $this->convenioRepository->verificarEmailConvenio($request);
-    }
-
-    public function verificarCodigoConvenio(Request $request)
-    {
-        return $this->convenioRepository->verificarCodigoConvenio($request);
-    }
-
-    public function eliminarCorreo($id_convenio_email)
-    {
-        return $this->convenioRepository->eliminarCorreo($id_convenio_email);
     }
 
     public function cambiarEstadoConvenio(Request $request)

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ConvenioController;
+use App\Http\Controllers\Api\ConvenioEmailController;
 use App\Http\Controllers\Api\EmpresaController;
 use App\Http\Controllers\Api\EmpresaSedeController;
 use App\Http\Controllers\Api\LoginController;
@@ -56,10 +57,7 @@ Route::group(['as' => 'auth.'], function () {
 
         // Convenios
         Route::apiResource('convenios', ConvenioController::class);
-        Route::post('agregarCorreosConvenio', [ConvenioController::class, 'agregarCorreosConvenio']);
-        Route::post('verificarEmailConvenio', [ConvenioController::class, 'verificarEmailConvenio']);
-        Route::post('verificarCodigoConvenio', [ConvenioController::class, 'verificarCodigoConvenio']);
-        Route::get('eliminarCorreo/{id_convenio_email}', [ConvenioController::class, 'eliminarCorreo']);
+        Route::apiResource('convenio_emails', ConvenioEmailController::class);
         Route::post('cambiarEstadoConvenio', [ConvenioController::class, 'cambiarEstadoConvenio']);
         Route::post('crearConvenioEmpresa', [ConvenioController::class, 'crearConvenioEmpresa']);
 

@@ -224,8 +224,14 @@
                                                     v-model.trim="
                                                         v.energetico.$model
                                                     "
-                                                    :options="options"
-                                                    placeholder="Seleccione una opción"
+                                                    :options="
+                                                        options_energeticos
+                                                    "
+                                                    valueProp="id"
+                                                    label="nombre"
+                                                    mode="tags"
+                                                    :searchable="true"
+                                                    placeholder="Selección múltiple"
                                                     :class="{
                                                         'is-invalid':
                                                             v.energetico.$error,
@@ -378,7 +384,7 @@ export default {
                     nombre: "Proceso 1",
                     descripcion: "",
                     equipos: [],
-                    energetico: "",
+                    energetico: [],
                 },
             ],
             options_anio: [],
@@ -405,6 +411,7 @@ export default {
                 "Diciembre",
             ],
             options_equipo_consumo: [],
+            options_energeticos: [],
             energeticos: [{ nombre: "" }, { nombre: "" }, { nombre: "" }],
             required: "Este campo es requerido",
             options: [{ value: 1, label: "1" }],
@@ -433,6 +440,7 @@ export default {
     mounted() {
         this.getParametros(7, "options_anio");
         this.getParametros(8, "options_mes");
+        this.getParametros(11, "options_energeticos");
         this.getEquiposConsumo();
     },
     methods: {
@@ -466,7 +474,7 @@ export default {
                 nombre: "",
                 descripcion: "",
                 equipos: [],
-                energetico: "",
+                energetico: [],
             });
         },
         tablaEmisiones() {

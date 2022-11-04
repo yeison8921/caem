@@ -54,7 +54,7 @@
                                 ><i class="fa-solid fa-envelope"></i
                             ></span>
                             <input
-                                v-model.trim="$v.email.$model"
+                                v-model.trim="email"
                                 type="email"
                                 class="form-control"
                                 :class="{
@@ -81,7 +81,7 @@
                                 ><i class="fa-solid fa-envelope"></i
                             ></span>
                             <input
-                                v-model.trim="$v.verify_email.$model"
+                                v-model.trim="verify_email"
                                 type="email"
                                 class="form-control"
                                 :class="{
@@ -253,9 +253,7 @@
                                 />
                                 <div class="invalid-feedback">
                                     <span
-                                        v-if="
-                                            !$v.user.verify_email.sameAsCorreo
-                                        "
+                                        v-if="!$v.user.verify_email.sameAsEmail"
                                     >
                                         El correo electrónico no coincide</span
                                     >
@@ -361,7 +359,10 @@
                             <button
                                 type="button"
                                 class="btn btn-secondary"
-                                @click="paso = 1"
+                                @click="
+                                    limpiarFormUser();
+                                    paso = 1;
+                                "
                             >
                                 Atrás
                             </button>
@@ -408,7 +409,7 @@
                                 type="text"
                                 class="form-control"
                                 :disabled="
-                                    empresa_existe && empresa.nombre != null
+                                    empresa_existe && empresa_existe_completa
                                 "
                                 :class="{
                                     'is-invalid': $v.empresa.nombre.$error,
@@ -428,8 +429,9 @@
                             <Multiselect
                                 v-model.trim="empresa.codigo_ciiu_id"
                                 :options="options_ciiu"
+                                :searchable="true"
                                 :disabled="
-                                    empresa_existe && empresa.nombre != null
+                                    empresa_existe && empresa_existe_completa
                                 "
                                 placeholder="Seleccione una opción"
                                 valueProp="id"
@@ -457,8 +459,9 @@
                             <Multiselect
                                 v-model.trim="empresa.sector_id"
                                 :options="options_sector"
+                                :searchable="true"
                                 :disabled="
-                                    empresa_existe && empresa.nombre != null
+                                    empresa_existe && empresa_existe_completa
                                 "
                                 placeholder="Seleccione una opción"
                                 valueProp="id"
@@ -482,8 +485,9 @@
                             <Multiselect
                                 v-model.trim="empresa.empleado_id"
                                 :options="options_empleado"
+                                :searchable="true"
                                 :disabled="
-                                    empresa_existe && empresa.nombre != null
+                                    empresa_existe && empresa_existe_completa
                                 "
                                 placeholder="Seleccione una opción"
                                 valueProp="id"
@@ -507,8 +511,9 @@
                             <Multiselect
                                 v-model.trim="empresa.tamano_id"
                                 :options="options_tamano"
+                                :searchable="true"
                                 :disabled="
-                                    empresa_existe && empresa.nombre != null
+                                    empresa_existe && empresa_existe_completa
                                 "
                                 placeholder="Seleccione una opción"
                                 valueProp="id"
@@ -534,7 +539,7 @@
                                 type="text"
                                 class="form-control"
                                 :disabled="
-                                    empresa_existe && empresa.nombre != null
+                                    empresa_existe && empresa_existe_completa
                                 "
                                 :class="{
                                     'is-invalid': $v.empresa.telefono.$error,
@@ -552,6 +557,7 @@
                             <Multiselect
                                 v-model="id_sede"
                                 :options="options_sede"
+                                :searchable="true"
                                 placeholder="Seleccione una opción"
                                 valueProp="id"
                                 label="nombre"
@@ -598,6 +604,7 @@
                                 v-model.trim="sede.departamento_id"
                                 :options="options_departamento"
                                 placeholder="Seleccione una opción"
+                                :searchable="true"
                                 valueProp="id"
                                 label="nombre"
                                 @input="getOptionsCiudad()"
@@ -625,6 +632,7 @@
                                 v-model.trim="sede.ciudad_id"
                                 :options="options_ciudad"
                                 placeholder="Seleccione una opción"
+                                :searchable="true"
                                 valueProp="id"
                                 label="nombre"
                                 :disabled="id_sede != -1"
@@ -656,9 +664,9 @@
                         </div>
                         <div class="col-lg-6 text-end">
                             <button
-                                @click="paso = 2"
                                 type="button"
                                 class="btn btn-secondary"
+                                @click="paso = 2"
                             >
                                 Atrás
                             </button>
@@ -682,6 +690,8 @@ import User from "../../models/User";
 import Empresa from "../../models/Empresa";
 import EmpresaSede from "../../models/EmpresaSede";
 import Parametro from "../../models/Parametro";
+import Convenio from "../../models/Convenio";
+import ConvenioEmail from "../../models/ConvenioEmail";
 
 export default {
     data() {
@@ -713,7 +723,6 @@ export default {
                 departamento_id: "",
                 ciudad_id: "",
                 usuario_actualizo_id: "",
-                convenio_id: "",
             }),
 
             sede: new EmpresaSede({
@@ -727,11 +736,14 @@ export default {
             id_sede: "",
 
             empresa_existe: false,
+            empresa_existe_completa: false,
+
             email: "",
             verify_email: "",
             verificar_codigo_convenio: false,
             mostrar_form_empresa: false,
             codigo_convenio: "",
+            sede_id_empresario: "",
             nit: "",
             paso: 1,
             required: "Este campo es requerido",
@@ -756,8 +768,10 @@ export default {
             phone: {
                 required,
             },
-            verify_email: {
+            email: {
                 required,
+            },
+            verify_email: {
                 sameAsEmail: sameAs("email"),
             },
             cargo: {
@@ -768,6 +782,7 @@ export default {
                 minLength: minLength(8),
             },
             verify_password: {
+                required,
                 sameAsPassword: sameAs("password"),
             },
         },
@@ -813,7 +828,6 @@ export default {
             email,
         },
         verify_email: {
-            required,
             sameAsEmail: sameAs("email"),
         },
     },
@@ -878,6 +892,7 @@ export default {
                     } else {
                         this.paso = 2;
                         this.$v.$reset();
+                        this.$v.user.$reset();
                         this.verificarEmailConvenio();
                         this.form = {};
                         this.user.email = this.email;
@@ -885,8 +900,8 @@ export default {
                 }
             }
             if (this.paso == 2) {
-                this.$v.$reset();
                 if (!this.$v.user.$invalid) {
+                    this.$v.$reset();
                     this.paso = 3;
                     this.mostrar_form_empresa = false;
                     this.limpiarFormEmpresa();
@@ -944,7 +959,7 @@ export default {
             this.options_sede = [{ id: -1, nombre: "Nueva sede" }];
 
             let empresa = await Empresa.where("nit", this.empresa.nit)
-                .include("sedes")
+                .include("convenios", "sedes")
                 .get();
 
             if (this.convenio_id != "") {
@@ -961,9 +976,29 @@ export default {
                     });
                     this.mostrar_form_empresa = false;
                     return false;
+                } else {
+                    this.cargarInfoEmpresa(empresa);
+                }
+            } else {
+                if (empresa.length != 0) {
+                    if (empresa[0].convenios.length != 0) {
+                        this.$root.mostrarMensaje(
+                            "Error",
+                            "El nit diligenciado se encuentra registrado a un convenio, no se puede utilizar para un registro individual, por favor cambielo",
+                            "error"
+                        );
+                        this.mostrar_form_empresa = false;
+                        return false;
+                    } else {
+                        this.cargarInfoEmpresa(empresa);
+                    }
+                } else {
+                    this.cargarInfoEmpresa(empresa);
                 }
             }
+        },
 
+        cargarInfoEmpresa(empresa) {
             this.mostrar_form_empresa = true;
 
             if (empresa.length != 0) {
@@ -974,6 +1009,8 @@ export default {
 
                 this.id_sede = this.sede_id_empresario;
                 this.getSedeById();
+                this.empresa_existe_completa =
+                    this.empresa.nombre == null ? false : true;
                 this.empresa_existe = true;
             } else {
                 Object.keys(this.empresa).forEach((key) => {
@@ -983,22 +1020,6 @@ export default {
                 });
                 this.empresa_existe = false;
             }
-
-            // if (empresa.length != 0) {
-            //     this.empresa = empresa[0];
-            //     empresa[0].sedes.forEach((e) => {
-            //         this.options_sede.push(e);
-            //     });
-
-            //     this.empresa_existe = true;
-            // } else {
-            //     Object.keys(this.empresa).forEach((key) => {
-            //         if (key != "nit") {
-            //             this.empresa[key] = "";
-            //         }
-            //     });
-            //     this.empresa_existe = false;
-            // }
         },
 
         async getSedeById() {
@@ -1018,43 +1039,40 @@ export default {
         },
 
         async verificarEmailConvenio() {
-            await axios
-                .post("api/verificarEmailConvenio", {
-                    email: this.email,
-                })
-                .then((response) => {
-                    this.convenio_id =
-                        response.data == "" ? "" : response.data.convenio_id;
-                    this.nit = response.data == "" ? "" : response.data.nit;
-                    this.sede_id_empresario =
-                        response.data == "" ? "" : response.data.sede_id;
-                })
+            let convenio_email = await ConvenioEmail.where("email", this.email)
+                .get()
                 .catch((error) => {
                     this.$root.mostrarMensaje(
                         "error",
-                        "No se pudo verificar el convenio",
+                        "No se pudo verificar el convenio, por favor intentelo de nuevo",
                         "error"
                     );
                 });
+
+            this.convenio_id =
+                convenio_email.length == 0 ? "" : convenio_email[0].convenio_id;
+            this.nit = convenio_email.length == 0 ? "" : convenio_email[0].nit;
+            this.sede_id_empresario =
+                convenio_email.length == 0 ? "" : convenio_email[0].sede_id;
         },
         async verificarCodigoConvenio() {
             this.limpiarFormUser();
-            await axios
-                .post("api/verificarCodigoConvenio", {
-                    codigo: this.codigo_convenio,
-                    email: this.email,
-                })
-                .then((response) => {
-                    this.verificar_codigo_convenio = true;
-                })
-                .catch((error) => {
-                    this.verificar_codigo_convenio = false;
-                    this.$root.mostrarMensaje(
-                        "Atención",
-                        "El correo electrónico o el código de convenio no se encuentran registrados en el sistema, por favor verifique que la información esté correcta o contacte al administrador",
-                        "warning"
-                    );
-                });
+
+            let convenio_email = await ConvenioEmail.where({
+                email: this.email,
+                "convenio.codigo": this.codigo_convenio,
+            }).get();
+
+            if (convenio_email.length != 0) {
+                this.verificar_codigo_convenio = true;
+            } else {
+                this.verificar_codigo_convenio = false;
+                this.$root.mostrarMensaje(
+                    "Atención",
+                    "El correo electrónico o el código de convenio no se encuentran registrados en el sistema, por favor verifique que la información esté correcta o contacte al administrador",
+                    "warning"
+                );
+            }
         },
         limpiarFormUser() {
             Object.keys(this.user).forEach((key) => {

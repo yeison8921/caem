@@ -62,42 +62,6 @@ class ConvenioRepository extends BaseRepository
         return $convenio;
     }
 
-    public function agregarCorreosConvenio($request)
-    {
-        $convenio = new ConvenioEmail;
-        $convenio->email = $request->email;
-        $convenio->nit = $request->nit;
-        $convenio->convenio_id = $request->convenio_id;
-        $convenio->sede_id = $request->sede_id;
-        $convenio->save();
-    }
-
-    public function verificarEmailConvenio($request)
-    {
-        $convenio = ConvenioEmail::where("email", $request->email)->first();
-        return $convenio;
-    }
-
-    public function eliminarCorreo($id_convenio_email)
-    {
-        ConvenioEmail::find($id_convenio_email)->delete();
-    }
-
-    public function verificarCodigoConvenio($request)
-    {
-        $verificar_convenio = Convenio::where("codigo", $request->codigo)->first();
-        if (!$verificar_convenio) {
-            return response()->json("error", 500);
-        } else {
-            $verificar_email_convenio = ConvenioEmail::where([["email", $request->email], ["convenio_id", $verificar_convenio->id]])->first();
-            if (!$verificar_email_convenio) {
-                return response()->json("error", 500);
-            } else {
-                return response()->json("success", 200);
-            }
-        }
-    }
-
     public function formConvenio($id_convenio)
     {
         $data = [];

@@ -22,7 +22,7 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 table-responsive">
                     <table
                         class="table table-bordered table-hover table-stripered"
                         id="tabla-convenios"
@@ -42,6 +42,19 @@
                                 <td>{{ c.nombre_entidad }}</td>
                                 <td>{{ c.codigo }}</td>
                                 <td>
+                                    <button
+                                        type="button"
+                                        class="btn btn-info"
+                                        title="Ver empresarios"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modal-ver-empresarios"
+                                        @click="
+                                            nombre_convenio = c.nombre_convenio;
+                                            getEmpresariosConvenio(c.id);
+                                        "
+                                    >
+                                        <i class="fas fa-users"></i>
+                                    </button>
                                     <a
                                         :href="'/convenios/edit/' + c.id"
                                         class="btn btn-warning"
@@ -85,15 +98,96 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal-ver-empresarios" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            Empresarios convenio - {{ nombre_convenio }}
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3 table-responsive">
+                            <table
+                                class="table table-bordered table-hover table-stripered"
+                                id="tabla-empresarios"
+                                width="100%"
+                            >
+                                <thead>
+                                    <tr>
+                                        <th>Correo</th>
+                                        <th>Nit</th>
+                                        <th>Sede</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="(e, i) in emails_convenio"
+                                        v-bind:key="i"
+                                    >
+                                        <td>{{ e.email }}</td>
+                                        <td>{{ e.nit }}</td>
+                                        <td>{{ e.sede.nombre }}</td>
+                                        <td>
+                                            <span
+                                                class="badge"
+                                                :class="
+                                                    e.registrado == null
+                                                        ? 'bg-warning'
+                                                        : 'bg-success'
+                                                "
+                                            >
+                                                {{
+                                                    e.registrado == null
+                                                        ? "Empresario sin registrar"
+                                                        : "Empresario registrado"
+                                                }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
 import Convenio from "../../../models/Convenio";
+import ConvenioEmail from "../../../models/ConvenioEmail";
 
 export default {
     data() {
         return {
             convenios: "",
+            nombre_convenio: "",
+            emails_convenio: [],
+            convenio_email: new ConvenioEmail({
+                email: "",
+                nit: "",
+                convenio_id: "",
+                sede_id: "",
+            }),
         };
     },
     mounted() {
@@ -157,6 +251,20 @@ export default {
                         });
                 }
             });
+        },
+        async getEmpresariosConvenio(convenio_id) {
+            this.$root.mostrarCargando();
+            this.emails_convenio = await ConvenioEmail.where(
+                "convenio_id",
+                convenio_id
+            )
+                .include("sede", "registrado")
+                .get();
+
+            Swal.close();
+
+            $("#tabla-empresarios").DataTable().destroy();
+            this.$tablaGlobal("#tabla-empresarios");
         },
     },
 };

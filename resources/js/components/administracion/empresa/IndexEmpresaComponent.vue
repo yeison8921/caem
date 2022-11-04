@@ -23,7 +23,7 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-3 table-responsive">
                     <table
                         class="table table-bordered table-hover table-stripered"
                         id="tabla-empresas"

@@ -19,7 +19,6 @@ class Empresa extends Model
         'sector_id',
         'empleado_id',
         'tamano_id',
-        'convenio_id',
         'usuario_actualizo_id',
     ];
 
