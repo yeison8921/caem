@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ConvenioController;
 use App\Http\Controllers\Api\ConvenioEmailController;
 use App\Http\Controllers\Api\EmpresaController;
 use App\Http\Controllers\Api\EmpresaSedeController;
+use App\Http\Controllers\Api\InformacionEmpresaController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\ParametroController;
@@ -51,6 +52,9 @@ Route::group(['as' => 'auth.'], function () {
 
         // Empresas
         Route::apiResource('empresas', EmpresaController::class);
+
+        // Informacion Empresas
+        Route::apiResource('informacion_empresas', InformacionEmpresaController::class);
 
         // Sedes
         Route::apiResource('empresa_sedes', EmpresaSedeController::class);

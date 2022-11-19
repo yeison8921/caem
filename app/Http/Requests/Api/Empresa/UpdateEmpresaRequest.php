@@ -5,7 +5,7 @@ namespace App\Http\Requests\Api\Empresa;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class StoreEmpresaRequest.
+ * Class UpdateEmpresaRequest.
  */
 class UpdateEmpresaRequest extends FormRequest
 {

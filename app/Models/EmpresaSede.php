@@ -19,7 +19,7 @@ class EmpresaSede extends Model
     ];
 
     /**
-     * Obtiene la empresa de la sede.
+     * Obtiene la empresa.
      */
     public function empresa()
     {

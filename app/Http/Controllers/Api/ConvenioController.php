@@ -51,7 +51,7 @@ class ConvenioController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Convenio $empresa
+     * @param  \App\Models\Convenio $convenio
      * @return \Illuminate\Http\Response
      */
     public function show(Convenio $convenio)

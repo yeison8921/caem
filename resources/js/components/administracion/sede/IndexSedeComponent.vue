@@ -173,7 +173,7 @@ export default {
                 Swal.close();
                 this.$root.mostrarMensaje(
                     "Éxito",
-                    "Sede eliminads exitosamente",
+                    "Sede eliminada exitosamente",
                     "success"
                 );
                 setTimeout(() => {

@@ -68,14 +68,14 @@ class User extends Authenticatable
             Hash::make($password);
     }
     /**
-     * Obtiene la empresa de la sede.
+     * Obtiene la empresa.
      */
     public function empresa()
     {
         return $this->belongsTo(Empresa::class);
     }
     /**
-     * Obtiene la empresa de la sede.
+     * Obtiene la sede de la empresa.
      */
     public function empresaSede()
     {

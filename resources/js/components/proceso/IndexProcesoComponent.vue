@@ -153,7 +153,9 @@
                                                     datos de sus proveedores?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="fi.proveedores"
+                                                    v-model="
+                                                        ie.datos_proveedores
+                                                    "
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
@@ -168,7 +170,7 @@
                                                     combustible?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="fi.fuentes_moviles"
+                                                    v-model="ie.fuentes_moviles"
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
@@ -181,7 +183,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.actividad_agricola
+                                                        ie.actividad_agricola
                                                     "
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
@@ -216,15 +218,15 @@
                                                     base?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="fi.huella_base"
+                                                    v-model="ie.huella_base"
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
                                                     @input="
                                                         if (
-                                                            fi.huella_base === 0
+                                                            ie.huella_base === 0
                                                         )
-                                                            fi.metas_mitigacion = 0;
+                                                            ie.metas_mitigacion = 0;
                                                     "
                                                 />
                                             </div>
@@ -236,7 +238,7 @@
                                                 </label>
                                                 <input
                                                     v-model="
-                                                        fi.valor_huella_base
+                                                        ie.valor_huella_base
                                                     "
                                                     class="form-control"
                                                     type="number"
@@ -252,19 +254,19 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.huella_comparativo
+                                                        ie.huella_comparativo
                                                     "
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
                                                     @input="
-                                                        fi.verificacion_interna =
+                                                        ie.verificacion_interna =
                                                             null;
                                                         if (
-                                                            fi.huella_comparativo ===
+                                                            ie.huella_comparativo ===
                                                             0
                                                         )
-                                                            fi.verificacion_interna = 0;
+                                                            ie.verificacion_interna = 0;
                                                     "
                                                 />
                                             </div>
@@ -277,7 +279,7 @@
                                                 </label>
                                                 <input
                                                     v-model="
-                                                        fi.valor_huella_comparativo
+                                                        ie.valor_huella_comparativo
                                                     "
                                                     class="form-control"
                                                     type="number"
@@ -292,7 +294,7 @@
                                                     organizacional?
                                                 </label>
                                                 <textarea
-                                                    v-model="fi.alcances_huella"
+                                                    v-model="ie.alcances_huella"
                                                     class="form-control"
                                                     required
                                                 ></textarea>
@@ -305,7 +307,7 @@
                                                     Otras Emisiones Indirectas?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="fi.priorizacion"
+                                                    v-model="ie.priorizacion"
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
@@ -321,7 +323,7 @@
                                                     prestados?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="fi.indicador"
+                                                    v-model="ie.indicador"
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
@@ -373,21 +375,21 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.verificacion_interna
+                                                        ie.verificacion_interna
                                                     "
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
                                                     :disabled="
-                                                        fi.huella_comparativo ===
+                                                        ie.huella_comparativo ===
                                                         0
                                                     "
                                                     @input="
                                                         if (
-                                                            fi.verificacion_interna ===
+                                                            ie.verificacion_interna ==
                                                             0
                                                         )
-                                                            fi.metas_mitigacion = 0;
+                                                            ie.metas_mitigacion = 0;
                                                     "
                                                 />
                                             </div>
@@ -400,7 +402,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.optimizacion_procesos
+                                                        ie.optimizacion_procesos
                                                     "
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
@@ -416,7 +418,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.verificacion_tercero
+                                                        ie.verificacion_tercero
                                                     "
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
@@ -432,7 +434,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.declaracion_conformidad_tercero
+                                                        ie.declaracion_conformidad_tercero
                                                     "
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
@@ -447,7 +449,7 @@
                                                     requisitos del proceso?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="fi.acciones_mejora"
+                                                    v-model="ie.acciones_mejora"
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
@@ -495,14 +497,14 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.metas_mitigacion
+                                                        ie.metas_mitigacion
                                                     "
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
                                                     :disabled="
-                                                        fi.huella_base == 0 ||
-                                                        fi.verificacion_interna ==
+                                                        ie.huella_base === 0 ||
+                                                        ie.verificacion_interna ==
                                                             0
                                                     "
                                                 />
@@ -515,7 +517,7 @@
                                                     / año)
                                                 </label>
                                                 <input
-                                                    v-model="fi.meta_reduccion"
+                                                    v-model="ie.meta_reduccion"
                                                     class="form-control"
                                                     type="number"
                                                     required
@@ -527,15 +529,15 @@
                                                     proyección para esa meta?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="fi.anio_meta"
+                                                    v-model="ie.anio_meta"
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
                                                     @input="
-                                                        fi.efecto_invernadero =
+                                                        ie.efecto_invernadero =
                                                             null;
-                                                        if (fi.anio_meta === 0)
-                                                            fi.efecto_invernadero = 2;
+                                                        if (ie.anio_meta === 0)
+                                                            ie.efecto_invernadero = 2;
                                                     "
                                                 />
                                             </div>
@@ -546,7 +548,7 @@
                                                 </label>
                                                 <input
                                                     v-model="
-                                                        fi.anio_proyeccion_meta
+                                                        ie.anio_proyeccion_meta
                                                     "
                                                     class="form-control"
                                                     type="number"
@@ -564,7 +566,7 @@
                                                     otro tipo?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="fi.meta_alineada"
+                                                    v-model="ie.meta_alineada"
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
@@ -577,7 +579,7 @@
                                                     formulación de la meta?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="fi.metodologias"
+                                                    v-model="ie.metodologias"
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
@@ -593,7 +595,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.seguimiento_cumplimiento
+                                                        ie.seguimiento_cumplimiento
                                                     "
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
@@ -647,13 +649,13 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.efecto_invernadero
+                                                        ie.efecto_invernadero
                                                     "
                                                     :options="options_puntaje_1"
                                                     placeholder="Seleccione una opción"
                                                     required
                                                     :disabled="
-                                                        fi.anio_meta === 0
+                                                        ie.anio_meta === 0
                                                     "
                                                 />
                                             </div>
@@ -665,7 +667,7 @@
                                                     instalaciones?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="fi.sumideros"
+                                                    v-model="ie.sumideros"
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
@@ -683,7 +685,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.informacion_mensual
+                                                        ie.informacion_mensual
                                                     "
                                                     :options="options_puntaje_2"
                                                     placeholder="Seleccione una opción"
@@ -700,7 +702,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.diagrama_procesos
+                                                        ie.diagrama_procesos
                                                     "
                                                     :options="options_puntaje_1"
                                                     placeholder="Seleccione una opción"
@@ -715,7 +717,7 @@
                                                     hectáreas)?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="fi.areas_sumideros"
+                                                    v-model="ie.areas_sumideros"
                                                     :options="options_puntaje_1"
                                                     placeholder="Seleccione una opción"
                                                     required
@@ -732,7 +734,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.informacion_centralizada
+                                                        ie.informacion_centralizada
                                                     "
                                                     :options="options_puntaje_1"
                                                     placeholder="Seleccione una opción"
@@ -748,7 +750,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.soportes_consumos
+                                                        ie.soportes_consumos
                                                     "
                                                     :options="options_puntaje_1"
                                                     placeholder="Seleccione una opción"
@@ -764,7 +766,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.informacion_anio
+                                                        ie.informacion_anio
                                                     "
                                                     :options="options_puntaje_1"
                                                     placeholder="Seleccione una opción"
@@ -783,7 +785,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.estimaciones_consumos
+                                                        ie.estimaciones_consumos
                                                     "
                                                     :options="options_puntaje_1"
                                                     placeholder="Seleccione una opción"
@@ -799,7 +801,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.consumos_energeticos
+                                                        ie.consumos_energeticos
                                                     "
                                                     :options="options_puntaje_1"
                                                     placeholder="Seleccione una opción"
@@ -816,7 +818,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.sustento_metodologico
+                                                        ie.sustento_metodologico
                                                     "
                                                     :options="options_puntaje_1"
                                                     placeholder="Seleccione una opción"
@@ -834,7 +836,7 @@
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        fi.compartira_reporte
+                                                        ie.compartira_reporte
                                                     "
                                                     :options="options_puntaje_1"
                                                     placeholder="Seleccione una opción"
@@ -848,7 +850,7 @@
                                                     toma de decisiones?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="fi.toma_decisiones"
+                                                    v-model="ie.toma_decisiones"
                                                     :options="options_puntaje_1"
                                                     placeholder="Seleccione una opción"
                                                     required
@@ -1176,15 +1178,53 @@
 <script>
 import { required } from "vuelidate/lib/validators";
 import Parametro from "../../models/Parametro";
+import InformacionEmpresa from "../../models/InformacionEmpresa";
 
 export default {
     data() {
         return {
-            fi: {
-                verificacion_interna: "",
-            }, //form información
+            ie: new InformacionEmpresa({
+                datos_proveedores: null,
+                fuentes_moviles: null,
+                actividad_agricola: null,
+                huella_base: null,
+                valor_huella_base: null,
+                huella_comparativo: null,
+                valor_huella_comparativo: null,
+                alcances_huella: null,
+                priorizacion: null,
+                indicador: null,
+                verificacion_interna: null,
+                optimizacion_procesos: null,
+                verificacion_tercero: null,
+                declaracion_conformidad_tercero: null,
+                acciones_mejora: null,
+                metas_mitigacion: null,
+                meta_reduccion: null,
+                anio_meta: null,
+                anio_proyeccion_meta: null,
+                meta_alineada: null,
+                metodologias: null,
+                seguimiento_cumplimiento: null,
+                efecto_invernadero: null,
+                sumideros: null,
+                informacion_mensual: null,
+                diagrama_procesos: null,
+                areas_sumideros: null,
+                informacion_centralizada: null,
+                soportes_consumos: null,
+                informacion_anio: null,
+                estimaciones_consumos: null,
+                consumos_energeticos: null,
+                sustento_metodologico: null,
+                compartira_reporte: null,
+                toma_decisiones: null,
+                usuario_creacion_id: null,
+                empresa_id: null,
+                sede_id: null,
+            }),
 
-            paso: 2,
+            paso: 1,
             procesos: [
                 {
                     nombre: "Proceso 1",
@@ -1307,73 +1347,24 @@ export default {
             });
         },
 
-        submit(e) {
-            switch (this.paso) {
-                case 1:
-                    if (
-                        this.fi.proveedores !== "" ||
-                        this.fi.fuentes_moviles !== "" ||
-                        this.fi.actividad_agricola !== ""
-                    ) {
-                        this.paso = 2;
-                    }
-                    break;
-                case 2:
-                    if (
-                        this.fi.huella_base !== "" ||
-                        this.fi.valor_huella_base !== "" ||
-                        this.fi.huella_comparativo !== "" ||
-                        this.fi.valor_huella_comparativo !== "" ||
-                        this.fi.alcances_huella !== "" ||
-                        this.fi.priorizacion !== "" ||
-                        this.fi.indicador !== ""
-                    ) {
-                        this.paso = 3;
-                    }
-                    break;
-                case 3:
-                    if (
-                        this.fi.verificacion_interna !== "" ||
-                        this.fi.optimizacion_procesos !== "" ||
-                        this.fi.verificacion_tercero !== "" ||
-                        this.fi.declaracion_conformidad_tercero !== "" ||
-                        this.fi.acciones_mejora !== ""
-                    ) {
-                        this.paso = 4;
-                    }
-                    break;
-                case 4:
-                    if (
-                        this.fi.metas_mitigacion !== "" ||
-                        this.fi.meta_reduccion !== "" ||
-                        this.fi.anio_meta !== "" ||
-                        this.fi.anio_proyeccion_meta !== "" ||
-                        this.fi.meta_alineada !== "" ||
-                        this.fi.metodologias !== "" ||
-                        this.fi.seguimiento_cumplimiento !== ""
-                    ) {
-                        this.paso = 5;
-                    }
-                    break;
-                case 5:
-                    if (
-                        this.fi.efecto_invernadero !== "" ||
-                        this.fi.sumideros !== "" ||
-                        this.fi.informacion_mensual !== "" ||
-                        this.fi.diagrama_procesos !== "" ||
-                        this.fi.areas_sumideros !== "" ||
-                        this.fi.informacion_centralizada !== "" ||
-                        this.fi.soportes_consumos !== "" ||
-                        this.fi.informacion_anio !== "" ||
-                        this.fi.estimaciones_consumos !== "" ||
-                        this.fi.consumos_energeticos !== "" ||
-                        this.fi.sustento_metodologico !== "" ||
-                        this.fi.compartira_reporte !== "" ||
-                        this.fi.toma_decisiones !== ""
-                    ) {
-                        //guardar
-                    }
-                    break;
+        async submit(e) {
+            this.paso++;
+            if (this.paso == 6) {
+                this.$root.mostrarCargando("Guardando información");
+
+                //reemplazar por datos de usuario y empresa
+                this.ie.usuario_creacion_id = 1;
+                this.ie.empresa_id = 1;
+                this.ie.sede_id = 1;
+
+                await this.ie.save();
+
+                Swal.close();
+                this.$root.mostrarMensaje(
+                    "Éxito",
+                    "Información guardada exitosamente",
+                    "success"
+                );
             }
         },
         tablaEmisiones() {
