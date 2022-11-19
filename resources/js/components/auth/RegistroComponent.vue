@@ -926,7 +926,7 @@ export default {
                     }
 
                     //Usuario
-                    this.user.rol_id = 1;
+                    this.user.rol_id = 2;
                     this.user.estado = this.convenio_id == "" ? 0 : 1;
                     this.user.empresa_id = empresa_creada.id;
                     this.user.sede_id = empresa_sede.id;
