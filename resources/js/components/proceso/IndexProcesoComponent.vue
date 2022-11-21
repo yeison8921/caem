@@ -894,34 +894,31 @@
                             <div class="accordion" id="acordeon-procesos">
                                 <div
                                     class="accordion-item"
-                                    v-for="(v, i) in $v.procesos.$each.$iter"
-                                    v-bind:key="i"
+                                    v-for="(p, ip) in procesos"
+                                    v-bind:key="ip"
                                 >
-                                    <h2
-                                        class="accordion-header"
-                                        :id="'panelsStayOpen-heading-' + i"
-                                    >
+                                    <h2 class="accordion-header">
                                         <button
                                             class="accordion-button"
                                             type="button"
                                             data-bs-toggle="collapse"
                                             :data-bs-target="
-                                                '#panelsStayOpen-collapse-' + i
+                                                '#panelsStayOpen-collapse-' + ip
                                             "
                                             aria-expanded="true"
                                             :aria-controls="
-                                                'panelsStayOpen-collapse-' + i
+                                                'panelsStayOpen-collapse-' + ip
                                             "
                                         >
-                                            {{ v.nombre.$model }}
+                                            {{ p.nombre }}
                                         </button>
                                     </h2>
 
                                     <div
-                                        :id="'panelsStayOpen-collapse-' + i"
+                                        :id="'panelsStayOpen-collapse-' + ip"
                                         class="accordion-collapse collapse show"
                                         :aria-labelledby="
-                                            'panelsStayOpen-heading-' + i
+                                            'panelsStayOpen-heading-' + ip
                                         "
                                     >
                                         <div class="accordion-body">
@@ -931,141 +928,233 @@
                                                     >Nombre del proceso</label
                                                 >
                                                 <input
-                                                    v-model.trim="
-                                                        v.nombre.$model
-                                                    "
+                                                    v-model="p.nombre"
                                                     type="text"
                                                     class="form-control"
-                                                    :class="{
-                                                        'is-invalid':
-                                                            v.nombre.$error,
-                                                        'is-valid':
-                                                            !v.nombre.$invalid,
-                                                    }"
                                                 />
-                                                <div class="invalid-feedback">
-                                                    <span
-                                                        v-if="
-                                                            !v.nombre.required
-                                                        "
-                                                        >{{ required }}</span
-                                                    >
-                                                </div>
                                             </div>
                                             <div class="mb-3">
-                                                <label
-                                                    class="form-label required"
-                                                    >Descripción del
-                                                    proceso</label
+                                                <div
+                                                    class="accordion"
+                                                    id="accordionSubprocesos"
                                                 >
-                                                <textarea
-                                                    v-model.trim="
-                                                        v.descripcion.$model
-                                                    "
-                                                    class="form-control"
-                                                    :class="{
-                                                        'is-invalid':
-                                                            v.descripcion
-                                                                .$error,
-                                                        'is-valid':
-                                                            !v.descripcion
-                                                                .$invalid,
-                                                    }"
-                                                >
-                                                </textarea>
-                                                <div class="invalid-feedback">
-                                                    <span
-                                                        v-if="
-                                                            !v.descripcion
-                                                                .required
-                                                        "
-                                                        >{{ required }}</span
+                                                    <div
+                                                        class="accordion-item"
+                                                        v-for="(
+                                                            sp, is
+                                                        ) in p.subprocesos"
+                                                        v-bind:key="is"
                                                     >
+                                                        <h2
+                                                            class="accordion-header"
+                                                            id="flush-headingOne"
+                                                        >
+                                                            <button
+                                                                class="accordion-button collapsed"
+                                                                type="button"
+                                                                data-bs-toggle="collapse"
+                                                                :data-bs-target="
+                                                                    '#flush-collapse' +
+                                                                    ip +
+                                                                    is
+                                                                "
+                                                                aria-expanded="false"
+                                                                :aria-controls="
+                                                                    'flush-collapse' +
+                                                                    ip +
+                                                                    is
+                                                                "
+                                                            >
+                                                                {{ sp.nombre }}
+                                                            </button>
+                                                        </h2>
+                                                        <div
+                                                            :id="
+                                                                'flush-collapse' +
+                                                                ip +
+                                                                is
+                                                            "
+                                                            class="accordion-collapse collapse"
+                                                            :aria-labelledby="
+                                                                'flush-heading' +
+                                                                ip +
+                                                                is
+                                                            "
+                                                            data-bs-parent="#accordionSubprocesos"
+                                                        >
+                                                            <div
+                                                                class="accordion-body"
+                                                            >
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        class="form-label required"
+                                                                        >Nombre
+                                                                        del sub
+                                                                        proceso</label
+                                                                    >
+                                                                    <input
+                                                                        v-model="
+                                                                            sp.nombre
+                                                                        "
+                                                                        type="text"
+                                                                        class="form-control"
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        class="form-label required"
+                                                                        >Descripción</label
+                                                                    >
+                                                                    <textarea
+                                                                        v-model="
+                                                                            sp.descripcion
+                                                                        "
+                                                                        class="form-control"
+                                                                    ></textarea>
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        class="form-label required"
+                                                                        >Fuente
+                                                                        de
+                                                                        emisión</label
+                                                                    >
+                                                                    <Multiselect
+                                                                        :options="
+                                                                            options_puntaje_1
+                                                                        "
+                                                                        placeholder="Seleccione una opción"
+                                                                        required
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        class="form-label required"
+                                                                        >Tipo o
+                                                                        clase</label
+                                                                    >
+                                                                    <Multiselect
+                                                                        :options="
+                                                                            options_puntaje_1
+                                                                        "
+                                                                        placeholder="Seleccione una opción"
+                                                                        required
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3 text-end"
+                                                                >
+                                                                    <button
+                                                                        v-if="
+                                                                            is >
+                                                                            0
+                                                                        "
+                                                                        type="button"
+                                                                        class="btn btn-danger"
+                                                                        @click="
+                                                                            if (
+                                                                                is >
+                                                                                0
+                                                                            )
+                                                                                procesos[
+                                                                                    ip
+                                                                                ][
+                                                                                    'subprocesos'
+                                                                                ].splice(
+                                                                                    is,
+                                                                                    1
+                                                                                );
+                                                                        "
+                                                                    >
+                                                                        Eliminar
+                                                                        subproceso
+                                                                    </button>
+
+                                                                    <button
+                                                                        type="button"
+                                                                        class="btn btn-success"
+                                                                        @click="
+                                                                            procesos[
+                                                                                ip
+                                                                            ][
+                                                                                'subprocesos'
+                                                                            ].splice(
+                                                                                is +
+                                                                                    1,
+                                                                                0,
+                                                                                {
+                                                                                    nombre: 'Nuevo subproceso',
+                                                                                    descripcion:
+                                                                                        '',
+                                                                                    fuente_emision:
+                                                                                        '',
+                                                                                    tipo: '',
+                                                                                }
+                                                                            )
+                                                                        "
+                                                                    >
+                                                                        Agregar
+                                                                        subproceso
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="mb-3">
-                                                <label
-                                                    class="form-label required"
-                                                    >Equipo de consumo (fuente
-                                                    GEI)</label
+                                            <div class="mb-3 text-end">
+                                                <button
+                                                    v-if="ip > 0"
+                                                    type="button"
+                                                    class="btn btn-danger"
+                                                    @click="
+                                                        if (ip > 0)
+                                                            procesos.splice(
+                                                                ip,
+                                                                1
+                                                            );
+                                                    "
                                                 >
-                                                <Multiselect
-                                                    v-model.trim="
-                                                        v.equipos.$model
+                                                    Eliminar proceso
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-success"
+                                                    @click="
+                                                        procesos.splice(
+                                                            ip + 1,
+                                                            0,
+                                                            {
+                                                                nombre: 'Nuevo proceso',
+                                                                subprocesos: [
+                                                                    {
+                                                                        nombre: 'Subproceso 1',
+                                                                        descripcion:
+                                                                            '',
+                                                                        fuente_emision:
+                                                                            '',
+                                                                        tipo: '',
+                                                                    },
+                                                                ],
+                                                            }
+                                                        )
                                                     "
-                                                    mode="tags"
-                                                    :groups="true"
-                                                    :searchable="true"
-                                                    :options="
-                                                        options_equipo_consumo
-                                                    "
-                                                    placeholder="Selección múltiple"
-                                                    :class="{
-                                                        'is-invalid':
-                                                            v.equipos.$error,
-                                                        'is-valid':
-                                                            !v.equipos.$invalid,
-                                                    }"
-                                                />
-                                                <div class="invalid-feedback">
-                                                    <span
-                                                        v-if="
-                                                            v.equipos.required
-                                                        "
-                                                    >
-                                                        {{ required }}</span
-                                                    >
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label
-                                                    class="form-label required"
-                                                    >Energéticos
-                                                    utilizados</label
                                                 >
-                                                <Multiselect
-                                                    v-model.trim="
-                                                        v.energetico.$model
-                                                    "
-                                                    :options="
-                                                        options_energeticos
-                                                    "
-                                                    valueProp="id"
-                                                    label="nombre"
-                                                    mode="tags"
-                                                    :searchable="true"
-                                                    placeholder="Selección múltiple"
-                                                    :class="{
-                                                        'is-invalid':
-                                                            v.energetico.$error,
-                                                        'is-valid':
-                                                            !v.energetico
-                                                                .$invalid,
-                                                    }"
-                                                />
-                                                <div class="invalid-feedback">
-                                                    <span
-                                                        v-if="
-                                                            v.energetico
-                                                                .required
-                                                        "
-                                                    >
-                                                        {{ required }}</span
-                                                    >
-                                                </div>
+                                                    Agregar proceso
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mb-3 text-end">
-                            <button
-                                class="btn btn-success"
-                                @click="agregarElementoProceso()"
-                            >
-                                <i class="fas fa-plus"></i>
-                            </button>
                         </div>
                     </div>
                     <div
@@ -1228,9 +1317,14 @@ export default {
             procesos: [
                 {
                     nombre: "Proceso 1",
-                    descripcion: "",
-                    equipos: [],
-                    energetico: [],
+                    subprocesos: [
+                        {
+                            nombre: "Subproceso 1",
+                            descripcion: "",
+                            fuente_emision: "",
+                            tipo: "",
+                        },
+                    ],
                 },
             ],
             options_anio: [],
@@ -1337,14 +1431,6 @@ export default {
                         "error"
                     );
                 });
-        },
-        agregarElementoProceso() {
-            this.procesos.push({
-                nombre: "",
-                descripcion: "",
-                equipos: [],
-                energetico: [],
-            });
         },
 
         async submit(e) {
