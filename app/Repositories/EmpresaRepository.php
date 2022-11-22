@@ -4,8 +4,6 @@ namespace App\Repositories;
 
 use App\Exceptions\GeneralException;
 use App\Models\Empresa;
-use App\Models\EmpresaSede;
-use App\Models\EmpresaTemporal;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -63,7 +61,8 @@ class EmpresaRepository extends BaseRepository
         return $empresa;
     }
 
-    public function formEmpresa($id_empresa){
+    public function formEmpresa($id_empresa)
+    {
         $data = [];
         $data['id_empresa'] = $id_empresa;
         return view('administracion/empresa/form_empresa', $data);

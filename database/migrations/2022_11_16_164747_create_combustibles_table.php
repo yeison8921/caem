@@ -53,6 +53,8 @@ class CreateCombustiblesTable extends Migration
             $table->float('incertidumbre_n2o_2_fuente_movil', 6, 5);
             $table->string('fuente_bibliografica_n2o_fuente_movil');
 
+            $table->string('tipo');
+
             $table->timestamps();
             $table->softDeletes();
         });

@@ -1,13 +1,17 @@
 <?php
 
+use App\Http\Controllers\Api\CombustibleController;
 use App\Http\Controllers\Api\ConvenioController;
 use App\Http\Controllers\Api\ConvenioEmailController;
 use App\Http\Controllers\Api\EmpresaController;
 use App\Http\Controllers\Api\EmpresaSedeController;
+use App\Http\Controllers\Api\ExtintorController;
 use App\Http\Controllers\Api\InformacionEmpresaController;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\LubricanteController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\ParametroController;
+use App\Http\Controllers\Api\RefrigeranteController;
 use App\Http\Controllers\Api\TipoParametroController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -58,6 +62,18 @@ Route::group(['as' => 'auth.'], function () {
 
         // Sedes
         Route::apiResource('empresa_sedes', EmpresaSedeController::class);
+
+        // Combustibles
+        Route::apiResource('combustibles', CombustibleController::class);
+
+        // Refrigerantes
+        Route::apiResource('refrigerantes', RefrigeranteController::class);
+
+        // Extintores
+        Route::apiResource('extintores', ExtintorController::class);
+
+        // Lubricantes
+        Route::apiResource('lubricantes', LubricanteController::class);
 
         // Convenios
         Route::apiResource('convenios', ConvenioController::class);
