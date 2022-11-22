@@ -573,17 +573,55 @@
                                                 />
                                             </div>
                                             <div class="mb-3">
-                                                <label class="required"
-                                                    >¿Cuál de éstas metodologías
-                                                    empleó la empresa en la
-                                                    formulación de la meta?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="ie.metodologias"
-                                                    :options="options_si_no"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label class="required"
+                                                            >¿Cuál de éstas
+                                                            metodologías empleó
+                                                            la empresa en la
+                                                            formulación de la
+                                                            meta?
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                ie.metodologia
+                                                            "
+                                                            :options="
+                                                                options_metodologia
+                                                            "
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Seleccione una opción"
+                                                            required
+                                                            @input="
+                                                                changeMetodologia()
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            :class="
+                                                                valor_option_metodologia
+                                                                    ? 'required'
+                                                                    : ''
+                                                            "
+                                                            >Otra ¿Cuál?
+                                                        </label>
+                                                        <input
+                                                            v-model="
+                                                                ie.otra_metodologia
+                                                            "
+                                                            type="text"
+                                                            class="form-control"
+                                                            :required="
+                                                                valor_option_metodologia
+                                                            "
+                                                            :disabled="
+                                                                !valor_option_metodologia
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="required"
@@ -1330,6 +1368,8 @@ export default {
             options_anio: [],
             options_mes: [],
 
+            valor_option_metodologia: "",
+
             anio: "",
             mes: "",
             fecha_base: "",
@@ -1371,6 +1411,7 @@ export default {
 
             options_equipo_consumo: [],
             options_energeticos: [],
+            options_metodologia: [],
             energeticos: [{ nombre: "" }, { nombre: "" }, { nombre: "" }],
             required: "Este campo es requerido",
             options: [{ value: 1, label: "1" }],
@@ -1404,6 +1445,7 @@ export default {
         this.getParametros(7, "options_anio");
         this.getParametros(8, "options_mes");
         this.getParametros(11, "options_energeticos");
+        this.getParametros(12, "options_metodologia");
         this.getEquiposConsumo();
     },
     methods: {
@@ -1431,6 +1473,13 @@ export default {
                         "error"
                     );
                 });
+        },
+        changeMetodologia() {
+            this.ie.otra_metodologia = null;
+            let option = this.options_metodologia.filter(
+                (el) => el.id === this.ie.metodologia
+            );
+            this.valor_option_metodologia = option[0]["valor"];
         },
 
         async submit(e) {

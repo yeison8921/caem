@@ -47,7 +47,7 @@ class UpdateInformacionEmpresaRequest extends FormRequest
             'anio_meta' => ['required', 'integer'],
             'anio_proyeccion_meta' => ['required', 'integer'],
             'meta_alineada' => ['required', 'integer'],
-            'metodologias' => ['required', 'integer'],
+            'metodologia' => ['required', 'integer'],
             'seguimiento_cumplimiento' => ['required', 'integer'],
             'efecto_invernadero' => ['required', 'integer'],
             'sumideros' => ['required', 'integer'],

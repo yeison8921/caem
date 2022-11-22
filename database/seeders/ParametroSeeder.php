@@ -30,6 +30,7 @@ class ParametroSeeder extends Seeder
             ['nombre' => 'Equipo de consumo fijo'],
             ['nombre' => 'Equipo de consumo móvil'],
             ['nombre' => 'Energéticos'],
+            ['nombre' => 'Metodologías'],
         ];
 
         DB::table('tipo_parametros')->insert($parameters);
@@ -1782,6 +1783,18 @@ class ParametroSeeder extends Seeder
             ['nombre' => 'Octubre', 'valor' => '10', 'tipo_parametro_id' => 8],
             ['nombre' => 'Noviembre', 'valor' => '11', 'tipo_parametro_id' => 8],
             ['nombre' => 'Diciembre', 'valor' => '12', 'tipo_parametro_id' => 8],
+        ];
+
+        DB::table('parametros')->insert($parameters);
+
+        //Metodologías
+        $parameters = [
+            ['nombre' => 'GHG Protocol', 'tipo_parametro_id' => 12],
+            ['nombre' => 'Science Based Targets (SBT)', 'tipo_parametro_id' => 12],
+            ['nombre' => 'Proyecciones con regresión lineal', 'tipo_parametro_id' => 12],
+            ['nombre' => 'Otra ¿Cuál?', 'valor' => 1, 'tipo_parametro_id' => 12],
+            ['nombre' => 'Ninguna de las anteriores', 'tipo_parametro_id' => 12],
+
         ];
 
         DB::table('parametros')->insert($parameters);

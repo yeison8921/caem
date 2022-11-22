@@ -35,7 +35,7 @@ class CreateInformacionEmpresasTable extends Migration
             $table->integer('anio_meta');
             $table->integer('anio_proyeccion_meta');
             $table->tinyInteger('meta_alineada');
-            $table->tinyInteger('metodologias');
+            $table->tinyInteger('metodologia');
             $table->string('otra_metodologia')->nullable();
             $table->tinyInteger('seguimiento_cumplimiento');
             $table->tinyInteger('efecto_invernadero');
