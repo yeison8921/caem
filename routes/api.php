@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\Api\AislamientoController;
 use App\Http\Controllers\Api\CombustibleController;
 use App\Http\Controllers\Api\ConvenioController;
 use App\Http\Controllers\Api\ConvenioEmailController;
 use App\Http\Controllers\Api\EmpresaController;
 use App\Http\Controllers\Api\EmpresaSedeController;
 use App\Http\Controllers\Api\ExtintorController;
+use App\Http\Controllers\Api\FugaController;
 use App\Http\Controllers\Api\InformacionEmpresaController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\LubricanteController;
@@ -74,6 +76,12 @@ Route::group(['as' => 'auth.'], function () {
 
         // Lubricantes
         Route::apiResource('lubricantes', LubricanteController::class);
+
+        // Fugas
+        Route::apiResource('fugas', FugaController::class);
+
+        // Aislamientos
+        Route::apiResource('aislamientos', AislamientoController::class);
 
         // Convenios
         Route::apiResource('convenios', ConvenioController::class);

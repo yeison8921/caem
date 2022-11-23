@@ -1168,7 +1168,27 @@
                                                                         fijas
                                                                     </h2>
                                                                     <div
-                                                                        class="col-lg-6"
+                                                                        class="col-lg-4"
+                                                                    >
+                                                                        <label
+                                                                            >Consumo
+                                                                            de
+                                                                            combustibles
+                                                                            sólidos</label
+                                                                        >
+                                                                        <Multiselect
+                                                                            :options="
+                                                                                options_combustible_solido
+                                                                            "
+                                                                            mode="tags"
+                                                                            valueProp="id"
+                                                                            label="nombre"
+                                                                            placeholder="Selección múltiple"
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                    <div
+                                                                        class="col-lg-4"
                                                                     >
                                                                         <label
                                                                             >Consumo
@@ -1188,7 +1208,7 @@
                                                                         />
                                                                     </div>
                                                                     <div
-                                                                        class="col-lg-6"
+                                                                        class="col-lg-4"
                                                                     >
                                                                         <label
                                                                             >Consumo
@@ -1209,37 +1229,106 @@
                                                                     </div>
                                                                 </div>
                                                                 <div
-                                                                    class="mb-3"
+                                                                    class="row mb-3"
                                                                 >
-                                                                    <label
-                                                                        class="form-label required"
-                                                                        >Fuente
-                                                                        de
-                                                                        emisión</label
+                                                                    <div
+                                                                        class="col-lg-4"
                                                                     >
-                                                                    <Multiselect
-                                                                        :options="
-                                                                            options_puntaje_1
-                                                                        "
-                                                                        placeholder="Seleccione una opción"
-                                                                        required
-                                                                    />
+                                                                        <label
+                                                                            >Consumo
+                                                                            de
+                                                                            refrigerantes</label
+                                                                        >
+                                                                        <Multiselect
+                                                                            :options="
+                                                                                options_refrigerante
+                                                                            "
+                                                                            mode="tags"
+                                                                            valueProp="id"
+                                                                            label="nombre"
+                                                                            placeholder="Selección múltiple"
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                    <div
+                                                                        class="col-lg-4"
+                                                                    >
+                                                                        <label
+                                                                            >Extintores</label
+                                                                        >
+                                                                        <Multiselect
+                                                                            :options="
+                                                                                options_extintor
+                                                                            "
+                                                                            mode="tags"
+                                                                            valueProp="id"
+                                                                            label="nombre"
+                                                                            placeholder="Selección múltiple"
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                    <div
+                                                                        class="col-lg-4"
+                                                                    >
+                                                                        <label
+                                                                            >Lubricantes</label
+                                                                        >
+                                                                        <Multiselect
+                                                                            :options="
+                                                                                options_lubricante
+                                                                            "
+                                                                            mode="tags"
+                                                                            valueProp="id"
+                                                                            label="nombre"
+                                                                            placeholder="Selección múltiple"
+                                                                            required
+                                                                        />
+                                                                    </div>
                                                                 </div>
                                                                 <div
-                                                                    class="mb-3"
+                                                                    class="row mb-3"
                                                                 >
-                                                                    <label
-                                                                        class="form-label required"
-                                                                        >Tipo o
-                                                                        clase</label
+                                                                    <div
+                                                                        class="col-lg-6"
                                                                     >
-                                                                    <Multiselect
-                                                                        :options="
-                                                                            options_puntaje_1
-                                                                        "
-                                                                        placeholder="Seleccione una opción"
-                                                                        required
-                                                                    />
+                                                                        <label
+                                                                            >Fugas
+                                                                            de
+                                                                            CO2
+                                                                            en
+                                                                            proceso</label
+                                                                        >
+                                                                        <Multiselect
+                                                                            :options="
+                                                                                options_fuga
+                                                                            "
+                                                                            mode="tags"
+                                                                            valueProp="id"
+                                                                            label="nombre"
+                                                                            placeholder="Selección múltiple"
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                    <div
+                                                                        class="col-lg-6"
+                                                                    >
+                                                                        <label
+                                                                            >Consumo
+                                                                            de
+                                                                            aislante
+                                                                            eléctrico
+                                                                        </label>
+                                                                        <Multiselect
+                                                                            :options="
+                                                                                options_aislamiento
+                                                                            "
+                                                                            mode="tags"
+                                                                            valueProp="id"
+                                                                            label="nombre"
+                                                                            placeholder="Selección múltiple"
+                                                                            required
+                                                                        />
+                                                                    </div>
                                                                 </div>
                                                                 <div
                                                                     class="mb-3 text-end"
@@ -1464,6 +1553,8 @@ import Combustible from "../../models/Combustible";
 import Refrigerante from "../../models/Refrigerante";
 import Extintor from "../../models/Extintor";
 import Lubricante from "../../models/Lubricante";
+import Fuga from "../../models/Fuga";
+import Aislamiento from "../../models/Aislamiento";
 
 export default {
     data() {
@@ -1573,6 +1664,8 @@ export default {
             options_refrigerante: [],
             options_extintor: [],
             options_lubricante: [],
+            options_fuga: [],
+            options_aislamiento: [],
 
             options_equipo_consumo: [],
             options_energeticos: [],
@@ -1657,6 +1750,8 @@ export default {
             this.options_refrigerante = await Refrigerante.get();
             this.options_extintor = await Extintor.get();
             this.options_lubricante = await Lubricante.get();
+            this.options_fuga = await Fuga.get();
+            this.options_aislamiento = await Aislamiento.get();
         },
         changeMetodologia() {
             this.ie.otra_metodologia = null;
