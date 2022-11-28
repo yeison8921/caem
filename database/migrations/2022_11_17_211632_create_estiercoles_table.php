@@ -27,6 +27,7 @@ class CreateEstiercolesTable extends Migration
             $table->float('incertidumbre_n2o_1', 6, 5);
             $table->float('incertidumbre_n2o_2', 6, 5);
             $table->string('fuente_bibliografica_n2o');
+            $table->string('tipo');
             $table->timestamps();
             $table->softDeletes();
         });

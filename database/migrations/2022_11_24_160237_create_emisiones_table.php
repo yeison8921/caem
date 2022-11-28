@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFertilizantesTable extends Migration
+class CreateEmisionesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateFertilizantesTable extends Migration
      */
     public function up()
     {
-        Schema::create('fertilizantes', function (Blueprint $table) {
+        Schema::create('emisiones', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
             $table->string('unidad_consumo');
-            $table->float('factor_emision_no2', 11, 10);
-            $table->string('unidad_factor_emision_no2');
-            $table->float('incertidumbre_no2_1', 6, 5);
-            $table->float('incertidumbre_no2_2', 6, 5);
-            $table->text('fuente_bibliografica_no2');
+            $table->float('factor_emision_co2', 13, 9);
+            $table->string('unidad_factor_emision_co2');
+            $table->float('incertidumbre_co2_1', 6, 5);
+            $table->float('incertidumbre_co2_2', 6, 5);
+            $table->text('fuente_bibliografica_co2');
             $table->string('tipo');
             $table->timestamps();
             $table->softDeletes();
@@ -35,6 +35,6 @@ class CreateFertilizantesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fertilizantes');
+        Schema::dropIfExists('emisiones');
     }
 }

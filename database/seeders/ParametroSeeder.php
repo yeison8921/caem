@@ -31,6 +31,8 @@ class ParametroSeeder extends Seeder
             ['nombre' => 'Equipo de consumo móvil'],
             ['nombre' => 'Energéticos'],
             ['nombre' => 'Metodologías'],
+            ['nombre' => 'Unidad principal de producción y/o servicios de la empresa'],
+
         ];
 
         DB::table('tipo_parametros')->insert($parameters);

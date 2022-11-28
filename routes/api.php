@@ -4,15 +4,21 @@ use App\Http\Controllers\Api\AislamientoController;
 use App\Http\Controllers\Api\CombustibleController;
 use App\Http\Controllers\Api\ConvenioController;
 use App\Http\Controllers\Api\ConvenioEmailController;
+use App\Http\Controllers\Api\EmisionController;
 use App\Http\Controllers\Api\EmpresaController;
 use App\Http\Controllers\Api\EmpresaSedeController;
+use App\Http\Controllers\Api\EstiercolController;
 use App\Http\Controllers\Api\ExtintorController;
+use App\Http\Controllers\Api\FermentacionController;
+use App\Http\Controllers\Api\FertilizanteController;
+use App\Http\Controllers\Api\FuenteEmisionController;
 use App\Http\Controllers\Api\FugaController;
 use App\Http\Controllers\Api\InformacionEmpresaController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\LubricanteController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\ParametroController;
+use App\Http\Controllers\Api\ProcesoController;
 use App\Http\Controllers\Api\RefrigeranteController;
 use App\Http\Controllers\Api\TipoParametroController;
 use App\Http\Controllers\Api\UserController;
@@ -82,6 +88,25 @@ Route::group(['as' => 'auth.'], function () {
 
         // Aislamientos
         Route::apiResource('aislamientos', AislamientoController::class);
+
+        // Emisiones
+        Route::apiResource('emisiones', EmisionController::class);
+
+        // Fermentaciones
+        Route::apiResource('fermentaciones', FermentacionController::class);
+
+        // Estiercoles
+        Route::apiResource('estiercoles', EstiercolController::class);
+
+        // Fertilizantes
+        Route::apiResource('fertilizantes', FertilizanteController::class);
+
+        // Procesos
+        Route::apiResource('procesos', ProcesoController::class);
+        Route::post('guardarProcesos', [ProcesoController::class, 'guardarProcesos']);
+
+        // Fuentes emisión
+        Route::apiResource('fuentes_emision', FuenteEmisionController::class);
 
         // Convenios
         Route::apiResource('convenios', ConvenioController::class);
