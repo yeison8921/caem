@@ -1794,8 +1794,13 @@ class ParametroSeeder extends Seeder
             ['nombre' => 'GHG Protocol', 'tipo_parametro_id' => 12],
             ['nombre' => 'Science Based Targets (SBT)', 'tipo_parametro_id' => 12],
             ['nombre' => 'Proyecciones con regresión lineal', 'tipo_parametro_id' => 12],
-            ['nombre' => 'Otra ¿Cuál?', 'valor' => 1, 'tipo_parametro_id' => 12],
             ['nombre' => 'Ninguna de las anteriores', 'tipo_parametro_id' => 12],
+
+        ];
+
+        DB::table('parametros')->insert($parameters);
+        $parameters = [
+            ['nombre' => 'Otra ¿Cuál?', 'valor' => 1, 'tipo_parametro_id' => 12],
 
         ];
 
