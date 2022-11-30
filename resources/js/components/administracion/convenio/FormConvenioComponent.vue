@@ -414,7 +414,8 @@ export default {
                 nombre_entidad: "",
                 codigo: "",
                 texto_legal: "",
-                usuario_actualizo_id: "",
+                //Reemplazar por usuario logueado
+                usuario_actualizo_id: 1,
             }),
             sede: new EmpresaSede({
                 id: "",

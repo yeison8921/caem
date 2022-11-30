@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Exceptions\GeneralException;
+use App\Models\Combustible;
+use App\Models\Emision;
 use App\Models\Proceso;
 use App\Models\Subproceso;
 use App\Models\FuenteEmision;
@@ -62,21 +64,21 @@ class ProcesoRepository extends BaseRepository
                                     $fuente_emision->tipo = $kf;
                                     $fuente_emision->fuente_emision = $ksf;
 
-                                    $modelo = '';
-                                    if (str_contains($ksf, 'combustibles')) {
-                                        $modelo = 'combustibles';
-                                    } else if ($ksf == 'embalses' || $ksf == 'minerias' || $ksf == 'industriales' || $ksf == 'residuos_organizacionales') {
-                                        $modelo = 'emisiones';
-                                    } else if ($ksf == 'cales') {
-                                        $modelo = 'fertilizantes';
-                                    } else if ($ksf == 'residuos_agropecuarios') {
-                                        $modelo = 'estiercoles';
+                                    $modelo = 'App\Models\\';
+                                    if (str_contains($ksf, 'Combustible')) {
+                                        $modelo .= 'Combustible';
+                                    } else if ($ksf == 'Embalse' || $ksf == 'Mineria' || $ksf == 'Industrial' || $ksf == 'Residuo_organizacional') {
+                                        $modelo .= 'Emision';
+                                    } else if ($ksf == 'Cal') {
+                                        $modelo .= 'Fertilizante';
+                                    } else if ($ksf == 'Residuo_agropecuario') {
+                                        $modelo .= 'Estiercol';
                                     } else {
-                                        $modelo = $ksf;
+                                        $modelo .= $ksf;
                                     }
 
-                                    $fuente_emision->modelo = $modelo;
-                                    $fuente_emision->modelo_id = $v;
+                                    $fuente_emision->fuentetable_type = $modelo;
+                                    $fuente_emision->fuentetable_id = $v;
                                     $fuente_emision->subproceso_id = $subproceso->id;
                                     //por validar el id de la empresa, sede e informacion se envia desde el vue
                                     $fuente_emision->informacion_empresa_id = 1;

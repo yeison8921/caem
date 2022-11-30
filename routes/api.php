@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AislamientoController;
 use App\Http\Controllers\Api\CombustibleController;
 use App\Http\Controllers\Api\ConvenioController;
 use App\Http\Controllers\Api\ConvenioEmailController;
+use App\Http\Controllers\Api\ElectricidadController;
 use App\Http\Controllers\Api\EmisionController;
 use App\Http\Controllers\Api\EmpresaController;
 use App\Http\Controllers\Api\EmpresaSedeController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\Api\ProcesoController;
 use App\Http\Controllers\Api\RefrigeranteController;
 use App\Http\Controllers\Api\TipoParametroController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ViajeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,7 +62,6 @@ Route::group(['as' => 'auth.'], function () {
         // Parametros
         Route::apiResource('tipo_parametros', TipoParametroController::class);
         Route::apiResource('parametros', ParametroController::class);
-        Route::post('getEquiposConsumo', [ParametroController::class, 'getEquiposConsumo']);
 
         // Empresas
         Route::apiResource('empresas', EmpresaController::class);
@@ -101,12 +102,19 @@ Route::group(['as' => 'auth.'], function () {
         // Fertilizantes
         Route::apiResource('fertilizantes', FertilizanteController::class);
 
+        // Electricidades
+        Route::apiResource('electricidades', ElectricidadController::class);
+
+        // Viajes
+        Route::apiResource('viajes', ViajeController::class);
+
         // Procesos
         Route::apiResource('procesos', ProcesoController::class);
         Route::post('guardarProcesos', [ProcesoController::class, 'guardarProcesos']);
 
         // Fuentes emisión
         Route::apiResource('fuentes_emision', FuenteEmisionController::class);
+        Route::post('guardarEmisionesIndirectas', [FuenteEmisionController::class, 'guardarEmisionesIndirectas']);
 
         // Convenios
         Route::apiResource('convenios', ConvenioController::class);

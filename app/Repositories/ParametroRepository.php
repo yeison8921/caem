@@ -85,25 +85,4 @@ class ParametroRepository extends BaseRepository
         }
         return view('administracion/parametro/form_parametro', $data);
     }
-
-    public function getEquiposConsumo()
-    {
-        $parametros = Parametro::whereIn("tipo_parametro_id", [9, 10])->get();
-
-        $data = [];
-
-        if (!$parametros->isEmpty()) {
-            array_push($data, ['label' => 'Equipo de consumo fijo', 'options' => []]);
-            array_push($data, ['label' => 'Equipo de consumo móvil', 'options' => []]);
-
-            foreach ($parametros as $p) {
-                if ($p->tipo_parametro_id == 9) {
-                    array_push($data[0]['options'], ['value' => $p->id, 'label' => $p->nombre]);
-                } else {
-                    array_push($data[1]['options'], ['value' => $p->id, 'label' => $p->nombre]);
-                }
-            }
-        }
-        return response()->json($data);
-    }
 }

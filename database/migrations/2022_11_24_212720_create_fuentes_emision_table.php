@@ -15,9 +15,8 @@ class CreateFuentesEmisionTable extends Migration
     {
         Schema::create('fuentes_emision', function (Blueprint $table) {
             $table->id();
+            $table->morphs('fuentetable');
             $table->string("tipo");
-            $table->string("modelo");
-            $table->string("modelo_id");
             $table->string("fuente_emision")->nullable();
             $table->text("descripcion")->nullable();
             $table->text("informacion_adicional")->nullable();

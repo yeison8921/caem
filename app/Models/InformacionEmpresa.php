@@ -48,6 +48,10 @@ class InformacionEmpresa extends Model
         'sustento_metodologico',
         'compartira_reporte',
         'toma_decisiones',
+        'unidad_id',
+        'anio_inicio',
+        'mes_inicio',
+        'estado',
         'usuario_creacion_id',
         'empresa_id',
         'sede_id',
@@ -75,5 +79,13 @@ class InformacionEmpresa extends Model
     public function empresaSede()
     {
         return $this->belongsTo(EmpresaSede::class, 'sede_id', 'id');
+    }
+
+    /**
+     * Obtiene la unidad de producción
+     */
+    public function unidad()
+    {
+        return $this->belongsTo(Parametro::class, 'unidad_id', 'id');
     }
 }

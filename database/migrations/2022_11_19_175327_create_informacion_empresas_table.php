@@ -52,10 +52,10 @@ class CreateInformacionEmpresasTable extends Migration
             $table->tinyInteger('sustento_metodologico');
             $table->tinyInteger('compartira_reporte');
             $table->tinyInteger('toma_decisiones');
-            $table->foreignId('unidad_principal_produccion')->nullable()->constrained('parametros')->onDelete('restrict');
+            $table->foreignId('unidad_id')->nullable()->constrained('parametros')->onDelete('restrict');
             $table->integer('anio_inicio')->nullable();
             $table->integer('mes_inicio')->nullable();
-            $table->integer('estado');
+            $table->integer('estado')->nullable();
             $table->foreignId('usuario_creacion_id')->constrained('users')->onDelete('restrict');
             $table->foreignId('empresa_id')->constrained('empresas')->onDelete('restrict');
             $table->foreignId('sede_id')->constrained('empresa_sedes')->onDelete('restrict');

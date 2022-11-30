@@ -38,7 +38,15 @@ class FuenteEmisionController extends Controller
      */
     public function index()
     {
-        $query = QueryBuilder::for(FuenteEmision::class);
+        $query = QueryBuilder::for(FuenteEmision::class)->allowedFilters([
+            AllowedFilter::exact('empresa_id'),
+            AllowedFilter::exact('sede_id'),
+            AllowedFilter::exact('informacion_empresa_id'),
+        ])->allowedIncludes([
+            'subproceso',
+            'subproceso.proceso',
+            'fuentetable',
+        ]);
         return $query->get();
     }
 
@@ -72,5 +80,10 @@ class FuenteEmisionController extends Controller
     public function update(UpdateFuenteEmisionRequest $request, $fuente_emision)
     {
         return $this->fuenteEmisionRepository->update($request, $fuente_emision);
+    }
+
+    public function guardarEmisionesIndirectas(Request $request)
+    {
+        return $this->fuenteEmisionRepository->guardarEmisionesIndirectas($request);
     }
 }

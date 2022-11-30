@@ -54,34 +54,10 @@ class InformacionEmpresaRepository extends BaseRepository
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update($request, $id_convenio)
+    public function update($request, $id)
     {
-        $convenio = Pregunta::find($id_convenio);
-        $convenio->update($request->all());
-        return $convenio;
-    }
-
-    public function formConvenio($id_convenio)
-    {
-        $data = [];
-        $data['id_convenio'] = $id_convenio;
-        if ($id_convenio != '') {
-            $data['accion'] = 'Actualizar';
-        } else {
-            $data['accion'] = 'Crear';
-        }
-        return view('administracion/convenio/form_convenio', $data);
-    }
-
-    public function cambiarEstadoConvenio($request)
-    {
-        $request->estado ? Convenio::withTrashed()->find($request->id_convenio)->restore() : Convenio::find($request->id_convenio)->delete();
-    }
-
-    public function crearConvenioEmpresa($request)
-    {
-        $convenio = Convenio::find($request->convenio_id);
-        $convenio->empresas()->detach($request->empresa_id);
-        $convenio->empresas()->attach($request->empresa_id);
+        $informacion = InformacionEmpresa::find($id);
+        $informacion->update($request->all());
+        return $informacion;
     }
 }

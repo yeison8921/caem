@@ -43,9 +43,6 @@ class ProcesoController extends Controller
             AllowedFilter::exact('informacion_empresa_id'),
         ])->allowedIncludes([
             'subprocesos',
-            'subprocesos.fuentesEmision',
-            'subprocesos.fuentesEmision.combustible',
-            'subprocesos.fuentesEmision.refrigerante'
         ]);
         return $query->get();
     }

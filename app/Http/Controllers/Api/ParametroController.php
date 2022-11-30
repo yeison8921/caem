@@ -101,9 +101,4 @@ class ParametroController extends Controller
     {
         return $this->parametroRepository->formParametro($tipo_parametro_id, $id_parametro);
     }
-
-    public function getEquiposConsumo()
-    {
-        return $this->parametroRepository->getEquiposConsumo();
-    }
 }

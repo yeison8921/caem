@@ -45,4 +45,9 @@ class Combustible extends Model
         'fuente_bibliografica_n2o_fuente_movil',
         'tipo',
     ];
+
+    // public function combustibles()
+    // {
+    //     return $this->morphMany(FuenteEmision::class, 'modeltable');
+    // }
 }

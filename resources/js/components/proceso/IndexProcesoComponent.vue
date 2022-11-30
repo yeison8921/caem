@@ -40,6 +40,34 @@
                     <li class="nav-item" role="presentation">
                         <button
                             class="nav-link"
+                            id="consumos-indirectos-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#consumos-indirectos"
+                            type="button"
+                            role="tab"
+                            aria-controls="consumos-indirectos"
+                            aria-selected="false"
+                        >
+                            Consumos indirectos
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button
+                            class="nav-link"
+                            id="inicio-consumos-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#inicio-consumos"
+                            type="button"
+                            role="tab"
+                            aria-controls="inicio-consumos"
+                            aria-selected="false"
+                        >
+                            Información inicio de consumos
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button
+                            class="nav-link"
                             id="construccion-anio-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#construccion-anio"
@@ -47,6 +75,7 @@
                             role="tab"
                             aria-controls="construccion-anio"
                             aria-selected="false"
+                            @click="getFuentesEmision()"
                         >
                             Construcción de año base de emisiones de GEI
                         </button>
@@ -133,7 +162,7 @@
                                 Diligenciamiento cumplimiento de principios.
                             </li>
                         </ul>
-                        <form @submit.prevent="submitInformacion">
+                        <form @submit.prevent="guardarInformacion">
                             <div class="tab-content" id="pills-tabContent">
                                 <div
                                     v-if="paso == 1"
@@ -963,7 +992,7 @@
                         role="tabpanel"
                         aria-labelledby="construccion-proceso-tab"
                     >
-                        <form @submit.prevent="submitProcesos">
+                        <form @submit.prevent="guardarProcesos">
                             <div class="mb-3">
                                 <div class="accordion" id="acordeon-procesos">
                                     <div
@@ -1118,7 +1147,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_fijas
-                                                                                    .combustibles_solidos
+                                                                                    .Combustible_solido
                                                                             "
                                                                             :options="
                                                                                 options_combustible_solido
@@ -1133,11 +1162,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_fijas.combustibles_solidos.includes(
+                                                                                    sp.fuentes_fijas.Combustible_solido.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_fijas.combustibles_solidos =
+                                                                                    sp.fuentes_fijas.Combustible_solido =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1158,7 +1187,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_fijas
-                                                                                    .combustibles_liquidos
+                                                                                    .Combustible_liquido
                                                                             "
                                                                             :options="
                                                                                 options_combustible_liquido
@@ -1173,11 +1202,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_fijas.combustibles_liquidos.includes(
+                                                                                    sp.fuentes_fijas.Combustible_liquido.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_fijas.combustibles_liquidos =
+                                                                                    sp.fuentes_fijas.Combustible_liquido =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1198,7 +1227,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_fijas
-                                                                                    .combustibles_gaseosos
+                                                                                    .Combustible_gaseoso
                                                                             "
                                                                             :options="
                                                                                 options_combustible_gaseoso
@@ -1213,11 +1242,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_fijas.combustibles_gaseosos.includes(
+                                                                                    sp.fuentes_fijas.Combustible_gaseoso.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_fijas.combustibles_gaseosos =
+                                                                                    sp.fuentes_fijas.Combustible_gaseoso =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1237,7 +1266,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_fijas
-                                                                                    .refrigerantes
+                                                                                    .Refrigerante
                                                                             "
                                                                             :options="
                                                                                 options_refrigerante
@@ -1252,11 +1281,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_fijas.refrigerantes.includes(
+                                                                                    sp.fuentes_fijas.Refrigerante.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_fijas.refrigerantes =
+                                                                                    sp.fuentes_fijas.Refrigerante =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1274,7 +1303,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_fijas
-                                                                                    .extintores
+                                                                                    .Extintor
                                                                             "
                                                                             :options="
                                                                                 options_extintor
@@ -1289,11 +1318,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_fijas.extintores.includes(
+                                                                                    sp.fuentes_fijas.Extintor.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_fijas.extintores =
+                                                                                    sp.fuentes_fijas.Extintor =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1311,7 +1340,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_fijas
-                                                                                    .lubricantes
+                                                                                    .Lubricante
                                                                             "
                                                                             :options="
                                                                                 options_lubricante
@@ -1326,11 +1355,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_fijas.lubricantes.includes(
+                                                                                    sp.fuentes_fijas.Lubricante.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_fijas.lubricantes =
+                                                                                    sp.fuentes_fijas.Lubricante =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1352,7 +1381,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_fijas
-                                                                                    .fugas
+                                                                                    .Fuga
                                                                             "
                                                                             :options="
                                                                                 options_fuga
@@ -1367,11 +1396,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_fijas.fugas.includes(
+                                                                                    sp.fuentes_fijas.Fuga.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_fijas.fugas =
+                                                                                    sp.fuentes_fijas.Fuga =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1392,7 +1421,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_fijas
-                                                                                    .aislamientos
+                                                                                    .Aislamiento
                                                                             "
                                                                             :options="
                                                                                 options_aislamiento
@@ -1407,11 +1436,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_fijas.aislamientos.includes(
+                                                                                    sp.fuentes_fijas.Aislamiento.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_fijas.aislamientos =
+                                                                                    sp.fuentes_fijas.Aislamiento =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1438,7 +1467,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .emisiones
-                                                                                    .embalses
+                                                                                    .Embalse
                                                                             "
                                                                             :options="
                                                                                 options_embalse
@@ -1453,11 +1482,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.emisiones.embalses.includes(
+                                                                                    sp.emisiones.Embalse.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.emisiones.embalses =
+                                                                                    sp.emisiones.Embalse =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1475,7 +1504,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .emisiones
-                                                                                    .minerias
+                                                                                    .Mineria
                                                                             "
                                                                             :options="
                                                                                 options_mineria
@@ -1490,11 +1519,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.emisiones.minerias.includes(
+                                                                                    sp.emisiones.Mineria.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.emisiones.minerias =
+                                                                                    sp.emisiones.Mineria =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1512,7 +1541,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .emisiones
-                                                                                    .industriales
+                                                                                    .Industrial
                                                                             "
                                                                             :options="
                                                                                 options_industrial
@@ -1527,11 +1556,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.emisiones.industriales.includes(
+                                                                                    sp.emisiones.Industrial.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.emisiones.industriales =
+                                                                                    sp.emisiones.Industrial =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1550,7 +1579,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .emisiones
-                                                                                    .fermentaciones
+                                                                                    .Fermentacion
                                                                             "
                                                                             :options="
                                                                                 options_fermentacion
@@ -1565,11 +1594,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.emisiones.fermentaciones.includes(
+                                                                                    sp.emisiones.Fermentacion.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.emisiones.fermentaciones =
+                                                                                    sp.emisiones.Fermentacion =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1589,7 +1618,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .emisiones
-                                                                                    .estiercoles
+                                                                                    .Estiercol
                                                                             "
                                                                             :options="
                                                                                 options_estiercol
@@ -1604,11 +1633,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.emisiones.estiercoles.includes(
+                                                                                    sp.emisiones.Estiercol.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.emisiones.estiercoles =
+                                                                                    sp.emisiones.Estiercol =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1628,7 +1657,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .emisiones
-                                                                                    .residuos_organizacionales
+                                                                                    .Residuo_organizacional
                                                                             "
                                                                             :options="
                                                                                 options_residuo_organizacional
@@ -1643,11 +1672,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.emisiones.residuos_organizacionales.includes(
+                                                                                    sp.emisiones.Residuo_organizacional.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.emisiones.residuos_organizacionales =
+                                                                                    sp.emisiones.Residuo_organizacional =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1673,7 +1702,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_moviles
-                                                                                    .combustibles_liquidos
+                                                                                    .Combustible_liquido
                                                                             "
                                                                             :options="
                                                                                 options_combustible_liquido
@@ -1688,11 +1717,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_moviles.combustibles_liquidos.includes(
+                                                                                    sp.fuentes_moviles.Combustible_liquido.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_moviles.combustibles_liquidos =
+                                                                                    sp.fuentes_moviles.Combustible_liquido =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1713,7 +1742,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_moviles
-                                                                                    .combustibles_gaseosos
+                                                                                    .Combustible_gaseoso
                                                                             "
                                                                             :options="
                                                                                 options_combustible_gaseoso
@@ -1728,11 +1757,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_moviles.combustibles_gaseosos.includes(
+                                                                                    sp.fuentes_moviles.Combustible_gaseoso.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_moviles.combustibles_gaseosos =
+                                                                                    sp.fuentes_moviles.Combustible_gaseoso =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1753,7 +1782,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_moviles
-                                                                                    .refrigerantes
+                                                                                    .Refrigerante
                                                                             "
                                                                             :options="
                                                                                 options_refrigerante
@@ -1768,11 +1797,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_moviles.refrigerantes.includes(
+                                                                                    sp.fuentes_moviles.Refrigerante.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_moviles.refrigerantes =
+                                                                                    sp.fuentes_moviles.Refrigerante =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1790,7 +1819,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_moviles
-                                                                                    .extintores
+                                                                                    .Extintor
                                                                             "
                                                                             :options="
                                                                                 options_extintor
@@ -1805,11 +1834,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_moviles.extintores.includes(
+                                                                                    sp.fuentes_moviles.Extintor.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_moviles.extintores =
+                                                                                    sp.fuentes_moviles.Extintor =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1827,7 +1856,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .fuentes_moviles
-                                                                                    .lubricantes
+                                                                                    .Lubricante
                                                                             "
                                                                             :options="
                                                                                 options_lubricante
@@ -1842,11 +1871,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.fuentes_moviles.lubricantes.includes(
+                                                                                    sp.fuentes_moviles.Lubricante.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.fuentes_moviles.lubricantes =
+                                                                                    sp.fuentes_moviles.Lubricante =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1871,7 +1900,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .agricolas
-                                                                                    .residuos_agropecuarios
+                                                                                    .Residuo_agropecuario
                                                                             "
                                                                             :options="
                                                                                 options_residuo_agropecuario
@@ -1886,11 +1915,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.agricolas.residuos_agropecuarios.includes(
+                                                                                    sp.agricolas.Residuo_agropecuario.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.agricolas.residuos_agropecuarios =
+                                                                                    sp.agricolas.Residuo_agropecuario =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1909,7 +1938,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .agricolas
-                                                                                    .fertilizantes
+                                                                                    .Fertilizante
                                                                             "
                                                                             :options="
                                                                                 options_fertilizante
@@ -1924,11 +1953,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.agricolas.fertilizantes.includes(
+                                                                                    sp.agricolas.Fertilizante.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.agricolas.fertilizantes =
+                                                                                    sp.agricolas.Fertilizante =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -1947,7 +1976,7 @@
                                                                             v-model="
                                                                                 sp
                                                                                     .agricolas
-                                                                                    .cales
+                                                                                    .Cal
                                                                             "
                                                                             :options="
                                                                                 options_cal
@@ -1962,11 +1991,11 @@
                                                                             required
                                                                             @input="
                                                                                 if (
-                                                                                    sp.agricolas.cales.includes(
+                                                                                    sp.agricolas.Cal.includes(
                                                                                         -1
                                                                                     )
                                                                                 )
-                                                                                    sp.agricolas.cales =
+                                                                                    sp.agricolas.Cal =
                                                                                         [
                                                                                             -1,
                                                                                         ];
@@ -2021,57 +2050,57 @@
                                                                                             '',
                                                                                         fuentes_fijas:
                                                                                             {
-                                                                                                combustibles_solidos:
+                                                                                                Combustible_solido:
                                                                                                     [],
-                                                                                                combustibles_liquidos:
+                                                                                                Combustible_liquido:
                                                                                                     [],
-                                                                                                combustibles_gaseosos:
+                                                                                                Combustible_gaseoso:
                                                                                                     [],
-                                                                                                refrigerantes:
+                                                                                                Refrigerante:
                                                                                                     [],
-                                                                                                extintores:
+                                                                                                Extintor:
                                                                                                     [],
-                                                                                                lubricantes:
+                                                                                                Lubricante:
                                                                                                     [],
-                                                                                                fugas: [],
+                                                                                                Fuga: [],
                                                                                                 aislamientos:
                                                                                                     [],
                                                                                             },
                                                                                         fuentes_moviles:
                                                                                             {
-                                                                                                combustibles_liquidos:
+                                                                                                Combustible_liquido:
                                                                                                     [],
-                                                                                                combustibles_gaseosos:
+                                                                                                Combustible_gaseoso:
                                                                                                     [],
-                                                                                                refrigerantes:
+                                                                                                Refrigerante:
                                                                                                     [],
-                                                                                                extintores:
+                                                                                                Extintor:
                                                                                                     [],
-                                                                                                lubricantes:
+                                                                                                Lubricante:
                                                                                                     [],
                                                                                             },
                                                                                         emisiones:
                                                                                             {
-                                                                                                embalses:
+                                                                                                Embalse:
                                                                                                     [],
-                                                                                                minerias:
+                                                                                                Mineria:
                                                                                                     [],
-                                                                                                industriales:
+                                                                                                Industrial:
                                                                                                     [],
-                                                                                                fermentaciones:
+                                                                                                Fermentacion:
                                                                                                     [],
-                                                                                                estiercoles:
+                                                                                                Estiercol:
                                                                                                     [],
-                                                                                                residuos_organizacionales:
+                                                                                                Residuo_organizacional:
                                                                                                     [],
                                                                                             },
                                                                                         agricolas:
                                                                                             {
-                                                                                                residuos_agropecuarios:
+                                                                                                Residuo_agropecuario:
                                                                                                     [],
-                                                                                                fertilizantes:
+                                                                                                Fertilizante:
                                                                                                     [],
-                                                                                                cales: [],
+                                                                                                Cal: [],
                                                                                             },
                                                                                     }
                                                                                 )
@@ -2113,62 +2142,62 @@
                                                                     subprocesos:
                                                                         [
                                                                             {
-                                                                                nombre: 'Subproceso 1',
+                                                                                nombre: 'Nuevo subproceso',
                                                                                 descripcion:
                                                                                     '',
                                                                                 fuentes_fijas:
                                                                                     {
-                                                                                        combustibles_solidos:
+                                                                                        Combustible_solido:
                                                                                             [],
-                                                                                        combustibles_liquidos:
+                                                                                        Combustible_liquido:
                                                                                             [],
-                                                                                        combustibles_gaseosos:
+                                                                                        Combustible_gaseoso:
                                                                                             [],
-                                                                                        refrigerantes:
+                                                                                        Refrigerante:
                                                                                             [],
-                                                                                        extintores:
+                                                                                        Extintor:
                                                                                             [],
-                                                                                        lubricantes:
+                                                                                        Lubricante:
                                                                                             [],
-                                                                                        fugas: [],
+                                                                                        Fuga: [],
                                                                                         aislamientos:
                                                                                             [],
                                                                                     },
                                                                                 fuentes_moviles:
                                                                                     {
-                                                                                        combustibles_liquidos:
+                                                                                        Combustible_liquido:
                                                                                             [],
-                                                                                        combustibles_gaseosos:
+                                                                                        Combustible_gaseoso:
                                                                                             [],
-                                                                                        refrigerantes:
+                                                                                        Refrigerante:
                                                                                             [],
-                                                                                        extintores:
+                                                                                        Extintor:
                                                                                             [],
-                                                                                        lubricantes:
+                                                                                        Lubricante:
                                                                                             [],
                                                                                     },
                                                                                 emisiones:
                                                                                     {
-                                                                                        embalses:
+                                                                                        Embalse:
                                                                                             [],
-                                                                                        minerias:
+                                                                                        Mineria:
                                                                                             [],
-                                                                                        industriales:
+                                                                                        Industrial:
                                                                                             [],
-                                                                                        fermentaciones:
+                                                                                        Fermentacion:
                                                                                             [],
-                                                                                        estiercoles:
+                                                                                        Estiercol:
                                                                                             [],
-                                                                                        residuos_organizacionales:
+                                                                                        Residuo_organizacional:
                                                                                             [],
                                                                                     },
                                                                                 agricolas:
                                                                                     {
-                                                                                        residuos_agropecuarios:
+                                                                                        Residuo_agropecuario:
                                                                                             [],
-                                                                                        fertilizantes:
+                                                                                        Fertilizante:
                                                                                             [],
-                                                                                        cales: [],
+                                                                                        Cal: [],
                                                                                     },
                                                                             },
                                                                         ],
@@ -2193,219 +2222,737 @@
                     </div>
                     <div
                         class="tab-pane fade"
+                        id="inicio-consumos"
+                        role="tabpanel"
+                        aria-labelledby="inicio-consumos-tab"
+                    >
+                        <form @submit.prevent="guardarInicioConsumo">
+                            <div class="mb-3">
+                                <label class="required"
+                                    >Unidad principal de producción y/o
+                                    servicios de la empresa</label
+                                >
+                                <Multiselect
+                                    v-model="ie.unidad_id"
+                                    :options="options_unidad"
+                                    valueProp="id"
+                                    label="nombre"
+                                    placeholder="Seleccione una opción"
+                                    :searchable="true"
+                                    required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label class="required"
+                                    >Año de incio de consumos</label
+                                >
+                                <Multiselect
+                                    v-model="ie.anio_inicio"
+                                    :options="options_anio"
+                                    valueProp="valor"
+                                    label="nombre"
+                                    placeholder="Seleccione una opción"
+                                    :searchable="true"
+                                    required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label class="required"
+                                    >Mes de incio de consumos</label
+                                >
+                                <Multiselect
+                                    v-model="ie.mes_inicio"
+                                    :options="options_mes"
+                                    valueProp="valor"
+                                    label="nombre"
+                                    placeholder="Seleccione una opción"
+                                    :searchable="true"
+                                    required
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary">
+                                    Guardar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div
+                        class="tab-pane fade"
+                        id="consumos-indirectos"
+                        role="tabpanel"
+                        aria-labelledby="consumos-indirectos-tab"
+                    >
+                        <form @submit.prevent="guardarEmisionesIndirectas">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <b>
+                                        EMISIONES INDIRECTAS DE GEI CAUSADAS POR
+                                        ENERGÍA IMPORTADA
+                                    </b>
+                                </div>
+                                <div class="card-body">
+                                    <p>ELECTRICIDAD IMPORTADA</p>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Consumo de energía eléctrica</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.energias
+                                                    .Energia_electrica
+                                            "
+                                            :options="options_electricidad"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.energias.Energia_electrica.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.energias.Energia_electrica =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <p>ENERGÍA IMPORTADA</p>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Consumo de combustibles
+                                            sólidos</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.energias
+                                                    .Combustible_solido
+                                            "
+                                            :options="
+                                                options_combustible_solido
+                                            "
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.energias.Combustible_solido.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.energias.Combustible_solido =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Consumo de combustibles
+                                            líquidos</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.energias
+                                                    .Combustible_liquido
+                                            "
+                                            :options="
+                                                options_combustible_liquido
+                                            "
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.energias.Combustible_liquido.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.energias.Combustible_liquido =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Consumo de combustibles
+                                            gaseosos</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.energias
+                                                    .Combustible_gaseoso
+                                            "
+                                            :options="
+                                                options_combustible_gaseoso
+                                            "
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.energias.Combustible_gaseoso.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.energias.Combustible_gaseoso =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <b>
+                                        EMISIONES INDIRECTAS DE GEI CAUSADAS POR
+                                        EL TRANSPORTE
+                                    </b>
+                                </div>
+                                <div class="card-body">
+                                    <p>FUENTES MÓVILES</p>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Consumo de combustibles
+                                            líquidos</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.transportes
+                                                    .Combustible_liquido
+                                            "
+                                            :options="
+                                                options_combustible_liquido
+                                            "
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.transportes.Combustible_liquido.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.transportes.Combustible_liquido =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Consumo de combustibles
+                                            gaseosos</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.transportes
+                                                    .Combustible_gaseoso
+                                            "
+                                            :options="
+                                                options_combustible_gaseoso
+                                            "
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.transportes.Combustible_gaseoso.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.transportes.Combustible_gaseoso =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Consumo de refrigerantes</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.transportes
+                                                    .Refrigerante
+                                            "
+                                            :options="options_refrigerante"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.transportes.Refrigerante.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.transportes.Refrigerante =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Extintores</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.transportes
+                                                    .Extintor
+                                            "
+                                            :options="options_extintor"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.transportes.Extintor.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.transportes.Extintor =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Lubricantes</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.transportes
+                                                    .Lubricante
+                                            "
+                                            :options="options_lubricante"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.transportes.Lubricante.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.transportes.Lubricante =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <p>TRANSPORTE CARGA Y PASAJEROS</p>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Transporte de carga</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.transportes
+                                                    .Transporte
+                                            "
+                                            :options="options_viaje"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.transportes.Transporte.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.transportes.Transporte =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <b>
+                                        EMISIONES INDIRECTAS DE GEI CAUSADAS POR
+                                        PRODUCTOS QUE UTILIZA LA ORGANIZACIÓN
+                                    </b>
+                                </div>
+                                <div class="card-body">
+                                    <p>BIENES Y PRODUCTOS</p>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Refrigerantes y espumantes (Fuentes
+                                            fijas)</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.productos
+                                                    .Refrigerante
+                                            "
+                                            :options="options_refrigerante"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.productos.Refrigerante.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.productos.Refrigerante =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Extintores (Fuentes fijas)</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.productos
+                                                    .Extintor
+                                            "
+                                            :options="options_extintor"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.productos.Extintor.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.productos.Extintor =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Lubricantes (Fuentes
+                                            móviles)</label
+                                        >
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.productos
+                                                    .Lubricante
+                                            "
+                                            :options="options_lubricante"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.productos.Lubricante.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.productos.Lubricante =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Consumo de aislante eléctrico
+                                        </label>
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.productos
+                                                    .Aislamiento
+                                            "
+                                            :options="options_aislamiento"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.productos.Aislamiento.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.productos.Aislamiento =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="required">Equipos</label>
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.productos
+                                                    .Equipo
+                                            "
+                                            :options="options_fuga"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.productos.Equipo.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.productos.Equipo =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Materias primas
+                                        </label>
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.productos
+                                                    .Materia_prima
+                                            "
+                                            :options="options_aislamiento"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.productos.Materia_prima.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.productos.Materia_prima =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                    <p>SERVICIOS</p>
+                                    <div class="mb-3">
+                                        <label class="required"
+                                            >Manejo de residuos
+                                        </label>
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.productos
+                                                    .Residuo
+                                            "
+                                            :options="
+                                                options_residuo_organizacional
+                                            "
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.productos.Residuo.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.productos.Residuo =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <b>
+                                        EMISIONES INDIRECTAS DE GEI ASOCIADAS
+                                        CON EL USO DE LOS PRODUCTOS DE LA
+                                        ORGANIZACIÓN
+                                    </b>
+                                </div>
+                                <div class="card-body">
+                                    <p>USO DE PRODUCTOS</p>
+                                    <!-- Por revisar ya que todos los listados tienen
+                                    la misma opción
+
+                                    <div class="mb-3">
+                                        <label class="required">Producto</label>
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.usos
+                                                    .aislamientos
+                                            "
+                                            :options="options_aislamiento"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            required
+                                            @input="
+                                                if (
+                                                    emisiones_indirectas.usos.aislamientos.includes(
+                                                        -1
+                                                    )
+                                                )
+                                                    emisiones_indirectas.usos.aislamientos =
+                                                        [-1];
+                                            "
+                                        />
+                                    </div> -->
+                                    <p>FIN DE VIDA</p>
+                                    <p>ACTIVOS ARRENDADOS</p>
+                                    <p>INVERSIONES</p>
+                                </div>
+                            </div>
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <b>
+                                        EMISIONES INDIRECTAS DE GEI PROVENIENTES
+                                        DE OTRAS FUENTES
+                                    </b>
+                                </div>
+                                <div class="card-body">
+                                    <p>OTROS</p>
+                                </div>
+                            </div>
+
+                            <div class="mb-3 col-lg-4 offset-lg-4 d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    Guardar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div
+                        class="tab-pane fade"
                         id="construccion-anio"
                         role="tabpanel"
                         aria-labelledby="construccion-anio-tab"
                     >
+                        <p v-if="fuentes_emision.length > 0">
+                            <b>
+                                {{
+                                    fuentes_emision[index_fuente_emision]
+                                        .categoria_mostrar
+                                }}
+                            </b>
+                        </p>
                         <div class="mb-3 table-responsive">
-                            CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI
-                            <table class="table table-striped table-hover">
+                            <table
+                                class="table table-striped table-hover table-bordered"
+                            >
                                 <thead>
-                                    <tr>
-                                        <th>PROCESO</th>
-                                        <th>SUBPROCESO</th>
-                                        <th>SUBCATERGORÍA</th>
-                                        <th>CLASE</th>
-                                        <th>FUENTE DE EMISIÓN DE GEI</th>
-                                        <th>UNIDAD</th>
-                                        <th>DATO 1</th>
-                                        <th>DATO 2</th>
-                                        <th>DATO 3</th>
-                                        <th>DATO 4</th>
-                                        <th>DATO 5</th>
-                                        <th>DATO 6</th>
-                                        <th>DATO 7</th>
-                                        <th>DATO 8</th>
-                                        <th>DATO 9</th>
-                                        <th>DATO 10</th>
-                                        <th>DATO 11</th>
-                                        <th>DATO 12</th>
+                                    <tr class="d-flex">
+                                        <th
+                                            v-for="(c, i) in cabecera_tabla"
+                                            v-bind:key="i"
+                                            style="width: 200px"
+                                        >
+                                            {{ c }}
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- v-for="(f, i) in info_procesos"
-                                        v-bind:key="i"
-                                        v-if="i == numero_proceso" -->
-                                    <tr>
-                                        <td>
+                                    <tr
+                                        class="d-flex"
+                                        v-if="fuentes_emision.length > 0"
+                                    >
+                                        <td style="width: 200px">
                                             {{
-                                                info_procesos[numero_proceso]
-                                                    .proceso
+                                                fuentes_emision[
+                                                    index_fuente_emision
+                                                ].subproceso != null
+                                                    ? fuentes_emision[
+                                                          index_fuente_emision
+                                                      ].subproceso.proceso
+                                                          .nombre
+                                                    : "No aplica"
                                             }}
                                         </td>
-                                        <td>
+                                        <td style="width: 200px">
                                             {{
-                                                info_procesos[numero_proceso]
-                                                    .subproceso
+                                                fuentes_emision[
+                                                    index_fuente_emision
+                                                ].subproceso != null
+                                                    ? fuentes_emision[
+                                                          index_fuente_emision
+                                                      ].subproceso.nombre
+                                                    : "No aplica"
                                             }}
                                         </td>
-                                        <td>
+                                        <td style="width: 200px">
                                             {{
-                                                info_procesos[numero_proceso]
-                                                    .tipo_mostrar
+                                                fuentes_emision[
+                                                    index_fuente_emision
+                                                ].tipo_mostrar
                                             }}
                                         </td>
-                                        <td>
+                                        <td style="width: 200px">
                                             {{
-                                                info_procesos[numero_proceso]
-                                                    .fuente_emision_mostrar
+                                                fuentes_emision[
+                                                    index_fuente_emision
+                                                ].fuente_emision_mostrar
                                             }}
                                         </td>
-                                        <td>
+                                        <td style="width: 200px">
                                             {{
-                                                info_procesos[numero_proceso]
-                                                    .modelo == "combustibles"
-                                                    ? info_procesos[
-                                                          numero_proceso
-                                                      ].combustible.nombre
-                                                    : info_procesos[
-                                                          numero_proceso
-                                                      ].modelo ==
-                                                      "refrigerantes"
-                                                    ? info_procesos[
-                                                          numero_proceso
-                                                      ].refrigerante
-                                                    : ""
+                                                fuentes_emision[
+                                                    index_fuente_emision
+                                                ].fuentetable.nombre
                                             }}
                                         </td>
-                                        <td>
+                                        <td style="width: 200px">
                                             {{
-                                                info_procesos[numero_proceso]
-                                                    .modelo == "combustibles"
-                                                    ? info_procesos[
-                                                          numero_proceso
-                                                      ].combustible
-                                                          .unidad_consumo
-                                                    : ""
+                                                fuentes_emision[
+                                                    index_fuente_emision
+                                                ].fuentetable.unidad_consumo
                                             }}
                                         </td>
-                                        <td>
+                                        <td
+                                            v-for="i in 12"
+                                            v-bind:key="i"
+                                            style="width: 200px"
+                                        >
                                             <input
                                                 v-model="
-                                                    info_procesos[
-                                                        numero_proceso
-                                                    ].dato_mes_1
-                                                "
-                                                class="form-control input-width"
-                                                type="number"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                v-model="
-                                                    info_procesos[
-                                                        numero_proceso
-                                                    ].dato_mes_2
-                                                "
-                                                class="form-control input-width"
-                                                type="number"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                v-model="
-                                                    info_procesos[
-                                                        numero_proceso
-                                                    ].dato_mes_3
-                                                "
-                                                class="form-control input-width"
-                                                type="number"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                v-model="
-                                                    info_procesos[
-                                                        numero_proceso
-                                                    ].dato_mes_4
-                                                "
-                                                class="form-control input-width"
-                                                type="number"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                v-model="
-                                                    info_procesos[
-                                                        numero_proceso
-                                                    ].dato_mes_5
-                                                "
-                                                class="form-control input-width"
-                                                type="number"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                v-model="
-                                                    info_procesos[
-                                                        numero_proceso
-                                                    ].dato_mes_6
-                                                "
-                                                class="form-control input-width"
-                                                type="number"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                v-model="
-                                                    info_procesos[
-                                                        numero_proceso
-                                                    ].dato_mes_7
-                                                "
-                                                class="form-control input-width"
-                                                type="number"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                v-model="
-                                                    info_procesos[
-                                                        numero_proceso
-                                                    ].dato_mes_8
-                                                "
-                                                class="form-control input-width"
-                                                type="number"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                v-model="
-                                                    info_procesos[
-                                                        numero_proceso
-                                                    ].dato_mes_9
-                                                "
-                                                class="form-control input-width"
-                                                type="number"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                v-model="
-                                                    info_procesos[
-                                                        numero_proceso
-                                                    ].dato_mes_10
-                                                "
-                                                class="form-control input-width"
-                                                type="number"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                v-model="
-                                                    info_procesos[
-                                                        numero_proceso
-                                                    ].dato_mes_11
-                                                "
-                                                class="form-control input-width"
-                                                type="number"
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                v-model="
-                                                    info_procesos[
-                                                        numero_proceso
-                                                    ].dato_mes_12
+                                                    fuentes_emision[
+                                                        index_fuente_emision
+                                                    ]['dato_mes_' + i]
                                                 "
                                                 class="form-control input-width"
                                                 type="number"
@@ -2415,14 +2962,26 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="mb-3 text-end">
-                            <button
-                                type="button"
-                                class="btn btn-primary"
-                                @click="guardarDatosEmision()"
-                            >
-                                Guardar y continuar
-                            </button>
+                        <div class="row mb-3">
+                            <div class="col-lg-6 text-start">
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    v-if="index_fuente_emision > 0"
+                                    @click="index_fuente_emision--"
+                                >
+                                    Atrás
+                                </button>
+                            </div>
+                            <div class="col-lg-6 text-end">
+                                <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    @click="guardarDatosEmision()"
+                                >
+                                    Guardar y continuar
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2445,12 +3004,15 @@ import Fermentacion from "../../models/Fermentacion";
 import Estiercol from "../../models/Estiercol";
 import Fertilizante from "../../models/Fertilizante";
 import Proceso from "../../models/Proceso";
+import Electricidad from "../../models/Electricidad";
+import Viaje from "../../models/Viaje";
 import FuenteEmision from "../../models/FuenteEmision";
 
 export default {
     data() {
         return {
             ie: new InformacionEmpresa({
+                id: null,
                 datos_proveedores: null,
                 fuentes_moviles: null,
                 actividad_agricola: null,
@@ -2486,6 +3048,9 @@ export default {
                 sustento_metodologico: null,
                 compartira_reporte: null,
                 toma_decisiones: null,
+                unidad_id: null,
+                anio_inicio: null,
+                mes_inicio: null,
                 usuario_creacion_id: null,
                 empresa_id: null,
                 sede_id: null,
@@ -2508,6 +3073,34 @@ export default {
             }),
 
             paso: 1,
+            emisiones_indirectas: {
+                energias: {
+                    energia_electrica: [],
+                    Combustible_solido: [],
+                    Combustible_liquido: [],
+                    Combustible_gaseoso: [],
+                },
+                transportes: {
+                    Combustible_solido: [],
+                    Combustible_liquido: [],
+                    Combustible_gaseoso: [],
+                    Refrigerante: [],
+                    Extintor: [],
+                    Lubricantes: [],
+                    Transporte: [],
+                },
+                productos: {
+                    Refrigerante: [],
+                    Extintore: [],
+                    Lubricante: [],
+                    Aislamiento: [],
+                    Equipo: [],
+                    Materia_prima: [],
+                    Residuo: [],
+                },
+                usos: {},
+                otros: {},
+            },
             procesos: [
                 {
                     nombre: "Proceso 1",
@@ -2516,70 +3109,63 @@ export default {
                             nombre: "Subproceso 1",
                             descripcion: "",
                             fuentes_fijas: {
-                                combustibles_solidos: [],
-                                combustibles_liquidos: [],
-                                combustibles_gaseosos: [],
-                                refrigerantes: [],
-                                extintores: [],
-                                lubricantes: [],
-                                fugas: [],
-                                aislamientos: [],
+                                Combustible_solido: [],
+                                Combustible_liquido: [],
+                                Combustible_gaseoso: [],
+                                Refrigerante: [],
+                                Extintor: [],
+                                Lubricante: [],
+                                Fuga: [],
+                                Aislamiento: [],
                             },
                             fuentes_moviles: {
-                                combustibles_liquidos: [],
-                                combustibles_gaseosos: [],
-                                refrigerantes: [],
-                                extintores: [],
-                                lubricantes: [],
+                                Combustible_liquido: [],
+                                Combustible_gaseoso: [],
+                                Refrigerante: [],
+                                Extintor: [],
+                                Lubricante: [],
                             },
                             emisiones: {
-                                embalses: [],
-                                minerias: [],
-                                industriales: [],
-                                fermentaciones: [],
-                                estiercoles: [],
-                                residuos_organizacionales: [],
+                                Embalse: [],
+                                Mineria: [],
+                                Industrial: [],
+                                Fermentacion: [],
+                                Estiercol: [],
+                                Residuos_organizacionales: [],
                             },
                             agricolas: {
-                                residuos_agropecuarios: [],
-                                fertilizantes: [],
-                                cales: [],
+                                Residuos_agropecuarios: [],
+                                Fertilizant: [],
+                                Cal: [],
                             },
                         },
                     ],
                 },
             ],
-            info_procesos: [],
-            options_anio: [],
-            options_mes: [],
-            numero_proceso: 0,
+            fuentes_emision: [],
+            index_fuente_emision: 0,
+            total_fuentes_emision: "",
 
             valor_option_metodologia: "",
 
-            anio: "",
-            mes: "",
             fecha_base: "",
 
             cabecera_tabla: [],
 
             array_meses: [
-                "Enero",
-                "Febrero",
-                "Marzo",
-                "Abril",
-                "Mayo",
-                "Junio",
-                "Julio",
-                "Agosto",
-                "Septiembre",
-                "Octubre",
-                "Noviembre",
-                "Diciembre",
+                "ENERO",
+                "FEBRERO",
+                "MARZO",
+                "ABRIL",
+                "MAYO",
+                "JUNIO",
+                "JULIO",
+                "AGOSTO",
+                "SEPTIEMBRE",
+                "OCTUBRE",
+                "NOVIEMBRE",
+                "DICIEMBRE",
             ],
-
-            array_fuentes_moviles: [],
-
-            options_sector: [],
 
             options_si_no: [
                 { value: 0, label: "No" },
@@ -2611,52 +3197,26 @@ export default {
             options_fermentacion: [],
             options_estiercol: [],
             options_residuo_organizacional: [],
-
             options_residuo_agropecuario: [],
             options_fertilizante: [],
             options_cal: [],
-
+            options_electricidad: [],
+            options_viaje: [],
+            options_unidad: [],
             options_equipo_consumo: [],
-            options_energeticos: [],
             options_metodologia: [],
-            energeticos: [{ nombre: "" }, { nombre: "" }, { nombre: "" }],
+            options_anio: [],
+            options_mes: [],
             required: "Este campo es requerido",
-            options: [{ value: 1, label: "1" }],
         };
     },
-    validations: {
-        fi: {
-            required,
-        },
-        procesos: {
-            required,
-
-            $each: {
-                nombre: {
-                    required,
-                },
-                descripcion: {
-                    required,
-                },
-                equipos: {
-                    required,
-                },
-                energetico: {
-                    required,
-                },
-            },
-        },
-    },
     mounted() {
-        this.getProcesos();
-        this.getParametros(3, "options_sector");
+        // this.getInformacionEmpresa();
         this.getParametros(7, "options_anio");
         this.getParametros(8, "options_mes");
-        this.getParametros(11, "options_energeticos");
         this.getParametros(12, "options_metodologia");
-
+        this.getParametros(13, "options_unidad");
         this.getOptionsFuenteEmision();
-        // this.getEquiposConsumo();
     },
     methods: {
         async getParametros(tipo_parametro_id, variable) {
@@ -2665,24 +3225,13 @@ export default {
             //4 CIIUs
             //5 tamaños de empresa
             //6 número de empleados
+            //12 metodologías
+            //13 Unidad producción y/o servicios
+
             this[variable] = await Parametro.where(
                 "tipo_parametro_id",
                 tipo_parametro_id
             ).get();
-        },
-        async getEquiposConsumo() {
-            await axios
-                .post("api/getEquiposConsumo")
-                .then((response) => {
-                    this.options_equipo_consumo = response.data;
-                })
-                .catch((error) => {
-                    this.$root.mostrarMensaje(
-                        "error",
-                        "No se pudo verificar el convenio",
-                        "error"
-                    );
-                });
         },
         async getOptionsFuenteEmision() {
             let array_options = [
@@ -2703,6 +3252,8 @@ export default {
                 "options_residuo_agropecuario",
                 "options_fertilizante",
                 "options_cal",
+                "options_electricidad",
+                "options_viaje",
             ];
 
             this.options_combustible_solido = await Combustible.where(
@@ -2738,6 +3289,7 @@ export default {
             ).get();
 
             this.options_fermentacion = await Fermentacion.get();
+
             this.options_estiercol = await Estiercol.where(
                 "tipo",
                 "Estiercol"
@@ -2752,7 +3304,11 @@ export default {
                 "tipo",
                 "Fertilizante"
             ).get();
+
             this.options_cal = await Fertilizante.where("tipo", "Cal").get();
+
+            this.options_electricidad = await Electricidad.get();
+            this.options_viaje = await Viaje.get();
 
             array_options.forEach((e) => {
                 this[e].push(this.option_ninguna);
@@ -2760,6 +3316,12 @@ export default {
                     return a.id - b.id;
                 });
             });
+        },
+        async getInformacionEmpresa() {
+            // this.ie = await InformacionEmpresa.where({
+            //     empresa_id: 1,
+            //     sede_id: 1,
+            // }).get();
         },
         changeMetodologia() {
             this.ie.otra_metodologia = null;
@@ -2769,7 +3331,7 @@ export default {
             this.valor_option_metodologia = option[0]["valor"];
         },
 
-        async submitInformacion(e) {
+        async guardarInformacion(e) {
             if (this.paso == 2) {
                 if (this.ie.huella_base == 0) {
                     this.paso = 4;
@@ -2798,12 +3360,21 @@ export default {
                 );
             }
         },
-        async submitProcesos() {
+        guardarEmisionesIndirectas() {
+            this.$root.mostrarCargando("Guardando información");
             axios
-                .post("/api/guardarProcesos", {
-                    procesos: this.procesos,
+                .post("/api/guardarEmisionesIndirectas", {
+                    emisiones: this.emisiones_indirectas,
                 })
-                .then((response) => {})
+                .then((response) => {
+                    Swal.close();
+                    this.$root.mostrarMensaje(
+                        "Éxito",
+                        "Información guardada exitosamente",
+                        "success"
+                    );
+                    this.limpiarFormularioEmisiones();
+                })
                 .catch((error) => {
                     Swal.fire(
                         "Error",
@@ -2812,66 +3383,133 @@ export default {
                     );
                 });
         },
-        async getProcesos() {
-            let data = await Proceso.where({
-                empresa_id: 1,
-                sede_id: 1,
-            })
-                .include(
-                    "subprocesos",
-                    "subprocesos.fuentesEmision",
-                    "subprocesos.fuentesEmision.combustible",
-                    "subprocesos.fuentesEmision.refrigerante"
-                )
-                .get();
 
-            data.forEach((e) => {
-                e.subprocesos.forEach((se) => {
-                    se.fuentes_emision.forEach((fe) => {
-                        fe.proceso = e.nombre;
-                        fe.subproceso = se.nombre;
-                        this.info_procesos.push(fe);
-                    });
+        async guardarProcesos() {
+            this.$root.mostrarCargando("Guardando información");
+            axios
+                .post("/api/guardarProcesos", {
+                    procesos: this.procesos,
+                })
+                .then((response) => {
+                    Swal.close();
+                    this.$root.mostrarMensaje(
+                        "Éxito",
+                        "Información guardada exitosamente",
+                        "success"
+                    );
+                    this.limpiarFormularioProceso();
+                })
+                .catch((error) => {
+                    Swal.fire(
+                        "Error",
+                        "No se pudo obtener la información de la persona, por favor inténtelo nuevamente",
+                        "error"
+                    );
                 });
-            });
         },
-
         async guardarDatosEmision() {
-            this.fuente_emision.id = this.info_procesos[this.numero_proceso].id;
+            this.$root.mostrarCargando("Guardando información");
+            this.fuente_emision.id =
+                this.fuentes_emision[this.index_fuente_emision].id;
             this.fuente_emision.dato_mes_1 =
-                this.info_procesos[this.numero_proceso].dato_mes_1;
+                this.fuentes_emision[this.index_fuente_emision].dato_mes_1;
             this.fuente_emision.dato_mes_2 =
-                this.info_procesos[this.numero_proceso].dato_mes_2;
+                this.fuentes_emision[this.index_fuente_emision].dato_mes_2;
             this.fuente_emision.dato_mes_3 =
-                this.info_procesos[this.numero_proceso].dato_mes_3;
+                this.fuentes_emision[this.index_fuente_emision].dato_mes_3;
             this.fuente_emision.dato_mes_4 =
-                this.info_procesos[this.numero_proceso].dato_mes_4;
+                this.fuentes_emision[this.index_fuente_emision].dato_mes_4;
             this.fuente_emision.dato_mes_5 =
-                this.info_procesos[this.numero_proceso].dato_mes_5;
+                this.fuentes_emision[this.index_fuente_emision].dato_mes_5;
             this.fuente_emision.dato_mes_6 =
-                this.info_procesos[this.numero_proceso].dato_mes_6;
+                this.fuentes_emision[this.index_fuente_emision].dato_mes_6;
             this.fuente_emision.dato_mes_7 =
-                this.info_procesos[this.numero_proceso].dato_mes_7;
+                this.fuentes_emision[this.index_fuente_emision].dato_mes_7;
             this.fuente_emision.dato_mes_8 =
-                this.info_procesos[this.numero_proceso].dato_mes_8;
+                this.fuentes_emision[this.index_fuente_emision].dato_mes_8;
             this.fuente_emision.dato_mes_9 =
-                this.info_procesos[this.numero_proceso].dato_mes_9;
+                this.fuentes_emision[this.index_fuente_emision].dato_mes_9;
             this.fuente_emision.dato_mes_10 =
-                this.info_procesos[this.numero_proceso].dato_mes_10;
+                this.fuentes_emision[this.index_fuente_emision].dato_mes_10;
             this.fuente_emision.dato_mes_11 =
-                this.info_procesos[this.numero_proceso].dato_mes_11;
+                this.fuentes_emision[this.index_fuente_emision].dato_mes_11;
             this.fuente_emision.dato_mes_12 =
-                this.info_procesos[this.numero_proceso].dato_mes_12;
+                this.fuentes_emision[this.index_fuente_emision].dato_mes_12;
 
             await this.fuente_emision.save();
 
-            this.numero_proceso++;
+            Swal.close();
+            this.$root.mostrarMensaje(
+                "Éxito",
+                "Información guardada exitosamente",
+                "success"
+            );
+
+            setTimeout(() => {
+                if (this.index_fuente_emision < this.total_fuentes_emision) {
+                    this.index_fuente_emision++;
+                }
+            }, 1500);
         },
 
-        tablaEmisiones() {
-            this.cabecera_tabla = [];
+        async getFuentesEmision() {
+            this.$root.mostrarCargando("consultado información");
+
+            this.fuentes_emision = await FuenteEmision.where({
+                empresa_id: 1,
+                sede_id: 1,
+            })
+                .include("subproceso", "subproceso.proceso", "fuentetable")
+                .orderBy("id")
+                .get();
+
+            this.index_fuente_emision = 0;
+            this.total_fuentes_emision = this.fuentes_emision.length - 1;
+            this.tablaEmisiones();
+
+            Swal.close();
+        },
+
+        async guardarInicioConsumo() {
+            this.$root.mostrarCargando("Guardando información");
+
+            let informacion_empresa = await InformacionEmpresa.where({
+                empresa_id: 1,
+                sede_id: 1,
+            }).first();
+
+            informacion_empresa.unidad_id = this.ie.unidad_id;
+            informacion_empresa.anio_inicio = this.ie.anio_inicio;
+            informacion_empresa.mes_inicio = this.ie.mes_inicio;
+            await informacion_empresa.save();
+
+            Swal.close();
+            this.$root.mostrarMensaje(
+                "Éxito",
+                "Información guardada exitosamente",
+                "success"
+            );
+        },
+
+        async tablaEmisiones() {
+            let informacion_empresa = await InformacionEmpresa.where({
+                empresa_id: 1,
+                sede_id: 1,
+            }).first();
+
+            this.cabecera_tabla = [
+                "PROCESO",
+                "SUBPROCESO",
+                "SUBCATERGORÍA",
+                "CLASE",
+                "FUENTE DE EMISIÓN DE GEI",
+                "UNIDAD",
+            ];
             this.fecha_base = new Date(
-                this.anio + "-" + this.mes + "-01 00:00"
+                informacion_empresa.anio_inicio +
+                    "-" +
+                    informacion_empresa.mes_inicio +
+                    "-01 00:00"
             );
 
             for (var i = 0; i < 12; i++) {
@@ -2883,13 +3521,86 @@ export default {
                 var month = this.array_meses[future.getMonth()];
                 var year = future.getFullYear();
                 this.cabecera_tabla.push(
-                    "Mes " + (i + 1) + " (" + month + " " + year + ")"
+                    "DATO MES " + (i + 1) + " (" + month + " " + year + ")"
                 );
             }
         },
+
+        limpiarFormularioProceso() {
+            this.procesos = [
+                {
+                    nombre: "Proceso 1",
+                    subprocesos: [
+                        {
+                            nombre: "Subproceso 1",
+                            descripcion: "",
+                            fuentes_fijas: {
+                                Combustible_solido: [],
+                                Combustible_liquido: [],
+                                Combustible_gaseoso: [],
+                                Refrigerante: [],
+                                Extintor: [],
+                                Lubricante: [],
+                                Fuga: [],
+                                Aislamiento: [],
+                            },
+                            fuentes_moviles: {
+                                Combustible_liquido: [],
+                                Combustible_gaseoso: [],
+                                Refrigerante: [],
+                                Extintor: [],
+                                Lubricante: [],
+                            },
+                            emisiones: {
+                                Embalse: [],
+                                Mineria: [],
+                                Industrial: [],
+                                Fermentacion: [],
+                                Estiercol: [],
+                                Residuos_organizacionales: [],
+                            },
+                            agricolas: {
+                                Residuos_agropecuarios: [],
+                                Fertilizant: [],
+                                Cal: [],
+                            },
+                        },
+                    ],
+                },
+            ];
+        },
+
+        limpiarFormularioEmisiones() {
+            this.emisiones_indirectas = {
+                energias: {
+                    energia_electrica: [],
+                    Combustible_solido: [],
+                    Combustible_liquido: [],
+                    Combustible_gaseoso: [],
+                },
+                transportes: {
+                    Combustible_solido: [],
+                    Combustible_liquido: [],
+                    Combustible_gaseoso: [],
+                    Refrigerante: [],
+                    Extintor: [],
+                    Lubricantes: [],
+                    Transporte: [],
+                },
+                productos: {
+                    Refrigerante: [],
+                    Extintore: [],
+                    Lubricante: [],
+                    Aislamiento: [],
+                    Equipo: [],
+                    Materia_prima: [],
+                    Residuo: [],
+                },
+                usos: {},
+                otros: {},
+            };
+        },
     },
-    // traer de base de datos todas las fila e ir pintadolas de a una
-    // adicional agregar campo para saber a que listado pertenece, por ejemplo combustible liquido
 };
 </script>
 <style>

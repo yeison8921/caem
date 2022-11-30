@@ -19,9 +19,9 @@ class FuenteEmision extends Model
     protected $table = 'fuentes_emision';
 
     protected $fillable = [
+        'fuentetable_type',
+        'fuentetable_id',
         'tipo',
-        'modelo',
-        'modelo_id',
         'fuente_emision',
         'descripcion',
         'informacion_adicional',
@@ -43,8 +43,12 @@ class FuenteEmision extends Model
         'sede_id',
     ];
 
-    protected $appends = ['tipo_mostrar', 'fuente_emision_mostrar'];
-    //protected $appends = array('fecha_mostrar', 'franja_atencion_mostrar', 'tipo_evento_mostrar');
+    protected $appends = ['tipo_mostrar', 'fuente_emision_mostrar', 'categoria_mostrar'];
+
+    public function fuentetable()
+    {
+        return $this->morphTo();
+    }
 
     /**
      * Obtiene el tipo de emisión en formato de lectura para el usuario.
@@ -68,8 +72,14 @@ class FuenteEmision extends Model
             case 'agricolas':
                 $texto = 'Agricolas';
                 break;
-            case 'extintores':
-                $texto = 'Extintores';
+            case 'energias':
+                $texto = 'Electricidad importada';
+                break;
+            case 'transportes':
+                $texto = 'Transporte carga y pasajeros';
+                break;
+            case 'productos':
+                $texto = 'Bienes y servicios';
                 break;
         }
         return $texto;
@@ -85,70 +95,118 @@ class FuenteEmision extends Model
     {
         $texto = '';
         switch ($this->fuente_emision) {
-            case 'combustibles_solidos':
+            case 'Combustible_solido':
                 $texto = 'Consumo de combustibles solidos';
                 break;
-            case 'combustibles_liquidos':
+            case 'Combustible_liquido':
                 $texto = 'Consumo de combustibles líquidos';
                 break;
-            case 'combustibles_gaseosos':
+            case 'Combustible_gaseoso':
                 $texto = 'Consumo de combustibles gaseosos';
                 break;
-            case 'refrigerantes':
+            case 'Refrigerante':
                 $texto = 'Refrigerantes';
                 break;
-            case 'extintores':
+            case 'Extintor':
                 $texto = 'Extintores';
                 break;
-            case 'lubricantes':
+            case 'Lubricante':
                 $texto = 'Lubricantes';
                 break;
-            case 'refrigerantes':
+            case 'Refrigerante':
                 $texto = 'Consumo de refrigerantes';
                 break;
-            case 'fugas':
+            case 'Fuga':
                 $texto = 'Fugas de CO2 en proceso';
                 break;
-            case 'aislamientos':
+            case 'Aislamiento':
                 $texto = 'Consumo de aislante eléctrico';
                 break;
-            case 'embalses':
+            case 'Embalse':
                 $texto = 'Manejo de embalses';
                 break;
-            case 'minerias':
+            case 'Mineria':
                 $texto = 'Minería';
                 break;
-            case 'industriales':
+            case 'Industrial':
                 $texto = 'Industrial';
                 break;
-            case 'fermentaciones':
+            case 'Fermentacion':
                 $texto = 'Fermentación Entérica';
                 break;
-            case 'estiercoles':
+            case 'Estiercol':
                 $texto = 'Manejo de Estiércol';
                 break;
-            case 'residuos_agropecuarios':
+            case 'Residuo_agropecuario':
                 $texto = 'Manejo de residuos agropecuarios';
                 break;
-            case 'fertilizantes':
+            case 'Fertilizante':
                 $texto = 'Uso fertilizantes';
                 break;
-            case 'cales':
+            case 'Cal':
                 $texto = 'Cal aplicada';
                 break;
-            case 'residuos_organizacionales':
+            case 'Residuo_organizacional':
                 $texto = 'Manejo residuos organizacionales';
+                break;
+            case 'Energia_electrica':
+                $texto = 'Consumo de energía eléctrica';
+                break;
+            case 'Transporte':
+                $texto = 'Transporte de carga';
+                break;
+            case 'Residuo':
+                $texto = 'Manejo de residuos';
+                break;
+            case 'Materia_prima':
+                $texto = 'Materias primas';
                 break;
         }
         return $texto;
     }
 
     /**
+     * Obtiene la categoría a mostrar.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getCategoriaMostrarAttribute()
+    {
+        $texto = '';
+        switch ($this->tipo) {
+            case 'fuentes_fijas':
+                $texto = 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI';
+                break;
+            case 'fuentes_moviles':
+                $texto = 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI';
+                break;
+            case 'emisiones':
+                $texto = 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI';
+                break;
+            case 'agricolas':
+                $texto = 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI';
+                break;
+            case 'energias':
+                $texto = 'CATEGORIA 2 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR ENERGÍA IMPORTADA';
+                break;
+            case 'transportes':
+                $texto = 'CATEGORIA 3 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR EL TRANSPORTE';
+                break;
+            case 'productos':
+                $texto = 'CATEGORIA 4 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR PRODUCTOS QUE UTILIZA LA ORGANIZACIÓN';
+                break;
+        }
+        return $texto;
+    }
+
+
+    /**
      * Obtiene el combustible
      */
     public function combustible()
     {
-        return $this->belongsTo(Combustible::class, 'modelo_id', 'id');
+        return $this->belongsTo('App\Models\Combustible', 'modeltable');
     }
 
     /**
@@ -213,5 +271,13 @@ class FuenteEmision extends Model
     public function estiercol()
     {
         return $this->belongsTo(Estiercol::class, 'modelo_id', 'id');
+    }
+
+    /**
+     * Obtiene el subproceso de la fuente de emision
+     */
+    public function subproceso()
+    {
+        return $this->belongsTo(Subproceso::class);
     }
 }

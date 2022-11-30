@@ -26,4 +26,12 @@ class Subproceso extends Model
     {
         return $this->hasMany(FuenteEmision::class);
     }
+
+    /**
+     * Obtiene el proceso del subproceso
+     */
+    public function proceso()
+    {
+        return $this->belongsTo(Proceso::class);
+    }
 }
