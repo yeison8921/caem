@@ -4,7 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+
 window.$ = window.jQuery = require('jquery');
 window.Swal = require('sweetalert2');
 
@@ -16,7 +16,11 @@ import Vuelidate from 'vuelidate'
 import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
 import axios from 'axios'
 import { Model } from 'vue-api-query'
+import "../css/nucleo-icons.css";
+import "../css/nucleo-svg.css";
 import jszip from 'jszip/dist/jszip';
+import "./nav-pills.js";
+import "../scss/soft-ui-dashboard.scss";
 
 var moment = require("moment-timezone");
 var momentDurationFormatSetup = require("moment-duration-format");
@@ -63,6 +67,7 @@ Vue.component('form-empresa-component', require('./components/administracion/emp
 Vue.component('index-sede-component', require('./components/administracion/sede/IndexSedeComponent.vue').default);
 Vue.component('form-sede-component', require('./components/administracion/sede/FormSedeComponent.vue').default);
 Vue.component('index-proceso-component', require('./components/proceso/IndexProcesoComponent.vue').default);
+Vue.component('nav-bar-component', require('./components/pageLayout/Navbar.vue').default);
 Vue.component('Multiselect', require('@vueform/multiselect/dist/multiselect.vue2.js').default);
 
 Vue.prototype.$tablaGlobal = function(nombreTabla) {
