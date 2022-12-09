@@ -4,7 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-
+require('./bootstrap');
 window.$ = window.jQuery = require('jquery');
 window.Swal = require('sweetalert2');
 
@@ -68,9 +68,13 @@ Vue.component('index-sede-component', require('./components/administracion/sede/
 Vue.component('form-sede-component', require('./components/administracion/sede/FormSedeComponent.vue').default);
 Vue.component('index-proceso-component', require('./components/proceso/IndexProcesoComponent.vue').default);
 Vue.component('nav-bar-component', require('./components/pageLayout/Navbar.vue').default);
+Vue.component('soft-input', require('./components/SoftInput.vue').default);
+Vue.component('soft-switch', require('./components/SoftSwitch.vue').default);
+Vue.component('soft-button', require('./components/SoftButton.vue').default);
+Vue.component('soft-button-basic', require('./components/SoftButtonBasic.vue').default);
 Vue.component('Multiselect', require('@vueform/multiselect/dist/multiselect.vue2.js').default);
 
-Vue.prototype.$tablaGlobal = function(nombreTabla) {
+Vue.prototype.$tablaGlobal = function (nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "order": [
@@ -99,11 +103,11 @@ Vue.prototype.$tablaGlobal = function(nombreTabla) {
                 "text": "<i class='fas fa-file-excel'></i> Excel",
                 "titleAttr": "Exportar a Excel",
                 "className": "btn btn-success"
-            }, ]
+            },]
         });
     });
 }
-Vue.prototype.$tablaResultados = function(nombreTabla) {
+Vue.prototype.$tablaResultados = function (nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [
@@ -132,11 +136,11 @@ Vue.prototype.$tablaResultados = function(nombreTabla) {
                 "text": "<i class='fas fa-file-excel'></i> Excel",
                 "titleAttr": "Exportar a Excel",
                 "className": "btn btn-success"
-            }, ]
+            },]
         });
     });
 }
-Vue.prototype.$tablaConvenios = function(nombreTabla) {
+Vue.prototype.$tablaConvenios = function (nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [
@@ -165,11 +169,11 @@ Vue.prototype.$tablaConvenios = function(nombreTabla) {
                 "text": "<i class='fas fa-file-excel'></i> Excel",
                 "titleAttr": "Exportar a Excel",
                 "className": "btn btn-success"
-            }, ]
+            },]
         });
     });
 }
-Vue.prototype.$tablaEmpresas = function(nombreTabla) {
+Vue.prototype.$tablaEmpresas = function (nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [
@@ -198,12 +202,12 @@ Vue.prototype.$tablaEmpresas = function(nombreTabla) {
                 "text": "<i class='fas fa-file-excel'></i> Excel",
                 "titleAttr": "Exportar a Excel",
                 "className": "btn btn-success"
-            }, ]
+            },]
         });
     });
 }
 
-Vue.prototype.$tablaSedes = function(nombreTabla) {
+Vue.prototype.$tablaSedes = function (nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [
@@ -232,12 +236,12 @@ Vue.prototype.$tablaSedes = function(nombreTabla) {
                 "text": "<i class='fas fa-file-excel'></i> Excel",
                 "titleAttr": "Exportar a Excel",
                 "className": "btn btn-success"
-            }, ]
+            },]
         });
     });
 }
 
-Vue.prototype.$tablaUsuarios = function(nombreTabla) {
+Vue.prototype.$tablaUsuarios = function (nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [
@@ -266,7 +270,7 @@ Vue.prototype.$tablaUsuarios = function(nombreTabla) {
                 "text": "<i class='fas fa-file-excel'></i> Excel",
                 "titleAttr": "Exportar a Excel",
                 "className": "btn btn-success"
-            }, ]
+            },]
         });
     });
 }
@@ -276,7 +280,23 @@ Vue.prototype.$tablaUsuarios = function(nombreTabla) {
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+window.isLoggedIn = localStorage.getItem('token') != 'undefined' && localStorage.getItem('token') != null;
+if (window.isLoggedIn) {
+    axios
+        .get("/api/user")
+        .then((response) => {
+            window.user = response.data;
+            console.log(user);
+        })
+        .catch((error) => {
+            console.log(error.response.status);
+            if (error.response.status == 401) {
+                localStorage.removeItem("token");
+                console.log(localStorage.getItem('token'));
+                window.isLoggedIn = false;
+            }
+        });
+}
 const app = new Vue({
     el: '#app',
     methods: {
@@ -292,6 +312,7 @@ const app = new Vue({
                 allowOutsideClick: false,
             });
         },
+        cerrarCargando() { Swal.close(); },
         mostrarMensaje(titulo, mensaje, icono) {
             Swal.fire({
                 title: titulo,

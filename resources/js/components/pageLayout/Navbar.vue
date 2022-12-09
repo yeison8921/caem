@@ -32,86 +32,95 @@
         class="pt-3 pb-2 collapse navbar-collapse w-100 py-lg-0"
       >
         <ul class="mx-auto navbar-nav navbar-nav-hover">
-          <li class="mx-2 nav-item dropdown dropdown-hover">
+          <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="loggedIn"
+              v-if="isLogged"
               href="/home"
               class="dropdown-item border-radius-md"
               >Home</a
             >
           </li>
 
-          <li class="mx-2 nav-item dropdown dropdown-hover">
+          <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="!loggedIn"
+              v-if="isLogged"
               href="/parametros"
               class="dropdown-item border-radius-md"
               >Parámetros</a
             >
           </li>
 
-          <li class="mx-2 nav-item dropdown dropdown-hover">
+          <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="!loggedIn"
+              v-if="isLogged"
               href="/convenios"
               class="dropdown-item border-radius-md"
               >Convenios</a
             >
           </li>
 
-          <li class="mx-2 nav-item dropdown dropdown-hover">
+          <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="!loggedIn"
+              v-if="isLogged"
               href="/empresas"
               class="dropdown-item border-radius-md"
               >Empresas</a
             >
           </li>
 
-          <li class="mx-2 nav-item dropdown dropdown-hover">
+          <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="!loggedIn"
+              v-if="isLogged"
               href="/sedes"
               class="dropdown-item border-radius-md"
               >Sedes</a
             >
           </li>
 
-          <li class="mx-2 nav-item dropdown dropdown-hover">
+          <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="!loggedIn"
+              v-if="isLogged"
               href="/procesos"
               class="dropdown-item border-radius-md"
               >Procesos</a
             >
           </li>
 
-          <li class="mx-2 nav-item dropdown dropdown-hover">
+          <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="!loggedIn"
+              v-if="isLogged"
               href="/autorizaciones"
               class="dropdown-item border-radius-md"
               >Autorización</a
             >
           </li>
-
-          <li class="mx-2 nav-item dropdown dropdown-hover">
-            <a
-              v-if="!loggedIn"
-              href="/register"
-              class="ml-4 dropdown-item border-radius-md"
-              >Register</a
-            >
-          </li>
         </ul>
-        <ul class="navbar-nav d-lg-block d-none">
+        <ul v-if="!isLogged" class="navbar-nav d-lg-block d-none">
           <li class="nav-item">
             <a
               href="/login"
               class="mb-0 btn btn-sm btn-round me-1"
               :class="btnBackground ? btnBackground : 'bg-white'"
-              onclick="smoothToPricing('pricing-soft-ui')"
               >Login</a
+            >
+          </li>
+        </ul>
+        <ul v-if="!isLogged" class="navbar-nav d-lg-block d-none">
+          <li class="nav-item">
+            <a
+              href="/register"
+              class="mb-0 btn btn-sm btn-round me-1 bg-gradient-warning"
+              >Register</a
+            >
+          </li>
+        </ul>
+        <ul v-if="isLogged" class="navbar-nav d-lg-block d-none">
+          <li class="nav-item">
+            <a
+              href="#"
+              class="mb-0 btn btn-sm btn-round me-1 bg-gradient-warning"
+              @click="logout()"
+              >Cerrar sesión</a
             >
           </li>
         </ul>
@@ -123,6 +132,7 @@
 
 <script>
 /*eslint-disable*/
+import axios from 'axios'
 import downArrWhite from "../../../img/down-arrow-white.svg";
 import downArrBlack from "../../../img/down-arrow-dark.svg";
 import Office from "../Icon/Office.vue";
@@ -162,10 +172,30 @@ export default {
   },
   data() {
     return {
-      loggedIn: false,
       downArrWhite,
       downArrBlack,
+      isLogged: isLoggedIn,
     };
+  },
+  methods: {
+    logout() {      
+      this.$root.mostrarCargando();
+      axios
+        .post("/api/logout")
+        .then((response) => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          this.$root.redirectIndex("/login");
+          this.$root.cerrarCargando();
+        })
+        .catch((error) => {
+          this.$root.mostrarMensaje(
+            "error",
+            "ha ocurrido un error al cerrar sesión",
+            "error"
+          );
+        });
+    },
   },
   computed: {
     darkModes() {

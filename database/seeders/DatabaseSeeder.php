@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Artisan::call('passport:install');
+        //Artisan::call('passport:install');
         $this->call([
             AislamientoSeeder::class, // TODO::iffy. do this better
             CombustibleSeeder::class,
@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
             ParametroSeeder::class,
             RefrigeranteSeeder::class,
             RolSeeder::class,
-            ViajeSeeder::class
+            ViajeSeeder::class,
+            UsuarioSeeder::class,
         ]);
     }
 }

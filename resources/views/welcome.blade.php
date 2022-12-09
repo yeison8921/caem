@@ -40,34 +40,8 @@
             <nav-bar-component 
           is-blur="blur blur-rounded my-3 py-2 start-0 end-0 mx-4 shadow"
           btn-background="bg-gradient-success"
+          :is-logged="{{auth()->check() ? 'true' : 'false'}}"
           :dark-mode="true" ></nav-bar-component>
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-            @if (Route::has('login'))
-                    <div class="hidden fixed px-6 py-4 sm:block">
-                        @auth
-                            <a href="{{ url('/home') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Home</a>
-                        @else
-                            <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
-                            
-                            <a href="{{ url('parametros') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Parámetros</a>
-
-                            <a href="{{ url('convenios') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Convenios</a>
-                            
-                            <a href="{{ url('empresas') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Empresas</a>
-                            
-                            <a href="{{ url('sedes') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Sedes</a>
-                            
-                            <a href="{{ url('procesos') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Procesos</a>
-                            
-                            <a href="{{ url('autorizaciones') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Autorización</a>
-
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
-                            @endif
-                        @endauth
-                    </div>
-                @endif
-            </div>
         </div>
         </div>
     </body>

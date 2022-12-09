@@ -17,6 +17,9 @@ class User extends Authenticatable
     public const STATUS_UNDEFINED = 0;
     public const STATUS_APPROVED = 1;
     public const STATUS_REJECTED = 2;
+    public const TYPE_ADMIN = 1;
+    public const TYPE_EMPRESARIO = 2;
+    
     /**
      * The attributes that are mass assignable.
      *

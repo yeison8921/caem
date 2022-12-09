@@ -30,7 +30,7 @@
           btn-background="bg-gradient-success"
           :dark-mode="true" ></nav-bar-component>
             -->
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
     </div>
