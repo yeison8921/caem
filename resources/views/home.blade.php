@@ -15,7 +15,7 @@
                     @endif
 
                     {{ __('You are logged in!') }}
-                    <?php Auth::logout(); ?>
+                    <?php //Auth::logout(); ?>
                 </div>
             </div>
         </div>

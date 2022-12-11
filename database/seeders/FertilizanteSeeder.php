@@ -31,6 +31,6 @@ class FertilizanteSeeder extends Seeder
             ['nombre' => 'Fertilización con Urea (CO(NH2)2)', 'unidad_consumo' => 'kg urea', 'factor_emision_no2' => '0.733333333', 'unidad_factor_emision_no2' => 'kgCO2eq/kg urea', 'incertidumbre_no2_1' => '0.01000', 'incertidumbre_no2_2' => '0.50000', 'fuente_bibliografica_no2' => 'IPCC 2006', 'tipo' => 'Cal'],
         ];
 
-        DB::table('Fertilizantes')->insert($Fertilizantes);
+        DB::table('fertilizantes')->insert($Fertilizantes);
     }
 }

@@ -280,7 +280,7 @@ Vue.prototype.$tablaUsuarios = function (nombreTabla) {
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-window.isLoggedIn = localStorage.getItem('token') != 'undefined' && localStorage.getItem('token') != null;
+/*window.isLoggedIn = localStorage.getItem('token') != 'undefined' && localStorage.getItem('token') != null;
 if (window.isLoggedIn) {
     axios
         .get("/api/user")
@@ -296,7 +296,7 @@ if (window.isLoggedIn) {
                 window.isLoggedIn = false;
             }
         });
-}
+}*/
 const app = new Vue({
     el: '#app',
     methods: {

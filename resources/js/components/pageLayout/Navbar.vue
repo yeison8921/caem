@@ -34,16 +34,16 @@
         <ul class="mx-auto navbar-nav navbar-nav-hover">
           <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="isLogged"
-              href="/home"
+              v-if="isLoggedIn"
+              href="/"
               class="dropdown-item border-radius-md"
-              >Home</a
+              >Inicio</a
             >
           </li>
 
           <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="isLogged"
+              v-if="isLoggedIn"
               href="/parametros"
               class="dropdown-item border-radius-md"
               >Parámetros</a
@@ -52,7 +52,7 @@
 
           <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="isLogged"
+              v-if="isLoggedIn"
               href="/convenios"
               class="dropdown-item border-radius-md"
               >Convenios</a
@@ -61,7 +61,7 @@
 
           <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="isLogged"
+              v-if="isLoggedIn"
               href="/empresas"
               class="dropdown-item border-radius-md"
               >Empresas</a
@@ -70,7 +70,7 @@
 
           <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="isLogged"
+              v-if="isLoggedIn"
               href="/sedes"
               class="dropdown-item border-radius-md"
               >Sedes</a
@@ -79,7 +79,7 @@
 
           <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="isLogged"
+              v-if="isLoggedIn"
               href="/procesos"
               class="dropdown-item border-radius-md"
               >Procesos</a
@@ -88,14 +88,14 @@
 
           <li class="nav-item dropdown dropdown-hover">
             <a
-              v-if="isLogged"
+              v-if="isLoggedIn"
               href="/autorizaciones"
               class="dropdown-item border-radius-md"
               >Autorización</a
             >
           </li>
         </ul>
-        <ul v-if="!isLogged" class="navbar-nav d-lg-block d-none">
+        <ul v-if="!isLoggedIn" class="navbar-nav d-lg-block d-none">
           <li class="nav-item">
             <a
               href="/login"
@@ -105,7 +105,7 @@
             >
           </li>
         </ul>
-        <ul v-if="!isLogged" class="navbar-nav d-lg-block d-none">
+        <ul v-if="!isLoggedIn" class="navbar-nav d-lg-block d-none">
           <li class="nav-item">
             <a
               href="/register"
@@ -114,7 +114,7 @@
             >
           </li>
         </ul>
-        <ul v-if="isLogged" class="navbar-nav d-lg-block d-none">
+        <ul v-if="isLoggedIn" class="navbar-nav d-lg-block d-none">
           <li class="nav-item">
             <a
               href="#"
@@ -169,22 +169,29 @@ export default {
       type: Boolean,
       default: false,
     },
+    isLogged: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       downArrWhite,
       downArrBlack,
-      isLogged: isLoggedIn,
+      isLoggedIn: this.isLogged
     };
+  },
+  watch: {
+    isLogged(val, oldVal) {
+      this.isLoggedIn = val;
+    },
   },
   methods: {
     logout() {      
       this.$root.mostrarCargando();
       axios
-        .post("/api/logout")
+        .post("/logout")
         .then((response) => {
-          localStorage.removeItem("token");
-          localStorage.removeItem("user");
           this.$root.redirectIndex("/login");
           this.$root.cerrarCargando();
         })

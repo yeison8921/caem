@@ -41,19 +41,15 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::group(['as' => 'auth.'], function () {
-    Route::group(['middleware' => 'auth:sanctum'], function () {
-        // Authentication
-        Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-        Route::get('user', function (Request $request) {
-            return $request->user();
-        });
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('user', function (Request $request) {
+        return $request->user();
     });
-    Route::group(['middleware' => 'auth'], function () {
-        // Empresas
-        Route::apiResource('empresas', EmpresaController::class);
-    });
+    // Empresas
+    Route::apiResource('empresas', EmpresaController::class);
+});
 
+Route::group(['as' => 'auth.'], function () {
     Route::group(['middleware' => 'guest'], function () {
         // Authentication
         //Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
