@@ -9,7 +9,7 @@
       <div class="page-header min-vh-75">
         <div class="container">
           <div class="row">
-            <div class="mx-auto col-xl-5 col-lg-7 col-md-7 d-flex flex-column">
+            <div class="mx-auto col-xl-5 col-lg-6 col-md-6 col-sm-10 d-flex flex-column">
               <div class="mt-8 card card-plain">
                 <div class="pb-0 card-header text-start">
                   <h3 class="font-weight-bolder text-success text-gradient">
