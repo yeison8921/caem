@@ -1,17 +1,6 @@
 <template>
   <div>
-    <div class="container top-0 position-sticky z-index-sticky">
-      <div class="row">
-        <div class="col-12">
-          <navbar-component
-            is-blur="blur blur-rounded my-3 py-2 start-0 end-0 mx-4 shadow"
-            btn-background="bg-gradient-success"
-            :dark-mode="true"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="mt-7 card">
+    <div class="pt-7 card">
       <div class="card-body">
         <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
           <li class="nav-item" role="presentation">

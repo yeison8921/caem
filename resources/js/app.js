@@ -68,6 +68,8 @@ Vue.component('index-sede-component', require('./components/administracion/sede/
 Vue.component('form-sede-component', require('./components/administracion/sede/FormSedeComponent.vue').default);
 Vue.component('index-proceso-component', require('./components/proceso/IndexProcesoComponent.vue').default);
 Vue.component('nav-bar-component', require('./components/pageLayout/Navbar.vue').default);
+Vue.component('app-footer', require('./components/pageLayout/Footer.vue').default);
+Vue.component('side-nav', require('./components/pageLayout/Sidenav/Sidenav.vue').default);
 Vue.component('soft-input', require('./components/SoftInput.vue').default);
 Vue.component('soft-switch', require('./components/SoftSwitch.vue').default);
 Vue.component('soft-button', require('./components/SoftButton.vue').default);

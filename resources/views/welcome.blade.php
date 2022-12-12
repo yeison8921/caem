@@ -36,13 +36,29 @@
     <body class="antialiased">
         <div id="app">
 
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-            <nav-bar-component 
-          is-blur="blur blur-rounded my-3 py-2 start-0 end-0 mx-4 shadow"
-          btn-background="bg-gradient-success"
-          :is-logged="{{auth()->check() ? 'true' : 'false'}}"
-          :dark-mode="true" ></nav-bar-component>
-        </div>
+            <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
+                @if (auth()->check())
+                <side-nav :class="'fixed-start'" :routeSelected="'{{url()->current();}}'"
+                :is-logged="{{auth()->check() ? 'true' : 'false'}}"
+                ></side-nav>
+                @endif
+                <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg" >
+                    <!-- nav -->
+                    @if (!auth()->check())
+                        <nav-bar-component 
+                        is-blur="blur blur-rounded my-3 py-2 start-0 end-0 mx-4 shadow"
+                        btn-background="bg-gradient-success"
+                        :dark-mode="true"
+                        :is-logged="{{auth()->check() ? 'true' : 'false'}}" >
+                        </nav-bar-component>
+                    @endif
+                        <div style="height: 73vh !important;">
+                            Home
+
+                        </div>
+                <app-footer />
+                </main>
+            </div>
         </div>
     </body>
 </html>
