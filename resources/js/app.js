@@ -63,6 +63,7 @@ Vue.component('form-empresa-component', require('./components/administracion/emp
 Vue.component('index-sede-component', require('./components/administracion/sede/IndexSedeComponent.vue').default);
 Vue.component('form-sede-component', require('./components/administracion/sede/FormSedeComponent.vue').default);
 Vue.component('index-proceso-component', require('./components/proceso/IndexProcesoComponent.vue').default);
+Vue.component('index-resultado-component', require('./components/resultado/IndexResultadoComponent.vue').default);
 Vue.component('Multiselect', require('@vueform/multiselect/dist/multiselect.vue2.js').default);
 
 Vue.prototype.$tablaGlobal = function(nombreTabla) {

@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\ParametroController;
 use App\Http\Controllers\Api\ProcesoController;
 use App\Http\Controllers\Api\RefrigeranteController;
+use App\Http\Controllers\Api\ResultadoFuenteEmisionController;
 use App\Http\Controllers\Api\TipoParametroController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ViajeController;
@@ -115,6 +116,11 @@ Route::group(['as' => 'auth.'], function () {
         // Fuentes emisión
         Route::apiResource('fuentes_emision', FuenteEmisionController::class);
         Route::post('guardarEmisionesIndirectas', [FuenteEmisionController::class, 'guardarEmisionesIndirectas']);
+        Route::get('getFuentesEmision/{id_empresa}/{id_sede}', [FuenteEmisionController::class, 'getFuentesEmision']);
+        Route::post('guardarDatosConsumos', [ResultadoFuenteEmisionController::class, 'guardarDatosConsumos']);
+
+        // Resultados fuente emision
+        Route::apiResource('resultados_fuente_emision', ResultadoFuenteEmisionController::class);
 
         // Convenios
         Route::apiResource('convenios', ConvenioController::class);

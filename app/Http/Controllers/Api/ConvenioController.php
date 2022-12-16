@@ -43,6 +43,7 @@ class ConvenioController extends Controller
         $query = QueryBuilder::for(Convenio::class)->allowedFilters([
             AllowedFilter::exact('codigo'),
         ])->allowedIncludes([
+            'convenio',
             'emails.sede',
         ]);
         return $query->withTrashed()->get();

@@ -23,10 +23,10 @@
                         :class="
                             paso == 2 ? 'active bg-primary' : 'bg-secondary'
                         "
-                        id="pills-datos-generales-tab"
+                        id="pills-datos-contacto-tab"
                         >2
                     </span>
-                    Datos generales
+                    Datos de contacto
                 </li>
                 <li class="nav-item" role="presentation">
                     <span
@@ -127,7 +127,7 @@
                 <div
                     class="tab-pane fade"
                     :class="paso == 2 ? 'show active' : ''"
-                    id="pills-datos-generales"
+                    id="pills-datos-contacto"
                     role="tabpanel"
                 >
                     <div class="mb-3" v-if="convenio_id != ''">
@@ -199,7 +199,7 @@
                                 ></span>
                                 <input
                                     v-model.trim="user.phone"
-                                    type="text"
+                                    type="number"
                                     class="form-control"
                                     :class="{
                                         'is-invalid': $v.user.phone.$error,
@@ -210,6 +210,15 @@
                                     <span v-if="!$v.user.phone.required">{{
                                         required
                                     }}</span>
+                                    <span
+                                        v-if="
+                                            !$v.user.phone.minLength ||
+                                            !$v.user.phone.maxLength
+                                        "
+                                    >
+                                        El número de celular debe contener 10
+                                        dígitos</span
+                                    >
                                 </div>
                             </div>
                         </div>
@@ -227,37 +236,6 @@
                                     :value="email"
                                     readonly
                                 />
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label required"
-                                >Confirmar correo electrónico</label
-                            >
-                            <div class="input-group">
-                                <span class="input-group-text"
-                                    ><i class="fa-solid fa-envelope"></i
-                                ></span>
-                                <input
-                                    v-model.trim="user.verify_email"
-                                    type="email"
-                                    class="form-control"
-                                    autocomplete="new-text"
-                                    :class="{
-                                        'is-invalid':
-                                            $v.user.verify_email.$error,
-                                        'is-valid':
-                                            user.email != ''
-                                                ? !$v.user.verify_email.$invalid
-                                                : '',
-                                    }"
-                                />
-                                <div class="invalid-feedback">
-                                    <span
-                                        v-if="!$v.user.verify_email.sameAsEmail"
-                                    >
-                                        El correo electrónico no coincide</span
-                                    >
-                                </div>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -388,6 +366,7 @@
                             v-model.trim="empresa.nit"
                             type="text"
                             class="form-control"
+                            :disabled="nit != ''"
                             @change="verificarNitEmpresa()"
                             :class="{
                                 'is-invalid': $v.empresa.nit.$error,
@@ -533,7 +512,9 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label required">Teléfono</label>
+                            <label class="form-label required"
+                                >Teléfono fijo o celular</label
+                            >
                             <input
                                 v-model.trim="empresa.telefono"
                                 type="text"
@@ -550,6 +531,14 @@
                                 <span v-if="!$v.empresa.telefono.required">{{
                                     required
                                 }}</span>
+                                <span v-if="!$v.empresa.telefono.minLength">
+                                    El número de debe contener mínimo 7
+                                    dígitos</span
+                                >
+                                <span v-if="!$v.empresa.telefono.maxLength">
+                                    El número de debe contener máximo 10
+                                    dígitos</span
+                                >
                             </div>
                         </div>
                         <div class="mb-3" v-if="convenio_id == ''">
@@ -685,7 +674,13 @@
     </div>
 </template>
 <script>
-import { required, email, sameAs, minLength } from "vuelidate/lib/validators";
+import {
+    required,
+    email,
+    sameAs,
+    minLength,
+    maxLength,
+} from "vuelidate/lib/validators";
 import User from "../../models/User";
 import Empresa from "../../models/Empresa";
 import EmpresaSede from "../../models/EmpresaSede";
@@ -767,12 +762,11 @@ export default {
             },
             phone: {
                 required,
+                minLength: minLength(10),
+                maxLength: maxLength(10),
             },
             email: {
                 required,
-            },
-            verify_email: {
-                sameAsEmail: sameAs("email"),
             },
             cargo: {
                 required,
@@ -807,6 +801,8 @@ export default {
             },
             telefono: {
                 required,
+                minLength: minLength(7),
+                maxLength: maxLength(10),
             },
         },
         sede: {
@@ -905,6 +901,10 @@ export default {
                     this.paso = 3;
                     this.mostrar_form_empresa = false;
                     this.limpiarFormEmpresa();
+                    if (this.nit != "") {
+                        this.empresa.nit = this.nit;
+                        this.verificarNitEmpresa();
+                    }
                 }
             }
             if (this.paso == 3) {
@@ -1058,10 +1058,12 @@ export default {
         async verificarCodigoConvenio() {
             this.limpiarFormUser();
 
-            let convenio_email = await ConvenioEmail.where({
-                email: this.email,
-                "convenio.codigo": this.codigo_convenio,
-            }).get();
+            let convenio_email = await ConvenioEmail.include("convenio")
+                .where({
+                    email: this.email,
+                    "convenio.codigo": this.codigo_convenio,
+                })
+                .get();
 
             if (convenio_email.length != 0) {
                 this.verificar_codigo_convenio = true;

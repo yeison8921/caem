@@ -52,13 +52,17 @@ Route::get('/sedes',  function () {
 Route::get('/sedes/create/{empresa_id}', [EmpresaSedeController::class, 'crearSede']);
 Route::get('/sedes/edit/{id_empresa_sede}', [EmpresaSedeController::class, 'actualizarSede']);
 
-// Proceseo
+// Proceso
 Route::get('/procesos',  function () {
     return view('proceso/index_proceso');
+});
+
+// Resultado
+Route::get('/resultados',  function () {
+    return view('resultado/index_resultado');
 });
 
 // Autorizacion
 Route::get('/autorizaciones',  function () {
     return view('autorizacion/index_autorizacion');
 });
-
