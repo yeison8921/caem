@@ -70,6 +70,7 @@ Vue.component('index-proceso-component', require('./components/proceso/IndexProc
 Vue.component('nav-bar-component', require('./components/pageLayout/Navbar.vue').default);
 Vue.component('app-footer', require('./components/pageLayout/Footer.vue').default);
 Vue.component('side-nav', require('./components/pageLayout/Sidenav/Sidenav.vue').default);
+Vue.component('nav-bar-side', require('./components/pageLayout/Sidenav/NavbarSide.vue').default);
 Vue.component('soft-input', require('./components/SoftInput.vue').default);
 Vue.component('soft-switch', require('./components/SoftSwitch.vue').default);
 Vue.component('soft-button', require('./components/SoftButton.vue').default);

@@ -52,11 +52,13 @@
                         :is-logged="{{auth()->check() ? 'true' : 'false'}}" >
                         </nav-bar-component>
                     @endif
-                        <div style="height: 73vh !important;">
-                            Home
-
+                    <div class="container" style="min-width: 79vw !important;">
+                        <div style="height: 95vh !important;">
+                            <div style="margin-top: 100px; position: absolute;">
+                                Home
+                            </div>
                         </div>
-                <app-footer />
+                    </div>
                 </main>
             </div>
         </div>

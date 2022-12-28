@@ -46,7 +46,7 @@
                     @yield('content')
 
                 </div>
-            <app-footer />
+            <!-- <app-footer /> -->
         </main>
     </div>
 </body>

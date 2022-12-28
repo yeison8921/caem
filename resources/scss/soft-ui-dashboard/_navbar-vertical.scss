@@ -16,7 +16,7 @@
       padding-left: $navbar-padding-x;
       padding-right: $navbar-padding-x;
       font-weight: $navbar-nav-link-font-weight;
-      color: $font-color;
+      color: rgba($dark-gradient-state,1);
       // Icon
       > i {
         min-width: $navbar-icon-min-width;
@@ -201,11 +201,11 @@
     }
 
     &.fixed-start ~ .main-content {
-      margin-left: $navbar-vertical-open-width + 1.5;
+      margin-left: $navbar-vertical-open-width + 1;
     }
 
     &.fixed-end ~ .main-content {
-      margin-right: $navbar-vertical-open-width + 1.5;
+      margin-right: $navbar-vertical-open-width + 1;
     }
   }
 
@@ -343,7 +343,7 @@
       font-weight: 700;
       content: "\f107";
       margin-left: auto;
-      color: rgba($dark-gradient-state,0.5);
+      color: rgba($dark-gradient-state,1);
       @include transition($transition-base);
     }
     // Expanded
@@ -367,7 +367,7 @@
               position: relative;
               background-color: transparent;
               box-shadow: none;
-              color: rgba($dark-gradient-state,0.5);
+              color: rgba($dark-gradient-state,1);
               margin-left: $navbar-vertical-collapse-margin-left;
 
               &:before {
@@ -379,7 +379,7 @@
                 height: $navbar-vertical-collapse-dot-size;
                 width: $navbar-vertical-collapse-dot-size;
                 border-radius: $border-radius-2xl;
-                background: rgba($dark-gradient-state, 0.5);
+                background: rgba($dark-gradient-state, 1);
               }
 
               &.active {
@@ -486,7 +486,7 @@
       max-width: $navbar-vertical-hidden-width !important;
 
       &.fixed-start ~ .main-content {
-        margin-left: $navbar-vertical-hidden-width + 1.5;
+        margin-left: $navbar-vertical-hidden-width + 1;
       }
 
       .navbar-brand {
@@ -560,7 +560,7 @@
         max-width: $navbar-vertical-open-width !important;
 
         &.fixed-start ~ .main-content {
-          margin-left: $navbar-vertical-open-width + 1.5;
+          margin-left: $navbar-vertical-open-width + 1;
         }
 
         .navbar-brand {

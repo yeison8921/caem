@@ -25,7 +25,7 @@
       >
         <slot name="icon"></slot>
       </div>
-      <span class="nav-link-text" :class="' ml-2 mt-2 me-1'">{{
+      <span style="padding-left: 10px;" class="nav-link-text" :class="' ml-3 mt-2 me-1'">{{
         navText
       }}</span>
     </a>
