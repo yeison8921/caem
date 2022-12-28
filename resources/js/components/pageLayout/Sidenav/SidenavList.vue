@@ -37,6 +37,13 @@
                   mini-icon="P"
                   text="Procesos"
                 />
+                <sidenav-item
+                  v-if="isLoggedIn"
+                  :to="{ name: 'Resultados' }"
+                  :url="'/resultados'"
+                  mini-icon="P"
+                  text="Resultados"
+                />
                 
               </ul>
             </template>

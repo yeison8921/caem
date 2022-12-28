@@ -8,10 +8,10 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <ul class="nav flex-column mb-3">
                     <li class="nav-item" role="presentation">
                         <button
-                            class="nav-link active"
+                            class="btn btn-link nav-link active"
                             id="formulario-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#formulario"
@@ -20,12 +20,12 @@
                             aria-controls="formulario"
                             aria-selected="true"
                         >
-                            Formulario
+                            1. Formulario
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button
-                            class="nav-link"
+                            class="btn btn-link nav-link"
                             id="construccion-proceso-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#construccion-proceso"
@@ -34,12 +34,12 @@
                             aria-controls="construccion-proceso"
                             aria-selected="false"
                         >
-                            Construcción del proceso productivo de la empresa
+                            2. Construcción del proceso productivo de la empresa
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button
-                            class="nav-link"
+                            class="btn btn-link nav-link"
                             id="consumos-indirectos-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#consumos-indirectos"
@@ -48,12 +48,27 @@
                             aria-controls="consumos-indirectos"
                             aria-selected="false"
                         >
-                            Consumos indirectos
+                            3. Consumos indirectos
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button
-                            class="nav-link"
+                            class="btn btn-link nav-link"
+                            id="consumos-transversales-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#consumos-transversales"
+                            type="button"
+                            role="tab"
+                            aria-controls="consumos-transversales"
+                            aria-selected="false"
+                        >
+                            4. Consumos transverslaes (de apoyo) en la
+                            organización
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button
+                            class="btn btn-link nav-link"
                             id="inicio-consumos-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#inicio-consumos"
@@ -62,12 +77,12 @@
                             aria-controls="inicio-consumos"
                             aria-selected="false"
                         >
-                            Información inicio de consumos
+                            5. Información inicio de consumos
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button
-                            class="nav-link"
+                            class="btn btn-link nav-link"
                             id="construccion-anio-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#construccion-anio"
@@ -77,7 +92,7 @@
                             aria-selected="false"
                             @click="getFuentesEmision()"
                         >
-                            Construcción de año base de emisiones de GEI
+                            6. Construcción de año base de emisiones de GEI
                         </button>
                     </li>
                 </ul>
@@ -88,173 +103,109 @@
                         role="tabpanel"
                         aria-labelledby="formulario-tab"
                     >
-                        <ul
-                            class="nav flex-column mb-3"
-                            id="pills-tab"
-                            role="tablist"
-                        >
-                            <li class="nav-item" role="presentation">
-                                <span
-                                    class="badge rounded-pill"
-                                    :class="
-                                        paso == 1
-                                            ? 'active bg-primary'
-                                            : 'bg-secondary'
-                                    "
-                                    id="pills-informacion-basica-tab"
-                                    >1</span
-                                >
-                                Información básica
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <span
-                                    class="badge bg-primary rounded-pill"
-                                    :class="
-                                        paso == 2
-                                            ? 'active bg-primary'
-                                            : 'bg-secondary'
-                                    "
-                                    id="pills-datos-generales-tab"
-                                    >2
-                                </span>
-                                Cálculo y reporte de la Huella de Carbono
-                                Organizacional
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <span
-                                    class="badge bg-primary rounded-pill"
-                                    :class="
-                                        paso == 3
-                                            ? 'active bg-primary'
-                                            : 'bg-secondary'
-                                    "
-                                    id="pills-datos-empresa-tab"
-                                    >3
-                                </span>
-                                Verificación de la Huella de Carbono
-                                Organizacional
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <span
-                                    class="badge bg-primary rounded-pill"
-                                    :class="
-                                        paso == 4
-                                            ? 'active bg-primary'
-                                            : 'bg-secondary'
-                                    "
-                                    id="pills-datos-empresa-tab"
-                                    >4
-                                </span>
-                                Planteamiento de Metas de Reducción de Huella de
-                                Carbono Organizacional
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <span
-                                    class="badge bg-primary rounded-pill"
-                                    :class="
-                                        paso == 5
-                                            ? 'active bg-primary'
-                                            : 'bg-secondary'
-                                    "
-                                    id="pills-datos-empresa-tab"
-                                    >5
-                                </span>
-                                Diligenciamiento cumplimiento de principios.
-                            </li>
-                        </ul>
                         <form @submit.prevent="guardarInformacion">
-                            <div class="tab-content" id="pills-tabContent">
-                                <div
-                                    v-if="paso == 1"
-                                    class="tab-pane fade"
-                                    :class="paso == 1 ? 'show active' : ''"
-                                    id="pills-informacion-basica"
-                                    role="tabpanel"
-                                >
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿La información que
-                                                    reportará para el cálculo de
-                                                    la huella de carbono incluye
-                                                    datos de sus proveedores?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="
-                                                        ie.datos_proveedores
-                                                    "
-                                                    :options="options_si_no"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿La empresa cuenta con
-                                                    fuentes móviles propiedad de
-                                                    la compañía o que la
-                                                    organización asume el
-                                                    combustible?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="ie.fuentes_moviles"
-                                                    :options="options_si_no"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿La empresa realiza algún
-                                                    tipo de actividad agrícola?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="
-                                                        ie.actividad_agricola
-                                                    "
-                                                    :options="options_si_no"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="col-lg-12 text-end">
-                                                <button
-                                                    type="submit"
-                                                    class="btn btn-primary"
-                                                >
-                                                    Siguiente
-                                                </button>
-                                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <!-- Paso 1 -->
+                                    <div v-if="paso == 1">
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿La información que reportará
+                                                para el cálculo de la huella de
+                                                carbono incluye datos de sus
+                                                proveedores?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.datos_proveedores"
+                                                :options="options_si_no"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿La empresa cuenta con fuentes
+                                                móviles propiedad de la compañía
+                                                o que la organización asume el
+                                                combustible?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.fuentes_moviles"
+                                                :options="options_si_no"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿La empresa realiza algún tipo
+                                                de actividad agrícola?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.actividad_agricola"
+                                                :options="options_si_no"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
                                         </div>
                                     </div>
-                                </div>
-                                <div
-                                    v-if="paso == 2"
-                                    class="tab-pane fade"
-                                    :class="paso == 2 ? 'show active' : ''"
-                                    id="pills-calculo"
-                                    role="tabpanel"
-                                >
-                                    <div class="card">
-                                        <div class="card-body">
+
+                                    <!-- Paso 2 -->
+                                    <div v-if="paso == 2">
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿La empresa ha calculado su
+                                                huella de carbono organizacional
+                                                para un año base?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.huella_base"
+                                                :options="options_si_no"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                                @input="
+                                                    ie.valor_huella_base = null;
+                                                    ie.huella_comparativo =
+                                                        null;
+                                                    ie.valor_huella_comparativo =
+                                                        null;
+                                                    ie.alcances_huella = null;
+                                                    ie.priorizacion = null;
+                                                    ie.indicador = null;
+                                                "
+                                            />
+                                        </div>
+                                        <div v-if="ie.huella_base">
+                                            <div class="mb-3">
+                                                <label class="required"
+                                                    >¿Cuál es el valor de la
+                                                    huella de carbono de la
+                                                    empresa en su año base?
+                                                </label>
+                                                <input
+                                                    v-model="
+                                                        ie.valor_huella_base
+                                                    "
+                                                    class="form-control"
+                                                    type="number"
+                                                    required
+                                                />
+                                            </div>
                                             <div class="mb-3">
                                                 <label class="required"
                                                     >¿La empresa ha calculado su
                                                     huella de carbono
                                                     organizacional para un año
-                                                    base?
+                                                    comparativo?
                                                 </label>
                                                 <Multiselect
-                                                    v-model="ie.huella_base"
+                                                    v-model="
+                                                        ie.huella_comparativo
+                                                    "
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
                                                     @input="
-                                                        ie.valor_huella_base =
-                                                            null;
-                                                        ie.huella_comparativo =
-                                                            null;
                                                         ie.valor_huella_comparativo =
                                                             null;
                                                         ie.alcances_huella =
@@ -264,175 +215,137 @@
                                                     "
                                                 />
                                             </div>
-                                            <div v-if="ie.huella_base">
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿Cuál es el valor de la
-                                                        huella de carbono de la
-                                                        empresa en su año base?
-                                                    </label>
-                                                    <input
-                                                        v-model="
-                                                            ie.valor_huella_base
-                                                        "
-                                                        class="form-control"
-                                                        type="number"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿La empresa ha
-                                                        calculado su huella de
-                                                        carbono organizacional
-                                                        para un año comparativo?
-                                                    </label>
-                                                    <Multiselect
-                                                        v-model="
-                                                            ie.huella_comparativo
-                                                        "
-                                                        :options="options_si_no"
-                                                        placeholder="Seleccione una opción"
-                                                        required
-                                                        @input="
-                                                            ie.valor_huella_comparativo =
-                                                                null;
-                                                            ie.alcances_huella =
-                                                                null;
-                                                            ie.priorizacion =
-                                                                null;
-                                                            ie.indicador = null;
-                                                        "
-                                                    />
-                                                </div>
+                                        </div>
+                                        <div
+                                            v-if="
+                                                ie.huella_base &&
+                                                ie.huella_comparativo
+                                            "
+                                        >
+                                            <div class="mb-3">
+                                                <label class="required"
+                                                    >¿Cuál es el valor de la
+                                                    huella de carbono de la
+                                                    empresa en su año
+                                                    comparativo?
+                                                </label>
+                                                <input
+                                                    v-model="
+                                                        ie.valor_huella_comparativo
+                                                    "
+                                                    class="form-control"
+                                                    type="number"
+                                                    required
+                                                />
                                             </div>
-                                            <div
-                                                v-if="
-                                                    ie.huella_base &&
-                                                    ie.huella_comparativo
-                                                "
-                                            >
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿Cuál es el valor de la
-                                                        huella de carbono de la
-                                                        empresa en su año
-                                                        comparativo?
-                                                    </label>
-                                                    <input
-                                                        v-model="
-                                                            ie.valor_huella_comparativo
-                                                        "
-                                                        class="form-control"
-                                                        type="number"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿Qué alcances -
-                                                        categorías cubre el
-                                                        cálculo de la huella de
-                                                        carbono organizacional?
-                                                    </label>
-                                                    <textarea
-                                                        v-model="
-                                                            ie.alcances_huella
-                                                        "
-                                                        class="form-control"
-                                                        required
-                                                    ></textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿Se realizó una
-                                                        priorización de fuentes
-                                                        de emisión para definir
-                                                        el Otras Emisiones
-                                                        Indirectas?
-                                                    </label>
-                                                    <Multiselect
-                                                        v-model="
-                                                            ie.priorizacion
-                                                        "
-                                                        :options="options_si_no"
-                                                        placeholder="Seleccione una opción"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿La empresa ha definido
-                                                        algún indicador de
-                                                        intensidad o correlación
-                                                        de sus emisiones con su
-                                                        producción o servicios
-                                                        prestados?
-                                                    </label>
-                                                    <Multiselect
-                                                        v-model="ie.indicador"
-                                                        :options="options_si_no"
-                                                        placeholder="Seleccione una opción"
-                                                        required
-                                                    />
-                                                </div>
+                                            <div class="mb-3">
+                                                <label class="required"
+                                                    >¿Qué alcances - categorías
+                                                    cubre el cálculo de la
+                                                    huella de carbono
+                                                    organizacional?
+                                                </label>
+                                                <textarea
+                                                    v-model="ie.alcances_huella"
+                                                    class="form-control"
+                                                    required
+                                                ></textarea>
                                             </div>
-                                            <div class="row">
-                                                <div
-                                                    class="col-lg-6 text-start"
-                                                >
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary"
-                                                        @click="paso = 1"
-                                                    >
-                                                        Atrás
-                                                    </button>
-                                                </div>
-                                                <div class="col-lg-6 text-end">
-                                                    <button
-                                                        type="submit"
-                                                        class="btn btn-primary"
-                                                    >
-                                                        Siguiente
-                                                    </button>
-                                                </div>
+                                            <div class="mb-3">
+                                                <label class="required"
+                                                    >¿Se realizó una
+                                                    priorización de fuentes de
+                                                    emisión para definir el
+                                                    Otras Emisiones Indirectas?
+                                                </label>
+                                                <Multiselect
+                                                    v-model="ie.priorizacion"
+                                                    :options="options_si_no"
+                                                    placeholder="Seleccione una opción"
+                                                    required
+                                                />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="required"
+                                                    >¿La empresa ha definido
+                                                    algún indicador de
+                                                    intensidad o correlación de
+                                                    sus emisiones con su
+                                                    producción o servicios
+                                                    prestados?
+                                                </label>
+                                                <Multiselect
+                                                    v-model="ie.indicador"
+                                                    :options="options_si_no"
+                                                    placeholder="Seleccione una opción"
+                                                    required
+                                                />
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div
-                                    v-if="paso == 3"
-                                    class="tab-pane fade"
-                                    :class="paso == 3 ? 'show active' : ''"
-                                    id="pills-verificacion"
-                                    role="tabpanel"
-                                >
-                                    <div class="card">
-                                        <div class="card-body">
+
+                                    <!-- Paso 3 -->
+                                    <div v-if="paso == 3">
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿La empresa ha realizado un
+                                                proceso de revisión y
+                                                verificación interna de su
+                                                huella de carbono organizacional
+                                                del año base, por parte de
+                                                alguien diferente a quien la
+                                                calculó y reportó?
+                                            </label>
+                                            <Multiselect
+                                                v-model="
+                                                    ie.verificacion_interna
+                                                "
+                                                :options="options_si_no"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                                @input="
+                                                    ie.optimizacion_procesos =
+                                                        null;
+                                                    ie.verificacion_tercero =
+                                                        null;
+                                                    ie.declaracion_conformidad_tercero =
+                                                        null;
+                                                    ie.acciones_mejora = null;
+                                                "
+                                            />
+                                        </div>
+                                        <div v-if="ie.verificacion_interna">
                                             <div class="mb-3">
                                                 <label class="required"
-                                                    >¿La empresa ha realizado un
-                                                    proceso de revisión y
-                                                    verificación interna de su
-                                                    huella de carbono
-                                                    organizacional del año base,
-                                                    por parte de alguien
-                                                    diferente a quien la calculó
-                                                    y reportó?
+                                                    >¿Se optimizaron los
+                                                    procesos de cálculo y
+                                                    reporte como producto de
+                                                    esta preverificación?
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        ie.verificacion_interna
+                                                        ie.optimizacion_procesos
+                                                    "
+                                                    :options="options_si_no"
+                                                    placeholder="Seleccione una opción"
+                                                    required
+                                                />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="required"
+                                                    >¿Un tercero ha realizado el
+                                                    proceso de verificación de
+                                                    la huella de carbono
+                                                    organizacional del año base?
+                                                </label>
+                                                <Multiselect
+                                                    v-model="
+                                                        ie.verificacion_tercero
                                                     "
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
                                                     @input="
-                                                        ie.optimizacion_procesos =
-                                                            null;
-                                                        ie.verificacion_tercero =
-                                                            null;
                                                         ie.declaracion_conformidad_tercero =
                                                             null;
                                                         ie.acciones_mejora =
@@ -440,126 +353,73 @@
                                                     "
                                                 />
                                             </div>
-                                            <div v-if="ie.verificacion_interna">
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿Se optimizaron los
-                                                        procesos de cálculo y
-                                                        reporte como producto de
-                                                        esta preverificación?
-                                                    </label>
-                                                    <Multiselect
-                                                        v-model="
-                                                            ie.optimizacion_procesos
-                                                        "
-                                                        :options="options_si_no"
-                                                        placeholder="Seleccione una opción"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿Un tercero ha
-                                                        realizado el proceso de
-                                                        verificación de la
-                                                        huella de carbono
-                                                        organizacional del año
-                                                        base?
-                                                    </label>
-                                                    <Multiselect
-                                                        v-model="
-                                                            ie.verificacion_tercero
-                                                        "
-                                                        :options="options_si_no"
-                                                        placeholder="Seleccione una opción"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿Se obtuvo la
-                                                        declaración de
-                                                        conformidad asociada en
-                                                        el proceso de
-                                                        verificación por parte
-                                                        del tercero?
-                                                    </label>
-                                                    <Multiselect
-                                                        v-model="
-                                                            ie.declaracion_conformidad_tercero
-                                                        "
-                                                        :options="options_si_no"
-                                                        placeholder="Seleccione una opción"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿Se identificaron las
-                                                        acciones de mejora para
-                                                        poder cumplir con todos
-                                                        los requisitos del
-                                                        proceso?
-                                                    </label>
-                                                    <Multiselect
-                                                        v-model="
-                                                            ie.acciones_mejora
-                                                        "
-                                                        :options="options_si_no"
-                                                        placeholder="Seleccione una opción"
-                                                        required
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div
-                                                    class="col-lg-6 text-start"
-                                                >
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary"
-                                                        @click="paso = 2"
-                                                    >
-                                                        Atrás
-                                                    </button>
-                                                </div>
-                                                <div class="col-lg-6 text-end">
-                                                    <button
-                                                        type="submit"
-                                                        class="btn btn-primary"
-                                                    >
-                                                        Siguiente
-                                                    </button>
-                                                </div>
-                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div
-                                    v-if="paso == 4"
-                                    class="tab-pane fade"
-                                    :class="paso == 4 ? 'show active' : ''"
-                                    id="pills-planteamiento"
-                                    role="tabpanel"
-                                >
-                                    <div class="card">
-                                        <div class="card-body">
+                                        <div
+                                            v-if="
+                                                ie.verificacion_interna &&
+                                                ie.verificacion_tercero
+                                            "
+                                        >
                                             <div class="mb-3">
                                                 <label class="required"
-                                                    >¿En la empresa se ha
-                                                    planteado metas de
-                                                    mitigación de Gases Efecto
-                                                    Invernadero (GEI)?
+                                                    >¿Se obtuvo la declaración
+                                                    de conformidad asociada en
+                                                    el proceso de verificación
+                                                    por parte del tercero?
                                                 </label>
                                                 <Multiselect
                                                     v-model="
-                                                        ie.metas_mitigacion
+                                                        ie.declaracion_conformidad_tercero
                                                     "
                                                     :options="options_si_no"
                                                     placeholder="Seleccione una opción"
                                                     required
                                                 />
                                             </div>
+                                            <div class="mb-3">
+                                                <label class="required"
+                                                    >¿Se identificaron las
+                                                    acciones de mejora para
+                                                    poder cumplir con todos los
+                                                    requisitos del proceso?
+                                                </label>
+                                                <Multiselect
+                                                    v-model="ie.acciones_mejora"
+                                                    :options="options_si_no"
+                                                    placeholder="Seleccione una opción"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Paso 4 -->
+                                    <div v-if="paso == 4">
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿En la empresa se ha planteado
+                                                metas de mitigación de Gases
+                                                Efecto Invernadero (GEI)?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.metas_mitigacion"
+                                                :options="options_si_no"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                                @input="
+                                                    ie.meta_reduccion = null;
+                                                    ie.anio_meta = null;
+                                                    ie.anio_proyeccion_meta =
+                                                        null;
+                                                    ie.meta_alineada = null;
+                                                    ie.metodologia = null;
+                                                    ie.otra_metodologia = null;
+                                                    ie.seguimiento_cumplimiento =
+                                                        null;
+                                                "
+                                            />
+                                        </div>
+                                        <div v-if="ie.metas_mitigacion">
                                             <div class="mb-3">
                                                 <label class="required"
                                                     >¿Cuál es la meta de
@@ -596,390 +456,339 @@
                                                     "
                                                 />
                                             </div>
-                                            <div v-if="ie.anio_meta">
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿A que año está
-                                                        proyectada esta meta?
-                                                    </label>
-                                                    <input
-                                                        v-model="
-                                                            ie.anio_proyeccion_meta
-                                                        "
-                                                        class="form-control"
-                                                        type="number"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿La meta está alineada
-                                                        con los compromisos
-                                                        nacionales (NDC), con
-                                                        las metas de reducción
-                                                        del acuerdo de París y/o
-                                                        con otro compromiso
-                                                        sectorial o de otro
-                                                        tipo?
-                                                    </label>
-                                                    <Multiselect
-                                                        v-model="
-                                                            ie.meta_alineada
-                                                        "
-                                                        :options="options_si_no"
-                                                        placeholder="Seleccione una opción"
-                                                        required
-                                                    />
-                                                </div>
-                                                <div class="mb-3">
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <label
-                                                                class="required"
-                                                                >¿Cuál de éstas
-                                                                metodologías
-                                                                empleó la
-                                                                empresa en la
-                                                                formulación de
-                                                                la meta?
-                                                            </label>
-                                                            <Multiselect
-                                                                v-model="
-                                                                    ie.metodologia
-                                                                "
-                                                                :options="
-                                                                    options_metodologia
-                                                                "
-                                                                valueProp="id"
-                                                                label="nombre"
-                                                                placeholder="Seleccione una opción"
-                                                                required
-                                                                @input="
-                                                                    changeMetodologia()
-                                                                "
-                                                            />
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <label
-                                                                :class="
-                                                                    valor_option_metodologia
-                                                                        ? 'required'
-                                                                        : ''
-                                                                "
-                                                                >Otra ¿Cuál?
-                                                            </label>
-                                                            <input
-                                                                v-model="
-                                                                    ie.otra_metodologia
-                                                                "
-                                                                type="text"
-                                                                class="form-control"
-                                                                :required="
-                                                                    valor_option_metodologia
-                                                                "
-                                                                :disabled="
-                                                                    !valor_option_metodologia
-                                                                "
-                                                            />
-                                                        </div>
+                                        </div>
+
+                                        <div v-if="ie.anio_meta">
+                                            <div class="mb-3">
+                                                <label class="required"
+                                                    >¿A que año está proyectada
+                                                    esta meta?
+                                                </label>
+                                                <input
+                                                    v-model="
+                                                        ie.anio_proyeccion_meta
+                                                    "
+                                                    class="form-control"
+                                                    type="number"
+                                                    required
+                                                />
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="required"
+                                                    >¿La meta está alineada con
+                                                    los compromisos nacionales
+                                                    (NDC), con las metas de
+                                                    reducción del acuerdo de
+                                                    París y/o con otro
+                                                    compromiso sectorial o de
+                                                    otro tipo?
+                                                </label>
+                                                <Multiselect
+                                                    v-model="ie.meta_alineada"
+                                                    :options="options_si_no"
+                                                    placeholder="Seleccione una opción"
+                                                    required
+                                                />
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label class="required"
+                                                            >¿Cuál de éstas
+                                                            metodologías empleó
+                                                            la empresa en la
+                                                            formulación de la
+                                                            meta?
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                ie.metodologia
+                                                            "
+                                                            :options="
+                                                                options_metodologia
+                                                            "
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Seleccione una opción"
+                                                            required
+                                                            @input="
+                                                                changeMetodologia()
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            :class="
+                                                                valor_option_metodologia
+                                                                    ? 'required'
+                                                                    : ''
+                                                            "
+                                                            >Otra ¿Cuál?
+                                                        </label>
+                                                        <input
+                                                            v-model="
+                                                                ie.otra_metodologia
+                                                            "
+                                                            type="text"
+                                                            class="form-control"
+                                                            :required="
+                                                                valor_option_metodologia
+                                                            "
+                                                            :disabled="
+                                                                !valor_option_metodologia
+                                                            "
+                                                        />
                                                     </div>
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label class="required"
-                                                        >¿Se ha realizado algún
-                                                        seguimiento al
-                                                        cumplimiento de la meta
-                                                        o se cuenta con un plan
-                                                        de monitoreo asociado?
-                                                    </label>
-                                                    <Multiselect
-                                                        v-model="
-                                                            ie.seguimiento_cumplimiento
-                                                        "
-                                                        :options="options_si_no"
-                                                        placeholder="Seleccione una opción"
-                                                        required
-                                                    />
-                                                </div>
                                             </div>
-                                            <div class="row">
-                                                <div
-                                                    class="col-lg-6 text-start"
-                                                >
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary"
-                                                        @click="
-                                                            paso =
-                                                                ie.huella_base ==
-                                                                0
-                                                                    ? (paso = 2)
-                                                                    : 3
-                                                        "
-                                                    >
-                                                        Atrás
-                                                    </button>
-                                                </div>
-                                                <div class="col-lg-6 text-end">
-                                                    <button
-                                                        type="submit"
-                                                        class="btn btn-primary"
-                                                    >
-                                                        Siguiente
-                                                    </button>
-                                                </div>
+                                            <div class="mb-3">
+                                                <label class="required"
+                                                    >¿Se ha realizado algún
+                                                    seguimiento al cumplimiento
+                                                    de la meta o se cuenta con
+                                                    un plan de monitoreo
+                                                    asociado?
+                                                </label>
+                                                <Multiselect
+                                                    v-model="
+                                                        ie.seguimiento_cumplimiento
+                                                    "
+                                                    :options="options_si_no"
+                                                    placeholder="Seleccione una opción"
+                                                    required
+                                                />
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div
-                                    v-if="paso == 5"
-                                    class="tab-pane fade"
-                                    :class="paso == 5 ? 'show active' : ''"
-                                    id="pills-diligenciamiento"
-                                    role="tabpanel"
-                                >
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="mb-3">
-                                                <p><b>Pertinencia</b></p>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿La organización para el
-                                                    desarrollo de sus
-                                                    actividades productivas y/o
-                                                    administrativas ha
-                                                    identificado las fuentes de
-                                                    gases de efecto invernadero?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="
-                                                        ie.efecto_invernadero
-                                                    "
-                                                    :options="options_puntaje_1"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿La organización tiene
-                                                    sumideros y/o reservorios en
-                                                    los límites de sus
-                                                    instalaciones?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="ie.sumideros"
-                                                    :options="options_puntaje_1"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <p><b>Integralidad</b></p>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿En la organización cuentan
-                                                    con información mensual de
-                                                    consumos de todas las
-                                                    fuentes GEI?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="
-                                                        ie.informacion_mensual
-                                                    "
-                                                    :options="options_puntaje_2"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿La organización cuenta con
-                                                    un diagrama de procesos en
-                                                    donde se identifica el
-                                                    energético necesario para
-                                                    desarrollar cada etapa?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="
-                                                        ie.diagrama_procesos
-                                                    "
-                                                    :options="options_puntaje_1"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿Se cuenta con las
-                                                    características de las áreas
-                                                    de sumidero (edad, especie,
-                                                    hectáreas)?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="ie.areas_sumideros"
-                                                    :options="options_puntaje_1"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <p><b>Coherencia</b></p>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿La información de consumos
-                                                    de las fuentes GEI se
-                                                    encuentra centralizada?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="
-                                                        ie.informacion_centralizada
-                                                    "
-                                                    :options="options_puntaje_1"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿La información de consumos
-                                                    de las fuentes GEI cuenta
-                                                    con soportes como facturas,
-                                                    plataforma, registros?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="
-                                                        ie.soportes_consumos
-                                                    "
-                                                    :options="options_puntaje_1"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿La organización cuenta con
-                                                    más de un año de información
-                                                    de consumos de las fuentes
-                                                    GEI?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="
-                                                        ie.informacion_anio
-                                                    "
-                                                    :options="options_puntaje_1"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <p><b>Exactitud</b></p>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿La organización ha
-                                                    realizado estimaciones de
-                                                    consumos energéticos de las
-                                                    fuentes GEI?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="
-                                                        ie.estimaciones_consumos
-                                                    "
-                                                    :options="options_puntaje_1"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿Los consumos energéticos
-                                                    están directamente
-                                                    relacionados con la
-                                                    producción?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="
-                                                        ie.consumos_energeticos
-                                                    "
-                                                    :options="options_puntaje_1"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿En caso de tener
-                                                    estimaciones de consumos
-                                                    energéticos, se cuenta con
-                                                    sustento metodológico para
-                                                    los cálculos?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="
-                                                        ie.sustento_metodologico
-                                                    "
-                                                    :options="options_puntaje_1"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <p><b>Transparencia</b></p>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿El reporte de huella de
-                                                    carbono lo compartirá con
-                                                    las partes interesadas?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="
-                                                        ie.compartira_reporte
-                                                    "
-                                                    :options="options_puntaje_1"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="required"
-                                                    >¿El reporte de huella de
-                                                    carbono es previsto para la
-                                                    toma de decisiones?
-                                                </label>
-                                                <Multiselect
-                                                    v-model="ie.toma_decisiones"
-                                                    :options="options_puntaje_1"
-                                                    placeholder="Seleccione una opción"
-                                                    required
-                                                />
-                                            </div>
-                                            <div class="row">
-                                                <div
-                                                    class="col-lg-6 text-start"
-                                                >
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-secondary"
-                                                        @click="paso = 4"
-                                                    >
-                                                        Atrás
-                                                    </button>
-                                                </div>
-                                                <div class="col-lg-6 text-end">
-                                                    <button
-                                                        type="submit"
-                                                        class="btn btn-primary"
-                                                    >
-                                                        Guardar
-                                                    </button>
-                                                </div>
-                                            </div>
+
+                                    <!-- Paso 5 -->
+                                    <div v-if="paso == 5">
+                                        <div class="mb-3">
+                                            <p><b>Pertinencia</b></p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿La organización para el
+                                                desarrollo de sus actividades
+                                                productivas y/o administrativas
+                                                ha identificado las fuentes de
+                                                gases de efecto invernadero?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.efecto_invernadero"
+                                                :options="options_puntaje_1"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿La organización tiene
+                                                sumideros y/o reservorios en los
+                                                límites de sus instalaciones?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.sumideros"
+                                                :options="options_puntaje_1"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <p><b>Integralidad</b></p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿En la organización cuentan con
+                                                información mensual de consumos
+                                                de todas las fuentes GEI?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.informacion_mensual"
+                                                :options="options_puntaje_2"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿La organización cuenta con un
+                                                diagrama de procesos en donde se
+                                                identifica el energético
+                                                necesario para desarrollar cada
+                                                etapa?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.diagrama_procesos"
+                                                :options="options_puntaje_1"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿Se cuenta con las
+                                                características de las áreas de
+                                                sumidero (edad, especie,
+                                                hectáreas)?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.areas_sumideros"
+                                                :options="options_puntaje_1"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <p><b>Coherencia</b></p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿La información de consumos de
+                                                las fuentes GEI se encuentra
+                                                centralizada?
+                                            </label>
+                                            <Multiselect
+                                                v-model="
+                                                    ie.informacion_centralizada
+                                                "
+                                                :options="options_puntaje_1"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿La información de consumos de
+                                                las fuentes GEI cuenta con
+                                                soportes como facturas,
+                                                plataforma, registros?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.soportes_consumos"
+                                                :options="options_puntaje_1"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿La organización cuenta con más
+                                                de un año de información de
+                                                consumos de las fuentes GEI?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.informacion_anio"
+                                                :options="options_puntaje_1"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <p><b>Exactitud</b></p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿La organización ha realizado
+                                                estimaciones de consumos
+                                                energéticos de las fuentes GEI?
+                                            </label>
+                                            <Multiselect
+                                                v-model="
+                                                    ie.estimaciones_consumos
+                                                "
+                                                :options="options_puntaje_1"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿Los consumos energéticos están
+                                                directamente relacionados con la
+                                                producción?
+                                            </label>
+                                            <Multiselect
+                                                v-model="
+                                                    ie.consumos_energeticos
+                                                "
+                                                :options="options_puntaje_1"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿En caso de tener estimaciones
+                                                de consumos energéticos, se
+                                                cuenta con sustento metodológico
+                                                para los cálculos?
+                                            </label>
+                                            <Multiselect
+                                                v-model="
+                                                    ie.sustento_metodologico
+                                                "
+                                                :options="options_puntaje_1"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <p><b>Transparencia</b></p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿El reporte de huella de
+                                                carbono lo compartirá con las
+                                                partes interesadas?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.compartira_reporte"
+                                                :options="options_puntaje_1"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="required"
+                                                >¿El reporte de huella de
+                                                carbono es previsto para la toma
+                                                de decisiones?
+                                            </label>
+                                            <Multiselect
+                                                v-model="ie.toma_decisiones"
+                                                :options="options_puntaje_1"
+                                                placeholder="Seleccione una opción"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 text-start">
+                                            <button
+                                                type="button"
+                                                class="btn btn-secondary"
+                                                v-if="paso != 1"
+                                                @click="
+                                                    paso =
+                                                        paso == 4
+                                                            ? ie.huella_base ==
+                                                              0
+                                                                ? (paso = 2)
+                                                                : 3
+                                                            : paso - 1
+                                                "
+                                            >
+                                                Atrás
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-6 text-end">
+                                            <button
+                                                type="submit"
+                                                class="btn btn-primary"
+                                            >
+                                                Siguiente
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -1041,1081 +850,788 @@
                                                         class="form-control"
                                                     />
                                                 </div>
-                                                <div class="mb-3">
+                                                <div
+                                                    class="accordion"
+                                                    id="accordionSubprocesos"
+                                                >
                                                     <div
-                                                        class="accordion"
-                                                        id="accordionSubprocesos"
+                                                        class="accordion-item"
+                                                        v-for="(
+                                                            sp, is
+                                                        ) in p.subprocesos"
+                                                        v-bind:key="is"
                                                     >
-                                                        <div
-                                                            class="accordion-item"
-                                                            v-for="(
-                                                                sp, is
-                                                            ) in p.subprocesos"
-                                                            v-bind:key="is"
+                                                        <h2
+                                                            class="accordion-header"
+                                                            id="flush-headingOne"
                                                         >
-                                                            <h2
-                                                                class="accordion-header"
-                                                                id="flush-headingOne"
-                                                            >
-                                                                <button
-                                                                    class="accordion-button collapsed"
-                                                                    type="button"
-                                                                    data-bs-toggle="collapse"
-                                                                    :data-bs-target="
-                                                                        '#flush-collapse' +
-                                                                        ip +
-                                                                        is
-                                                                    "
-                                                                    aria-expanded="false"
-                                                                    :aria-controls="
-                                                                        'flush-collapse' +
-                                                                        ip +
-                                                                        is
-                                                                    "
-                                                                >
-                                                                    {{
-                                                                        sp.nombre
-                                                                    }}
-                                                                </button>
-                                                            </h2>
-                                                            <div
-                                                                :id="
+                                                            <button
+                                                                style="
+                                                                    border-top-left-radius: var(
+                                                                        --bs-accordion-inner-border-radius
+                                                                    );
+                                                                    border-top-right-radius: var(
+                                                                        --bs-accordion-inner-border-radius
+                                                                    );
+                                                                    border-top: var(
+                                                                            --bs-accordion-border-width
+                                                                        )
+                                                                        solid
+                                                                        var(
+                                                                            --bs-accordion-border-color
+                                                                        ) !important;
+                                                                "
+                                                                class="accordion-button collapsed"
+                                                                type="button"
+                                                                data-bs-toggle="collapse"
+                                                                :data-bs-target="
+                                                                    '#flush-collapse' +
+                                                                    ip +
+                                                                    is
+                                                                "
+                                                                aria-expanded="false"
+                                                                :aria-controls="
                                                                     'flush-collapse' +
                                                                     ip +
                                                                     is
                                                                 "
-                                                                class="accordion-collapse collapse"
-                                                                :aria-labelledby="
-                                                                    'flush-heading' +
-                                                                    ip +
-                                                                    is
-                                                                "
-                                                                data-bs-parent="#accordionSubprocesos"
+                                                            >
+                                                                {{ sp.nombre }}
+                                                            </button>
+                                                        </h2>
+                                                        <div
+                                                            :id="
+                                                                'flush-collapse' +
+                                                                ip +
+                                                                is
+                                                            "
+                                                            class="accordion-collapse collapse"
+                                                            :aria-labelledby="
+                                                                'flush-heading' +
+                                                                ip +
+                                                                is
+                                                            "
+                                                            data-bs-parent="#accordionSubprocesos"
+                                                        >
+                                                            <div
+                                                                class="accordion-body"
                                                             >
                                                                 <div
-                                                                    class="accordion-body"
+                                                                    class="mb-3"
                                                                 >
-                                                                    <div
-                                                                        class="mb-3"
+                                                                    <label
+                                                                        class="required"
+                                                                        >Nombre
+                                                                        del sub
+                                                                        proceso</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Nombre
-                                                                            del
-                                                                            sub
-                                                                            proceso</label
-                                                                        >
-                                                                        <input
-                                                                            v-model="
-                                                                                sp.nombre
-                                                                            "
-                                                                            type="text"
-                                                                            class="form-control"
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
+                                                                    <input
+                                                                        v-model="
+                                                                            sp.nombre
+                                                                        "
+                                                                        type="text"
+                                                                        class="form-control"
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        class="required"
+                                                                        >Descripción</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Descripción</label
-                                                                        >
-                                                                        <textarea
-                                                                            v-model="
-                                                                                sp.descripcion
-                                                                            "
-                                                                            class="form-control"
-                                                                            required
-                                                                        ></textarea>
-                                                                    </div>
+                                                                    <textarea
+                                                                        v-model="
+                                                                            sp.descripcion
+                                                                        "
+                                                                        class="form-control"
+                                                                        required
+                                                                    ></textarea>
+                                                                </div>
 
-                                                                    <h2>
-                                                                        Fuentes
-                                                                        fijas
-                                                                    </h2>
-                                                                    <div
-                                                                        class="mb-3"
+                                                                <h2>
+                                                                    Fuentes
+                                                                    fijas
+                                                                </h2>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label>
+                                                                        Combustibles
+                                                                        sólidos</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Consumo
-                                                                            de
-                                                                            combustibles
-                                                                            sólidos</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_fijas
-                                                                                    .Combustible_solido
-                                                                            "
-                                                                            :options="
-                                                                                options_combustible_solido
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_fijas.Combustible_solido.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_fijas.Combustible_solido =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_fijas
+                                                                                .Combustible_solido
+                                                                        "
+                                                                        :options="
+                                                                            options_combustible_solido
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Combustibles
+                                                                        líquidos</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Consumo
-                                                                            de
-                                                                            combustibles
-                                                                            líquidos</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_fijas
-                                                                                    .Combustible_liquido
-                                                                            "
-                                                                            :options="
-                                                                                options_combustible_liquido
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_fijas.Combustible_liquido.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_fijas.Combustible_liquido =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_fijas
+                                                                                .Combustible_liquido
+                                                                        "
+                                                                        :options="
+                                                                            options_combustible_liquido
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label>
+                                                                        Combustibles
+                                                                        gaseosos</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Consumo
-                                                                            de
-                                                                            combustibles
-                                                                            gaseosos</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_fijas
-                                                                                    .Combustible_gaseoso
-                                                                            "
-                                                                            :options="
-                                                                                options_combustible_gaseoso
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_fijas.Combustible_gaseoso.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_fijas.Combustible_gaseoso =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_fijas
+                                                                                .Combustible_gaseoso
+                                                                        "
+                                                                        :options="
+                                                                            options_combustible_gaseoso
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label>
+                                                                        Refrigerantes</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Consumo
-                                                                            de
-                                                                            refrigerantes</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_fijas
-                                                                                    .Refrigerante
-                                                                            "
-                                                                            :options="
-                                                                                options_refrigerante
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_fijas.Refrigerante.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_fijas.Refrigerante =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_fijas
+                                                                                .Refrigerante
+                                                                        "
+                                                                        :options="
+                                                                            options_refrigerante
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Extintores</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Extintores</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_fijas
-                                                                                    .Extintor
-                                                                            "
-                                                                            :options="
-                                                                                options_extintor
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_fijas.Extintor.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_fijas.Extintor =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_fijas
+                                                                                .Extintor
+                                                                        "
+                                                                        :options="
+                                                                            options_extintor
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Lubricantes</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Lubricantes</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_fijas
-                                                                                    .Lubricante
-                                                                            "
-                                                                            :options="
-                                                                                options_lubricante
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_fijas.Lubricante.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_fijas.Lubricante =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_fijas
+                                                                                .Lubricante
+                                                                        "
+                                                                        :options="
+                                                                            options_lubricante
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Fugas
+                                                                        de CO2
+                                                                        en
+                                                                        proceso</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Fugas
-                                                                            de
-                                                                            CO2
-                                                                            en
-                                                                            proceso</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_fijas
-                                                                                    .Fuga
-                                                                            "
-                                                                            :options="
-                                                                                options_fuga
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_fijas.Fuga.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_fijas.Fuga =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
-                                                                    >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Consumo
-                                                                            de
-                                                                            aislante
-                                                                            eléctrico
-                                                                        </label>
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_fijas
-                                                                                    .Aislamiento
-                                                                            "
-                                                                            :options="
-                                                                                options_aislamiento
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_fijas.Aislamiento.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_fijas.Aislamiento =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_fijas
+                                                                                .Fuga
+                                                                        "
+                                                                        :options="
+                                                                            options_fuga
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label>
+                                                                        Aislante
+                                                                        eléctrico
+                                                                    </label>
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_fijas
+                                                                                .Aislamiento
+                                                                        "
+                                                                        :options="
+                                                                            options_aislamiento
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
 
-                                                                    <h2>
-                                                                        Emisiones
+                                                                <h2>
+                                                                    Emisiones de
+                                                                    proceso
+                                                                </h2>
+
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Manejo
                                                                         de
-                                                                        proceso
-                                                                    </h2>
+                                                                        embalses</label
+                                                                    >
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .emisiones
+                                                                                .Embalse
+                                                                        "
+                                                                        :options="
+                                                                            options_embalse
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Minería</label
+                                                                    >
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .emisiones
+                                                                                .Mineria
+                                                                        "
+                                                                        :options="
+                                                                            options_mineria
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Industrial</label
+                                                                    >
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .emisiones
+                                                                                .Industrial
+                                                                        "
+                                                                        :options="
+                                                                            options_industrial
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Fermentación
+                                                                        entérica</label
+                                                                    >
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .emisiones
+                                                                                .Fermentacion
+                                                                        "
+                                                                        :options="
+                                                                            options_fermentacion
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Manejo
+                                                                        de
+                                                                        estiércol</label
+                                                                    >
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .emisiones
+                                                                                .Estiercol
+                                                                        "
+                                                                        :options="
+                                                                            options_estiercol
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Manejo
+                                                                        Residuos
+                                                                        Organizacionales
+                                                                    </label>
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .emisiones
+                                                                                .Residuo_organizacional
+                                                                        "
+                                                                        :options="
+                                                                            options_residuo_organizacional
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
 
-                                                                    <div
-                                                                        class="mb-3"
+                                                                <h2>
+                                                                    Fuentes
+                                                                    móviles
+                                                                </h2>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Combustibles
+                                                                        líquidos</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Manejo
-                                                                            de
-                                                                            embalses</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .emisiones
-                                                                                    .Embalse
-                                                                            "
-                                                                            :options="
-                                                                                options_embalse
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.emisiones.Embalse.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.emisiones.Embalse =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_moviles
+                                                                                .Combustible_liquido
+                                                                        "
+                                                                        :options="
+                                                                            options_combustible_liquido
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label>
+                                                                        Combustibles
+                                                                        gaseosos</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Minería</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .emisiones
-                                                                                    .Mineria
-                                                                            "
-                                                                            :options="
-                                                                                options_mineria
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.emisiones.Mineria.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.emisiones.Mineria =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
-                                                                    >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Industrial</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .emisiones
-                                                                                    .Industrial
-                                                                            "
-                                                                            :options="
-                                                                                options_industrial
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.emisiones.Industrial.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.emisiones.Industrial =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
-                                                                    >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Fermentación
-                                                                            entérica</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .emisiones
-                                                                                    .Fermentacion
-                                                                            "
-                                                                            :options="
-                                                                                options_fermentacion
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.emisiones.Fermentacion.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.emisiones.Fermentacion =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
-                                                                    >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Manejo
-                                                                            de
-                                                                            estiércol</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .emisiones
-                                                                                    .Estiercol
-                                                                            "
-                                                                            :options="
-                                                                                options_estiercol
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.emisiones.Estiercol.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.emisiones.Estiercol =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
-                                                                    >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Manejo
-                                                                            Residuos
-                                                                            Organizacionales
-                                                                        </label>
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .emisiones
-                                                                                    .Residuo_organizacional
-                                                                            "
-                                                                            :options="
-                                                                                options_residuo_organizacional
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.emisiones.Residuo_organizacional.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.emisiones.Residuo_organizacional =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_moviles
+                                                                                .Combustible_gaseoso
+                                                                        "
+                                                                        :options="
+                                                                            options_combustible_gaseoso
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
 
-                                                                    <h2>
-                                                                        Fuentes
-                                                                        móviles
-                                                                    </h2>
-                                                                    <div
-                                                                        class="mb-3"
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label>
+                                                                        Refrigerantes</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Consumo
-                                                                            de
-                                                                            combustibles
-                                                                            líquidos</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_moviles
-                                                                                    .Combustible_liquido
-                                                                            "
-                                                                            :options="
-                                                                                options_combustible_liquido
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_moviles.Combustible_liquido.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_moviles.Combustible_liquido =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_moviles
+                                                                                .Refrigerante
+                                                                        "
+                                                                        :options="
+                                                                            options_refrigerante
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Extintores</label
                                                                     >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Consumo
-                                                                            de
-                                                                            combustibles
-                                                                            gaseosos</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_moviles
-                                                                                    .Combustible_gaseoso
-                                                                            "
-                                                                            :options="
-                                                                                options_combustible_gaseoso
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_moviles.Combustible_gaseoso.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_moviles.Combustible_gaseoso =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_moviles
+                                                                                .Extintor
+                                                                        "
+                                                                        :options="
+                                                                            options_extintor
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Lubricantes</label
+                                                                    >
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .fuentes_moviles
+                                                                                .Lubricante
+                                                                        "
+                                                                        :options="
+                                                                            options_lubricante
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
 
-                                                                    <div
-                                                                        class="mb-3"
-                                                                    >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Consumo
-                                                                            de
-                                                                            refrigerantes</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_moviles
-                                                                                    .Refrigerante
-                                                                            "
-                                                                            :options="
-                                                                                options_refrigerante
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_moviles.Refrigerante.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_moviles.Refrigerante =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
-                                                                    >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Extintores</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_moviles
-                                                                                    .Extintor
-                                                                            "
-                                                                            :options="
-                                                                                options_extintor
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_moviles.Extintor.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_moviles.Extintor =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
-                                                                    >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Lubricantes</label
-                                                                        >
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .fuentes_moviles
-                                                                                    .Lubricante
-                                                                            "
-                                                                            :options="
-                                                                                options_lubricante
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.fuentes_moviles.Lubricante.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.fuentes_moviles.Lubricante =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
+                                                                <h2>
+                                                                    Agrícolas
+                                                                </h2>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Manejo
+                                                                        de
+                                                                        residuos
+                                                                        agropecuarios
+                                                                    </label>
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .agricolas
+                                                                                .Residuo_agropecuario
+                                                                        "
+                                                                        :options="
+                                                                            options_residuo_agropecuario
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Uso
+                                                                        fertilizantes
+                                                                    </label>
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .agricolas
+                                                                                .Fertilizante
+                                                                        "
+                                                                        :options="
+                                                                            options_fertilizante
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
+                                                                <div
+                                                                    class="mb-3"
+                                                                >
+                                                                    <label
+                                                                        >Cal
+                                                                        aplicada
+                                                                    </label>
+                                                                    <Multiselect
+                                                                        v-model="
+                                                                            sp
+                                                                                .agricolas
+                                                                                .Cal
+                                                                        "
+                                                                        :options="
+                                                                            options_cal
+                                                                        "
+                                                                        mode="tags"
+                                                                        valueProp="id"
+                                                                        label="nombre"
+                                                                        placeholder="Selección múltiple"
+                                                                        :searchable="
+                                                                            true
+                                                                        "
+                                                                    />
+                                                                </div>
 
-                                                                    <h2>
-                                                                        Agrícolas
-                                                                    </h2>
-                                                                    <div
-                                                                        class="mb-3"
-                                                                    >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Manejo
-                                                                            de
-                                                                            residuos
-                                                                            agropecuarios
-                                                                        </label>
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .agricolas
-                                                                                    .Residuo_agropecuario
-                                                                            "
-                                                                            :options="
-                                                                                options_residuo_agropecuario
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.agricolas.Residuo_agropecuario.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.agricolas.Residuo_agropecuario =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
-                                                                    >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Uso
-                                                                            fertilizantes
-                                                                        </label>
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .agricolas
-                                                                                    .Fertilizante
-                                                                            "
-                                                                            :options="
-                                                                                options_fertilizante
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.agricolas.Fertilizante.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.agricolas.Fertilizante =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <div
-                                                                        class="mb-3"
-                                                                    >
-                                                                        <label
-                                                                            class="required"
-                                                                            >Cal
-                                                                            aplicada
-                                                                        </label>
-                                                                        <Multiselect
-                                                                            v-model="
-                                                                                sp
-                                                                                    .agricolas
-                                                                                    .Cal
-                                                                            "
-                                                                            :options="
-                                                                                options_cal
-                                                                            "
-                                                                            mode="tags"
-                                                                            valueProp="id"
-                                                                            label="nombre"
-                                                                            placeholder="Selección múltiple"
-                                                                            :searchable="
-                                                                                true
-                                                                            "
-                                                                            required
-                                                                            @input="
-                                                                                if (
-                                                                                    sp.agricolas.Cal.includes(
-                                                                                        -1
-                                                                                    )
-                                                                                )
-                                                                                    sp.agricolas.Cal =
-                                                                                        [
-                                                                                            -1,
-                                                                                        ];
-                                                                            "
-                                                                        />
-                                                                    </div>
-
-                                                                    <div
-                                                                        class="mb-3 text-end"
-                                                                    >
-                                                                        <button
-                                                                            v-if="
+                                                                <div
+                                                                    class="mb-3 text-end"
+                                                                >
+                                                                    <button
+                                                                        v-if="
+                                                                            is >
+                                                                            0
+                                                                        "
+                                                                        type="button"
+                                                                        class="btn btn-danger"
+                                                                        @click="
+                                                                            if (
                                                                                 is >
                                                                                 0
-                                                                            "
-                                                                            type="button"
-                                                                            class="btn btn-danger"
-                                                                            @click="
-                                                                                if (
-                                                                                    is >
-                                                                                    0
-                                                                                )
-                                                                                    procesos[
-                                                                                        ip
-                                                                                    ][
-                                                                                        'subprocesos'
-                                                                                    ].splice(
-                                                                                        is,
-                                                                                        1
-                                                                                    );
-                                                                            "
-                                                                        >
-                                                                            Eliminar
-                                                                            subproceso
-                                                                        </button>
-
-                                                                        <button
-                                                                            type="button"
-                                                                            class="btn btn-success"
-                                                                            @click="
+                                                                            )
                                                                                 procesos[
                                                                                     ip
                                                                                 ][
                                                                                     'subprocesos'
                                                                                 ].splice(
-                                                                                    is +
-                                                                                        1,
-                                                                                    0,
-                                                                                    {
-                                                                                        nombre: 'Nuevo subproceso',
-                                                                                        descripcion:
-                                                                                            '',
-                                                                                        fuentes_fijas:
-                                                                                            {
-                                                                                                Combustible_solido:
-                                                                                                    [],
-                                                                                                Combustible_liquido:
-                                                                                                    [],
-                                                                                                Combustible_gaseoso:
-                                                                                                    [],
-                                                                                                Refrigerante:
-                                                                                                    [],
-                                                                                                Extintor:
-                                                                                                    [],
-                                                                                                Lubricante:
-                                                                                                    [],
-                                                                                                Fuga: [],
-                                                                                                aislamientos:
-                                                                                                    [],
-                                                                                            },
-                                                                                        fuentes_moviles:
-                                                                                            {
-                                                                                                Combustible_liquido:
-                                                                                                    [],
-                                                                                                Combustible_gaseoso:
-                                                                                                    [],
-                                                                                                Refrigerante:
-                                                                                                    [],
-                                                                                                Extintor:
-                                                                                                    [],
-                                                                                                Lubricante:
-                                                                                                    [],
-                                                                                            },
-                                                                                        emisiones:
-                                                                                            {
-                                                                                                Embalse:
-                                                                                                    [],
-                                                                                                Mineria:
-                                                                                                    [],
-                                                                                                Industrial:
-                                                                                                    [],
-                                                                                                Fermentacion:
-                                                                                                    [],
-                                                                                                Estiercol:
-                                                                                                    [],
-                                                                                                Residuo_organizacional:
-                                                                                                    [],
-                                                                                            },
-                                                                                        agricolas:
-                                                                                            {
-                                                                                                Residuo_agropecuario:
-                                                                                                    [],
-                                                                                                Fertilizante:
-                                                                                                    [],
-                                                                                                Cal: [],
-                                                                                            },
-                                                                                    }
-                                                                                )
-                                                                            "
-                                                                        >
-                                                                            Agregar
-                                                                            subproceso
-                                                                        </button>
-                                                                    </div>
+                                                                                    is,
+                                                                                    1
+                                                                                );
+                                                                        "
+                                                                    >
+                                                                        Eliminar
+                                                                        subproceso
+                                                                    </button>
+
+                                                                    <button
+                                                                        type="button"
+                                                                        class="btn btn-success"
+                                                                        @click="
+                                                                            procesos[
+                                                                                ip
+                                                                            ][
+                                                                                'subprocesos'
+                                                                            ].splice(
+                                                                                is +
+                                                                                    1,
+                                                                                0,
+                                                                                {
+                                                                                    nombre: 'Nuevo subproceso',
+                                                                                    descripcion:
+                                                                                        '',
+                                                                                    fuentes_fijas:
+                                                                                        {
+                                                                                            Combustible_solido:
+                                                                                                [],
+                                                                                            Combustible_liquido:
+                                                                                                [],
+                                                                                            Combustible_gaseoso:
+                                                                                                [],
+                                                                                            Refrigerante:
+                                                                                                [],
+                                                                                            Extintor:
+                                                                                                [],
+                                                                                            Lubricante:
+                                                                                                [],
+                                                                                            Fuga: [],
+                                                                                            aislamientos:
+                                                                                                [],
+                                                                                        },
+                                                                                    fuentes_moviles:
+                                                                                        {
+                                                                                            Combustible_liquido:
+                                                                                                [],
+                                                                                            Combustible_gaseoso:
+                                                                                                [],
+                                                                                            Refrigerante:
+                                                                                                [],
+                                                                                            Extintor:
+                                                                                                [],
+                                                                                            Lubricante:
+                                                                                                [],
+                                                                                        },
+                                                                                    emisiones:
+                                                                                        {
+                                                                                            Embalse:
+                                                                                                [],
+                                                                                            Mineria:
+                                                                                                [],
+                                                                                            Industrial:
+                                                                                                [],
+                                                                                            Fermentacion:
+                                                                                                [],
+                                                                                            Estiercol:
+                                                                                                [],
+                                                                                            Residuo_organizacional:
+                                                                                                [],
+                                                                                        },
+                                                                                    agricolas:
+                                                                                        {
+                                                                                            Residuo_agropecuario:
+                                                                                                [],
+                                                                                            Fertilizante:
+                                                                                                [],
+                                                                                            Cal: [],
+                                                                                        },
+                                                                                }
+                                                                            )
+                                                                        "
+                                                                    >
+                                                                        Agregar
+                                                                        subproceso
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="mb-3 text-end">
+
+                                                <div class="mt-3 text-end">
                                                     <button
                                                         v-if="ip > 0"
                                                         type="button"
@@ -2294,9 +1810,7 @@
                                 <div class="card-body">
                                     <p>ELECTRICIDAD IMPORTADA</p>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Consumo de energía eléctrica</label
-                                        >
+                                        <label>Energía eléctrica</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.energias
@@ -2308,24 +1822,11 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.energias.Energia_electrica.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.energias.Energia_electrica =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <p>ENERGÍA IMPORTADA</p>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Consumo de combustibles
-                                            sólidos</label
-                                        >
+                                        <label>Combustibles sólidos</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.energias
@@ -2339,23 +1840,10 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.energias.Combustible_solido.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.energias.Combustible_solido =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Consumo de combustibles
-                                            líquidos</label
-                                        >
+                                        <label>Combustibles líquidos</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.energias
@@ -2369,23 +1857,10 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.energias.Combustible_liquido.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.energias.Combustible_liquido =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Consumo de combustibles
-                                            gaseosos</label
-                                        >
+                                        <label>Combustibles gaseosos</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.energias
@@ -2399,16 +1874,6 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.energias.Combustible_gaseoso.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.energias.Combustible_gaseoso =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                 </div>
@@ -2423,10 +1888,7 @@
                                 <div class="card-body">
                                     <p>FUENTES MÓVILES</p>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Consumo de combustibles
-                                            líquidos</label
-                                        >
+                                        <label>Combustibles líquidos</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.transportes
@@ -2440,23 +1902,10 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.transportes.Combustible_liquido.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.transportes.Combustible_liquido =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Consumo de combustibles
-                                            gaseosos</label
-                                        >
+                                        <label>Combustibles gaseosos</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.transportes
@@ -2470,22 +1919,10 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.transportes.Combustible_gaseoso.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.transportes.Combustible_gaseoso =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Consumo de refrigerantes</label
-                                        >
+                                        <label>Refrigerantes</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.transportes
@@ -2497,22 +1934,10 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.transportes.Refrigerante.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.transportes.Refrigerante =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Extintores</label
-                                        >
+                                        <label>Extintores</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.transportes
@@ -2524,22 +1949,10 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.transportes.Extintor.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.transportes.Extintor =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Lubricantes</label
-                                        >
+                                        <label>Lubricantes</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.transportes
@@ -2551,23 +1964,11 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.transportes.Lubricante.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.transportes.Lubricante =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <p>TRANSPORTE CARGA Y PASAJEROS</p>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Transporte de carga</label
-                                        >
+                                        <label>Transporte de carga</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.transportes
@@ -2579,16 +1980,6 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.transportes.Transporte.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.transportes.Transporte =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                 </div>
@@ -2603,7 +1994,7 @@
                                 <div class="card-body">
                                     <p>BIENES Y PRODUCTOS</p>
                                     <div class="mb-3">
-                                        <label class="required"
+                                        <label
                                             >Refrigerantes y espumantes (Fuentes
                                             fijas)</label
                                         >
@@ -2618,20 +2009,10 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.productos.Refrigerante.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.productos.Refrigerante =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="required"
+                                        <label
                                             >Extintores (Fuentes fijas)</label
                                         >
                                         <Multiselect
@@ -2645,20 +2026,10 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.productos.Extintor.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.productos.Extintor =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="required"
+                                        <label
                                             >Lubricantes (Fuentes
                                             móviles)</label
                                         >
@@ -2673,22 +2044,10 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.productos.Lubricante.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.productos.Lubricante =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Consumo de aislante eléctrico
-                                        </label>
+                                        <label>Aislante eléctrico</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.productos
@@ -2700,20 +2059,10 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.productos.Aislamiento.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.productos.Aislamiento =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="required">Equipos</label>
+                                        <label>Equipos</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.productos
@@ -2725,22 +2074,10 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.productos.Equipo.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.productos.Equipo =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Materias primas
-                                        </label>
+                                        <label>Materias primas </label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.productos
@@ -2752,23 +2089,11 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.productos.Materia_prima.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.productos.Materia_prima =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                     <p>SERVICIOS</p>
                                     <div class="mb-3">
-                                        <label class="required"
-                                            >Manejo de residuos
-                                        </label>
+                                        <label>Manejo de residuos </label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.productos
@@ -2782,16 +2107,6 @@
                                             label="nombre"
                                             placeholder="Selección múltiple"
                                             :searchable="true"
-                                            required
-                                            @input="
-                                                if (
-                                                    emisiones_indirectas.productos.Residuo.includes(
-                                                        -1
-                                                    )
-                                                )
-                                                    emisiones_indirectas.productos.Residuo =
-                                                        [-1];
-                                            "
                                         />
                                     </div>
                                 </div>
@@ -2860,129 +2175,169 @@
                     </div>
                     <div
                         class="tab-pane fade"
+                        id="consumos-transversales"
+                        role="tabpanel"
+                        aria-labelledby="consumos-transversales-tab"
+                    >
+                        <p>En construcción</p>
+                    </div>
+                    <div
+                        class="tab-pane fade"
                         id="construccion-anio"
                         role="tabpanel"
                         aria-labelledby="construccion-anio-tab"
                     >
-                        <p v-if="fuentes_emision.length > 0">
-                            <b>
-                                {{
-                                    fuentes_emision[index_fuente_emision]
-                                        .categoria_mostrar
-                                }}
-                            </b>
-                        </p>
-                        <div class="mb-3 table-responsive">
-                            <table
-                                class="table table-striped table-hover table-bordered"
-                            >
-                                <thead>
-                                    <tr class="d-flex">
-                                        <th
-                                            v-for="(c, i) in cabecera_tabla"
-                                            v-bind:key="i"
-                                            style="width: 200px"
-                                        >
-                                            {{ c }}
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr
-                                        class="d-flex"
-                                        v-if="fuentes_emision.length > 0"
+                        <form @submit.prevent="guardarDatosConsumos">
+                            <div class="mb-3 table-responsive">
+                                <div class="accordion" id="accordion-fuentes">
+                                    <div
+                                        class="accordion-item"
+                                        v-for="(
+                                            fuente, i, j
+                                        ) in fuentes_emision"
+                                        v-bind:key="i"
                                     >
-                                        <td style="width: 200px">
-                                            {{
-                                                fuentes_emision[
-                                                    index_fuente_emision
-                                                ].subproceso != null
-                                                    ? fuentes_emision[
-                                                          index_fuente_emision
-                                                      ].subproceso.proceso
-                                                          .nombre
-                                                    : "No aplica"
-                                            }}
-                                        </td>
-                                        <td style="width: 200px">
-                                            {{
-                                                fuentes_emision[
-                                                    index_fuente_emision
-                                                ].subproceso != null
-                                                    ? fuentes_emision[
-                                                          index_fuente_emision
-                                                      ].subproceso.nombre
-                                                    : "No aplica"
-                                            }}
-                                        </td>
-                                        <td style="width: 200px">
-                                            {{
-                                                fuentes_emision[
-                                                    index_fuente_emision
-                                                ].tipo_mostrar
-                                            }}
-                                        </td>
-                                        <td style="width: 200px">
-                                            {{
-                                                fuentes_emision[
-                                                    index_fuente_emision
-                                                ].fuente_emision_mostrar
-                                            }}
-                                        </td>
-                                        <td style="width: 200px">
-                                            {{
-                                                fuentes_emision[
-                                                    index_fuente_emision
-                                                ].fuentetable.nombre
-                                            }}
-                                        </td>
-                                        <td style="width: 200px">
-                                            {{
-                                                fuentes_emision[
-                                                    index_fuente_emision
-                                                ].fuentetable.unidad_consumo
-                                            }}
-                                        </td>
-                                        <td
-                                            v-for="i in 12"
-                                            v-bind:key="i"
-                                            style="width: 200px"
+                                        <h2
+                                            class="accordion-header"
+                                            :id="'heading-fuente-' + j"
                                         >
-                                            <input
-                                                v-model="
-                                                    fuentes_emision[
-                                                        index_fuente_emision
-                                                    ]['dato_mes_' + i]
+                                            <button
+                                                class="accordion-button"
+                                                :class="
+                                                    j != 0 ? 'collapsed' : ''
                                                 "
-                                                class="form-control input-width"
-                                                type="number"
-                                            />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-6 text-start">
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    v-if="index_fuente_emision > 0"
-                                    @click="index_fuente_emision--"
-                                >
-                                    Atrás
-                                </button>
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                :data-bs-target="
+                                                    '#panel-fuente' + j
+                                                "
+                                                aria-expanded="true"
+                                                :aria-controls="
+                                                    'panel-fuente' + j
+                                                "
+                                            >
+                                                {{ i }}
+                                            </button>
+                                        </h2>
+                                        <div
+                                            :id="'panel-fuente' + j"
+                                            class="accordion-collapse collapse"
+                                            :class="j == 0 ? 'show' : ''"
+                                            :aria-labelledby="
+                                                'heading-fuente-' + j
+                                            "
+                                        >
+                                            <div class="accordion-body">
+                                                <div
+                                                    class="row mb-3"
+                                                    v-for="(f, i) in fuente"
+                                                    v-bind:key="i"
+                                                >
+                                                    <div class="col-lg-4">
+                                                        <p>
+                                                            <b
+                                                                >FUENTE DE
+                                                                EMISIÓN DE
+                                                                GEI</b
+                                                            >
+                                                        </p>
+                                                        <p>
+                                                            {{
+                                                                f.fuente_emision_mostrar +
+                                                                " - " +
+                                                                f.fuentetable
+                                                                    .nombre
+                                                            }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <p>
+                                                            <b
+                                                                >UNIDAD DE
+                                                                CONSUMO</b
+                                                            >
+                                                        </p>
+                                                        <p>
+                                                            {{
+                                                                f.fuentetable
+                                                                    .unidad_consumo
+                                                            }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <p><b>CONSUMOS</b></p>
+                                                        <div
+                                                            class="mb-3"
+                                                            v-for="(
+                                                                e, i
+                                                            ) in array_consumos"
+                                                            v-bind:key="i"
+                                                        >
+                                                            <label>
+                                                                {{ e }}
+
+                                                                <i
+                                                                    v-if="
+                                                                        !e.includes(
+                                                                            'CONSUMO'
+                                                                        )
+                                                                    "
+                                                                    class="fas fa-question-circle"
+                                                                    data-bs-toggle="popover"
+                                                                    title="Título ayuda"
+                                                                    data-bs-content="Texto ayuda"
+                                                                ></i>
+                                                            </label>
+
+                                                            <input
+                                                                v-if="
+                                                                    e.includes(
+                                                                        'CONSUMO'
+                                                                    )
+                                                                "
+                                                                v-model="
+                                                                    f.resultado[
+                                                                        'dato_' +
+                                                                            (i +
+                                                                                1)
+                                                                    ]
+                                                                "
+                                                                class="form-control"
+                                                                type="number"
+                                                                step="any"
+                                                            />
+                                                            <input
+                                                                v-else
+                                                                v-model="
+                                                                    f.resultado[
+                                                                        'incertidumbre_sistematica_adicional'
+                                                                    ]
+                                                                "
+                                                                class="form-control"
+                                                                type="number"
+                                                                step="any"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-lg-6 text-end">
-                                <button
-                                    type="button"
-                                    class="btn btn-primary"
-                                    @click="guardarDatosEmision()"
+                            <div class="row mb-3">
+                                <div
+                                    class="mb-3 col-lg-4 offset-lg-4 d-grid gap-2"
                                 >
-                                    Guardar y continuar
-                                </button>
+                                    <button
+                                        type="submit"
+                                        class="btn btn-primary"
+                                    >
+                                        Guardar
+                                    </button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -3003,10 +2358,8 @@ import Emision from "../../models/Emision";
 import Fermentacion from "../../models/Fermentacion";
 import Estiercol from "../../models/Estiercol";
 import Fertilizante from "../../models/Fertilizante";
-import Proceso from "../../models/Proceso";
 import Electricidad from "../../models/Electricidad";
 import Viaje from "../../models/Viaje";
-import FuenteEmision from "../../models/FuenteEmision";
 
 export default {
     data() {
@@ -3054,22 +2407,6 @@ export default {
                 usuario_creacion_id: null,
                 empresa_id: null,
                 sede_id: null,
-            }),
-
-            fuente_emision: new FuenteEmision({
-                id: "",
-                dato_mes_1: "",
-                dato_mes_2: "",
-                dato_mes_3: "",
-                dato_mes_4: "",
-                dato_mes_5: "",
-                dato_mes_6: "",
-                dato_mes_7: "",
-                dato_mes_8: "",
-                dato_mes_9: "",
-                dato_mes_10: "",
-                dato_mes_11: "",
-                dato_mes_12: "",
             }),
 
             paso: 1,
@@ -3143,14 +2480,12 @@ export default {
                 },
             ],
             fuentes_emision: [],
-            index_fuente_emision: 0,
-            total_fuentes_emision: "",
 
             valor_option_metodologia: "",
 
             fecha_base: "",
 
-            cabecera_tabla: [],
+            array_consumos: [],
 
             array_meses: [
                 "ENERO",
@@ -3181,8 +2516,6 @@ export default {
                 { value: 2, label: "Si" },
             ],
 
-            option_ninguna: { id: -1, nombre: "Ninguno" },
-
             options_combustible_solido: [],
             options_combustible_liquido: [],
             options_combustible_gaseoso: [],
@@ -3208,6 +2541,7 @@ export default {
             options_anio: [],
             options_mes: [],
             required: "Este campo es requerido",
+            bsPopover: null,
         };
     },
     mounted() {
@@ -3234,28 +2568,6 @@ export default {
             ).get();
         },
         async getOptionsFuenteEmision() {
-            let array_options = [
-                "options_combustible_solido",
-                "options_combustible_liquido",
-                "options_combustible_gaseoso",
-                "options_refrigerante",
-                "options_extintor",
-                "options_lubricante",
-                "options_fuga",
-                "options_aislamiento",
-                "options_embalse",
-                "options_mineria",
-                "options_industrial",
-                "options_fermentacion",
-                "options_estiercol",
-                "options_residuo_organizacional",
-                "options_residuo_agropecuario",
-                "options_fertilizante",
-                "options_cal",
-                "options_electricidad",
-                "options_viaje",
-            ];
-
             this.options_combustible_solido = await Combustible.where(
                 "tipo",
                 "solido"
@@ -3309,13 +2621,6 @@ export default {
 
             this.options_electricidad = await Electricidad.get();
             this.options_viaje = await Viaje.get();
-
-            array_options.forEach((e) => {
-                this[e].push(this.option_ninguna);
-                this[e].sort((a, b) => {
-                    return a.id - b.id;
-                });
-            });
         },
         async getInformacionEmpresa() {
             // this.ie = await InformacionEmpresa.where({
@@ -3402,69 +2707,42 @@ export default {
                 .catch((error) => {
                     Swal.fire(
                         "Error",
-                        "No se pudo obtener la información de la persona, por favor inténtelo nuevamente",
+                        "No se pudo guardar la información, por favor inténtelo nuevamente",
                         "error"
                     );
                 });
         },
-        async guardarDatosEmision() {
+        async guardarDatosConsumos() {
             this.$root.mostrarCargando("Guardando información");
-            this.fuente_emision.id =
-                this.fuentes_emision[this.index_fuente_emision].id;
-            this.fuente_emision.dato_mes_1 =
-                this.fuentes_emision[this.index_fuente_emision].dato_mes_1;
-            this.fuente_emision.dato_mes_2 =
-                this.fuentes_emision[this.index_fuente_emision].dato_mes_2;
-            this.fuente_emision.dato_mes_3 =
-                this.fuentes_emision[this.index_fuente_emision].dato_mes_3;
-            this.fuente_emision.dato_mes_4 =
-                this.fuentes_emision[this.index_fuente_emision].dato_mes_4;
-            this.fuente_emision.dato_mes_5 =
-                this.fuentes_emision[this.index_fuente_emision].dato_mes_5;
-            this.fuente_emision.dato_mes_6 =
-                this.fuentes_emision[this.index_fuente_emision].dato_mes_6;
-            this.fuente_emision.dato_mes_7 =
-                this.fuentes_emision[this.index_fuente_emision].dato_mes_7;
-            this.fuente_emision.dato_mes_8 =
-                this.fuentes_emision[this.index_fuente_emision].dato_mes_8;
-            this.fuente_emision.dato_mes_9 =
-                this.fuentes_emision[this.index_fuente_emision].dato_mes_9;
-            this.fuente_emision.dato_mes_10 =
-                this.fuentes_emision[this.index_fuente_emision].dato_mes_10;
-            this.fuente_emision.dato_mes_11 =
-                this.fuentes_emision[this.index_fuente_emision].dato_mes_11;
-            this.fuente_emision.dato_mes_12 =
-                this.fuentes_emision[this.index_fuente_emision].dato_mes_12;
-
-            await this.fuente_emision.save();
-
-            Swal.close();
-            this.$root.mostrarMensaje(
-                "Éxito",
-                "Información guardada exitosamente",
-                "success"
-            );
-
-            setTimeout(() => {
-                if (this.index_fuente_emision < this.total_fuentes_emision) {
-                    this.index_fuente_emision++;
-                }
-            }, 1500);
+            axios
+                .post("api/guardarDatosConsumos", {
+                    fuentes_emision: this.fuentes_emision,
+                })
+                .then((response) => {
+                    Swal.close();
+                    this.$root.mostrarMensaje(
+                        "Éxito",
+                        "Información guardada exitosamente",
+                        "success"
+                    );
+                    setTimeout(() => {
+                        this.getFuentesEmision();
+                    }, 1000);
+                })
+                .catch((error) => {});
         },
 
         async getFuentesEmision() {
+            //se debe enviar empresa id y sede id, por el momento se utiliza 1 y 1
             this.$root.mostrarCargando("consultado información");
 
-            this.fuentes_emision = await FuenteEmision.where({
-                empresa_id: 1,
-                sede_id: 1,
-            })
-                .include("subproceso", "subproceso.proceso", "fuentetable")
-                .orderBy("id")
-                .get();
+            axios
+                .get("api/getFuentesEmision/1/1")
+                .then((response) => {
+                    this.fuentes_emision = response.data;
+                })
+                .catch((error) => {});
 
-            this.index_fuente_emision = 0;
-            this.total_fuentes_emision = this.fuentes_emision.length - 1;
             this.tablaEmisiones();
 
             Swal.close();
@@ -3492,19 +2770,12 @@ export default {
         },
 
         async tablaEmisiones() {
+            this.array_consumos = [];
             let informacion_empresa = await InformacionEmpresa.where({
                 empresa_id: 1,
                 sede_id: 1,
             }).first();
 
-            this.cabecera_tabla = [
-                "PROCESO",
-                "SUBPROCESO",
-                "SUBCATERGORÍA",
-                "CLASE",
-                "FUENTE DE EMISIÓN DE GEI",
-                "UNIDAD",
-            ];
             this.fecha_base = new Date(
                 informacion_empresa.anio_inicio +
                     "-" +
@@ -3520,10 +2791,11 @@ export default {
                 );
                 var month = this.array_meses[future.getMonth()];
                 var year = future.getFullYear();
-                this.cabecera_tabla.push(
-                    "DATO MES " + (i + 1) + " (" + month + " " + year + ")"
+                this.array_consumos.push(
+                    "CONSUMO MES " + (i + 1) + " (" + month + " " + year + ")"
                 );
             }
+            this.array_consumos.push("INCERTIDUMBRE SISTEMATICA ADICIONAL");
         },
 
         limpiarFormularioProceso() {
@@ -3612,4 +2884,3 @@ textarea.form-control {
     width: 180px;
 }
 </style>
-;

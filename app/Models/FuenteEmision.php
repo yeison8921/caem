@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FuenteEmision extends Model
 {
+    use \Awobaz\Compoships\Compoships;
     use HasFactory;
     use SoftDeletes;
 
@@ -25,18 +26,6 @@ class FuenteEmision extends Model
         'fuente_emision',
         'descripcion',
         'informacion_adicional',
-        'dato_mes_1',
-        'dato_mes_2',
-        'dato_mes_3',
-        'dato_mes_4',
-        'dato_mes_5',
-        'dato_mes_6',
-        'dato_mes_7',
-        'dato_mes_8',
-        'dato_mes_9',
-        'dato_mes_10',
-        'dato_mes_11',
-        'dato_mes_12',
         'subproceso_id',
         'informacion_empresa_id',
         'empresa_id',
@@ -279,5 +268,17 @@ class FuenteEmision extends Model
     public function subproceso()
     {
         return $this->belongsTo(Subproceso::class);
+    }
+
+    /**
+     * Obtiene el resultado de la fuente de emision
+     */
+    public function resultado()
+    {
+        return $this->hasOne(ResultadoFuenteEmision::class, [
+            'fuentetable_type', 'fuentetable_id', 'tipo', 'informacion_empresa_id', 'empresa_id', 'sede_id',
+        ], [
+            'fuentetable_type', 'fuentetable_id', 'tipo', 'informacion_empresa_id', 'empresa_id', 'sede_id',
+        ]);
     }
 }

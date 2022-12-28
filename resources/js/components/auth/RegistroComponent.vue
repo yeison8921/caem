@@ -10,85 +10,46 @@
               id="pills-correo-tab"
               >1</span
             >
-            Correo
-          </li>
-          <li class="nav-item" role="presentation">
-            <span
-              class="badge bg-primary rounded-pill"
-              :class="paso == 2 ? 'active bg-primary' : 'bg-secondary'"
-              id="pills-datos-generales-tab"
-              >2
-            </span>
-            Datos generales
-          </li>
-          <li class="nav-item" role="presentation">
-            <span
-              class="badge bg-primary rounded-pill"
-              :class="paso == 3 ? 'active bg-primary' : 'bg-secondary'"
-              id="pills-datos-empresa-tab"
-              >3
-            </span>
-            Datos empresa
-          </li>
-        </ul>
-        <div class="tab-content" id="pills-tabContent">
-          <div
-            class="tab-pane fade"
-            :class="paso == 1 ? 'show active' : ''"
-            id="pills-correo"
-            role="tabpanel"
-          >
-            <div class="mb-3">
-              <label class="form-label">Correo electrónico</label>
-              <div class="input-group">
-                <span class="input-group-text"
-                  ><i class="fa-solid fa-envelope"></i
-                ></span>
-                <input
-                  v-model.trim="email"
-                  type="email"
-                  class="form-control"
-                  :class="{
-                    'is-invalid': $v.email.$error,
-                    'is-valid': !$v.email.$invalid,
-                  }"
-                />
-                <div class="invalid-feedback">
-                  <span v-if="!$v.email.required">{{ required }}</span>
-                  <span v-if="!$v.email.email"
-                    >Debe ingresar un correo valido</span
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Confirmar correo electrónico</label>
-              <div class="input-group">
-                <span class="input-group-text"
-                  ><i class="fa-solid fa-envelope"></i
-                ></span>
-                <input
-                  v-model.trim="verify_email"
-                  type="email"
-                  class="form-control"
-                  :class="{
-                    'is-invalid': $v.verify_email.$error,
-                    'is-valid': email != '' ? !$v.verify_email.$invalid : '',
-                  }"
-                />
-                <div class="invalid-feedback">
-                  <span v-if="!$v.verify_email.sameAsEmail">
-                    El correo electrónico no coincide</span
-                  >
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-6">
-                <button
-                  @click="cancelar()"
-                  type="button"
-                  class="btn btn-danger"
+                <li class="nav-item" role="presentation">
+                    <span
+                        class="badge rounded-pill"
+                        :class="
+                            paso == 1 ? 'active bg-primary' : 'bg-secondary'
+                        "
+                        id="pills-correo-tab"
+                        >1</span
+                    >
+                    Correo
+                </li>
+                <li class="nav-item" role="presentation">
+                    <span
+                        class="badge bg-primary rounded-pill"
+                        :class="
+                            paso == 2 ? 'active bg-primary' : 'bg-secondary'
+                        "
+                        id="pills-datos-contacto-tab"
+                        >2
+                    </span>
+                    Datos de contacto
+                </li>
+                <li class="nav-item" role="presentation">
+                    <span
+                        class="badge bg-primary rounded-pill"
+                        :class="
+                            paso == 3 ? 'active bg-primary' : 'bg-secondary'
+                        "
+                        id="pills-datos-empresa-tab"
+                        >3
+                    </span>
+                    Datos empresa
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div
+                    class="tab-pane fade"
+                    :class="paso == 1 ? 'show active' : ''"
+                    id="pills-correo"
+                    role="tabpanel"
                 >
                   Cancelar
                 </button>
@@ -150,67 +111,11 @@
                     }}</span>
                   </div>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label required">Apellidos</label>
-
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa-solid fa-a"></i
-                  ></span>
-                  <input
-                    v-model.trim="user.last_name"
-                    type="text"
-                    class="form-control"
-                    :class="{
-                      'is-invalid': $v.user.last_name.$error,
-                      'is-valid': !$v.user.last_name.$invalid,
-                    }"
-                  />
-                  <div class="invalid-feedback">
-                    <span v-if="!$v.user.last_name.required">{{
-                      required
-                    }}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label required">Celular</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa-solid fa-mobile"></i
-                  ></span>
-                  <input
-                    v-model.trim="user.phone"
-                    type="text"
-                    class="form-control"
-                    :class="{
-                      'is-invalid': $v.user.phone.$error,
-                      'is-valid': !$v.user.phone.$invalid,
-                    }"
-                  />
-                  <div class="invalid-feedback">
-                    <span v-if="!$v.user.phone.required">{{ required }}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label required">Correo electrónico</label>
-                <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="fa-solid fa-envelope"></i
-                  ></span>
-                  <input
-                    type="email"
-                    class="form-control"
-                    :value="email"
-                    readonly
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label required"
-                  >Confirmar correo electrónico</label
+                <div
+                    class="tab-pane fade"
+                    :class="paso == 2 ? 'show active' : ''"
+                    id="pills-datos-contacto"
+                    role="tabpanel"
                 >
                 <div class="input-group">
                   <span class="input-group-text"
@@ -241,22 +146,79 @@
                     ><i class="fa fa-user"></i
                   ></span>
 
-                  <input
-                    v-model.trim="user.cargo"
-                    type="text"
-                    class="form-control"
-                    :class="{
-                      'is-invalid': $v.user.cargo.$error,
-                      'is-valid': !$v.user.cargo.$invalid,
-                    }"
-                  />
-                  <div class="invalid-feedback">
-                    <span v-if="!$v.user.cargo.required">{{ required }}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label required">Contraseña</label>
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="fa-solid fa-a"></i
+                                ></span>
+                                <input
+                                    v-model.trim="user.last_name"
+                                    type="text"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': $v.user.last_name.$error,
+                                        'is-valid': !$v.user.last_name.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.user.last_name.required">{{
+                                        required
+                                    }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Celular</label>
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="fa-solid fa-mobile"></i
+                                ></span>
+                                <input
+                                    v-model.trim="user.phone"
+                                    type="number"
+                                    class="form-control"
+                                    :class="{
+                                        'is-invalid': $v.user.phone.$error,
+                                        'is-valid': !$v.user.phone.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.user.phone.required">{{
+                                        required
+                                    }}</span>
+                                    <span
+                                        v-if="
+                                            !$v.user.phone.minLength ||
+                                            !$v.user.phone.maxLength
+                                        "
+                                    >
+                                        El número de celular debe contener 10
+                                        dígitos</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required"
+                                >Correo electrónico</label
+                            >
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="fa-solid fa-envelope"></i
+                                ></span>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    :value="email"
+                                    readonly
+                                />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Cargo</label>
+                            <div class="input-group">
+                                <span class="input-group-text"
+                                    ><i class="fa fa-user"></i
+                                ></span>
 
                 <div class="input-group">
                   <span class="input-group-text"
@@ -316,64 +278,314 @@
                   type="button"
                   class="btn btn-danger"
                 >
-                  Cancelar
-                </button>
-              </div>
-              <div class="col-lg-6 text-end">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  @click="
-                    limpiarFormUser();
-                    paso = 1;
-                  "
-                >
-                  Atrás
-                </button>
-                <button type="button" class="btn btn-primary" @click="submit()">
-                  Siguiente
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            class="tab-pane fade"
-            role="tabpanel"
-            :class="paso == 3 ? 'show active' : ''"
-            id="pills-datos-empresa"
-          >
-            <div class="mb-3">
-              <label class="form-label required">Nit</label>
-              <input
-                v-model.trim="empresa.nit"
-                type="text"
-                class="form-control"
-                @change="verificarNitEmpresa()"
-                :class="{
-                  'is-invalid': $v.empresa.nit.$error,
-                  'is-valid': !$v.empresa.nit.$invalid,
-                }"
-              />
-              <div class="invalid-feedback">
-                <span v-if="!$v.empresa.nit.required">{{ required }}</span>
-              </div>
-            </div>
+                    <div class="mb-3">
+                        <label class="form-label required">Nit</label>
+                        <input
+                            v-model.trim="empresa.nit"
+                            type="text"
+                            class="form-control"
+                            :disabled="nit != ''"
+                            @change="verificarNitEmpresa()"
+                            :class="{
+                                'is-invalid': $v.empresa.nit.$error,
+                                'is-valid': !$v.empresa.nit.$invalid,
+                            }"
+                        />
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.empresa.nit.required">{{
+                                required
+                            }}</span>
+                        </div>
+                    </div>
 
-            <div v-if="mostrar_form_empresa">
-              <div class="mb-3">
-                <label class="form-label required">Empresa</label>
-                <input
-                  v-model.trim="empresa.nombre"
-                  type="text"
-                  class="form-control"
-                  :disabled="empresa_existe && empresa_existe_completa"
-                  :class="{
-                    'is-invalid': $v.empresa.nombre.$error,
-                    'is-valid': !$v.empresa.nombre.$invalid,
-                  }"
-                />
-                <div class="invalid-feedback">
-                  <span v-if="!$v.empresa.nombre.required">{{ required }}</span>
+                    <div v-if="mostrar_form_empresa">
+                        <div class="mb-3">
+                            <label class="form-label required">Empresa</label>
+                            <input
+                                v-model.trim="empresa.nombre"
+                                type="text"
+                                class="form-control"
+                                :disabled="
+                                    empresa_existe && empresa_existe_completa
+                                "
+                                :class="{
+                                    'is-invalid': $v.empresa.nombre.$error,
+                                    'is-valid': !$v.empresa.nombre.$invalid,
+                                }"
+                            />
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.empresa.nombre.required">{{
+                                    required
+                                }}</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required"
+                                >Código CIIU</label
+                            >
+                            <Multiselect
+                                v-model.trim="empresa.codigo_ciiu_id"
+                                :options="options_ciiu"
+                                :searchable="true"
+                                :disabled="
+                                    empresa_existe && empresa_existe_completa
+                                "
+                                placeholder="Seleccione una opción"
+                                valueProp="id"
+                                label="nombre"
+                                :class="{
+                                    'is-invalid':
+                                        $v.empresa.codigo_ciiu_id.$error,
+                                    'is-valid':
+                                        empresa.codigo_ciiu_id != ''
+                                            ? !$v.empresa.codigo_ciiu_id
+                                                  .$invalid
+                                            : '',
+                                }"
+                            />
+                            <div class="invalid-feedback">
+                                <span
+                                    v-if="!$v.empresa.codigo_ciiu_id.required"
+                                >
+                                    {{ required }}</span
+                                >
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Sector</label>
+                            <Multiselect
+                                v-model.trim="empresa.sector_id"
+                                :options="options_sector"
+                                :searchable="true"
+                                :disabled="
+                                    empresa_existe && empresa_existe_completa
+                                "
+                                placeholder="Seleccione una opción"
+                                valueProp="id"
+                                label="nombre"
+                                :class="{
+                                    'is-invalid': $v.empresa.sector_id.$error,
+                                    'is-valid':
+                                        empresa.sector_id != ''
+                                            ? !$v.empresa.sector_id.$invalid
+                                            : '',
+                                }"
+                            />
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.empresa.sector_id.required">
+                                    {{ required }}</span
+                                >
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Empleados</label>
+                            <Multiselect
+                                v-model.trim="empresa.empleado_id"
+                                :options="options_empleado"
+                                :searchable="true"
+                                :disabled="
+                                    empresa_existe && empresa_existe_completa
+                                "
+                                placeholder="Seleccione una opción"
+                                valueProp="id"
+                                label="nombre"
+                                :class="{
+                                    'is-invalid': $v.empresa.empleado_id.$error,
+                                    'is-valid':
+                                        empresa.empleado_id != ''
+                                            ? !$v.empresa.empleado_id.$invalid
+                                            : '',
+                                }"
+                            />
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.empresa.empleado_id.required">
+                                    {{ required }}</span
+                                >
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required">Tamaño</label>
+                            <Multiselect
+                                v-model.trim="empresa.tamano_id"
+                                :options="options_tamano"
+                                :searchable="true"
+                                :disabled="
+                                    empresa_existe && empresa_existe_completa
+                                "
+                                placeholder="Seleccione una opción"
+                                valueProp="id"
+                                label="nombre"
+                                :class="{
+                                    'is-invalid': $v.empresa.tamano_id.$error,
+                                    'is-valid':
+                                        empresa.tamano_id != ''
+                                            ? !$v.empresa.tamano_id.$invalid
+                                            : '',
+                                }"
+                            />
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.empresa.tamano_id.required">
+                                    {{ required }}</span
+                                >
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required"
+                                >Teléfono fijo o celular</label
+                            >
+                            <input
+                                v-model.trim="empresa.telefono"
+                                type="text"
+                                class="form-control"
+                                :disabled="
+                                    empresa_existe && empresa_existe_completa
+                                "
+                                :class="{
+                                    'is-invalid': $v.empresa.telefono.$error,
+                                    'is-valid': !$v.empresa.telefono.$invalid,
+                                }"
+                            />
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.empresa.telefono.required">{{
+                                    required
+                                }}</span>
+                                <span v-if="!$v.empresa.telefono.minLength">
+                                    El número de debe contener mínimo 7
+                                    dígitos</span
+                                >
+                                <span v-if="!$v.empresa.telefono.maxLength">
+                                    El número de debe contener máximo 10
+                                    dígitos</span
+                                >
+                            </div>
+                        </div>
+                        <div class="mb-3" v-if="convenio_id == ''">
+                            <label class="form-label required">Sede</label>
+                            <Multiselect
+                                v-model="id_sede"
+                                :options="options_sede"
+                                :searchable="true"
+                                placeholder="Seleccione una opción"
+                                valueProp="id"
+                                label="nombre"
+                                @input="getSedeById()"
+                                :class="{
+                                    'is-invalid': $v.id_sede.$error,
+                                    'is-valid':
+                                        id_sede != ''
+                                            ? !$v.id_sede.$invalid
+                                            : '',
+                                }"
+                            />
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.id_sede.required">
+                                    {{ required }}</span
+                                >
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required"
+                                >Nombre sede</label
+                            >
+                            <input
+                                v-model.trim="sede.nombre"
+                                type="text"
+                                class="form-control"
+                                :disabled="id_sede != -1"
+                                :class="{
+                                    'is-invalid': $v.sede.nombre.$error,
+                                    'is-valid': !$v.sede.nombre.$invalid,
+                                }"
+                            />
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.sede.nombre.required">{{
+                                    required
+                                }}</span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required"
+                                >Departamento</label
+                            >
+                            <Multiselect
+                                v-model.trim="sede.departamento_id"
+                                :options="options_departamento"
+                                placeholder="Seleccione una opción"
+                                :searchable="true"
+                                valueProp="id"
+                                label="nombre"
+                                @input="getOptionsCiudad()"
+                                :disabled="id_sede != -1"
+                                :class="{
+                                    'is-invalid':
+                                        $v.sede.departamento_id.$error,
+                                    'is-valid':
+                                        sede.departamento_id != ''
+                                            ? !$v.sede.departamento_id.$invalid
+                                            : '',
+                                }"
+                            />
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.sede.departamento_id.required">
+                                    {{ required }}</span
+                                >
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label required"
+                                >Ciudad o municipio</label
+                            >
+                            <Multiselect
+                                v-model.trim="sede.ciudad_id"
+                                :options="options_ciudad"
+                                placeholder="Seleccione una opción"
+                                :searchable="true"
+                                valueProp="id"
+                                label="nombre"
+                                :disabled="id_sede != -1"
+                                :class="{
+                                    'is-invalid': $v.sede.ciudad_id.$error,
+                                    'is-valid':
+                                        sede.ciudad_id != ''
+                                            ? !$v.sede.ciudad_id.$invalid
+                                            : '',
+                                }"
+                            />
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.sede.ciudad_id.required">
+                                    {{ required }}</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button
+                                @click="cancelar()"
+                                type="button"
+                                class="btn btn-danger"
+                            >
+                                Cancelar
+                            </button>
+                        </div>
+                        <div class="col-lg-6 text-end">
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                @click="paso = 2"
+                            >
+                                Atrás
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                @click="submit()"
+                            >
+                                Finalizar
+                            </button>
+                        </div>
+                    </div>
                 </div>
               </div>
               <div class="mb-3">
@@ -604,8 +816,13 @@
   </div>
 </template>
 <script>
-import NavbarComponent from "../pageLayout/Navbar.vue";
-import { required, email, sameAs, minLength } from "vuelidate/lib/validators";
+import {
+    required,
+    email,
+    sameAs,
+    minLength,
+    maxLength,
+} from "vuelidate/lib/validators";
 import User from "../../models/User";
 import Empresa from "../../models/Empresa";
 import EmpresaSede from "../../models/EmpresaSede";
@@ -709,28 +926,80 @@ export default {
         sameAsPassword: sameAs("password"),
       },
     },
-    empresa: {
-      nit: {
-        required,
-      },
-      nombre: {
-        required,
-      },
-      tamano_id: {
-        required,
-      },
-      empleado_id: {
-        required,
-      },
-      sector_id: {
-        required,
-      },
-      codigo_ciiu_id: {
-        required,
-      },
-      telefono: {
-        required,
-      },
+    validations: {
+        user: {
+            first_name: {
+                required,
+            },
+            last_name: {
+                required,
+            },
+            phone: {
+                required,
+                minLength: minLength(10),
+                maxLength: maxLength(10),
+            },
+            email: {
+                required,
+            },
+            cargo: {
+                required,
+            },
+            password: {
+                required,
+                minLength: minLength(8),
+            },
+            verify_password: {
+                required,
+                sameAsPassword: sameAs("password"),
+            },
+        },
+        empresa: {
+            nit: {
+                required,
+            },
+            nombre: {
+                required,
+            },
+            tamano_id: {
+                required,
+            },
+            empleado_id: {
+                required,
+            },
+            sector_id: {
+                required,
+            },
+            codigo_ciiu_id: {
+                required,
+            },
+            telefono: {
+                required,
+                minLength: minLength(7),
+                maxLength: maxLength(10),
+            },
+        },
+        sede: {
+            nombre: {
+                required,
+            },
+            departamento_id: {
+                required,
+            },
+            ciudad_id: {
+                required,
+            },
+        },
+        id_sede: {
+            required,
+        },
+        email: {
+            required,
+            email,
+        },
+        verify_email: {
+            sameAsEmail: sameAs("email"),
+        },
     },
     sede: {
       nombre: {
@@ -794,44 +1063,48 @@ export default {
         if (!(this.$v.email.$invalid || this.$v.verify_email.$invalid)) {
           let check_email = await User.where("email", this.email).get();
 
-          if (check_email.length != 0) {
-            Swal.fire({
-              title: "Alerta",
-              html: "El correo electrónico ingresado ya se encuentra registrado en el sistema, por favor ingrese con el usuario y contraseña previamente creados",
-              icon: "warning",
-              allowEscapeKey: false,
-              allowOutsideClick: false,
-              confirmButtonColor: "#3085d6",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.$root.redirectIndex("login");
-              }
-            });
-          } else {
-            this.paso = 2;
-            this.$v.$reset();
-            this.$v.user.$reset();
-            this.verificarEmailConvenio();
-            this.form = {};
-            this.user.email = this.email;
-          }
-        }
-      }
-      if (this.paso == 2) {
-        if (!this.$v.user.$invalid) {
-          this.$v.$reset();
-          this.paso = 3;
-          this.mostrar_form_empresa = false;
-          this.limpiarFormEmpresa();
-        }
-      }
-      if (this.paso == 3) {
-        if (!this.$v.$invalid) {
-          //Empresa
-          if (!this.empresa_existe) {
-            delete this.empresa["id"];
-          }
-          var empresa_creada = await this.empresa.save();
+                    if (check_email.length != 0) {
+                        Swal.fire({
+                            title: "Alerta",
+                            html: "El correo electrónico ingresado ya se encuentra registrado en el sistema, por favor ingrese con el usuario y contraseña previamente creados",
+                            icon: "warning",
+                            allowEscapeKey: false,
+                            allowOutsideClick: false,
+                            confirmButtonColor: "#3085d6",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                this.$root.redirectIndex("login");
+                            }
+                        });
+                    } else {
+                        this.paso = 2;
+                        this.$v.$reset();
+                        this.$v.user.$reset();
+                        this.verificarEmailConvenio();
+                        this.form = {};
+                        this.user.email = this.email;
+                    }
+                }
+            }
+            if (this.paso == 2) {
+                if (!this.$v.user.$invalid) {
+                    this.$v.$reset();
+                    this.paso = 3;
+                    this.mostrar_form_empresa = false;
+                    this.limpiarFormEmpresa();
+                    if (this.nit != "") {
+                        this.empresa.nit = this.nit;
+                        this.verificarNitEmpresa();
+                    }
+                }
+            }
+            if (this.paso == 3) {
+                if (!this.$v.$invalid) {
+                    //Empresa
+                    if (!this.empresa_existe) {
+                        delete this.empresa["id"];
+                    }
+                    var empresa_creada = await this.empresa.save();
 
           //Sede
           var empresa_sede = "";
@@ -974,10 +1247,12 @@ export default {
     async verificarCodigoConvenio() {
       this.limpiarFormUser();
 
-      let convenio_email = await ConvenioEmail.where({
-        email: this.email,
-        "convenio.codigo": this.codigo_convenio,
-      }).get();
+            let convenio_email = await ConvenioEmail.include("convenio")
+                .where({
+                    email: this.email,
+                    "convenio.codigo": this.codigo_convenio,
+                })
+                .get();
 
       if (convenio_email.length != 0) {
         this.verificar_codigo_convenio = true;

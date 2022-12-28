@@ -75,6 +75,7 @@ Vue.component('soft-input', require('./components/SoftInput.vue').default);
 Vue.component('soft-switch', require('./components/SoftSwitch.vue').default);
 Vue.component('soft-button', require('./components/SoftButton.vue').default);
 Vue.component('soft-button-basic', require('./components/SoftButtonBasic.vue').default);
+Vue.component('index-resultado-component', require('./components/resultado/IndexResultadoComponent.vue').default);
 Vue.component('Multiselect', require('@vueform/multiselect/dist/multiselect.vue2.js').default);
 
 Vue.prototype.$tablaGlobal = function (nombreTabla) {

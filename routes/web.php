@@ -64,4 +64,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/autorizaciones',  function () {
         return view('autorizacion/index_autorizacion');
     });
+
+    // Resultado
+    Route::get('/resultados',  function () {
+        return view('resultado/index_resultado');
+    });
 });

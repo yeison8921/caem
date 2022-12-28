@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Exceptions\GeneralException;
 use App\Models\FuenteEmision;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 /**
  * Class FuenteEmisionRepository.
@@ -63,7 +64,7 @@ class FuenteEmisionRepository extends BaseRepository
 
     public function guardarEmisionesIndirectas($emisiones)
     {
-        foreach ($emisiones["emisiones"] as $ke => $e) {
+        foreach ($emisiones['emisiones'] as $ke => $e) {
             foreach ($e as $ksf => $sf) {
                 $modelo = 'App\Models\\';
 
@@ -103,64 +104,94 @@ class FuenteEmisionRepository extends BaseRepository
         }
     }
 
-    // public function guardarProcesos($procesos)
-    // {
-    // foreach ($procesos["procesos"] as $p) {
-    //     //Crear proceso
-    //     $proceso = new Proceso;
-    //     //por validar el id de la empresa, sede e informacion si se envia desde el vue
-    //     $proceso->informacion_empresa_id = 1;
-    //     $proceso->empresa_id = 1;
-    //     $proceso->sede_id = 1;
-    //     $proceso->nombre = $p['nombre'];
-    //     $proceso->save();
-    //     foreach ($p["subprocesos"] as $sp) {
-    //         //Crear subproceso
-    //         $subproceso = new Subproceso;
-    //         $subproceso->nombre = $sp['nombre'];
-    //         $subproceso->descripcion = $sp['descripcion'];
-    //         $subproceso->proceso_id = $proceso->id;
-    //         //por validar el id de la empresa y sede se envia desde el vue
-    //         $subproceso->empresa_id = 1;
-    //         $subproceso->sede_id = 1;
-    //         $subproceso->save();
+    public function getFuentesEmision($id_empresa, $id_sede)
+    {
+        $fuentes = FuenteEmision::groupBy('fuentetable_type', 'fuentetable_id', 'tipo')
+            ->with('fuentetable', 'resultado')
+            ->where([['empresa_id', $id_empresa], ['sede_id', $id_sede]])
+            ->get()
+            ->groupBy('tipo_mostrar');
 
-    //         foreach ($sp as $kf => $fuente) {
-    //             if ($kf != 'nombre' && $kf != 'descripcion') {
-    //                 foreach ($fuente as $ksf => $sf) {
-    //                     foreach ($sf as $v) {
-    //                         if ($v != -1) {
-    //                             //Crear fuente emision
-    //                             $fuente_emision = new FuenteEmision;
-    //                             $fuente_emision->tipo = $kf;
-    //                             $fuente_emision->fuente_emision = $ksf;
+        $fuentes = collect($fuentes)->toArray();
 
-    //                             $modelo = '';
-    //                             if (str_contains($ksf, 'combustibles')) {
-    //                                 $modelo = 'combustibles';
-    //                             } elseif ($ksf == 'embalses' || $ksf == 'minerias' || $ksf == 'industriales' || $ksf == 'residuos_organizacionales') {
-    //                                 $modelo = 'emisiones';
-    //                             } elseif ($ksf == 'cales') {
-    //                                 $modelo = 'fertilizantes';
-    //                             } elseif ($ksf == 'residuos_agropecuarios') {
-    //                                 $modelo = 'estiercoles';
-    //                             } else {
-    //                                 $modelo = $ksf;
-    //                             }
-
-    //                             $fuente_emision->modelo = $modelo;
-    //                             $fuente_emision->modelo_id = $v;
-    //                             $fuente_emision->subproceso_id = $subproceso->id;
-    //                             //por validar el id de la empresa, sede e informacion se envia desde el vue
-    //                             $fuente_emision->informacion_empresa_id = 1;
-    //                             $fuente_emision->empresa_id = 1;
-    //                             $fuente_emision->sede_id = 1;
-    //                             $fuente_emision->save();
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+        foreach ($fuentes as $i => $fuente) {
+            foreach ($fuente as $si => $f) {
+                if (is_null($fuentes[$i][$si]['resultado'])) {
+                    $fuentes[$i][$si]["resultado"] = new stdClass();
+                    $fuentes[$i][$si]["resultado"]->id = '';
+                    $fuentes[$i][$si]["resultado"]->fuentetable_type = $fuentes[$i][$si]["fuentetable_type"];
+                    $fuentes[$i][$si]["resultado"]->fuentetable_id = $fuentes[$i][$si]["fuentetable_id"];
+                    $fuentes[$i][$si]["resultado"]->tipo = $fuentes[$i][$si]["tipo"];
+                    $fuentes[$i][$si]["resultado"]->fuente_emision = $fuentes[$i][$si]["fuente_emision"];
+                    $fuentes[$i][$si]["resultado"]->dato_1 = '';
+                    $fuentes[$i][$si]["resultado"]->dato_2 = '';
+                    $fuentes[$i][$si]["resultado"]->dato_3 = '';
+                    $fuentes[$i][$si]["resultado"]->dato_4 = '';
+                    $fuentes[$i][$si]["resultado"]->dato_5 = '';
+                    $fuentes[$i][$si]["resultado"]->dato_6 = '';
+                    $fuentes[$i][$si]["resultado"]->dato_7 = '';
+                    $fuentes[$i][$si]["resultado"]->dato_8 = '';
+                    $fuentes[$i][$si]["resultado"]->dato_9 = '';
+                    $fuentes[$i][$si]["resultado"]->dato_10 = '';
+                    $fuentes[$i][$si]["resultado"]->dato_11 = '';
+                    $fuentes[$i][$si]["resultado"]->dato_12 = '';
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_sistematica_adicional = '';
+                    $fuentes[$i][$si]["resultado"]->total = 0;
+                    $fuentes[$i][$si]["resultado"]->numero_datos = 0;
+                    $fuentes[$i][$si]["resultado"]->promedio = 0;
+                    $fuentes[$i][$si]["resultado"]->desviacion_estandar = 0;
+                    $fuentes[$i][$si]["resultado"]->factor_t = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_datos = 0;
+                    $fuentes[$i][$si]["resultado"]->factor_emision_co2 = 0;
+                    $fuentes[$i][$si]["resultado"]->unidad_factor_emision_co2 = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_factor_emision_co2 = 0;
+                    $fuentes[$i][$si]["resultado"]->emision_co2_ton = 0;
+                    $fuentes[$i][$si]["resultado"]->emision_co2_ton_eq = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_emision_co2 = 0;
+                    $fuentes[$i][$si]["resultado"]->columna_auxiliar_co2 = 0;
+                    $fuentes[$i][$si]["resultado"]->factor_emision_ch4 = 0;
+                    $fuentes[$i][$si]["resultado"]->unidad_factor_emision_ch4 = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_factor_emision_ch4 = 0;
+                    $fuentes[$i][$si]["resultado"]->emision_ch4_ton = 0;
+                    $fuentes[$i][$si]["resultado"]->emision_ch4_ton_eq = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_emision_ch4 = 0;
+                    $fuentes[$i][$si]["resultado"]->columna_auxiliar_ch4 = 0;
+                    $fuentes[$i][$si]["resultado"]->factor_emision_n2o = 0;
+                    $fuentes[$i][$si]["resultado"]->unidad_factor_emision_n2o = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_factor_emision_n2o = 0;
+                    $fuentes[$i][$si]["resultado"]->emision_n2o_ton = 0;
+                    $fuentes[$i][$si]["resultado"]->emision_n2o_ton_eq = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_emision_n2o = 0;
+                    $fuentes[$i][$si]["resultado"]->columna_auxiliar_n2o = 0;
+                    $fuentes[$i][$si]["resultado"]->factor_emision_compuestos_fluorados = 0;
+                    $fuentes[$i][$si]["resultado"]->unidad_factor_emision_compuestos_fluorados = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_factor_emision_compuestos_fluorados = 0;
+                    $fuentes[$i][$si]["resultado"]->emision_compuestos_fluorados_ton = 0;
+                    $fuentes[$i][$si]["resultado"]->emision_compuestos_fluorados_ton_eq = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_emision_compuestos_fluorados = 0;
+                    $fuentes[$i][$si]["resultado"]->columna_auxiliar_compuestos_fluorados = 0;
+                    $fuentes[$i][$si]["resultado"]->factor_emision_sf6 = 0;
+                    $fuentes[$i][$si]["resultado"]->unidad_factor_emision_sf6 = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_factor_emision_sf6 = 0;
+                    $fuentes[$i][$si]["resultado"]->emision_sf6_ton = 0;
+                    $fuentes[$i][$si]["resultado"]->emision_sf6_ton_eq = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_emision_sf6 = 0;
+                    $fuentes[$i][$si]["resultado"]->columna_auxiliar_sf6 = 0;
+                    $fuentes[$i][$si]["resultado"]->factor_emision_nf3 = 0;
+                    $fuentes[$i][$si]["resultado"]->unidad_factor_emision_nf3 = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_factor_emision_nf3 = 0;
+                    $fuentes[$i][$si]["resultado"]->emision_nf3_ton = 0;
+                    $fuentes[$i][$si]["resultado"]->emision_nf3_ton_eq = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_emision_nf3 = 0;
+                    $fuentes[$i][$si]["resultado"]->columna_auxiliar_nf3 = 0;
+                    $fuentes[$i][$si]["resultado"]->huella_carbono = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_fuente = 0;
+                    $fuentes[$i][$si]["resultado"]->informacion_empresa_id = $fuentes[$i][$si]["informacion_empresa_id"];
+                    $fuentes[$i][$si]["resultado"]->empresa_id = $fuentes[$i][$si]["empresa_id"];
+                    $fuentes[$i][$si]["resultado"]->sede_id = $fuentes[$i][$si]["sede_id"];
+                }
+            }
+        }
+        return $fuentes;
+    }
 }
