@@ -1453,7 +1453,7 @@
                                                                     <Multiselect
                                                                         v-model="
                                                                             sp
-                                                                                .agricolas
+                                                                                .emisiones
                                                                                 .Residuo_agropecuario
                                                                         "
                                                                         :options="
@@ -1478,7 +1478,7 @@
                                                                     <Multiselect
                                                                         v-model="
                                                                             sp
-                                                                                .agricolas
+                                                                                .emisiones
                                                                                 .Fertilizante
                                                                         "
                                                                         :options="
@@ -1503,7 +1503,7 @@
                                                                     <Multiselect
                                                                         v-model="
                                                                             sp
-                                                                                .agricolas
+                                                                                .emisiones
                                                                                 .Cal
                                                                         "
                                                                         :options="
@@ -1609,9 +1609,6 @@
                                                                                                 [],
                                                                                             Residuo_organizacional:
                                                                                                 [],
-                                                                                        },
-                                                                                    agricolas:
-                                                                                        {
                                                                                             Residuo_agropecuario:
                                                                                                 [],
                                                                                             Fertilizante:
@@ -1706,9 +1703,6 @@
                                                                                             [],
                                                                                         Residuo_organizacional:
                                                                                             [],
-                                                                                    },
-                                                                                agricolas:
-                                                                                    {
                                                                                         Residuo_agropecuario:
                                                                                             [],
                                                                                         Fertilizante:
@@ -2469,8 +2463,6 @@ export default {
                                 Fermentacion: [],
                                 Estiercol: [],
                                 Residuos_organizacionales: [],
-                            },
-                            agricolas: {
                                 Residuos_agropecuarios: [],
                                 Fertilizant: [],
                                 Cal: [],
@@ -2663,6 +2655,10 @@ export default {
                     "Información guardada exitosamente",
                     "success"
                 );
+                this.paso = 1;
+                Object.keys(this.ie).forEach((key) => {
+                    this.ie[key] = null;
+                });
             }
         },
         guardarEmisionesIndirectas() {
@@ -2830,10 +2826,8 @@ export default {
                                 Fermentacion: [],
                                 Estiercol: [],
                                 Residuos_organizacionales: [],
-                            },
-                            agricolas: {
                                 Residuos_agropecuarios: [],
-                                Fertilizant: [],
+                                Fertilizante: [],
                                 Cal: [],
                             },
                         },

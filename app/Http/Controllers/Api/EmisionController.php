@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Emision;
+use App\Http\Requests\Api\Emision\StoreEmisionRequest;
+use App\Http\Requests\Api\Emision\UpdateEmisionRequest;
 use App\Repositories\EmisionRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -46,21 +48,26 @@ class EmisionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Emision $emision
+     * @param  \App\Models\Emision $emisione
      * @return \Illuminate\Http\Response
      */
-    public function show(Emision $emision)
+    public function show(Emision $emisione)
     {
-        return QueryBuilder::for(Emision::whereId($emision->id))->first();
+        return QueryBuilder::for(Emision::whereId($emisione->id))->first();
+    }
+
+    public function formEmision($tipo, $id_emision = '')
+    {
+        return $this->emisionRepository->formEmision($tipo, $id_emision);
     }
 
     /**
      * Create a new Emision instance.
      */
-    // protected function store(StoreEmisionRequest $data)
-    // {
-    //     return $this->emisionRepository->create($data->all());
-    // }
+    protected function store(StoreEmisionRequest $data)
+    {
+        return $this->emisionRepository->create($data->all());
+    }
 
     /**
      * Update the specified resource in storage.
@@ -70,8 +77,8 @@ class EmisionController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // public function update(UpdateEmisionRequest $request, $emision)
-    // {
-    //     return $this->emisionRepository->update($request, $emision);
-    // }
+    public function update(UpdateEmisionRequest $request, $emision)
+    {
+        return $this->emisionRepository->update($request, $emision);
+    }
 }

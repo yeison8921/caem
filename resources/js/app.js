@@ -76,6 +76,19 @@ Vue.component('soft-switch', require('./components/SoftSwitch.vue').default);
 Vue.component('soft-button', require('./components/SoftButton.vue').default);
 Vue.component('soft-button-basic', require('./components/SoftButtonBasic.vue').default);
 Vue.component('index-resultado-component', require('./components/resultado/IndexResultadoComponent.vue').default);
+Vue.component('index-fuente-component', require('./components/fuente/IndexFuenteComponent.vue').default);
+Vue.component('form-combustible-component', require('./components/fuente/combustible/FormCombustibleComponent.vue').default);
+Vue.component('form-emision-component', require('./components/fuente/emision/FormEmisionComponent.vue').default);
+Vue.component('form-estiercol-component', require('./components/fuente/estiercol/FormEstiercolComponent.vue').default);
+Vue.component('form-fertilizante-component', require('./components/fuente/fertilizante/FormFertilizanteComponent.vue').default);
+Vue.component('form-refrigerante-component', require('./components/fuente/refrigerante/FormRefrigeranteComponent.vue').default);
+Vue.component('form-extintor-component', require('./components/fuente/extintor/FormExtintorComponent.vue').default);
+Vue.component('form-lubricante-component', require('./components/fuente/lubricante/FormLubricanteComponent.vue').default);
+Vue.component('form-fuga-component', require('./components/fuente/fuga/FormFugaComponent.vue').default);
+Vue.component('form-aislamiento-component', require('./components/fuente/aislamiento/FormAislamientoComponent.vue').default);
+Vue.component('form-fermentacion-component', require('./components/fuente/fermentacion/FormFermentacionComponent.vue').default);
+Vue.component('form-electricidad-component', require('./components/fuente/electricidad/FormElectricidadComponent.vue').default);
+Vue.component('form-viaje-component', require('./components/fuente/viaje/FormViajeComponent.vue').default);
 Vue.component('Multiselect', require('@vueform/multiselect/dist/multiselect.vue2.js').default);
 
 Vue.prototype.$tablaGlobal = function (nombreTabla) {

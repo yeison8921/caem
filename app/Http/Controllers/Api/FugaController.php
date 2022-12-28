@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Fuga;
+use App\Http\Requests\Api\Fuga\StoreFugaRequest;
+use App\Http\Requests\Api\Fuga\UpdateFugaRequest;
 use App\Repositories\FugaRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -37,9 +39,7 @@ class FugaController extends Controller
      */
     public function index()
     {
-        $query = QueryBuilder::for(Fuga::class)->allowedFilters([
-            AllowedFilter::exact('tipo'),
-        ]);
+        $query = QueryBuilder::for(Fuga::class);
         return $query->get();
     }
 
@@ -54,13 +54,18 @@ class FugaController extends Controller
         return QueryBuilder::for(Fuga::whereId($fuga->id))->first();
     }
 
+    public function formFuga($id_fuga = '')
+    {
+        return $this->fugaRepository->formFuga($id_fuga);
+    }
+
     /**
      * Create a new Fuga instance.
      */
-    // protected function store(StoreFugaRequest $data)
-    // {
-    //     return $this->fugaRepository->create($data->all());
-    // }
+    protected function store(StoreFugaRequest $data)
+    {
+        return $this->fugaRepository->create($data->all());
+    }
 
     /**
      * Update the specified resource in storage.
@@ -69,9 +74,8 @@ class FugaController extends Controller
      * @param  \App\Models\Fuga $fuga
      * @return \Illuminate\Http\Response
      */
-
-    // public function update(UpdateFugaRequest $request, $fuga)
-    // {
-    //     return $this->fugaRepository->update($request, $fuga);
-    // }
+    public function update(UpdateFugaRequest $request, $fuga)
+    {
+        return $this->fugaRepository->update($request, $fuga);
+    }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Fertilizante;
+use App\Http\Requests\Api\Fertilizante\StoreFertilizanteRequest;
+use App\Http\Requests\Api\Fertilizante\UpdateFertilizanteRequest;
 use App\Repositories\FertilizanteRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -54,13 +56,18 @@ class FertilizanteController extends Controller
         return QueryBuilder::for(Fertilizante::whereId($fertilizante->id))->first();
     }
 
+    public function formFertilizante($tipo, $id_emision = '')
+    {
+        return $this->fertilizanteRepository->formFertilizante($tipo, $id_emision);
+    }
+
     /**
      * Create a new Fertilizante instance.
      */
-    // protected function store(StoreFertilizanteRequest $data)
-    // {
-    //     return $this->fertilizanteRepository->create($data->all());
-    // }
+    protected function store(StoreFertilizanteRequest $data)
+    {
+        return $this->fertilizanteRepository->create($data->all());
+    }
 
     /**
      * Update the specified resource in storage.
@@ -70,8 +77,8 @@ class FertilizanteController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // public function update(UpdateFertilizanteRequest $request, $fertilizante)
-    // {
-    //     return $this->fertilizanteRepository->update($request, $fertilizante);
-    // }
+    public function update(UpdateFertilizanteRequest $request, $fertilizante)
+    {
+        return $this->fertilizanteRepository->update($request, $fertilizante);
+    }
 }

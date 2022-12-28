@@ -8,7 +8,7 @@ use App\Http\Requests\Api\Parametro\UpdateParametroRequest;
 use App\Repositories\ParametroRepository;
 use Spatie\QueryBuilder\QueryBuilder;
 use App\Models\Parametro;
-//use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedFilter;
 
 /**
  * Class ParametroController.
@@ -39,8 +39,8 @@ class ParametroController extends Controller
     {
         $query = QueryBuilder::for(Parametro::class)
             ->allowedFilters([
-                'tipo_parametro_id',
-                'parametro_id'
+                AllowedFilter::exact('tipo_parametro_id'),
+                AllowedFilter::exact('parametro_id'),
             ])->allowedIncludes([
                 'parametro',
             ]);

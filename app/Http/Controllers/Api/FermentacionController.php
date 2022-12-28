@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Fermentacion;
+use App\Http\Requests\Api\Fermentacion\StoreFermentacionRequest;
+use App\Http\Requests\Api\Fermentacion\UpdateFermentacionRequest;
 use App\Repositories\FermentacionRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -44,21 +46,26 @@ class FermentacionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Fermentacion $fermentacion
+     * @param  \App\Models\Fermentacion $fermentacione
      * @return \Illuminate\Http\Response
      */
-    public function show(Fermentacion $fermentacion)
+    public function show(Fermentacion $fermentacione)
     {
-        return QueryBuilder::for(Fermentacion::whereId($fermentacion->id))->first();
+        return QueryBuilder::for(Fermentacion::whereId($fermentacione->id))->first();
+    }
+
+    public function formFermentacion($id_fermentacion = '')
+    {
+        return $this->fermentacionRepository->formFermentacion($id_fermentacion);
     }
 
     /**
      * Create a new Fermentacion instance.
      */
-    // protected function store(StoreFermentacionRequest $data)
-    // {
-    //     return $this->fermentacionRepository->create($data->all());
-    // }
+    protected function store(StoreFermentacionRequest $data)
+    {
+        return $this->fermentacionRepository->create($data->all());
+    }
 
     /**
      * Update the specified resource in storage.
@@ -67,9 +74,8 @@ class FermentacionController extends Controller
      * @param  \App\Models\Fermentacion $fermentacion
      * @return \Illuminate\Http\Response
      */
-
-    // public function update(UpdateFermentacionRequest $request, $fermentacion)
-    // {
-    //     return $this->fermentacionRepository->update($request, $fermentacion);
-    // }
+    public function update(UpdateFermentacionRequest $request, $fermentacion)
+    {
+        return $this->fermentacionRepository->update($request, $fermentacion);
+    }
 }

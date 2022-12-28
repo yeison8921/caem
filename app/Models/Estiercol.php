@@ -18,6 +18,13 @@ class Estiercol extends Model
      */
     protected $table = 'estiercoles';
 
+    /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'nombre',
         'unidad_consumo',

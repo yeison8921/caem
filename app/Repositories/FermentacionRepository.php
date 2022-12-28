@@ -28,6 +28,18 @@ class FermentacionRepository extends BaseRepository
         return Fermentacion::class;
     }
 
+    public function formFermentacion($id_fermentacion)
+    {
+        $data = [];
+        $data['id_fermentacion'] = $id_fermentacion;
+        if ($id_fermentacion != '') {
+            $data['accion'] = 'Actualizar';
+        } else {
+            $data['accion'] = 'Crear';
+        }
+        return view('fuente/fermentacion/form_fermentacion', $data);
+    }
+
     /**
      * @param array $data
      *
@@ -35,17 +47,17 @@ class FermentacionRepository extends BaseRepository
      * @throws \Exception
      * @throws \Throwable
      */
-    // public function create(array $data): Fermentacion
-    // {
-    //     return DB::transaction(function () use ($data) {
-    //         $fermentacion = Fermentacion::create($data);
-    //         if ($fermentacion) {
-    //             return $fermentacion;
-    //         }
+    public function create(array $data): Fermentacion
+    {
+        return DB::transaction(function () use ($data) {
+            $fermentacion = Fermentacion::create($data);
+            if ($fermentacion) {
+                return $fermentacion;
+            }
 
-    //         throw new GeneralException(__('backend_fermentaciones.exceptions.create_error'));
-    //     });
-    // }
+            throw new GeneralException(__('backend_fermentaciones.exceptions.create_error'));
+        });
+    }
 
     /**
      * Update the specified resource in storage.
@@ -54,10 +66,10 @@ class FermentacionRepository extends BaseRepository
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    // public function update($request, $id_fermentacion)
-    // {
-    //     $fermentacion = Fermentacion::find($id_fermentacion);
-    //     $fermentacion->update($request->all());
-    //     return $fermentacion;
-    // }
+    public function update($request, $id_fermentacion)
+    {
+        $fermentacion = Fermentacion::find($id_fermentacion);
+        $fermentacion->update($request->all());
+        return $fermentacion;
+    }
 }

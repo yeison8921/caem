@@ -12,6 +12,13 @@ class Emision extends Model
     use SoftDeletes;
 
     /**
+     * The primary key associated with the table.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
      * The table associated with the model.
      *
      * @var string
@@ -26,6 +33,11 @@ class Emision extends Model
         'incertidumbre_co2_1',
         'incertidumbre_co2_2',
         'fuente_bibliografica_co2',
+        'factor_emision_ch4',
+        'unidad_factor_emision_ch4',
+        'incertidumbre_ch4_1',
+        'incertidumbre_ch4_2',
+        'fuente_bibliografica_ch4',
         'tipo',
     ];
 }
