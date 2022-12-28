@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="card" style="padding-top: 70px ;">
         <div class="card-body">
             <ul
                 class="nav nav-pills nav-fill mb-3"

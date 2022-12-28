@@ -39,18 +39,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('user', function (Request $request) {
+        return $request->user();
+    });
+    // Empresas
+    Route::apiResource('empresas', EmpresaController::class);
 });
 
-
-
 Route::group(['as' => 'auth.'], function () {
-    Route::group(['middleware' => 'auth'], function () {
-        // Authentication
-        Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-    });
-
     Route::group(['middleware' => 'guest'], function () {
         // Authentication
         //Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -64,8 +64,6 @@ Route::group(['as' => 'auth.'], function () {
         Route::apiResource('tipo_parametros', TipoParametroController::class);
         Route::apiResource('parametros', ParametroController::class);
 
-        // Empresas
-        Route::apiResource('empresas', EmpresaController::class);
 
         // Informacion Empresas
         Route::apiResource('informacion_empresas', InformacionEmpresaController::class);

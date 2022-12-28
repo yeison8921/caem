@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Repositories\RegisterRepository;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 /**
  * Class LoginController.
@@ -39,5 +43,12 @@ class LoginController extends Controller
     {
         $this->registerRepository = $registerRepository;
     }
-
+    
+    protected function logout(Request $request)
+    {
+        auth()->logout();
+        return response()->json([
+            'message' => 'Sesión cerrada'
+        ]);
+    }
 }

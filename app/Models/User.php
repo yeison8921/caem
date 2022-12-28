@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -17,6 +17,9 @@ class User extends Authenticatable
     public const STATUS_UNDEFINED = 0;
     public const STATUS_APPROVED = 1;
     public const STATUS_REJECTED = 2;
+    public const TYPE_ADMIN = 1;
+    public const TYPE_EMPRESARIO = 2;
+    
     /**
      * The attributes that are mass assignable.
      *
