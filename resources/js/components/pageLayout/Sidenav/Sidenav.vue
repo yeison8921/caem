@@ -1,7 +1,7 @@
 <template>
     <aside
       id="sidenav-main"
-      class="my-3 overflow-auto border-0 sidenav navbar navbar-vertical navbar-expand-xs border-radius-xl"
+      class="my-3 overflow-auto border-0 sidenav navbar bg-white navbar-vertical navbar-expand-xs border-radius-xl"
       :class="'me-3 rotate-caret'"
     >
       <div class="sidenav-header">

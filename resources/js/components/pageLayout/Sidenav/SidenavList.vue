@@ -120,7 +120,7 @@
           <a
             href="#"
             class="mb-0 btn btn-sm btn-round me-1 bg-gradient-warning"
-            style="margin-left: 40px; bottom: 2vh; position: absolute"
+            style="margin-left: 40px; bottom: 2vh; position: fixed"
             @click="logout()"
             >Cerrar sesión</a
           >

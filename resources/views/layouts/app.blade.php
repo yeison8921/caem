@@ -26,7 +26,7 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" class="g-sidenav-show">
         @if (auth()->check())
         <side-nav :class="'fixed-start'" :routeSelected="'{{url()->current();}}'"
         :is-logged="{{auth()->check() ? 'true' : 'false'}}"
@@ -41,6 +41,9 @@
                 :dark-mode="true"
                 :is-logged="{{auth()->check() ? 'true' : 'false'}}" >
                 </nav-bar-component>
+            @else            
+                <nav-bar-side>
+                </nav-bar-side>
             @endif
                 <div style="height: 73vh !important;">
                     @yield('content')
