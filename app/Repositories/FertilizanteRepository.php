@@ -28,6 +28,19 @@ class FertilizanteRepository extends BaseRepository
         return Fertilizante::class;
     }
 
+    public function formFertilizante($tipo, $id_fertilizante)
+    {
+        $data = [];
+        $data['id_fertilizante'] = $id_fertilizante;
+        $data['tipo'] = $tipo;
+        if ($id_fertilizante != '') {
+            $data['accion'] = 'Actualizar';
+        } else {
+            $data['accion'] = 'Crear';
+        }
+        return view('fuente/fertilizante/form_fertilizante', $data);
+    }
+
     /**
      * @param array $data
      *
@@ -35,17 +48,17 @@ class FertilizanteRepository extends BaseRepository
      * @throws \Exception
      * @throws \Throwable
      */
-    // public function create(array $data): Fertilizante
-    // {
-    //     return DB::transaction(function () use ($data) {
-    //         $fertilizante = Fertilizante::create($data);
-    //         if ($fertilizante) {
-    //             return $fertilizante;
-    //         }
+    public function create(array $data): Fertilizante
+    {
+        return DB::transaction(function () use ($data) {
+            $fertilizante = Fertilizante::create($data);
+            if ($fertilizante) {
+                return $fertilizante;
+            }
 
-    //         throw new GeneralException(__('backend_fertilizantes.exceptions.create_error'));
-    //     });
-    // }
+            throw new GeneralException(__('backend_fertilizantes.exceptions.create_error'));
+        });
+    }
 
     /**
      * Update the specified resource in storage.
@@ -54,10 +67,10 @@ class FertilizanteRepository extends BaseRepository
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    // public function update($request, $id_refrigerante)
-    // {
-    //     $fertilizante = Fertilizante::find($id_refrigerante);
-    //     $fertilizante->update($request->all());
-    //     return $fertilizante;
-    // }
+    public function update($request, $id_fertilizante)
+    {
+        $fertilizante = Fertilizante::find($id_fertilizante);
+        $fertilizante->update($request->all());
+        return $fertilizante;
+    }
 }

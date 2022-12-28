@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Electricidad;
+use App\Http\Requests\Api\Electricidad\StoreElectricidadRequest;
+use App\Http\Requests\Api\Electricidad\UpdateElectricidadRequest;
 use App\Repositories\ElectricidadRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -37,30 +39,33 @@ class ElectricidadController extends Controller
      */
     public function index()
     {
-        $query = QueryBuilder::for(Electricidad::class)->allowedFilters([
-            AllowedFilter::exact('tipo'),
-        ]);
+        $query = QueryBuilder::for(Electricidad::class);
         return $query->get();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Electricidad $electricidad
+     * @param  \App\Models\Electricidad $electricidade
      * @return \Illuminate\Http\Response
      */
-    public function show(Electricidad $electricidad)
+    public function show(Electricidad $electricidade)
     {
-        return QueryBuilder::for(Electricidad::whereId($electricidad->id))->first();
+        return QueryBuilder::for(Electricidad::whereId($electricidade->id))->first();
+    }
+
+    public function formElectricidad($id_electricidad = '')
+    {
+        return $this->electricidadRepository->formElectricidad($id_electricidad);
     }
 
     /**
      * Create a new Electricidad instance.
      */
-    // protected function store(StoreElectricidadRequest $data)
-    // {
-    //     return $this->electricidadRepository->create($data->all());
-    // }
+    protected function store(StoreElectricidadRequest $data)
+    {
+        return $this->electricidadRepository->create($data->all());
+    }
 
     /**
      * Update the specified resource in storage.
@@ -69,9 +74,8 @@ class ElectricidadController extends Controller
      * @param  \App\Models\Electricidad $electricidad
      * @return \Illuminate\Http\Response
      */
-
-    // public function update(UpdateElectricidadRequest $request, $electricidad)
-    // {
-    //     return $this->electricidadRepository->update($request, $electricidad);
-    // }
+    public function update(UpdateElectricidadRequest $request, $electricidad)
+    {
+        return $this->electricidadRepository->update($request, $electricidad);
+    }
 }

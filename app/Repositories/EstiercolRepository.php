@@ -28,6 +28,19 @@ class EstiercolRepository extends BaseRepository
         return Estiercol::class;
     }
 
+    public function formEstiercol($tipo, $id_estiercol)
+    {
+        $data = [];
+        $data['id_estiercol'] = $id_estiercol;
+        $data['tipo'] = $tipo;
+        if ($id_estiercol != '') {
+            $data['accion'] = 'Actualizar';
+        } else {
+            $data['accion'] = 'Crear';
+        }
+        return view('fuente/estiercol/form_estiercol', $data);
+    }
+
     /**
      * @param array $data
      *
@@ -35,17 +48,17 @@ class EstiercolRepository extends BaseRepository
      * @throws \Exception
      * @throws \Throwable
      */
-    // public function create(array $data): Estiercol
-    // {
-    //     return DB::transaction(function () use ($data) {
-    //         $estiercol = Estiercol::create($data);
-    //         if ($estiercol) {
-    //             return $estiercol;
-    //         }
+    public function create(array $data): Estiercol
+    {
+        return DB::transaction(function () use ($data) {
+            $estiercol = Estiercol::create($data);
+            if ($estiercol) {
+                return $estiercol;
+            }
 
-    //         throw new GeneralException(__('backend_estiercoles.exceptions.create_error'));
-    //     });
-    // }
+            throw new GeneralException(__('backend_estiercoles.exceptions.create_error'));
+        });
+    }
 
     /**
      * Update the specified resource in storage.
@@ -54,10 +67,10 @@ class EstiercolRepository extends BaseRepository
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    // public function update($request, $id_estiercol)
-    // {
-    //     $estiercol = Estiercol::find($id_estiercol);
-    //     $estiercol->update($request->all());
-    //     return $estiercol;
-    // }
+    public function update($request, $id_estiercol)
+    {
+        $estiercol = Estiercol::find($id_estiercol);
+        $estiercol->update($request->all());
+        return $estiercol;
+    }
 }

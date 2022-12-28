@@ -150,6 +150,8 @@ class FuenteEmision extends Model
             case 'Materia_prima':
                 $texto = 'Materias primas';
                 break;
+            case 'Equipo':
+                $texto = 'Equipo';
         }
         return $texto;
     }

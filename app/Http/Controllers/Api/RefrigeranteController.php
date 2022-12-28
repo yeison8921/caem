@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Refrigerante;
+use App\Http\Requests\Api\Refrigerante\StoreRefrigeranteRequest;
+use App\Http\Requests\Api\Refrigerante\UpdateRefrigeranteRequest;
 use App\Repositories\RefrigeranteRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -52,13 +54,18 @@ class RefrigeranteController extends Controller
         return QueryBuilder::for(Refrigerante::whereId($refrigerante->id))->first();
     }
 
+    public function formRefrigerante($id_refrigerante = '')
+    {
+        return $this->refrigeranteRepository->formRefrigerante($id_refrigerante);
+    }
+
     /**
      * Create a new Refrigerante instance.
      */
-    // protected function store(StoreRefrigeranteRequest $data)
-    // {
-    //     return $this->refrigeranteRepository->create($data->all());
-    // }
+    protected function store(StoreRefrigeranteRequest $data)
+    {
+        return $this->refrigeranteRepository->create($data->all());
+    }
 
     /**
      * Update the specified resource in storage.
@@ -68,8 +75,8 @@ class RefrigeranteController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // public function update(UpdateRefrigeranteRequest $request, $refrigerante)
-    // {
-    //     return $this->refrigeranteRepository->update($request, $refrigerante);
-    // }
+    public function update(UpdateRefrigeranteRequest $request, $refrigerante)
+    {
+        return $this->refrigeranteRepository->update($request, $refrigerante);
+    }
 }

@@ -13,12 +13,12 @@ class Refrigerante extends Model
 
     protected $fillable = [
         'nombre',
-        'unidad_consumo_1',
-        'factor_emision_co2_1',
-        'unidad_factor_emision_co2_1',
-        'incertidumbre_co2_1_1',
-        'incertidumbre_co2_1_2',
-        'fuente_bibliografica_co2_1',
+        'unidad_consumo',
+        'factor_emision_co2',
+        'unidad_factor_emision_co2',
+        'incertidumbre_co2_1',
+        'incertidumbre_co2_1',
+        'fuente_bibliografica_co2',
         'unidad_consumo_2',
         'factor_emision_co2_2',
         'unidad_factor_emision_co2_2',

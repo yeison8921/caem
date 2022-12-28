@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lubricante;
+use App\Http\Requests\Api\Lubricante\StoreLubricanteRequest;
+use App\Http\Requests\Api\Lubricante\UpdateLubricanteRequest;
 use App\Repositories\LubricanteRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -52,13 +54,18 @@ class LubricanteController extends Controller
         return QueryBuilder::for(Lubricante::whereId($lubricante->id))->first();
     }
 
+    public function formLubricante($id_lubricante = '')
+    {
+        return $this->lubricanteRepository->formLubricante($id_lubricante);
+    }
+
     /**
      * Create a new Lubricante instance.
      */
-    // protected function store(StoreLubricanteRequest $data)
-    // {
-    //     return $this->lubricanteRepository->create($data->all());
-    // }
+    protected function store(StoreLubricanteRequest $data)
+    {
+        return $this->lubricanteRepository->create($data->all());
+    }
 
     /**
      * Update the specified resource in storage.
@@ -67,9 +74,8 @@ class LubricanteController extends Controller
      * @param  \App\Models\Lubricante $lubricante
      * @return \Illuminate\Http\Response
      */
-
-    // public function update(UpdateLubricanteRequest $request, $lubricante)
-    // {
-    //     return $this->lubricanteRepository->update($request, $lubricante);
-    // }
+    public function update(UpdateLubricanteRequest $request, $lubricante)
+    {
+        return $this->lubricanteRepository->update($request, $lubricante);
+    }
 }

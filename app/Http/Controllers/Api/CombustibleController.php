@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Combustible;
+use App\Http\Requests\Api\Combustible\StoreCombustibleRequest;
+use App\Http\Requests\Api\Combustible\UpdateCombustibleRequest;
 use App\Repositories\CombustibleRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -54,13 +56,18 @@ class CombustibleController extends Controller
         return QueryBuilder::for(Combustible::whereId($combustible->id))->first();
     }
 
+    public function formCombustible($tipo, $id_combustible = '')
+    {
+        return $this->combustibleRepository->formCombustible($tipo, $id_combustible);
+    }
+
     /**
      * Create a new combustible instance.
      */
-    // protected function store(StoreCombustibleRequest $data)
-    // {
-    //     return $this->combustibleRepository->create($data->all());
-    // }
+    protected function store(StoreCombustibleRequest $data)
+    {
+        return $this->combustibleRepository->create($data->all());
+    }
 
     /**
      * Update the specified resource in storage.
@@ -70,8 +77,8 @@ class CombustibleController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // public function update(UpdateCombustibleRequest $request, $combustible)
-    // {
-    //     return $this->combustibleRepository->update($request, $combustible);
-    // }
+    public function update(UpdateCombustibleRequest $request, $combustible)
+    {
+        return $this->combustibleRepository->update($request, $combustible);
+    }
 }

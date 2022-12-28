@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Aislamiento;
+use App\Http\Requests\Api\Aislamiento\StoreAislamientoRequest;
+use App\Http\Requests\Api\Aislamiento\UpdateAislamientoRequest;
 use App\Repositories\AislamientoRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -37,9 +39,7 @@ class AislamientoController extends Controller
      */
     public function index()
     {
-        $query = QueryBuilder::for(Aislamiento::class)->allowedFilters([
-            AllowedFilter::exact('tipo'),
-        ]);
+        $query = QueryBuilder::for(Aislamiento::class);
         return $query->get();
     }
 
@@ -54,13 +54,18 @@ class AislamientoController extends Controller
         return QueryBuilder::for(Aislamiento::whereId($aislamiento->id))->first();
     }
 
+    public function formAislamiento($id_aislamiento = '')
+    {
+        return $this->aislamientoRepository->formAislamiento($id_aislamiento);
+    }
+
     /**
      * Create a new Aislamiento instance.
      */
-    // protected function store(StoreAislamientoRequest $data)
-    // {
-    //     return $this->aislamientoRepository->create($data->all());
-    // }
+    protected function store(StoreAislamientoRequest $data)
+    {
+        return $this->aislamientoRepository->create($data->all());
+    }
 
     /**
      * Update the specified resource in storage.
@@ -70,8 +75,8 @@ class AislamientoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // public function update(UpdateAislamientoRequest $request, $aislamiento)
-    // {
-    //     return $this->aislamientoRepository->update($request, $aislamiento);
-    // }
+    public function update(UpdateAislamientoRequest $request, $aislamiento)
+    {
+        return $this->aislamientoRepository->update($request, $aislamiento);
+    }
 }

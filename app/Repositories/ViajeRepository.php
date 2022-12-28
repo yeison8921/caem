@@ -28,6 +28,20 @@ class ViajeRepository extends BaseRepository
         return Viaje::class;
     }
 
+
+    public function formViaje($id_viaje)
+    {
+        $data = [];
+        $data['id_viaje'] = $id_viaje;
+        if ($id_viaje != '') {
+            $data['accion'] = 'Actualizar';
+        } else {
+            $data['accion'] = 'Crear';
+        }
+        return view('fuente/viaje/form_viaje', $data);
+    }
+
+
     /**
      * @param array $data
      *
@@ -35,17 +49,17 @@ class ViajeRepository extends BaseRepository
      * @throws \Exception
      * @throws \Throwable
      */
-    // public function create(array $data): Viaje
-    // {
-    //     return DB::transaction(function () use ($data) {
-    //         $viaje = Viaje::create($data);
-    //         if ($viaje) {
-    //             return $viaje;
-    //         }
+    public function create(array $data): Viaje
+    {
+        return DB::transaction(function () use ($data) {
+            $viaje = Viaje::create($data);
+            if ($viaje) {
+                return $viaje;
+            }
 
-    //         throw new GeneralException(__('backend_viajes.exceptions.create_error'));
-    //     });
-    // }
+            throw new GeneralException(__('backend_viajes.exceptions.create_error'));
+        });
+    }
 
     /**
      * Update the specified resource in storage.
@@ -54,10 +68,10 @@ class ViajeRepository extends BaseRepository
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    // public function update($request, $id_viaje)
-    // {
-    //     $viaje = Viaje::find($id_viaje);
-    //     $viaje->update($request->all());
-    //     return $viaje;
-    // }
+    public function update($request, $id_viaje)
+    {
+        $viaje = Viaje::find($id_viaje);
+        $viaje->update($request->all());
+        return $viaje;
+    }
 }

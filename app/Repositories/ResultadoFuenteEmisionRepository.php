@@ -17,24 +17,10 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
     protected $array_factores;
     protected $array_geis;
     protected $array_emisiones = [
-        // 'App\Models\Aislamiento' => ['co2'],
-        // 'App\Models\Combustible' => ['co2', 'ch4', 'n2o'],
-        // 'App\Models\Electricidad' => ['co2'],
-        // 'App\Models\Emision' => ['co2'],
-        // 'App\Models\Estiercol' => ['ch4', 'n2o'],
-        // 'App\Models\Extintor' => ['co2'],
-        // 'App\Models\Fermentacion' => ['ch4'],
-        // 'App\Models\Fertilizante' => ['n2o'],
-        // 'App\Models\Fuga' => ['co2'],
-        // 'App\Models\Lubricante' => ['co2'],
-        // 'App\Models\Papel' => ['co2'],
-        // 'App\Models\Refrigerante' => ['co2'],
-        // 'App\Models\Viaje' => ['co2'],
         'Combustible_solido' => ['co2', 'ch4', 'n2o'],
         'Combustible_liquido' => ['co2', 'ch4', 'n2o'],
         'Combustible_gaseoso' => ['co2', 'ch4', 'n2o'],
         'Refrigerante' => ['co2'],
-        // 'Refrigerante' => ['compuestos_fluorados'],
         'Extintor' => ['co2'],
         'Lubricante' => ['co2'],
         'Fuga' => ['co2'],
@@ -49,6 +35,9 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
         'Residuo_agropecuario' => ['ch4', 'n2o'],
         'Fertilizante' => ['n2o'],
         'Energia_electrica' => ['co2'],
+        'Transporte' => ['co2'],
+        'Equipo' => ['co2'],
+        'Residuo' => ['ch4']
     ];
 
 
@@ -137,8 +126,6 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                         if (!is_null($d)) {
                             $numero_datos++;
                             $total += floatval($d);
-                            // $fuentes_emision[$kfe][$skfe]['resultado']['numero_datos']++;
-                            // $fuentes_emision[$kfe][$skfe]['resultado']['total'] += floatval($d);
                         }
                     }
                 }
@@ -183,17 +170,6 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                         $factor_emision = 'kg_' . $tipo_fuente;
                         $unidad_factor = '_' . $tipo_fuente;
                         $incertidumbre_factor = '_' . $tipo_fuente;
-
-                        // $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e] = $fuentes_emision[$kfe][$skfe]['fuentetable']['factor_emision_' . $e . 'kg_' . $tipo_fuente];
-                        // $fuentes_emision[$kfe][$skfe]['resultado']['unidad_factor_emision_' . $e] = $fe['fuentetable']['unidad_factor_emision_' . $e . '_' . $tipo_fuente];
-                        // $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_factor_emision_' . $e] = $fe['fuentetable']['incertidumbre_' . $e . '_2_' . $tipo_fuente];
-                        // $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton'] = ($fuentes_emision[$kfe][$skfe]['resultado']['total'] * $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e]) / 1000;
-                        // $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton_eq'] = $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton'] * $this->array_geis[$e];
-
-                        // if ($fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton'] > 0) {
-                        //     $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_emision_' . $e] = sqrt($fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_datos'] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_datos'] + $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_factor_emision_' . $e] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_factor_emision_' . $e] + $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_sistematica_adicional'] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_sistematica_adicional']);
-                        // }
-                        // $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_' . $e] = pow(($fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton_eq'] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_emision_' . $e]), 2);
                     }
 
                     if ($fuentes_emision[$kfe][$skfe]['fuente_emision'] == 'Fermentacion' || ($fuentes_emision[$kfe][$skfe]['fuente_emision'] == 'Estiercol' && $e == 'ch4')) {
@@ -223,6 +199,8 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                 }
 
                 $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono'] =  $fuentes_emision[$kfe][$skfe]['resultado']['emision_co2_ton_eq'] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_ch4_ton_eq'] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_n2o_ton_eq'] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_compuestos_fluorados_ton_eq'] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_sf6_ton_eq'] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_nf3_ton_eq'];
+
+                $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_fuente'] = 0;
 
                 if ($fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono'] > 0) {
                     $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_fuente'] = sqrt(($fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_co2'] + $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_ch4'] + $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_n2o'] + $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_compuestos_fluorados'] + $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_sf6'])) / $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono'];
