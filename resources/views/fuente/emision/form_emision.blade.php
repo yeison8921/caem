@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <form-emision-component :datos="{ 
         accion: '{{ $accion }}',
         tipo: '{{ $tipo }}', 

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <form-refrigerante-component :datos="{ 
         accion: '{{ $accion }}',
         @if ($accion == 'Actualizar') 

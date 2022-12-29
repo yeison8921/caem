@@ -1,133 +1,138 @@
 <template>
-  <div>
-    <div
-      id="sidenav-collapse-main"
-      class="w-auto h-auto collapse navbar-collapse max-height-vh-100 h-100"
-    >
-      <ul class="navbar-nav">
-        <li class="mt-3 nav-item">
-          <h6
-            class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
-            :class="'me-4'"
-          >
-          </h6>
-        </li>
-        <li class="nav-item">
-          <sidenav-collapse
-            collapse-ref="generalLinks"
-            nav-text="General"
-            :class="currentRoute === 'general' ? 'active' : ''"
-          >
-            <template #icon>
-              <Document />
-            </template>
-            <template #list>
-              <ul class="nav ms-4 ps-3">
-                <sidenav-item
-                  v-if="isLoggedIn"
-                  :to="{ name: 'Inicio' }"
-                  :url="'/'"
-                  mini-icon="I"
-                  text="Inicio"
-                />
-                <sidenav-item
-                  v-if="isLoggedIn"
-                  :to="{ name: 'Procesos' }"
-                  :url="'/procesos'"
-                  mini-icon="P"
-                  text="Procesos"
-                />
-                <sidenav-item
-                  v-if="isLoggedIn"
-                  :to="{ name: 'Resultados' }"
-                  :url="'/resultados'"
-                  mini-icon="P"
-                  text="Resultados"
-                />
-                
-              </ul>
-            </template>
-          </sidenav-collapse>
-        </li>
+    <div>
+        <div
+            id="sidenav-collapse-main"
+            class="w-auto h-auto collapse navbar-collapse max-height-vh-100 h-100"
+        >
+            <ul class="navbar-nav">
+                <li class="mt-3 nav-item">
+                    <h6
+                        class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
+                        :class="'me-4'"
+                    ></h6>
+                </li>
+                <li class="nav-item">
+                    <sidenav-collapse
+                        collapse-ref="generalLinks"
+                        nav-text="General"
+                        :class="currentRoute === 'general' ? 'active' : ''"
+                    >
+                        <template #icon>
+                            <Document />
+                        </template>
+                        <template #list>
+                            <ul class="nav ms-4 ps-3">
+                                <sidenav-item
+                                    v-if="isLoggedIn"
+                                    :to="{ name: 'Inicio' }"
+                                    :url="'/'"
+                                    mini-icon="I"
+                                    text="Inicio"
+                                />
+                                <sidenav-item
+                                    v-if="isLoggedIn"
+                                    :to="{ name: 'Procesos' }"
+                                    :url="'/procesos'"
+                                    mini-icon="P"
+                                    text="Procesos"
+                                />
+                                <sidenav-item
+                                    v-if="isLoggedIn"
+                                    :to="{ name: 'Resultados' }"
+                                    :url="'/resultados'"
+                                    mini-icon="P"
+                                    text="Resultados"
+                                />
+                            </ul>
+                        </template>
+                    </sidenav-collapse>
+                </li>
 
-        <li class="nav-item">
-          <sidenav-collapse
-            collapse-ref="AdminLinks"
-            nav-text="Administración"
-            :class="'active'"
-          >
-            <template #icon>
-              <Basket />
-            </template>
-            <template #list>
-              <ul class="nav ms-4 ps-3">
-                <!-- nav links -->
-                <sidenav-item
-                  v-if="isLoggedIn"
-                  :to="{ name: 'Parámetros' }"
-                  :url="'/parametros'"
-                  mini-icon="P"
-                  text="Parámetros"
-                />
-                <sidenav-item
-                  v-if="isLoggedIn"
-                  :to="{ name: 'Convenios' }"
-                  :url="'/convenios'"
-                  mini-icon="C"
-                  text="Convenios"
-                />
-                <sidenav-item
-                  v-if="isLoggedIn"
-                  :to="{ name: 'Empresas' }"
-                  :url="'/empresas'"
-                  mini-icon="E"
-                  text="Empresas"
-                />
-                <sidenav-item
-                  v-if="isLoggedIn"
-                  :to="{ name: 'Sedes' }"
-                  :url="'/sedes'"
-                  mini-icon="S"
-                  text="Sedes"
-                />
-                <sidenav-item
-                  v-if="isLoggedIn"
-                  :to="{ name: 'Autorización' }"
-                  :url="'/autorizaciones'"
-                  mini-icon="A"
-                  text="Autorización"
-                />
-                <sidenav-item
-                  v-if="!isLoggedIn"
-                  :to="{ name: 'Login' }"
-                  :url="'/login'"
-                  mini-icon="L"
-                  text="Login"
-                />
-                <sidenav-item
-                  v-if="!isLoggedIn"
-                  :to="{ name: 'Register' }"
-                  :url="'/register'"
-                  mini-icon="R"
-                  text="Register"
-                />
-              </ul>
-            </template>
-          </sidenav-collapse>
-        </li>
+                <li class="nav-item">
+                    <sidenav-collapse
+                        collapse-ref="AdminLinks"
+                        nav-text="Administración"
+                        :class="'active'"
+                    >
+                        <template #icon>
+                            <Basket />
+                        </template>
+                        <template #list>
+                            <ul class="nav ms-4 ps-3">
+                                <!-- nav links -->
+                                <sidenav-item
+                                    v-if="isLoggedIn"
+                                    :to="{ name: 'Parámetros' }"
+                                    :url="'/parametros'"
+                                    mini-icon="P"
+                                    text="Parámetros"
+                                />
+                                <sidenav-item
+                                    v-if="isLoggedIn"
+                                    :to="{ name: 'Convenios' }"
+                                    :url="'/convenios'"
+                                    mini-icon="C"
+                                    text="Convenios"
+                                />
+                                <sidenav-item
+                                    v-if="isLoggedIn"
+                                    :to="{ name: 'Empresas' }"
+                                    :url="'/empresas'"
+                                    mini-icon="E"
+                                    text="Empresas"
+                                />
+                                <sidenav-item
+                                    v-if="isLoggedIn"
+                                    :to="{ name: 'Sedes' }"
+                                    :url="'/sedes'"
+                                    mini-icon="S"
+                                    text="Sedes"
+                                />
+                                <sidenav-item
+                                    v-if="isLoggedIn"
+                                    :to="{ name: 'Autorización' }"
+                                    :url="'/autorizaciones'"
+                                    mini-icon="A"
+                                    text="Autorización"
+                                />
+                                <sidenav-item
+                                    v-if="isLoggedIn"
+                                    :to="{ name: 'Fuentes de emisión' }"
+                                    :url="'/fuentes'"
+                                    mini-icon="F"
+                                    text="Fuentes de emisión"
+                                />
+                                <sidenav-item
+                                    v-if="!isLoggedIn"
+                                    :to="{ name: 'Login' }"
+                                    :url="'/login'"
+                                    mini-icon="L"
+                                    text="Login"
+                                />
+                                <sidenav-item
+                                    v-if="!isLoggedIn"
+                                    :to="{ name: 'Register' }"
+                                    :url="'/register'"
+                                    mini-icon="R"
+                                    text="Register"
+                                />
+                            </ul>
+                        </template>
+                    </sidenav-collapse>
+                </li>
 
-        <li class="nav-item" v-if="isLoggedIn">
-          <a
-            href="#"
-            class="mb-0 btn btn-sm btn-round me-1 bg-gradient-warning"
-            style="margin-left: 40px; bottom: 2vh; position: fixed"
-            @click="logout()"
-            >Cerrar sesión</a
-          >
-        </li>
-      </ul>
+                <li class="nav-item" v-if="isLoggedIn">
+                    <a
+                        href="#"
+                        class="mb-0 btn btn-sm btn-round me-1 bg-gradient-warning"
+                        style="margin-left: 40px; bottom: 2vh; position: fixed"
+                        @click="logout()"
+                        >Cerrar sesión</a
+                    >
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </template>
 <script>
 import SidenavItem from "./SidenavItem.vue";
@@ -144,66 +149,66 @@ import Spaceship from "../../Icon/Spaceship.vue";
 import CreditCard from "../../Icon/CreditCard.vue";
 
 export default {
-  name: "SidenavList",
-  components: {
-    SidenavItem,
-    SidenavCollapse,
-    SidenavCard,
-    SidenavCollapseItem,
-    Settings,
-    Basket,
-    Box3d,
-    Shop,
-    Office,
-    Document,
-    Spaceship,
-    CreditCard,
-  },
-  props: {
-    cardBg: {
-      type: String,
-      default: "",
+    name: "SidenavList",
+    components: {
+        SidenavItem,
+        SidenavCollapse,
+        SidenavCard,
+        SidenavCollapseItem,
+        Settings,
+        Basket,
+        Box3d,
+        Shop,
+        Office,
+        Document,
+        Spaceship,
+        CreditCard,
     },
-    routeSelected: {
-      type: String,
-      default: "",
+    props: {
+        cardBg: {
+            type: String,
+            default: "",
+        },
+        routeSelected: {
+            type: String,
+            default: "",
+        },
+        isLogged: {
+            type: Boolean,
+            default: false,
+        },
     },
-    isLogged: {
-      type: Boolean,
-      default: false,
+    data() {
+        return {
+            isLoggedIn: this.isLogged,
+            currentRoute: this.routeSelected,
+        };
     },
-  },
-  data() {
-    return {
-      isLoggedIn: this.isLogged,
-      currentRoute: this.routeSelected,
-    };
-  },
-  watch: {
-    routeSelected: function (newVal) {
-      this.currentRoute = newVal;
+    watch: {
+        routeSelected: function (newVal) {
+            this.currentRoute = newVal;
+        },
+        isLogged: function (val, oldVal) {
+            this.isLoggedIn = val;
+        },
     },
-    isLogged: function (val, oldVal) {
-      this.isLoggedIn = val;
+    methods: {
+        logout() {
+            this.$root.mostrarCargando();
+            axios
+                .post("/logout")
+                .then((response) => {
+                    this.$root.redirectIndex("/login");
+                    this.$root.cerrarCargando();
+                })
+                .catch((error) => {
+                    this.$root.mostrarMensaje(
+                        "error",
+                        "ha ocurrido un error al cerrar sesión",
+                        "error"
+                    );
+                });
+        },
     },
-  },
-  methods: {
-    logout() {      
-      this.$root.mostrarCargando();
-      axios
-        .post("/logout")
-        .then((response) => {
-          this.$root.redirectIndex("/login");
-          this.$root.cerrarCargando();
-        })
-        .catch((error) => {
-          this.$root.mostrarMensaje(
-            "error",
-            "ha ocurrido un error al cerrar sesión",
-            "error"
-          );
-        });
-    },
-  },
 };
 </script>
