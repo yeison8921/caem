@@ -2,6 +2,7 @@
     <div>
         <div
             id="sidenav-collapse-main"
+            style="overflow-x: hidden"
             class="w-auto h-auto collapse navbar-collapse max-height-vh-100 h-100"
         >
             <ul class="navbar-nav">
@@ -148,8 +149,8 @@
                 <li class="nav-item" v-if="isLoggedIn">
                     <a
                         href="#"
-                        class="mb-0 btn btn-sm btn-round me-1 bg-gradient-warning"
-                        style="margin-left: 40px; bottom: 2vh; position: fixed"
+                        class="mb-0 btn btn-sm btn-round me-1 bg-gradient-info"
+                        style="margin-left: 40px; bottom: 3vh; position: fixed"
                         @click="logout()"
                         >Cerrar sesión</a
                     >

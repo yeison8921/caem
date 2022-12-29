@@ -82,7 +82,7 @@
                                     <a
                                         v-if="[1].includes(userLogged.rol_id)"
                                         :href="'/empresas/edit/' + e.id"
-                                        class="btn btn-warning"
+                                        class="btn btn-success"
                                         title="Actualizar empresa"
                                     >
                                         <i class="fas fa-edit"></i>

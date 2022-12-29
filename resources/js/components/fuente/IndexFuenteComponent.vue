@@ -80,7 +80,7 @@
                                                       '/edit/' +
                                                       f.id
                                             "
-                                            class="btn btn-warning"
+                                            class="btn btn-success"
                                             title="Actualizar parametro"
                                         >
                                             <i class="fas fa-edit"></i>

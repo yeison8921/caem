@@ -12,11 +12,12 @@
             ></i>
             <a class="m-0 navbar-brand" href="/">
                 <img
-                    src="../../../../img/CAEM_mini.jpg"
-                    class="navbar-brand-img h-100"
+                    src="../../../../img/Carbontest - Horizontal.svg"
+                    class="navbar-brand-img"
+                    style="max-height: 150px !important"
                     alt="main_logo"
                 />
-                <span class="ms-1 font-weight-bold">HuellaCarbono</span>
+                <!-- <span class="ms-1 font-weight-bold">Carbontest</span> -->
             </a>
         </div>
         <hr class="mt-0 horizontal dark" />

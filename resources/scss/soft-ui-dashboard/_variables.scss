@@ -53,12 +53,12 @@ $colors: (
 ) !default;
 // scss-docs-end colors-map
 
-$primary:       #22cb0c !default;
+$primary:       #2ec761 !default;
 $secondary:     #8392AB !default;
-$info:          #17c1e8 !default;
-$success:       #82d616 !default;
+$info:          #059ef8 !default;
+$success:       #19b2af !default;
 $warning:       #fbcf33 !default;
-$danger:        #ea0606 !default;
+$danger:        #ef5757 !default;
 $light:         $gray-200 !default;
 $dark:          $h-color !default;
 
@@ -87,11 +87,11 @@ $secondary-gradient-state:    #A8B8D8 !default;
 $info-gradient:               #2152ff !default;
 $info-gradient-state:         #21d4fd !default;
 
-$success-gradient:            #17ad37 !default;
-$success-gradient-state:      #98ec2d !default;
+$success-gradient:            #059ef8 !default;
+$success-gradient-state:      #2ec761 !default;
 
-$danger-gradient:             #ea0606 !default;
-$danger-gradient-state:       #ff667c !default;
+$danger-gradient:             #ef5757 !default;
+$danger-gradient-state:       #fc7f92 !default;
 
 $warning-gradient:            #f53939 !default;
 $warning-gradient-state:      #fbcf33 !default;
@@ -559,7 +559,7 @@ $text-gradient-position:      relative !default;
 $text-gradient-zindex:        1 !default;
 $text-gradient-bg-primary:    linear-gradient(310deg, #7928CA, #FF0080) !default;
 $text-gradient-bg-info:       linear-gradient(310deg, #2152FF, #21D4FD) !default;
-$text-gradient-bg-success:    linear-gradient(310deg, #17AD37, #C1E823) !default;
+$text-gradient-bg-success:    linear-gradient(310deg, #059ef8, #2ec761) !default;
 $text-gradient-bg-warning:    linear-gradient(310deg, #F53939, #FBCF33) !default;
 $text-gradient-bg-danger:     linear-gradient(310deg, #D60808, #FF6690) !default;
 $text-gradient-bg-dark:     linear-gradient(310deg, #141727, #3A416F) !default;
@@ -842,10 +842,10 @@ $input-border-radius-sm:                $border-radius-md !default;
 $input-border-radius-lg:                $border-radius-md !default;
 
 $input-focus-bg:                        $white !default;
-$input-focus-border-color:              #5fbe54 !default;
+$input-focus-border-color:              #19b2af !default;
 $input-focus-color:                     $input-color !default;
 $input-focus-width:                     2px !default;
-$input-focus-box-shadow:                0 0 0 $input-focus-width #8fbd8a !default;
+$input-focus-box-shadow:                0 0 0 $input-focus-width #66c5c4 !default;
 
 $input-placeholder-color:               $gray-500 !default;
 $input-plaintext-color:                 $dark !default;
