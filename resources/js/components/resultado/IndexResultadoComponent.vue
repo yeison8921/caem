@@ -443,13 +443,13 @@
                                     }}
                                 </td>
                                 <td>
-                                    {{
+                                    +/-{{
                                         subTotalIncertidumbreEmisiones(
                                             a[1],
                                             a[2],
                                             "co2"
                                         )
-                                    }}
+                                    }}%
                                 </td>
                                 <td>
                                     {{
@@ -475,13 +475,13 @@
                                     }}
                                 </td>
                                 <td>
-                                    {{
+                                    +/-{{
                                         subTotalIncertidumbreEmisiones(
                                             a[1],
                                             a[2],
                                             "ch4"
                                         )
-                                    }}
+                                    }}%
                                 </td>
                                 <td>
                                     {{
@@ -508,13 +508,13 @@
                                     }}
                                 </td>
                                 <td>
-                                    {{
+                                    +/-{{
                                         subTotalIncertidumbreEmisiones(
                                             a[1],
                                             a[2],
                                             "n2o"
                                         )
-                                    }}
+                                    }}%
                                 </td>
                                 <td>
                                     {{
@@ -540,13 +540,13 @@
                                     }}
                                 </td>
                                 <td>
-                                    {{
+                                    +/-{{
                                         subTotalIncertidumbreEmisiones(
                                             a[1],
                                             a[2],
                                             "compuestos_fluorados"
                                         )
-                                    }}
+                                    }}%
                                 </td>
                                 <td>
                                     {{
@@ -573,13 +573,13 @@
                                     }}
                                 </td>
                                 <td>
-                                    {{
+                                    +/-{{
                                         subTotalIncertidumbreEmisiones(
                                             a[1],
                                             a[2],
                                             "sf6"
                                         )
-                                    }}
+                                    }}%
                                 </td>
                                 <td>
                                     {{
@@ -606,13 +606,13 @@
                                     }}
                                 </td>
                                 <td>
-                                    {{
+                                    +/-{{
                                         subTotalIncertidumbreEmisiones(
                                             a[1],
                                             a[2],
                                             "nf3"
                                         )
-                                    }}
+                                    }}%
                                 </td>
                                 <td>
                                     {{
@@ -628,9 +628,9 @@
                                     {{ SubTotalHuellaCarbono(a[1], a[2]) }}
                                 </td>
                                 <td>
-                                    {{
+                                    +/-{{
                                         subTotalIncertidumbreFuente(a[1], a[2])
-                                    }}
+                                    }}%
                                 </td>
                             </tr>
                         </template>
@@ -986,13 +986,14 @@ export default {
                     }
                 });
             });
-            total = (Math.sqrt(suma) / total_huella) * 100;
+            if (total_huella > 0) {
+                total = (Math.sqrt(suma) / total_huella) * 100;
+            }
             return total;
         },
         async getFuentesEmision() {
             //se debe enviar empresa id y sede id, por el momento se utiliza 1 y 1
 
-            console.log("3");
             this.$root.mostrarCargando("consultado información");
 
             axios
