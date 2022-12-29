@@ -8,17 +8,19 @@
         </div>
 
         <div
-            class="table-responsive"
-            v-for="(array, i) in array_tablas"
-            v-bind:key="i"
+            v-for="(array, ia) in array_tablas"
+            v-bind:key="ia"
+            class="col-lg-12"
         >
-            <div v-for="(el, i) in array" v-bind:key="i">
+            <div v-for="(el, ei) in array" v-bind:key="ei">
                 <br />
                 <p>
-                    <b>{{ i }}</b>
+                    <b>{{ ei }}</b>
                 </p>
-
-                <table class="table table-bordered" id="tabla-resultados">
+                <table
+                    class="table table-fit table-sm table-bordered"
+                    :id="'tabla-resultados-' + ia"
+                >
                     <thead>
                         <tr>
                             <th colspan="16">CONSUMO</th>
@@ -56,30 +58,38 @@
                             <th>INCERTIDUMBRE SISTEMATICA ADICIONAL</th>
                             <th>INCERTIDUMBRE DATOS</th>
 
-                            <th colspan="2">FACTOR DE EMISIÓN CO2</th>
+                            <th>FACTOR DE EMISIÓN CO2</th>
+                            <th>UNIDAD</th>
+                            <!-- <th colspan="2">FACTOR DE EMISIÓN CO2</th> -->
                             <th>INCERTIDUMBRE FACTOR EMISIÓN CO2</th>
                             <th>EMISIONES CO2 [tonCO2]</th>
                             <th>EMISIONES CO2 [tonCO2-eq]</th>
                             <th>INCERTIDUMBRE EMISIONES CO2</th>
                             <th>COLUMNA AUXILIAR</th>
 
-                            <th colspan="2">FACTOR DE EMISIÓN CH4</th>
+                            <th>FACTOR DE EMISIÓN CH4</th>
+                            <th>UNIDADH4</th>
+                            <!-- <th colspan="2">FACTOR DE EMISIÓN CH4</th> -->
                             <th>INCERTIDUMBRE FACTOR EMISIÓN CH4</th>
                             <th>EMISIONES CH4 [tonCH4]</th>
                             <th>EMISIONES CH4 [tonCO2-eq]</th>
                             <th>INCERTIDUMBRE EMISIONES CH4</th>
                             <th>COLUMNA AUXILIAR</th>
 
-                            <th colspan="2">FACTOR DE EMISIÓN N2O</th>
+                            <th>FACTOR DE EMISIÓN N2O</th>
+                            <th>UNIDAD</th>
+                            <!-- <th colspan="2">FACTOR DE EMISIÓN N2O</th> -->
                             <th>INCERTIDUMBRE FACTOR EMISIÓN N2O</th>
                             <th>EMISIONES N2O [tonN2O]</th>
                             <th>EMISIONES N2O [tonCO2-eq]</th>
                             <th>INCERTIDUMBRE EMISIONES N2O</th>
                             <th>COLUMNA AUXILIAR</th>
 
-                            <th colspan="2">
+                            <th>FACTOR DE EMISIÓN COMPUESTOS FLUORADOS</th>
+                            <th>UNIDAD</th>
+                            <!-- <th colspan="2">
                                 FACTOR DE EMISIÓN COMPUESTOS FLUORADOS
-                            </th>
+                            </th> -->
                             <th>
                                 INCERTIDUMBRE FACTOR EMISIÓN COMPUESTOS
                                 FLUORADOS
@@ -90,14 +100,18 @@
                             </th>
                             <th>COLUMNA AUXILIAR</th>
 
-                            <th colspan="2">FACTOR DE EMISIÓN SF6</th>
+                            <th>FACTOR DE EMISIÓN SF6</th>
+                            <th>UNIDAD</th>
+                            <!-- <th colspan="2">FACTOR DE EMISIÓN SF6</th> -->
                             <th>INCERTIDUMBRE FACTOR EMISIÓN SF6</th>
                             <th>EMISIONES SF6 [tonSF6]</th>
                             <th>EMISIONES SF6 [tonCO2-eq]</th>
                             <th>INCERTIDUMBRE EMISIONES SF6</th>
                             <th>COLUMNA AUXILIAR</th>
 
-                            <th colspan="2">FACTOR DE EMISIÓN NF3</th>
+                            <th>FACTOR DE EMISIÓN NF3</th>
+                            <th>UNIDAD</th>
+                            <!-- <th colspan="2">FACTOR DE EMISIÓN NF3</th> -->
                             <th>INCERTIDUMBRE FACTOR EMISIÓN NF3</th>
                             <th>EMISIONES NF3 [tonNF3]</th>
                             <th>EMISIONES NF3 [tonCO2-eq]</th>
@@ -105,320 +119,521 @@
                             <th>COLUMNA AUXILIAR</th>
                         </tr>
                     </thead>
-                    <tbody v-for="(a, i) in el" v-bind:key="i">
-                        <!-- <tr>
-                            <td colspan="66">
-                                {{ a[0] }}
-                            </td>
-                        </tr> -->
-                        <tr
-                            v-for="(f, i) in fuentes(a[1], a[2])"
-                            v-bind:key="i"
-                        >
-                            <td>
-                                <!-- f.tipo_mostrar +
-                                " - " + -->
-                                {{
-                                    f.fuente_emision_mostrar +
-                                    " - " +
-                                    f.fuentetable.nombre
-                                }}
-                            </td>
-                            <td>
-                                {{ f.fuentetable.unidad_consumo }}
-                            </td>
-                            <td v-for="i in 12" v-bind:key="i">
-                                {{
-                                    f.resultado["dato_" + i] != null &&
-                                    f.resultado["dato_" + i] != ""
-                                        ? f.resultado[
-                                              "dato_" + i
-                                          ].toLocaleString()
-                                        : f.resultado["dato_" + i]
-                                }}
-                            </td>
-                            <td>{{ f.resultado.total.toLocaleString() }}</td>
-                            <td>{{ f.resultado.numero_datos }}</td>
+                    <tbody>
+                        <template v-for="a in el">
+                            <tr :key="a.id" class="table-active">
+                                <td>
+                                    {{ a[0] }}
+                                </td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                                <td style="display;none"></td>
+                            </tr>
+                            <tr
+                                :key="a.id"
+                                v-for="(f, fi) in fuentes(a[1], a[2])"
+                                v-bind:key="fi"
+                            >
+                                <!-- {{ f.tipo_mostrar }} -->
+                                <td>
+                                    {{ f.fuente_emision_mostrar }}
+                                    <br />
+                                    {{
+                                        f.fuentetable.nombre.length > 50
+                                            ? f.fuentetable.nombre.substring(
+                                                  0,
+                                                  50
+                                              )
+                                            : f.fuentetable.nombre
+                                    }}
+                                </td>
+                                <td>{{ f.fuentetable.unidad_consumo }}</td>
+                                <td v-for="(i, index) in 12" v-bind:key="index">
+                                    {{
+                                        f.resultado["dato_" + i] != null &&
+                                        f.resultado["dato_" + i] != ""
+                                            ? f.resultado[
+                                                  "dato_" + i
+                                              ].toLocaleString()
+                                            : f.resultado["dato_" + i]
+                                    }}
+                                </td>
+                                <td>
+                                    {{ f.resultado.total.toLocaleString() }}
+                                </td>
+                                <td>{{ f.resultado.numero_datos }}</td>
+                                <td>
+                                    {{ f.resultado.promedio.toLocaleString() }}
+                                </td>
+                                <td>
+                                    {{
+                                        f.resultado.desviacion_estandar.toLocaleString()
+                                    }}
+                                </td>
+                                <td>{{ f.resultado.factor_t }}</td>
+                                <td>
+                                    {{
+                                        f.resultado
+                                            .incertidumbre_sistematica_adicional
+                                    }}
+                                </td>
+                                <td>
+                                    +/-{{
+                                        f.resultado.incertidumbre_datos * 100
+                                    }}%
+                                </td>
 
-                            <td>{{ f.resultado.promedio.toLocaleString() }}</td>
-                            <td>
-                                {{
-                                    f.resultado.desviacion_estandar.toLocaleString()
-                                }}
-                            </td>
-                            <td>{{ f.resultado.factor_t }}</td>
-                            <td>
-                                {{
-                                    f.resultado
-                                        .incertidumbre_sistematica_adicional
-                                }}
-                            </td>
-                            <td>
-                                +/-{{ f.resultado.incertidumbre_datos * 100 }}%
-                            </td>
+                                <td>{{ f.resultado.factor_emision_co2 }}</td>
+                                <td>
+                                    {{ f.resultado.unidad_factor_emision_co2 }}
+                                </td>
+                                <td>
+                                    +/-{{
+                                        f.resultado
+                                            .incertidumbre_factor_emision_co2 *
+                                        100
+                                    }}%
+                                </td>
+                                <td>{{ f.resultado.emision_co2_ton }}</td>
+                                <td>{{ f.resultado.emision_co2_ton_eq }}</td>
+                                <td>
+                                    +/-{{
+                                        f.resultado.incertidumbre_emision_co2 *
+                                        100
+                                    }}%
+                                </td>
+                                <td>
+                                    {{
+                                        f.resultado.columna_auxiliar_co2.toLocaleString()
+                                    }}
+                                </td>
 
-                            <td>{{ f.resultado.factor_emision_co2 }}</td>
-                            <td>{{ f.resultado.unidad_factor_emision_co2 }}</td>
-                            <td>
-                                +/-{{
-                                    f.resultado
-                                        .incertidumbre_factor_emision_co2 * 100
-                                }}%
-                            </td>
-                            <td>{{ f.resultado.emision_co2_ton }}</td>
-                            <td>{{ f.resultado.emision_co2_ton_eq }}</td>
-                            <td>
-                                +/-{{
-                                    f.resultado.incertidumbre_emision_co2 * 100
-                                }}%
-                            </td>
-                            <td>
-                                {{
-                                    f.resultado.columna_auxiliar_co2.toLocaleString()
-                                }}
-                            </td>
+                                <td>{{ f.resultado.factor_emision_ch4 }}</td>
+                                <td>
+                                    {{ f.resultado.unidad_factor_emision_ch4 }}
+                                </td>
+                                <td>
+                                    +/-{{
+                                        f.resultado
+                                            .incertidumbre_factor_emision_ch4 *
+                                        100
+                                    }}%
+                                </td>
+                                <td>{{ f.resultado.emision_ch4_ton }}</td>
+                                <td>{{ f.resultado.emision_ch4_ton_eq }}</td>
+                                <td>
+                                    +/-{{
+                                        f.resultado.incertidumbre_emision_ch4 *
+                                        100
+                                    }}%
+                                </td>
+                                <td>{{ f.resultado.columna_auxiliar_ch4 }}</td>
 
-                            <td>{{ f.resultado.factor_emision_ch4 }}</td>
-                            <td>{{ f.resultado.unidad_factor_emision_ch4 }}</td>
-                            <td>
-                                +/-{{
-                                    f.resultado
-                                        .incertidumbre_factor_emision_ch4 * 100
-                                }}%
-                            </td>
-                            <td>{{ f.resultado.emision_ch4_ton }}</td>
-                            <td>{{ f.resultado.emision_ch4_ton_eq }}</td>
-                            <td>
-                                +/-{{
-                                    f.resultado.incertidumbre_emision_ch4 * 100
-                                }}%
-                            </td>
-                            <td>{{ f.resultado.columna_auxiliar_ch4 }}</td>
+                                <td>{{ f.resultado.factor_emision_n2o }}</td>
+                                <td>
+                                    {{ f.resultado.unidad_factor_emision_n2o }}
+                                </td>
+                                <td>
+                                    +/-{{
+                                        f.resultado
+                                            .incertidumbre_factor_emision_n2o *
+                                        100
+                                    }}%
+                                </td>
+                                <td>{{ f.resultado.emision_n2o_ton }}</td>
+                                <td>{{ f.resultado.emision_n2o_ton_eq }}</td>
+                                <td>
+                                    +/-{{
+                                        f.resultado.incertidumbre_emision_n2o *
+                                        100
+                                    }}%
+                                </td>
+                                <td>{{ f.resultado.columna_auxiliar_n2o }}</td>
 
-                            <td>{{ f.resultado.factor_emision_n2o }}</td>
-                            <td>{{ f.resultado.unidad_factor_emision_n2o }}</td>
-                            <td>
-                                +/-{{
-                                    f.resultado
-                                        .incertidumbre_factor_emision_n2o * 100
-                                }}%
-                            </td>
-                            <td>{{ f.resultado.emision_n2o_ton }}</td>
-                            <td>{{ f.resultado.emision_n2o_ton_eq }}</td>
-                            <td>
-                                +/-{{
-                                    f.resultado.incertidumbre_emision_n2o * 100
-                                }}%
-                            </td>
-                            <td>{{ f.resultado.columna_auxiliar_n2o }}</td>
+                                <td>
+                                    {{
+                                        f.resultado
+                                            .factor_emision_compuestos_fluorados
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        f.resultado
+                                            .unidad_factor_emision_compuestos_fluorados
+                                    }}
+                                </td>
+                                <td>
+                                    +/-{{
+                                        f.resultado
+                                            .incertidumbre_factor_emision_compuestos_fluorados *
+                                        100
+                                    }}%
+                                </td>
+                                <td>
+                                    {{
+                                        f.resultado
+                                            .emision_compuestos_fluorados_ton_eq
+                                    }}
+                                </td>
+                                <td>
+                                    +/-{{
+                                        f.resultado
+                                            .incertidumbre_emision_compuestos_fluorados *
+                                        100
+                                    }}%
+                                </td>
+                                <td>
+                                    {{
+                                        f.resultado
+                                            .columna_auxiliar_compuestos_fluorados
+                                    }}
+                                </td>
 
-                            <td>
-                                {{
-                                    f.resultado
-                                        .factor_emision_compuestos_fluorados
-                                }}
-                            </td>
-                            <td>
-                                {{
-                                    f.resultado
-                                        .unidad_factor_emision_compuestos_fluorados
-                                }}
-                            </td>
-                            <td>
-                                +/-{{
-                                    f.resultado
-                                        .incertidumbre_factor_emision_compuestos_fluorados *
-                                    100
-                                }}%
-                            </td>
-                            <td>
-                                {{
-                                    f.resultado
-                                        .emision_compuestos_fluorados_ton_eq
-                                }}
-                            </td>
-                            <td>
-                                +/-{{
-                                    f.resultado
-                                        .incertidumbre_emision_compuestos_fluorados *
-                                    100
-                                }}%
-                            </td>
-                            <td>
-                                {{
-                                    f.resultado
-                                        .columna_auxiliar_compuestos_fluorados
-                                }}
-                            </td>
+                                <td>{{ f.resultado.factor_emision_sf6 }}</td>
+                                <td>
+                                    {{ f.resultado.unidad_factor_emision_sf6 }}
+                                </td>
+                                <td>
+                                    +/-{{
+                                        f.resultado
+                                            .incertidumbre_factor_emision_sf6 *
+                                        100
+                                    }}%
+                                </td>
+                                <td>{{ f.resultado.emision_sf6_ton }}</td>
+                                <td>{{ f.resultado.emision_sf6_ton_eq }}</td>
+                                <td>
+                                    +/-{{
+                                        f.resultado.incertidumbre_emision_sf6 *
+                                        100
+                                    }}%
+                                </td>
+                                <td>{{ f.resultado.columna_auxiliar_sf6 }}</td>
 
-                            <td>{{ f.resultado.factor_emision_sf6 }}</td>
-                            <td>{{ f.resultado.unidad_factor_emision_sf6 }}</td>
-                            <td>
-                                +/-{{
-                                    f.resultado
-                                        .incertidumbre_factor_emision_sf6 * 100
-                                }}%
-                            </td>
-                            <td>{{ f.resultado.emision_sf6_ton }}</td>
-                            <td>{{ f.resultado.emision_sf6_ton_eq }}</td>
-                            <td>
-                                +/-{{
-                                    f.resultado.incertidumbre_emision_sf6 * 100
-                                }}%
-                            </td>
-                            <td>{{ f.resultado.columna_auxiliar_sf6 }}</td>
+                                <td>{{ f.resultado.factor_emision_nf3 }}</td>
+                                <td>
+                                    {{ f.resultado.unidad_factor_emision_nf3 }}
+                                </td>
+                                <td>
+                                    +/-{{
+                                        f.resultado
+                                            .incertidumbre_factor_emision_nf3 *
+                                        100
+                                    }}%
+                                </td>
+                                <td>{{ f.resultado.emision_nf3_ton }}</td>
+                                <td>{{ f.resultado.emision_nf3_ton_eq }}</td>
+                                <td>
+                                    +/-{{
+                                        f.resultado.incertidumbre_emision_nf3 *
+                                        100
+                                    }}%
+                                </td>
+                                <td>{{ f.resultado.columna_auxiliar_nf3 }}</td>
 
-                            <td>{{ f.resultado.factor_emision_nf3 }}</td>
-                            <td>{{ f.resultado.unidad_factor_emision_nf3 }}</td>
-                            <td>
-                                +/-{{
-                                    f.resultado
-                                        .incertidumbre_factor_emision_nf3 * 100
-                                }}%
-                            </td>
-                            <td>{{ f.resultado.emision_nf3_ton }}</td>
-                            <td>{{ f.resultado.emision_nf3_ton_eq }}</td>
-                            <td>
-                                +/-{{
-                                    f.resultado.incertidumbre_emision_nf3 * 100
-                                }}%
-                            </td>
-                            <td>{{ f.resultado.columna_auxiliar_nf3 }}</td>
+                                <td>{{ f.resultado.huella_carbono }}</td>
+                                <td>
+                                    +/-{{
+                                        f.resultado.incertidumbre_fuente * 100
+                                    }}%
+                                </td>
+                            </tr>
+                            <tr
+                                class="table-active"
+                                style="border-bottom: 1px solid black"
+                                :key="a.id"
+                            >
+                                <td>
+                                    <b>
+                                        {{ a[3] }}
+                                    </b>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                            <td>{{ f.resultado.huella_carbono }}</td>
-                            <td>
-                                +/-{{ f.resultado.incertidumbre_fuente * 100 }}%
-                            </td>
-                        </tr>
-                        <tr class="table-active">
-                            <td colspan="5">{{ a[3] }}</td>
-                            <td colspan="20"></td>
+                                <td>
+                                    {{
+                                        subTotalEmisionesTonEq(
+                                            a[1],
+                                            a[2],
+                                            "co2"
+                                        )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalIncertidumbreEmisiones(
+                                            a[1],
+                                            a[2],
+                                            "co2"
+                                        )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalColumnaAuxiliar(
+                                            a[1],
+                                            a[2],
+                                            "co2"
+                                        )
+                                    }}
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                            <td>
-                                {{ subTotalEmisionesTonEq(a[1], a[2], "co2") }}
-                            </td>
-                            <td>
-                                {{
-                                    subTotalIncertidumbreEmisiones(
-                                        a[1],
-                                        a[2],
-                                        "co2"
-                                    )
-                                }}
-                            </td>
-                            <td>
-                                {{ subTotalColumnaAuxiliar(a[1], a[2], "co2") }}
-                            </td>
+                                <td>
+                                    {{
+                                        subTotalEmisionesTonEq(
+                                            a[1],
+                                            a[2],
+                                            "ch4"
+                                        )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalIncertidumbreEmisiones(
+                                            a[1],
+                                            a[2],
+                                            "ch4"
+                                        )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalColumnaAuxiliar(
+                                            a[1],
+                                            a[2],
+                                            "ch4"
+                                        )
+                                    }}
+                                </td>
 
-                            <td colspan="4"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                            <td>
-                                {{ subTotalEmisionesTonEq(a[1], a[2], "ch4") }}
-                            </td>
-                            <td>
-                                {{
-                                    subTotalIncertidumbreEmisiones(
-                                        a[1],
-                                        a[2],
-                                        "ch4"
-                                    )
-                                }}
-                            </td>
-                            <td>
-                                {{ subTotalColumnaAuxiliar(a[1], a[2], "ch4") }}
-                            </td>
+                                <td>
+                                    {{
+                                        subTotalEmisionesTonEq(
+                                            a[1],
+                                            a[2],
+                                            "n2o"
+                                        )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalIncertidumbreEmisiones(
+                                            a[1],
+                                            a[2],
+                                            "n2o"
+                                        )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalColumnaAuxiliar(
+                                            a[1],
+                                            a[2],
+                                            "n2o"
+                                        )
+                                    }}
+                                </td>
 
-                            <td colspan="4"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                            <td>
-                                {{ subTotalEmisionesTonEq(a[1], a[2], "n2o") }}
-                            </td>
-                            <td>
-                                {{
-                                    subTotalIncertidumbreEmisiones(
-                                        a[1],
-                                        a[2],
-                                        "n2o"
-                                    )
-                                }}
-                            </td>
-                            <td>
-                                {{ subTotalColumnaAuxiliar(a[1], a[2], "n2o") }}
-                            </td>
+                                <td>
+                                    {{
+                                        subTotalEmisionesTonEq(
+                                            a[1],
+                                            a[2],
+                                            "compuestos_fluorados"
+                                        )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalIncertidumbreEmisiones(
+                                            a[1],
+                                            a[2],
+                                            "compuestos_fluorados"
+                                        )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalColumnaAuxiliar(
+                                            a[1],
+                                            a[2],
+                                            "compuestos_fluorados"
+                                        )
+                                    }}
+                                </td>
 
-                            <td colspan="3"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                            <td>
-                                {{
-                                    subTotalEmisionesTonEq(
-                                        a[1],
-                                        a[2],
-                                        "compuestos_fluorados"
-                                    )
-                                }}
-                            </td>
-                            <td>
-                                {{
-                                    subTotalIncertidumbreEmisiones(
-                                        a[1],
-                                        a[2],
-                                        "compuestos_fluorados"
-                                    )
-                                }}
-                            </td>
-                            <td>
-                                {{
-                                    subTotalColumnaAuxiliar(
-                                        a[1],
-                                        a[2],
-                                        "compuestos_fluorados"
-                                    )
-                                }}
-                            </td>
+                                <td>
+                                    {{
+                                        subTotalEmisionesTonEq(
+                                            a[1],
+                                            a[2],
+                                            "sf6"
+                                        )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalIncertidumbreEmisiones(
+                                            a[1],
+                                            a[2],
+                                            "sf6"
+                                        )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalColumnaAuxiliar(
+                                            a[1],
+                                            a[2],
+                                            "sf6"
+                                        )
+                                    }}
+                                </td>
 
-                            <td colspan="4"></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                            <td>
-                                {{ subTotalEmisionesTonEq(a[1], a[2], "sf6") }}
-                            </td>
-                            <td>
-                                {{
-                                    subTotalIncertidumbreEmisiones(
-                                        a[1],
-                                        a[2],
-                                        "sf6"
-                                    )
-                                }}
-                            </td>
-                            <td>
-                                {{ subTotalColumnaAuxiliar(a[1], a[2], "sf6") }}
-                            </td>
+                                <td>
+                                    {{
+                                        subTotalEmisionesTonEq(
+                                            a[1],
+                                            a[2],
+                                            "nf3"
+                                        )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalIncertidumbreEmisiones(
+                                            a[1],
+                                            a[2],
+                                            "nf3"
+                                        )
+                                    }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalColumnaAuxiliar(
+                                            a[1],
+                                            a[2],
+                                            "nf3"
+                                        )
+                                    }}
+                                </td>
 
-                            <td colspan="4"></td>
-
-                            <td>
-                                {{ subTotalEmisionesTonEq(a[1], a[2], "nf3") }}
-                            </td>
-                            <td>
-                                {{
-                                    subTotalIncertidumbreEmisiones(
-                                        a[1],
-                                        a[2],
-                                        "nf3"
-                                    )
-                                }}
-                            </td>
-                            <td>
-                                {{ subTotalColumnaAuxiliar(a[1], a[2], "nf3") }}
-                            </td>
-
-                            <td>
-                                {{ SubTotalHuellaCarbono(a[1], a[2]) }}
-                            </td>
-                            <td>
-                                {{ subTotalIncertidumbreFuente(a[1], a[2]) }}
-                            </td>
-                        </tr>
+                                <td>
+                                    {{ SubTotalHuellaCarbono(a[1], a[2]) }}
+                                </td>
+                                <td>
+                                    {{
+                                        subTotalIncertidumbreFuente(a[1], a[2])
+                                    }}
+                                </td>
+                            </tr>
+                        </template>
                     </tbody>
                 </table>
             </div>
@@ -776,6 +991,8 @@ export default {
         },
         async getFuentesEmision() {
             //se debe enviar empresa id y sede id, por el momento se utiliza 1 y 1
+
+            console.log("3");
             this.$root.mostrarCargando("consultado información");
 
             axios
@@ -783,14 +1000,24 @@ export default {
                 .then((response) => {
                     this.resultado = response.data;
                     setTimeout(() => {
-                        $("#tabla-resultados").DataTable().destroy();
-                        this.$tablaGlobal("#tabla-resultados");
-                    }, 10000);
+                        for (let i = 0; i < 5; i++) {
+                            $("#tabla-resultados-" + i)
+                                .DataTable()
+                                .destroy();
+                            this.$tablaResultadosEmision(
+                                "#tabla-resultados-" + i
+                            );
+                        }
+                        Swal.close();
+                    }, 2000);
                 })
                 .catch((error) => {});
-
-            Swal.close();
         },
     },
 };
 </script>
+<style>
+table.table {
+    width: auto;
+}
+</style>

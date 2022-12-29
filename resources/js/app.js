@@ -38,6 +38,8 @@ require('datatables.net-buttons/js/dataTables.buttons.min.js');
 require('datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js');
 require('datatables.net-buttons/js/buttons.html5.min.js');
 require('datatables.net-responsive-bs5');
+require('datatables.net-fixedcolumns/js/dataTables.fixedColumns.min.js');
+require('datatables.net-fixedcolumns-bs5/css/fixedColumns.bootstrap5.min.css')
 
 window.JSZip = jszip;
 
@@ -91,7 +93,7 @@ Vue.component('form-electricidad-component', require('./components/fuente/electr
 Vue.component('form-viaje-component', require('./components/fuente/viaje/FormViajeComponent.vue').default);
 Vue.component('Multiselect', require('@vueform/multiselect/dist/multiselect.vue2.js').default);
 
-Vue.prototype.$tablaGlobal = function (nombreTabla) {
+Vue.prototype.$tablaGlobal = function(nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "order": [
@@ -120,11 +122,11 @@ Vue.prototype.$tablaGlobal = function (nombreTabla) {
                 "text": "<i class='fas fa-file-excel'></i> Excel",
                 "titleAttr": "Exportar a Excel",
                 "className": "btn btn-success"
-            },]
+            }, ]
         });
     });
 }
-Vue.prototype.$tablaResultados = function (nombreTabla) {
+Vue.prototype.$tablaResultados = function(nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [
@@ -153,11 +155,11 @@ Vue.prototype.$tablaResultados = function (nombreTabla) {
                 "text": "<i class='fas fa-file-excel'></i> Excel",
                 "titleAttr": "Exportar a Excel",
                 "className": "btn btn-success"
-            },]
+            }, ]
         });
     });
 }
-Vue.prototype.$tablaConvenios = function (nombreTabla) {
+Vue.prototype.$tablaConvenios = function(nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [
@@ -186,11 +188,11 @@ Vue.prototype.$tablaConvenios = function (nombreTabla) {
                 "text": "<i class='fas fa-file-excel'></i> Excel",
                 "titleAttr": "Exportar a Excel",
                 "className": "btn btn-success"
-            },]
+            }, ]
         });
     });
 }
-Vue.prototype.$tablaEmpresas = function (nombreTabla) {
+Vue.prototype.$tablaEmpresas = function(nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [
@@ -219,12 +221,12 @@ Vue.prototype.$tablaEmpresas = function (nombreTabla) {
                 "text": "<i class='fas fa-file-excel'></i> Excel",
                 "titleAttr": "Exportar a Excel",
                 "className": "btn btn-success"
-            },]
+            }, ]
         });
     });
 }
 
-Vue.prototype.$tablaSedes = function (nombreTabla) {
+Vue.prototype.$tablaSedes = function(nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [
@@ -253,12 +255,12 @@ Vue.prototype.$tablaSedes = function (nombreTabla) {
                 "text": "<i class='fas fa-file-excel'></i> Excel",
                 "titleAttr": "Exportar a Excel",
                 "className": "btn btn-success"
-            },]
+            }, ]
         });
     });
 }
 
-Vue.prototype.$tablaUsuarios = function (nombreTabla) {
+Vue.prototype.$tablaUsuarios = function(nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({
             "columnDefs": [
@@ -287,7 +289,48 @@ Vue.prototype.$tablaUsuarios = function (nombreTabla) {
                 "text": "<i class='fas fa-file-excel'></i> Excel",
                 "titleAttr": "Exportar a Excel",
                 "className": "btn btn-success"
-            },]
+            }, ]
+        });
+    });
+}
+Vue.prototype.$tablaResultadosEmision = function(nombreTabla) {
+    this.$nextTick(() => {
+        $(nombreTabla).DataTable({
+            scrollX: true,
+            scrollCollapse: true,
+            fixedColumns: {
+                leftColumns: 1,
+            },
+            scrollY: "400px",
+            responsive: false,
+            dom: "<'row'<'col-sm-12 mb-3'B>><'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+
+            "paging": false,
+            "searching": false,
+            "ordering": false,
+            "info": false,
+            "language": {
+                "lengthMenu": "Ver _MENU_ registros por página",
+                "zeroRecords": "No hay información, lo sentimos.",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(Filtrado de _MAX_ registros totales)",
+                "search": "Filtrar:",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Ultima",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            },
+            buttons: [{
+                "extend": "excelHtml5",
+                "text": "<i class='fas fa-file-excel'></i> Excel",
+                "titleAttr": "Exportar a Excel",
+                "className": "btn btn-success"
+            }, ]
         });
     });
 }
