@@ -3,11 +3,11 @@
 namespace App\Repositories;
 
 use App\Exceptions\GeneralException;
-use App\Models\Combustible;
 use App\Models\Emision;
+use App\Models\FuenteEmision;
+use App\Models\InformacionEmpresa;
 use App\Models\Proceso;
 use App\Models\Subproceso;
-use App\Models\FuenteEmision;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -38,9 +38,12 @@ class ProcesoRepository extends BaseRepository
             //Crear proceso
             $proceso = new Proceso;
             //por validar el id de la empresa, sede e informacion si se envia desde el vue
-            $proceso->informacion_empresa_id = 1;
-            $proceso->empresa_id = 1;
-            $proceso->sede_id = 1;
+            $usuarioEmpresaId = auth('api')->user()->empresa_id;
+            $usuarioSedeId = auth('api')->user()->sede_id;
+            $informacionEmpresa = InformacionEmpresa::where('empresa_id', $usuarioEmpresaId)->where('sede_id', $usuarioSedeId)->first();
+            $proceso->informacion_empresa_id = $informacionEmpresa->id;
+            $proceso->empresa_id = $usuarioEmpresaId;
+            $proceso->sede_id = $usuarioSedeId;
             $proceso->nombre = $p['nombre'];
             $proceso->save();
             foreach ($p["subprocesos"] as $sp) {
@@ -50,8 +53,8 @@ class ProcesoRepository extends BaseRepository
                 $subproceso->descripcion = $sp['descripcion'];
                 $subproceso->proceso_id = $proceso->id;
                 //por validar el id de la empresa y sede se envia desde el vue
-                $subproceso->empresa_id = 1;
-                $subproceso->sede_id = 1;
+                $subproceso->empresa_id = $usuarioEmpresaId;
+                $subproceso->sede_id = $usuarioSedeId;
                 $subproceso->save();
 
                 foreach ($sp as $kf => $fuente) {
@@ -67,11 +70,11 @@ class ProcesoRepository extends BaseRepository
                                     $modelo = 'App\Models\\';
                                     if (str_contains($ksf, 'Combustible')) {
                                         $modelo .= 'Combustible';
-                                    } else if ($ksf == 'Embalse' || $ksf == 'Mineria' || $ksf == 'Industrial' || $ksf == 'Residuo_organizacional') {
+                                    } elseif ($ksf == 'Embalse' || $ksf == 'Mineria' || $ksf == 'Industrial' || $ksf == 'Residuo_organizacional') {
                                         $modelo .= 'Emision';
-                                    } else if ($ksf == 'Cal') {
+                                    } elseif ($ksf == 'Cal') {
                                         $modelo .= 'Fertilizante';
-                                    } else if ($ksf == 'Residuo_agropecuario') {
+                                    } elseif ($ksf == 'Residuo_agropecuario') {
                                         $modelo .= 'Estiercol';
                                     } else {
                                         $modelo .= $ksf;
@@ -81,9 +84,9 @@ class ProcesoRepository extends BaseRepository
                                     $fuente_emision->fuentetable_id = $v;
                                     $fuente_emision->subproceso_id = $subproceso->id;
                                     //por validar el id de la empresa, sede e informacion se envia desde el vue
-                                    $fuente_emision->informacion_empresa_id = 1;
-                                    $fuente_emision->empresa_id = 1;
-                                    $fuente_emision->sede_id = 1;
+                                    $fuente_emision->informacion_empresa_id = $informacionEmpresa->id;
+                                    $fuente_emision->empresa_id = $usuarioEmpresaId;
+                                    $fuente_emision->sede_id = $usuarioSedeId;
                                     $fuente_emision->save();
                                 }
                             }

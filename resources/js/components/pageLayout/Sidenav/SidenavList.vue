@@ -30,14 +30,20 @@
                                     text="Inicio"
                                 />
                                 <sidenav-item
-                                    v-if="isLoggedIn"
+                                    v-if="
+                                        isLoggedIn &&
+                                        [1, 2, 4].includes(userLogged.rol_id)
+                                    "
                                     :to="{ name: 'Procesos' }"
                                     :url="'/procesos'"
                                     mini-icon="P"
                                     text="Procesos"
                                 />
                                 <sidenav-item
-                                    v-if="isLoggedIn"
+                                    v-if="
+                                        isLoggedIn &&
+                                        [1, 2, 3, 4].includes(userLogged.rol_id)
+                                    "
                                     :to="{ name: 'Resultados' }"
                                     :url="'/resultados'"
                                     mini-icon="P"
@@ -48,7 +54,7 @@
                     </sidenav-collapse>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item" v-if="[1, 4].includes(userLogged.rol_id)">
                     <sidenav-collapse
                         collapse-ref="AdminLinks"
                         nav-text="Administración"
@@ -61,42 +67,60 @@
                             <ul class="nav ms-4 ps-3">
                                 <!-- nav links -->
                                 <sidenav-item
-                                    v-if="isLoggedIn"
+                                    v-if="
+                                        isLoggedIn &&
+                                        [1].includes(userLogged.rol_id)
+                                    "
                                     :to="{ name: 'Parámetros' }"
                                     :url="'/parametros'"
                                     mini-icon="P"
                                     text="Parámetros"
                                 />
                                 <sidenav-item
-                                    v-if="isLoggedIn"
+                                    v-if="
+                                        isLoggedIn &&
+                                        [1].includes(userLogged.rol_id)
+                                    "
                                     :to="{ name: 'Convenios' }"
                                     :url="'/convenios'"
                                     mini-icon="C"
                                     text="Convenios"
                                 />
                                 <sidenav-item
-                                    v-if="isLoggedIn"
+                                    v-if="
+                                        isLoggedIn &&
+                                        [1, 4].includes(userLogged.rol_id)
+                                    "
                                     :to="{ name: 'Empresas' }"
                                     :url="'/empresas'"
                                     mini-icon="E"
                                     text="Empresas"
                                 />
                                 <sidenav-item
-                                    v-if="isLoggedIn"
+                                    v-if="
+                                        isLoggedIn &&
+                                        [1, 4].includes(userLogged.rol_id)
+                                    "
                                     :to="{ name: 'Sedes' }"
                                     :url="'/sedes'"
                                     mini-icon="S"
                                     text="Sedes"
                                 />
                                 <sidenav-item
-                                    v-if="isLoggedIn"
+                                    v-if="
+                                        isLoggedIn &&
+                                        [1, 4].includes(userLogged.rol_id)
+                                    "
                                     :to="{ name: 'Autorización' }"
                                     :url="'/autorizaciones'"
                                     mini-icon="A"
                                     text="Autorización"
                                 />
                                 <sidenav-item
-                                    v-if="isLoggedIn"
+                                    v-if="
+                                        isLoggedIn &&
+                                        [1].includes(userLogged.rol_id)
+                                    "
                                     :to="{ name: 'Fuentes de emisión' }"
                                     :url="'/fuentes'"
                                     mini-icon="F"
@@ -177,6 +201,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        userLogged: {
+            type: Object,
+            default: {},
+        },
     },
     data() {
         return {
@@ -191,6 +219,12 @@ export default {
         isLogged: function (val, oldVal) {
             this.isLoggedIn = val;
         },
+        userLogged: function (val, oldVal) {
+            this.userLogged = val;
+        },
+    },
+    mounted() {
+        console.log(this.userLogged);
     },
     methods: {
         logout() {

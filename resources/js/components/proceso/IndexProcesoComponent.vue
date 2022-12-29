@@ -2354,12 +2354,12 @@ import Estiercol from "../../models/Estiercol";
 import Fertilizante from "../../models/Fertilizante";
 import Electricidad from "../../models/Electricidad";
 import Viaje from "../../models/Viaje";
+import User from "../../models/User";
 
 export default {
     data() {
         return {
             ie: new InformacionEmpresa({
-                id: null,
                 datos_proveedores: null,
                 fuentes_moviles: null,
                 actividad_agricola: null,
@@ -2534,17 +2534,43 @@ export default {
             options_mes: [],
             required: "Este campo es requerido",
             bsPopover: null,
+            user: new User(),
         };
     },
     mounted() {
         // this.getInformacionEmpresa();
+        this.getUserLogged();
         this.getParametros(7, "options_anio");
         this.getParametros(8, "options_mes");
         this.getParametros(12, "options_metodologia");
         this.getParametros(13, "options_unidad");
         this.getOptionsFuenteEmision();
+        this.recargarFormularioEmisiones();
     },
     methods: {
+        async recargarFormularioEmisiones() {
+            if (!this.user.empresa_id) {
+                await this.getUserLogged();
+            }
+            let informacionEmpresa = await InformacionEmpresa.where({
+                empresa_id: this.user.empresa_id,
+                sede_id: this.user.sede_id,
+            }).first();
+            this.ie =
+                informacionEmpresa &&
+                Object.keys(informacionEmpresa).length != 0
+                    ? informacionEmpresa
+                    : this.ie;
+            console.log(this.ie);
+        },
+        async getUserLogged() {
+            await axios
+                .get("api/user")
+                .then((response) => {
+                    this.user = response.data;
+                })
+                .catch((error) => {});
+        },
         async getParametros(tipo_parametro_id, variable) {
             //1 departamentos
             //3 sectores
@@ -2642,11 +2668,7 @@ export default {
             if (this.paso == 6) {
                 this.$root.mostrarCargando("Guardando información");
 
-                //reemplazar por datos de usuario y empresa
-                this.ie.usuario_creacion_id = 1;
-                this.ie.empresa_id = 1;
-                this.ie.sede_id = 1;
-
+                //reemplazar por datos de usuario y empresa. se mueve a back
                 await this.ie.save();
 
                 Swal.close();
@@ -2655,10 +2677,14 @@ export default {
                     "Información guardada exitosamente",
                     "success"
                 );
+                this.recargarFormularioEmisiones();
                 this.paso = 1;
-                Object.keys(this.ie).forEach((key) => {
+                $("#construccion-proceso-tab").click();
+
+                //this.paso = 1;
+                /*Object.keys(this.ie).forEach((key) => {
                     this.ie[key] = null;
-                });
+                });*/
             }
         },
         guardarEmisionesIndirectas() {
@@ -2674,7 +2700,7 @@ export default {
                         "Información guardada exitosamente",
                         "success"
                     );
-                    this.limpiarFormularioEmisiones();
+                    this.recargarFormularioEmisiones();
                 })
                 .catch((error) => {
                     Swal.fire(
@@ -2733,7 +2759,12 @@ export default {
             this.$root.mostrarCargando("consultado información");
 
             axios
-                .get("api/getFuentesEmision/1/1")
+                .get(
+                    "api/getFuentesEmision/" +
+                        this.user.empresa_id +
+                        "/" +
+                        this.user.sede_id
+                )
                 .then((response) => {
                     this.fuentes_emision = response.data;
                 })
@@ -2748,8 +2779,8 @@ export default {
             this.$root.mostrarCargando("Guardando información");
 
             let informacion_empresa = await InformacionEmpresa.where({
-                empresa_id: 1,
-                sede_id: 1,
+                empresa_id: this.user.empresa_id,
+                sede_id: this.user.sede_id,
             }).first();
 
             informacion_empresa.unidad_id = this.ie.unidad_id;
@@ -2768,8 +2799,8 @@ export default {
         async tablaEmisiones() {
             this.array_consumos = [];
             let informacion_empresa = await InformacionEmpresa.where({
-                empresa_id: 1,
-                sede_id: 1,
+                empresa_id: this.user.empresa_id,
+                sede_id: this.user.sede_id,
             }).first();
 
             this.fecha_base = new Date(

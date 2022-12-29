@@ -642,6 +642,7 @@
 </template>
 <script>
 import ResultadoFuenteEmision from "../../models/ResultadoFuenteEmision";
+import User from "../../models/User";
 
 export default {
     data() {
@@ -782,6 +783,7 @@ export default {
                         ],
                 },
             ],
+            user: new User(),
         };
     },
     mounted() {
@@ -839,6 +841,14 @@ export default {
         },
     },
     methods: {
+        async getUserLogged() {
+            await axios
+                .get("api/user")
+                .then((response) => {
+                    this.user = response.data;
+                })
+                .catch((error) => {});
+        },
         fuentes(tipo, array_fuente_emision) {
             let fuentes = [];
             Object.keys(this.resultado).forEach((key) => {
@@ -995,9 +1005,15 @@ export default {
             //se debe enviar empresa id y sede id, por el momento se utiliza 1 y 1
 
             this.$root.mostrarCargando("consultado información");
+            await this.getUserLogged();
 
             axios
-                .get("api/getFuentesEmision/1/1")
+                .get(
+                    "api/getFuentesEmision/" +
+                        this.user.empresa_id +
+                        "/" +
+                        this.user.sede_id
+                )
                 .then((response) => {
                     this.resultado = response.data;
                     setTimeout(() => {

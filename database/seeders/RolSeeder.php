@@ -19,10 +19,12 @@ class RolSeeder extends Seeder
          */
 
         $roles = [
-            ['nombre' => 'Admin'],
-            ['nombre' => 'Empresario'],
+            ['id' => 1, 'nombre' => 'Admin'],
+            ['id' => 2, 'nombre' => 'Empresario'],
+            ['id' => 3, 'nombre' => 'Lider Convenio'],
+            ['id' => 4, 'nombre' => 'Lider Caem'],
         ];
 
-        DB::table('roles')->insert($roles);
+        DB::table('roles')->insertOrIgnore($roles);
     }
 }

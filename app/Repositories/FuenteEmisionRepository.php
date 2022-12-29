@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Exceptions\GeneralException;
 use App\Models\FuenteEmision;
+use App\Models\InformacionEmpresa;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
@@ -59,6 +60,7 @@ class FuenteEmisionRepository extends BaseRepository
     {
         $fuente_emision = FuenteEmision::find($id_fuente_emision);
         $fuente_emision->update($request->all());
+
         return $fuente_emision;
     }
 
@@ -94,9 +96,12 @@ class FuenteEmisionRepository extends BaseRepository
                         $fuente_emision->fuentetable_type = $modelo;
                         $fuente_emision->fuentetable_id = $v;
                         //por validar el id de la empresa, sede e informacion se envia desde el vue
-                        $fuente_emision->informacion_empresa_id = 1;
-                        $fuente_emision->empresa_id = 1;
-                        $fuente_emision->sede_id = 1;
+                        $usuarioEmpresaId = auth('api')->user()->empresa_id;
+                        $usuarioSedeId = auth('api')->user()->sede_id;
+                        $informacionEmpresa = InformacionEmpresa::where('empresa_id', $usuarioEmpresaId)->where('sede_id', $usuarioSedeId)->first();
+                        $fuente_emision->informacion_empresa_id = $informacionEmpresa->id;
+                        $fuente_emision->empresa_id = $usuarioEmpresaId;
+                        $fuente_emision->sede_id = $usuarioSedeId;
                         $fuente_emision->save();
                     }
                 }
@@ -192,6 +197,7 @@ class FuenteEmisionRepository extends BaseRepository
                 }
             }
         }
+
         return $fuentes;
     }
 }

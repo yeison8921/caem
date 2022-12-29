@@ -44,9 +44,6 @@ class StoreInformacionEmpresaRequest extends FormRequest
             'sustento_metodologico' => ['required', 'integer'],
             'compartira_reporte' => ['required', 'integer'],
             'toma_decisiones' => ['required', 'integer'],
-            'usuario_creacion_id' => ['required', 'integer'],
-            'empresa_id' => ['required', 'integer'],
-            'sede_id' => ['required', 'integer'],
         ];
     }
 }

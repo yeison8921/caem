@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\InformacionEmpresa\StoreInformacionEmpresaRequest;
 use App\Http\Requests\Api\InformacionEmpresa\UpdateInformacionEmpresaRequest;
-use Illuminate\Http\Request;
 use App\Models\InformacionEmpresa;
 use App\Repositories\InformacionEmpresaRepository;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -16,7 +15,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class InformacionEmpresaController extends Controller
 {
-
     /**
      * @var InformacionEmpresaRepository
      */
@@ -39,7 +37,12 @@ class InformacionEmpresaController extends Controller
      */
     public function index()
     {
-        $query = QueryBuilder::for(InformacionEmpresa::class);
+        $query = QueryBuilder::for(InformacionEmpresa::class)->allowedFilters([
+            AllowedFilter::exact('empresa_id'),
+            AllowedFilter::exact('sede_id'),
+        ]);
+        ;
+
         return $query->get();
     }
 
@@ -59,7 +62,12 @@ class InformacionEmpresaController extends Controller
      */
     protected function store(StoreInformacionEmpresaRequest $data)
     {
-        return $this->informacionEmpresaRepository->create($data->all());
+        $informacion_empresa = $data->all();
+        $informacion_empresa['usuario_creacion_id'] = auth('api')->user()->id;
+        $informacion_empresa['empresa_id'] = auth('api')->user()->empresa_id;
+        $informacion_empresa['sede_id'] = auth('api')->user()->sede_id;
+
+        return $this->informacionEmpresaRepository->create($informacion_empresa);
     }
 
     /**

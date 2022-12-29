@@ -113,8 +113,8 @@ Vue.prototype.$tablaGlobal = function(nombreTabla) {
                 "paginate": {
                     "first": "Primera",
                     "last": "Ultima",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
+                    "next": ">",
+                    "previous": "<"
                 },
             },
             buttons: [{
@@ -146,8 +146,8 @@ Vue.prototype.$tablaResultados = function(nombreTabla) {
                 "paginate": {
                     "first": "Primera",
                     "last": "Ultima",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
+                    "next": ">",
+                    "previous": "<"
                 },
             },
             buttons: [{
@@ -179,8 +179,8 @@ Vue.prototype.$tablaConvenios = function(nombreTabla) {
                 "paginate": {
                     "first": "Primera",
                     "last": "Ultima",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
+                    "next": ">",
+                    "previous": "<"
                 },
             },
             buttons: [{
@@ -212,8 +212,8 @@ Vue.prototype.$tablaEmpresas = function(nombreTabla) {
                 "paginate": {
                     "first": "Primera",
                     "last": "Ultima",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
+                    "next": ">",
+                    "previous": "<"
                 },
             },
             buttons: [{
@@ -246,8 +246,8 @@ Vue.prototype.$tablaSedes = function(nombreTabla) {
                 "paginate": {
                     "first": "Primera",
                     "last": "Ultima",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
+                    "next": ">",
+                    "previous": "<"
                 },
             },
             buttons: [{
@@ -280,8 +280,8 @@ Vue.prototype.$tablaUsuarios = function(nombreTabla) {
                 "paginate": {
                     "first": "Primera",
                     "last": "Ultima",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
+                    "next": ">",
+                    "previous": "<"
                 },
             },
             buttons: [{
@@ -321,8 +321,8 @@ Vue.prototype.$tablaResultadosEmision = function(nombreTabla) {
                 "paginate": {
                     "first": "Primera",
                     "last": "Ultima",
-                    "next": "Siguiente",
-                    "previous": "Anterior"
+                    "next": ">",
+                    "previous": "<"
                 },
             },
             buttons: [{
