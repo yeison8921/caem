@@ -211,6 +211,7 @@ export default {
         return {
             isLoggedIn: this.isLogged,
             currentRoute: this.routeSelected,
+            itemSelected: "",
         };
     },
     watch: {
@@ -225,7 +226,7 @@ export default {
         },
     },
     mounted() {
-        console.log(this.userLogged);
+        this.itemSelected = localStorage.getItem("itemSelected");
     },
     methods: {
         logout() {

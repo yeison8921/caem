@@ -84,6 +84,9 @@ $primary-gradient-state:      #FF0080 !default;
 $secondary-gradient:          #627594 !default;
 $secondary-gradient-state:    #A8B8D8 !default;
 
+$tertiary-gradient:          #19b2afb0 !default;
+$tertiary-gradient-state:    #059ef800 !default;
+
 $info-gradient:               #2152ff !default;
 $info-gradient-state:         #21d4fd !default;
 
@@ -106,6 +109,7 @@ $light-gradient-state:        #EBEFF4 !default;
 $theme-gradient-colors: (
   "primary":    ($primary-gradient, $primary-gradient-state),
   "secondary":  ($secondary-gradient, $secondary-gradient-state),
+  "tertiary":   ($tertiary-gradient, $tertiary-gradient-state),
   "success":    ($success-gradient, $success-gradient-state),
   "info":       ($info-gradient, $info-gradient-state),
   "warning":    ($warning-gradient, $warning-gradient-state),
