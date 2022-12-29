@@ -67,7 +67,7 @@
               >
                 <div
                   class="bg-cover oblique-image position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6"
-                  style="background-image:url('../images/curved-images/curved9.jpg');"
+                  style="background-image:url('../images/Carbontest - bg.png'); background-position: center; margin-right: 200px;"
                 ></div>
               </div>
             </div>
