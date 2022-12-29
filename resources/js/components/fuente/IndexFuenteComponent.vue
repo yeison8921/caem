@@ -116,6 +116,8 @@ import Estiercol from "../../models/Estiercol";
 import Fertilizante from "../../models/Fertilizante";
 import Electricidad from "../../models/Electricidad";
 import Viaje from "../../models/Viaje";
+import Trasversal from "../../models/Trasversal";
+import Sf6 from "../../models/Sf6";
 
 export default {
     data() {
@@ -148,6 +150,8 @@ export default {
 
                 { value: "electricidades", label: "Electricidad" },
                 { value: "viajes", label: "Viaje" },
+                { value: "trasversales", label: "Trasversales" },
+                { value: "sf6s", label: "Sf6" },
             ],
             fuente: "",
             fuentes: "",
@@ -183,6 +187,10 @@ export default {
                 modelo = Electricidad;
             } else if (this.fuente == "viajes") {
                 modelo = Viaje;
+            } else if (this.fuente == "trasversales") {
+                modelo = Trasversal;
+            } else if (this.fuente == "sf6s") {
+                modelo = Sf6;
             }
 
             if (
@@ -202,37 +210,6 @@ export default {
             $("#tabla-fuentes").DataTable().destroy();
             this.$tablaResultados("#tabla-fuentes");
         },
-        // async confirmarEliminar(id_parametro) {
-        //     Swal.fire({
-        //         title: "¿Está seguro que desea desactivar este parámetro?",
-        //         html: "El parámetro no se mostrará mas en el sistema pero los datos relacionados persistirán",
-        //         icon: "question",
-        //         showCancelButton: true,
-        //         cancelButtonlabel: "No",
-        //         confirmButtonlabel: "Si, eliminar",
-        //         confirmButtonColor: "rgb(48, 133, 214)",
-        //     }).then((result) => {
-        //         if (result.isConfirmed) {
-        //             this.eliminarParametro(id_parametro);
-        //         }
-        //     });
-        // },
-        // async eliminarParametro(id_parametro) {
-        //     this.$root.mostrarCargando("Eliminando parámetro");
-        //     try {
-        //         let parametro = await Parametro.find(id_parametro);
-        //         parametro.delete();
-        //         Swal.close();
-        //         this.$root.mostrarMensaje(
-        //             "Éxito",
-        //             "Parámetro eliminado exitosamente",
-        //             "success"
-        //         );
-        //         setTimeout(() => {
-        //             this.getParametros();
-        //         }, 2000);
-        //     } catch (e) {}
-        // },
     },
 };
 </script>

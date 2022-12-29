@@ -91,6 +91,8 @@ Vue.component('form-aislamiento-component', require('./components/fuente/aislami
 Vue.component('form-fermentacion-component', require('./components/fuente/fermentacion/FormFermentacionComponent.vue').default);
 Vue.component('form-electricidad-component', require('./components/fuente/electricidad/FormElectricidadComponent.vue').default);
 Vue.component('form-viaje-component', require('./components/fuente/viaje/FormViajeComponent.vue').default);
+Vue.component('form-trasversal-component', require('./components/fuente/trasversal/FormTrasversalComponent.vue').default);
+Vue.component('form-sf6-component', require('./components/fuente/sf6/FormSf6Component.vue').default);
 Vue.component('Multiselect', require('@vueform/multiselect/dist/multiselect.vue2.js').default);
 
 Vue.prototype.$tablaGlobal = function(nombreTabla) {

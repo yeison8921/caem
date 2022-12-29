@@ -22,7 +22,9 @@ use App\Http\Controllers\Api\ParametroController;
 use App\Http\Controllers\Api\ProcesoController;
 use App\Http\Controllers\Api\RefrigeranteController;
 use App\Http\Controllers\Api\ResultadoFuenteEmisionController;
+use App\Http\Controllers\Api\Sf6Controller;
 use App\Http\Controllers\Api\TipoParametroController;
+use App\Http\Controllers\Api\TrasversalController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ViajeController;
 use Illuminate\Http\Request;
@@ -106,6 +108,12 @@ Route::group(['as' => 'auth.'], function () {
 
         // Viajes
         Route::apiResource('viajes', ViajeController::class);
+
+        // Trasversales
+        Route::apiResource('trasversales', TrasversalController::class);
+
+        // Sf6
+        Route::apiResource('sf6s', Sf6Controller::class);
 
         // Procesos
         Route::apiResource('procesos', ProcesoController::class);

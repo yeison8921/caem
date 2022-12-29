@@ -15,6 +15,8 @@ use App\Http\Controllers\Api\FugaController;
 use App\Http\Controllers\Api\LubricanteController;
 use App\Http\Controllers\Api\ParametroController;
 use App\Http\Controllers\Api\RefrigeranteController;
+use App\Http\Controllers\Api\Sf6Controller;
+use App\Http\Controllers\Api\TrasversalController;
 use App\Http\Controllers\Api\ViajeController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -159,6 +161,14 @@ Route::group(['middleware' => 'auth'], function () {
     //Viajes
     Route::get('/viajes/create', [ViajeController::class, 'formViaje']);
     Route::get('/viajes/edit/{id}', [ViajeController::class, 'formViaje']);
+
+    //Trasversales
+    Route::get('/trasversales/create', [TrasversalController::class, 'formTrasversal']);
+    Route::get('/trasversales/edit/{id}', [TrasversalController::class, 'formTrasversal']);
+
+    //Sf6
+    Route::get('/sf6s/create', [Sf6Controller::class, 'formSf6']);
+    Route::get('/sf6s/edit/{id}', [Sf6Controller::class, 'formSf6']);
 
     // Resultado
     Route::get('/resultados',  function () {
