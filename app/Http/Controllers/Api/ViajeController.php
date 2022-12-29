@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Viaje;
 use App\Http\Requests\Api\Viaje\StoreViajeRequest;
 use App\Http\Requests\Api\Viaje\UpdateViajeRequest;
+use App\Models\User;
+use App\Models\Viaje;
 use App\Repositories\ViajeRepository;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -16,7 +15,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class ViajeController extends Controller
 {
-
     /**
      * @var ViajeRepository
      */
@@ -40,6 +38,7 @@ class ViajeController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Viaje::class);
+
         return $query->get();
     }
 
@@ -56,7 +55,11 @@ class ViajeController extends Controller
 
     public function formViaje($id_viaje = '')
     {
-        return $this->vaijeRepository->formViaje($id_viaje);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->vaijeRepository->formViaje($id_viaje);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     /**

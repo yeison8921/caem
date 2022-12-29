@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Combustible;
 use App\Http\Requests\Api\Combustible\StoreCombustibleRequest;
 use App\Http\Requests\Api\Combustible\UpdateCombustibleRequest;
+use App\Models\Combustible;
+use App\Models\User;
 use App\Repositories\CombustibleRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -16,7 +16,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class CombustibleController extends Controller
 {
-
     /**
      * @var CombustibleRepository
      */
@@ -42,6 +41,7 @@ class CombustibleController extends Controller
         $query = QueryBuilder::for(Combustible::class)->allowedFilters([
             AllowedFilter::exact('tipo'),
         ]);
+
         return $query->get();
     }
 
@@ -58,7 +58,11 @@ class CombustibleController extends Controller
 
     public function formCombustible($tipo, $id_combustible = '')
     {
-        return $this->combustibleRepository->formCombustible($tipo, $id_combustible);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->combustibleRepository->formCombustible($tipo, $id_combustible);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     /**

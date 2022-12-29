@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Convenio\StoreConvenioRequest;
 use App\Http\Requests\Api\Convenio\UpdateConvenioRequest;
-use Illuminate\Http\Request;
 use App\Models\Convenio;
-use App\Models\ConvenioEmail;
+use App\Models\User;
 use App\Repositories\ConvenioRepository;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -17,7 +17,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class ConvenioController extends Controller
 {
-
     /**
      * @var ConvenioRepository
      */
@@ -46,6 +45,7 @@ class ConvenioController extends Controller
             'convenio',
             'emails.sede',
         ]);
+
         return $query->withTrashed()->get();
     }
 
@@ -58,7 +58,7 @@ class ConvenioController extends Controller
     public function show(Convenio $convenio)
     {
         return QueryBuilder::for(Convenio::whereId($convenio->id))->allowedIncludes([
-            'emails.sede.departamento', 'emails.sede.ciudad'
+            'emails.sede.departamento', 'emails.sede.ciudad',
         ])->first();
     }
 
@@ -85,7 +85,11 @@ class ConvenioController extends Controller
 
     public function formConvenio($id_convenio = '')
     {
-        return $this->convenioRepository->formConvenio($id_convenio);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->convenioRepository->formConvenio($id_convenio);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     public function cambiarEstadoConvenio(Request $request)

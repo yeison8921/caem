@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Parametro\StoreParametroRequest;
 use App\Http\Requests\Api\Parametro\UpdateParametroRequest;
-use App\Repositories\ParametroRepository;
-use Spatie\QueryBuilder\QueryBuilder;
 use App\Models\Parametro;
+use App\Models\User;
+use App\Repositories\ParametroRepository;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 /**
  * Class ParametroController.
@@ -99,6 +100,10 @@ class ParametroController extends Controller
 
     public function formParametro($tipo_parametro_id, $id_parametro = '')
     {
-        return $this->parametroRepository->formParametro($tipo_parametro_id, $id_parametro);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->parametroRepository->formParametro($tipo_parametro_id, $id_parametro);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 }

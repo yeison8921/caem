@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Refrigerante;
 use App\Http\Requests\Api\Refrigerante\StoreRefrigeranteRequest;
 use App\Http\Requests\Api\Refrigerante\UpdateRefrigeranteRequest;
+use App\Models\Refrigerante;
+use App\Models\User;
 use App\Repositories\RefrigeranteRepository;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -16,7 +15,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class RefrigeranteController extends Controller
 {
-
     /**
      * @var RefrigeranteRepository
      */
@@ -40,6 +38,7 @@ class RefrigeranteController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Refrigerante::class);
+
         return $query->get();
     }
 
@@ -56,7 +55,11 @@ class RefrigeranteController extends Controller
 
     public function formRefrigerante($id_refrigerante = '')
     {
-        return $this->refrigeranteRepository->formRefrigerante($id_refrigerante);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->refrigeranteRepository->formRefrigerante($id_refrigerante);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     /**

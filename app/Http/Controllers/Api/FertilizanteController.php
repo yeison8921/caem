@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Fertilizante;
 use App\Http\Requests\Api\Fertilizante\StoreFertilizanteRequest;
 use App\Http\Requests\Api\Fertilizante\UpdateFertilizanteRequest;
+use App\Models\Fertilizante;
+use App\Models\User;
 use App\Repositories\FertilizanteRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -16,7 +16,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class FertilizanteController extends Controller
 {
-
     /**
      * @var FertilizanteRepository
      */
@@ -42,6 +41,7 @@ class FertilizanteController extends Controller
         $query = QueryBuilder::for(Fertilizante::class)->allowedFilters([
             AllowedFilter::exact('tipo'),
         ]);
+
         return $query->get();
     }
 
@@ -58,7 +58,11 @@ class FertilizanteController extends Controller
 
     public function formFertilizante($tipo, $id_emision = '')
     {
-        return $this->fertilizanteRepository->formFertilizante($tipo, $id_emision);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->fertilizanteRepository->formFertilizante($tipo, $id_emision);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     /**

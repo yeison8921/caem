@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Emision;
 use App\Http\Requests\Api\Emision\StoreEmisionRequest;
 use App\Http\Requests\Api\Emision\UpdateEmisionRequest;
+use App\Models\Emision;
+use App\Models\User;
 use App\Repositories\EmisionRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -16,7 +16,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class EmisionController extends Controller
 {
-
     /**
      * @var EmisionRepository
      */
@@ -42,6 +41,7 @@ class EmisionController extends Controller
         $query = QueryBuilder::for(Emision::class)->allowedFilters([
             AllowedFilter::exact('tipo'),
         ]);
+
         return $query->get();
     }
 
@@ -58,7 +58,11 @@ class EmisionController extends Controller
 
     public function formEmision($tipo, $id_emision = '')
     {
-        return $this->emisionRepository->formEmision($tipo, $id_emision);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->emisionRepository->formEmision($tipo, $id_emision);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     /**

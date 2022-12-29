@@ -16,6 +16,8 @@ use App\Http\Controllers\Api\LubricanteController;
 use App\Http\Controllers\Api\ParametroController;
 use App\Http\Controllers\Api\RefrigeranteController;
 use App\Http\Controllers\Api\ViajeController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,16 +38,24 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+Route::get('/welcome', [App\Http\Controllers\WelcomeController::class, 'index'])->name('welcome');
 
 Route::group(['middleware' => 'auth'], function () {
     // Convenios
     Route::get('/convenios',  function () {
-        return view('administracion/convenio/index_convenio');
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return view('administracion/convenio/index_convenio');
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     });
     // Parametros
     Route::get('/parametros',  function () {
-        return view('administracion/parametro/index_parametro');
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return view('administracion/parametro/index_parametro');
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     });
     Route::get('/parametros/create/{tipo_parametro_id}', [ParametroController::class, 'formParametro']);
     Route::get('/parametros/edit/{tipo_parametro_id}/{id_parametro}', [ParametroController::class, 'formParametro']);
@@ -56,30 +66,50 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Empresas
     Route::get('/empresas',  function () {
-        return view('administracion/empresa/index_empresa');
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM])) {
+            return view('administracion/empresa/index_empresa');
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     });
     Route::get('/empresas/edit/{id_empresa}', [EmpresaController::class, 'formEmpresa']);
 
     // Sedes
     Route::get('/sedes',  function () {
-        return view('administracion/sede/index_sede');
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM])) {
+            return view('administracion/sede/index_sede');
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     });
     Route::get('/sedes/create/{empresa_id}', [EmpresaSedeController::class, 'crearSede']);
     Route::get('/sedes/edit/{id_empresa_sede}', [EmpresaSedeController::class, 'actualizarSede']);
 
     // Proceseo
     Route::get('/procesos',  function () {
-        return view('proceso/index_proceso');
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM, User::TYPE_EMPRESARIO])) {
+            return view('proceso/index_proceso');
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     });
 
     // Autorizacion
     Route::get('/autorizaciones',  function () {
-        return view('autorizacion/index_autorizacion');
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM])) {
+            return view('autorizacion/index_autorizacion');
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     });
 
-    // Funtes 
+    // Funtes
     Route::get('/fuentes',  function () {
-        return view('fuente/index_fuente');
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return view('fuente/index_fuente');
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     });
 
     //Combustibles
@@ -129,11 +159,6 @@ Route::group(['middleware' => 'auth'], function () {
     //Viajes
     Route::get('/viajes/create', [ViajeController::class, 'formViaje']);
     Route::get('/viajes/edit/{id}', [ViajeController::class, 'formViaje']);
-
-    // Autorizacion
-    Route::get('/autorizaciones',  function () {
-        return view('autorizacion/index_autorizacion');
-    });
 
     // Resultado
     Route::get('/resultados',  function () {

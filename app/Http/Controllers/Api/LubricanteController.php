@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Lubricante;
 use App\Http\Requests\Api\Lubricante\StoreLubricanteRequest;
 use App\Http\Requests\Api\Lubricante\UpdateLubricanteRequest;
+use App\Models\Lubricante;
+use App\Models\User;
 use App\Repositories\LubricanteRepository;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -16,7 +15,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class LubricanteController extends Controller
 {
-
     /**
      * @var LubricanteRepository
      */
@@ -40,6 +38,7 @@ class LubricanteController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Lubricante::class);
+
         return $query->get();
     }
 
@@ -56,7 +55,11 @@ class LubricanteController extends Controller
 
     public function formLubricante($id_lubricante = '')
     {
-        return $this->lubricanteRepository->formLubricante($id_lubricante);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->lubricanteRepository->formLubricante($id_lubricante);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     /**

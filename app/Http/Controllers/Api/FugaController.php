@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Fuga;
 use App\Http\Requests\Api\Fuga\StoreFugaRequest;
 use App\Http\Requests\Api\Fuga\UpdateFugaRequest;
+use App\Models\Fuga;
+use App\Models\User;
 use App\Repositories\FugaRepository;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -16,7 +15,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class FugaController extends Controller
 {
-
     /**
      * @var FugaRepository
      */
@@ -40,6 +38,7 @@ class FugaController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Fuga::class);
+
         return $query->get();
     }
 
@@ -56,7 +55,11 @@ class FugaController extends Controller
 
     public function formFuga($id_fuga = '')
     {
-        return $this->fugaRepository->formFuga($id_fuga);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->fugaRepository->formFuga($id_fuga);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     /**

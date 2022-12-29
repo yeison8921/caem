@@ -80,6 +80,7 @@
                                 </td>
                                 <td>
                                     <a
+                                        v-if="[1].includes(userLogged.rol_id)"
                                         :href="'/empresas/edit/' + e.id"
                                         class="btn btn-warning"
                                         title="Actualizar empresa"
@@ -243,6 +244,12 @@ import Convenio from "../../../models/Convenio";
 import Empresa from "../../../models/Empresa";
 
 export default {
+    props: {
+        userLogged: {
+            type: Object,
+            default: {},
+        },
+    },
     data() {
         return {
             convenio_id: -1,

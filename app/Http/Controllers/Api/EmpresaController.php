@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Empresa\StoreEmpresaRequest;
 use App\Http\Requests\Api\Empresa\UpdateEmpresaRequest;
-use Illuminate\Http\Request;
 use App\Models\Empresa;
-use App\Models\EmpresaSede;
+use App\Models\User;
 use App\Repositories\EmpresaRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -17,7 +16,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class EmpresaController extends Controller
 {
-
     /**
      * @var EmpresaRepository
      */
@@ -44,6 +42,7 @@ class EmpresaController extends Controller
             AllowedFilter::exact('nit'),
             AllowedFilter::exact('convenios.id'),
         ])->allowedIncludes("sedes", "convenios");
+
         return $query->get();
     }
 
@@ -88,6 +87,10 @@ class EmpresaController extends Controller
 
     public function formEmpresa($id_empresa)
     {
-        return $this->empresaRepository->formEmpresa($id_empresa);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->empresaRepository->formEmpresa($id_empresa);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 }

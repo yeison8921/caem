@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -19,6 +18,8 @@ class User extends Authenticatable
     public const STATUS_REJECTED = 2;
     public const TYPE_ADMIN = 1;
     public const TYPE_EMPRESARIO = 2;
+    public const TYPE_LIDER_CONVENIO = 3;
+    public const TYPE_LIDER_CAEM = 4;
     
     /**
      * The attributes that are mass assignable.
@@ -35,7 +36,7 @@ class User extends Authenticatable
         'estado', // 0 sin aprovar, 1 aprobado, 2 rechazado
         'rol_id',
         'empresa_id',
-        'sede_id'
+        'sede_id',
     ];
 
     /**

@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Extintor;
 use App\Http\Requests\Api\Extintor\StoreExtintorRequest;
 use App\Http\Requests\Api\Extintor\UpdateExtintorRequest;
+use App\Models\Extintor;
+use App\Models\User;
 use App\Repositories\ExtintorRepository;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -16,7 +15,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class ExtintorController extends Controller
 {
-
     /**
      * @var ExtintorRepository
      */
@@ -40,6 +38,7 @@ class ExtintorController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Extintor::class);
+
         return $query->get();
     }
 
@@ -56,7 +55,11 @@ class ExtintorController extends Controller
 
     public function formExtintor($id_extintor = '')
     {
-        return $this->extintorRepository->formExtintor($id_extintor);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->extintorRepository->formExtintor($id_extintor);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     /**

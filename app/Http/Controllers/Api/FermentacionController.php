@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Fermentacion;
 use App\Http\Requests\Api\Fermentacion\StoreFermentacionRequest;
 use App\Http\Requests\Api\Fermentacion\UpdateFermentacionRequest;
+use App\Models\Fermentacion;
+use App\Models\User;
 use App\Repositories\FermentacionRepository;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -16,7 +15,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class FermentacionController extends Controller
 {
-
     /**
      * @var FermentacionRepository
      */
@@ -40,6 +38,7 @@ class FermentacionController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Fermentacion::class);
+
         return $query->get();
     }
 
@@ -56,7 +55,11 @@ class FermentacionController extends Controller
 
     public function formFermentacion($id_fermentacion = '')
     {
-        return $this->fermentacionRepository->formFermentacion($id_fermentacion);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->fermentacionRepository->formFermentacion($id_fermentacion);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     /**

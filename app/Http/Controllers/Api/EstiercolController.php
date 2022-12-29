@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Estiercol;
 use App\Http\Requests\Api\Estiercol\StoreEstiercolRequest;
 use App\Http\Requests\Api\Estiercol\UpdateEstiercolRequest;
+use App\Models\Estiercol;
+use App\Models\User;
 use App\Repositories\EstiercolRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -16,7 +16,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class EstiercolController extends Controller
 {
-
     /**
      * @var EstiercolRepository
      */
@@ -42,6 +41,7 @@ class EstiercolController extends Controller
         $query = QueryBuilder::for(Estiercol::class)->allowedFilters([
             AllowedFilter::exact('tipo'),
         ]);
+
         return $query->get();
     }
 
@@ -58,7 +58,11 @@ class EstiercolController extends Controller
 
     public function formEstiercol($tipo, $id_estiercol = '')
     {
-        return $this->estiercolRepository->formEstiercol($tipo, $id_estiercol);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->estiercolRepository->formEstiercol($tipo, $id_estiercol);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     /**

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\EmpresaSede\StoreEmpresaSedeRequest;
 use App\Http\Requests\Api\EmpresaSede\UpdateEmpresaSedeRequest;
-use Illuminate\Http\Request;
 use App\Models\EmpresaSede;
+use App\Models\User;
 use App\Repositories\EmpresaSedeRepository;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -16,7 +16,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class EmpresaSedeController extends Controller
 {
-
     /**
      * @var EmpresaSedeRepository
      */
@@ -44,6 +43,7 @@ class EmpresaSedeController extends Controller
             AllowedFilter::exact('departamento_id'),
             AllowedFilter::exact('ciudad_id'),
         ])->allowedIncludes("empresa", "departamento", "ciudad");
+
         return $query->get();
     }
 
@@ -90,11 +90,21 @@ class EmpresaSedeController extends Controller
         return $empresa_sede->delete();
     }
 
-    public function crearSede($empresa_id){        
-        return $this->empresaSedeRepository->formSede($id_sede='', $empresa_id);
+    public function crearSede($empresa_id)
+    {
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->empresaSedeRepository->formSede($id_sede = '', $empresa_id);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
     
-    public function ActualizarSede($id_sede){
-        return $this->empresaSedeRepository->formSede($id_sede, $empresa_id="");
+    public function ActualizarSede($id_sede)
+    {
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->empresaSedeRepository->formSede($id_sede, $empresa_id = "");
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 }

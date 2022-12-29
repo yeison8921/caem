@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Aislamiento;
 use App\Http\Requests\Api\Aislamiento\StoreAislamientoRequest;
 use App\Http\Requests\Api\Aislamiento\UpdateAislamientoRequest;
+use App\Models\Aislamiento;
+use App\Models\User;
 use App\Repositories\AislamientoRepository;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -16,7 +15,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class AislamientoController extends Controller
 {
-
     /**
      * @var AislamientoRepository
      */
@@ -40,6 +38,7 @@ class AislamientoController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Aislamiento::class);
+
         return $query->get();
     }
 
@@ -56,7 +55,11 @@ class AislamientoController extends Controller
 
     public function formAislamiento($id_aislamiento = '')
     {
-        return $this->aislamientoRepository->formAislamiento($id_aislamiento);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->aislamientoRepository->formAislamiento($id_aislamiento);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     /**

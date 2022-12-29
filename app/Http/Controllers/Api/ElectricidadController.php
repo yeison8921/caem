@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Electricidad;
 use App\Http\Requests\Api\Electricidad\StoreElectricidadRequest;
 use App\Http\Requests\Api\Electricidad\UpdateElectricidadRequest;
+use App\Models\Electricidad;
+use App\Models\User;
 use App\Repositories\ElectricidadRepository;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -16,7 +15,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class ElectricidadController extends Controller
 {
-
     /**
      * @var ElectricidadRepository
      */
@@ -40,6 +38,7 @@ class ElectricidadController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(Electricidad::class);
+
         return $query->get();
     }
 
@@ -56,7 +55,11 @@ class ElectricidadController extends Controller
 
     public function formElectricidad($id_electricidad = '')
     {
-        return $this->electricidadRepository->formElectricidad($id_electricidad);
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->electricidadRepository->formElectricidad($id_electricidad);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 
     /**
