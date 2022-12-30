@@ -49,11 +49,11 @@ Route::group(['middleware' => 'auth:api'], function () {
         return $request->user();
     });
     // Empresas
-    Route::apiResource('empresas', EmpresaController::class);
 });
 
 Route::group(['as' => 'auth.'], function () {
     Route::group(['middleware' => 'guest'], function () {
+        Route::apiResource('empresas', EmpresaController::class);
         // Authentication
         //Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
         Route::post('login', [LoginController::class, 'login']);

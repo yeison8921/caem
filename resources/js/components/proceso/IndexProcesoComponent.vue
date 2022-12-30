@@ -42,7 +42,7 @@
                     <li
                         class="nav-item"
                         role="presentation"
-                        v-if="ie.datos_proveedores"
+                        v-if="parseInt(ie.datos_proveedores)"
                     >
                         <button
                             class="btn btn-link nav-link"
@@ -1513,7 +1513,9 @@
                                                                 </div>
                                                                 <div
                                                                     v-if="
-                                                                        ie.fuentes_moviles
+                                                                        parseInt(
+                                                                            ie.fuentes_moviles
+                                                                        )
                                                                     "
                                                                 >
                                                                     <h2>
@@ -1666,7 +1668,9 @@
 
                                                                 <div
                                                                     v-if="
-                                                                        ie.actividad_agricola
+                                                                        parseInt(
+                                                                            ie.actividad_agricola
+                                                                        )
                                                                     "
                                                                 >
                                                                     <h2>
