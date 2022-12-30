@@ -65,10 +65,6 @@
  Copyright © 2016 Eli Grey - http://eligrey.com
 */
 
-/*! Bootstrap 5 integration for DataTables' Responsive
- * ©2021 SpryMedia Ltd - datatables.net/license
- */
-
 /*! Buttons for DataTables 2.2.3
  * ©2016-2022 SpryMedia Ltd - datatables.net/license
  */
@@ -79,6 +75,10 @@
 
 /*! DataTables Bootstrap 5 integration
  * 2020 SpryMedia Ltd - datatables.net/license
+ */
+
+/*! FixedColumns 4.2.1
+ * 2019-2022 SpryMedia Ltd - datatables.net/license
  */
 
 /*! Moment Duration Format v2.2.2

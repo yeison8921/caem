@@ -19,7 +19,7 @@
                     aria-controls="indertidumbre"
                     aria-selected="true"
                 >
-                    Home
+                    CORPORATIVA
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -33,7 +33,7 @@
                     aria-controls="biogenico"
                     aria-selected="false"
                 >
-                    Biogénico
+                    BIOGÉNICO
                 </button>
             </li>
         </ul>
