@@ -39,6 +39,14 @@ class CreateResultadosFuenteEmisionTable extends Migration
             $table->float('incertidumbre_sistematica_adicional', 20, 6)->nullable();
             $table->float('incertidumbre_datos', 20, 6)->nullable();
 
+            $table->float('factor_emision_co2_biogenico', 20, 6)->nullable();
+            $table->string('unidad_factor_emision_co2_biogenico')->nullable();
+            $table->float('incertidumbre_factor_emision_co2_biogenico', 20, 6)->nullable();
+            $table->float('emision_co2_ton_biogenico', 20, 6)->nullable();
+            $table->float('emision_co2_ton_eq_biogenico', 20, 6)->nullable();
+            $table->float('incertidumbre_emision_co2_biogenico', 20, 6)->nullable();
+            $table->float('columna_auxiliar_co2_biogenico', 20, 6)->nullable();
+
             $table->float('factor_emision_co2', 20, 6)->nullable();
             $table->string('unidad_factor_emision_co2')->nullable();
             $table->float('incertidumbre_factor_emision_co2', 20, 6)->nullable();
@@ -89,6 +97,9 @@ class CreateResultadosFuenteEmisionTable extends Migration
 
             $table->float('huella_carbono', 20, 6)->nullable();
             $table->float('incertidumbre_fuente', 20, 6)->nullable();
+
+            $table->float('huella_carbono_biogenico', 20, 6)->nullable();
+            $table->float('incertidumbre_fuente_biogenico', 20, 6)->nullable();
 
             $table->foreignId('informacion_empresa_id')->constrained('empresas')->onDelete('restrict');
             $table->foreignId('empresa_id')->constrained('empresas')->onDelete('restrict');

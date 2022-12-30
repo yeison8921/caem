@@ -9,6 +9,7 @@ use App\Models\InformacionEmpresa;
 use App\Models\Proceso;
 use App\Models\Subproceso;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 /**
  * Class ProcesoRepository.
@@ -34,19 +35,21 @@ class ProcesoRepository extends BaseRepository
 
     public function guardarProcesos($procesos)
     {
-        foreach ($procesos["procesos"] as $p) {
+        $usuarioEmpresaId = auth('api')->user()->empresa_id;
+        $usuarioSedeId = auth('api')->user()->sede_id;
+
+        //verificar si se borro algun id
+        foreach ($procesos['procesos'] as $p) {
             //Crear proceso
             $proceso = new Proceso;
-            //por validar el id de la empresa, sede e informacion si se envia desde el vue
-            $usuarioEmpresaId = auth('api')->user()->empresa_id;
-            $usuarioSedeId = auth('api')->user()->sede_id;
             $informacionEmpresa = InformacionEmpresa::where('empresa_id', $usuarioEmpresaId)->where('sede_id', $usuarioSedeId)->first();
             $proceso->informacion_empresa_id = $informacionEmpresa->id;
             $proceso->empresa_id = $usuarioEmpresaId;
             $proceso->sede_id = $usuarioSedeId;
             $proceso->nombre = $p['nombre'];
             $proceso->save();
-            foreach ($p["subprocesos"] as $sp) {
+            foreach ($p['subprocesos'] as $sp) {
+
                 //Crear subproceso
                 $subproceso = new Subproceso;
                 $subproceso->nombre = $sp['nombre'];
@@ -95,6 +98,82 @@ class ProcesoRepository extends BaseRepository
                 }
             }
         }
+    }
+
+    public function recargarProcesos($request)
+    {
+        $procesos = Proceso::with('subprocesos', 'subprocesos.fuentesEmision')->where(
+            [
+                ['empresa_id', $request->empresa_id],
+                ['sede_id', $request->sede_id]
+            ]
+        )->get();
+
+        $array_procesos = [];
+        foreach ($procesos as $p) {
+            //json proceso
+            $jp = new stdClass();
+            $jp->id = $p->id;
+            $jp->nombre = $p->nombre;
+            $jp->subprocesos = [];
+            array_push($array_procesos, $jp);
+            foreach ($p->subprocesos as $sp) {
+                $jsp = new stdClass();
+                $jsp->id = $sp->id;
+                $jsp->nombre = $sp->nombre;
+                $jsp->descripcion = $sp->descripcion;
+                array_push($jp->subprocesos, $jsp);
+
+                //json fuentes fijas
+                $jff = new stdClass();
+                $jff->Combustible_solido = [];
+                $jff->Combustible_liquido = [];
+                $jff->Combustible_gaseoso = [];
+                $jff->Refrigerante = [];
+                $jff->Extintor = [];
+                $jff->Lubricante = [];
+                $jff->Fuga = [];
+                $jff->Aislamiento = [];
+
+                //json fuentes móviles
+                $jfm = new stdClass();
+                $jfm->Combustible_liquido = [];
+                $jfm->Combustible_gaseoso = [];
+                $jfm->Refrigerante = [];
+                $jfm->Extintor = [];
+                $jfm->Lubricante = [];
+
+                //json emisiones
+                $je = new stdClass();
+                $je->Embalse = [];
+                $je->Mineria = [];
+                $je->Industrial = [];
+                $je->Fermentacion = [];
+                $je->Estiercol = [];
+                $je->Residuos_organizacionales = [];
+                $je->Residuos_agropecuarios = [];
+                $je->Fertilizant = [];
+                $je->Cal = [];
+
+                foreach ($sp->fuentesEmision as $f) {
+                    $fuente = $f->fuente_emision;
+                    if ($f->tipo == 'fuentes_fijas') {
+                        array_push($jff->$fuente, $f->fuentetable_id);
+                    }
+                    if ($f->tipo == 'fuentes_moviles') {
+                        array_push($jfm->$fuente, $f->fuentetable_id);
+                    }
+                    if ($f->tipo == 'emisiones') {
+                        array_push($je->$fuente, $f->fuentetable_id);
+                    }
+                }
+                $jsp->fuentes_fijas = $jff;
+                $jsp->fuentes_moviles = $jfm;
+                $jsp->emisiones = $je;
+            }
+        }
+
+        return $array_procesos;
     }
 
     /**

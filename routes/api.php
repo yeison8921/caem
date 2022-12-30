@@ -118,15 +118,19 @@ Route::group(['as' => 'auth.'], function () {
         // Procesos
         Route::apiResource('procesos', ProcesoController::class);
         Route::post('guardarProcesos', [ProcesoController::class, 'guardarProcesos']);
+        Route::post('recargarProcesos', [ProcesoController::class, 'recargarProcesos']);
 
         // Fuentes emisión
         Route::apiResource('fuentes_emision', FuenteEmisionController::class);
         Route::post('guardarEmisionesIndirectas', [FuenteEmisionController::class, 'guardarEmisionesIndirectas']);
+        Route::post('guardarTrasversales', [FuenteEmisionController::class, 'guardarTrasversales']);
         Route::get('getFuentesEmision/{id_empresa}/{id_sede}', [FuenteEmisionController::class, 'getFuentesEmision']);
-        Route::post('guardarDatosConsumos', [ResultadoFuenteEmisionController::class, 'guardarDatosConsumos']);
+        Route::post('recargarEmisiones', [FuenteEmisionController::class, 'recargarEmisiones']);
+        Route::post('recargarTrasversales', [FuenteEmisionController::class, 'recargarTrasversales']);
 
         // Resultados fuente emision
         Route::apiResource('resultados_fuente_emision', ResultadoFuenteEmisionController::class);
+        Route::post('guardarDatosConsumos', [ResultadoFuenteEmisionController::class, 'guardarDatosConsumos']);
 
         // Convenios
         Route::apiResource('convenios', ConvenioController::class);

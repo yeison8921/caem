@@ -44,5 +44,6 @@ class Combustible extends Model
         'incertidumbre_n2o_2_fuente_movil',
         'fuente_bibliografica_n2o_fuente_movil',
         'tipo',
+        'biogenico'
     ];
 }

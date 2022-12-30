@@ -63,6 +63,11 @@ class ProcesoController extends Controller
         return $this->procesoRepository->guardarProcesos($request);
     }
 
+    public function recargarProcesos(Request $request)
+    {
+        return $this->procesoRepository->recargarProcesos($request);
+    }
+
     /**
      * Create a new Proceso instance.
      */

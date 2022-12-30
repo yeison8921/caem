@@ -54,7 +54,7 @@ class CreateInformacionEmpresasTable extends Migration
             $table->tinyInteger('toma_decisiones');
             $table->foreignId('unidad_id')->nullable()->constrained('parametros')->onDelete('restrict');
             $table->integer('anio_inicio')->nullable();
-            $table->integer('mes_inicio')->nullable();
+            $table->string('mes_inicio')->nullable();
             $table->integer('estado')->nullable();
             $table->foreignId('usuario_creacion_id')->constrained('users')->onDelete('restrict');
             $table->foreignId('empresa_id')->constrained('empresas')->onDelete('restrict');

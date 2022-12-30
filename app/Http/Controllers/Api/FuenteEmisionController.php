@@ -87,8 +87,23 @@ class FuenteEmisionController extends Controller
         return $this->fuenteEmisionRepository->guardarEmisionesIndirectas($request);
     }
 
+    public function guardarTrasversales(Request $request)
+    {
+        return $this->fuenteEmisionRepository->guardarTrasversales($request);
+    }
+
     public function getFuentesEmision($id_empresa, $id_sede)
     {
         return $this->fuenteEmisionRepository->getFuentesEmision($id_empresa, $id_sede);
+    }
+
+    public function recargarEmisiones(Request $request)
+    {
+        return $this->fuenteEmisionRepository->recargarEmisiones($request);
+    }
+
+    public function recargarTrasversales(Request $request)
+    {
+        return $this->fuenteEmisionRepository->recargarTrasversales($request);
     }
 }

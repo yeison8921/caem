@@ -70,6 +70,24 @@ class FuenteEmision extends Model
             case 'productos':
                 $texto = 'Bienes y servicios';
                 break;
+            case 'usos':
+                $texto = 'Uso de productos';
+                break;
+            case 'fines':
+                $texto = 'Fin de vida';
+                break;
+            case 'activos':
+                $texto = 'Activos arrendados';
+                break;
+            case 'inversiones':
+                $texto = 'Inversiones';
+                break;
+            case 'otros':
+                $texto = 'Otros';
+                break;
+            case 'trasversales':
+                $texto = 'Trasversales';
+                break;
         }
         return $texto;
     }
@@ -152,6 +170,23 @@ class FuenteEmision extends Model
                 break;
             case 'Equipo':
                 $texto = 'Equipo';
+                break;
+            case 'Producto':
+                $texto = 'Producto';
+                break;
+                break;
+            case 'Activo':
+                $texto = 'Activo';
+                break;
+            case 'Inversion':
+                $texto = 'Inversión';
+                break;
+            case 'Otros':
+                $texto = 'Otros';
+                break;
+            case 'Trasversal':
+                $texto = 'Trasversal';
+                break;
         }
         return $texto;
     }
@@ -187,82 +222,91 @@ class FuenteEmision extends Model
             case 'productos':
                 $texto = 'CATEGORIA 4 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR PRODUCTOS QUE UTILIZA LA ORGANIZACIÓN';
                 break;
+            case 'usos':
+                $texto = 'CATEGORIA 5 - EMISIONES INDIRECTAS DE GEI ASOCIADAS CON EL USO DE LOS PRODUCTOS DE LA ORGANIZACIÓN';
+                break;
+            case 'otros':
+                $texto = 'CATEGORIA 6 - EMISIONES INDIRECTAS DE GEI PROVENIENTES DE OTRAS FUENTES';
+                break;
+            case 'Trasversales':
+                $texto = 'CATEGORIA 7 - EMISIONES TRASVERSALES';
+                break;
         }
         return $texto;
     }
 
 
-    /**
-     * Obtiene el combustible
-     */
-    public function combustible()
-    {
-        return $this->belongsTo('App\Models\Combustible', 'modeltable');
-    }
+    // /**
+    //  * Obtiene el combustible
+    //  */
+    // public function combustible()
+    // {
+    //     return $this->belongsTo('App\Models\Combustible', 'modeltable');
+    // }
 
-    /**
-     * Obtiene el refrigerante
-     */
-    public function refrigerante()
-    {
-        return $this->belongsTo(Refrigerante::class, 'modelo_id', 'id');
-    }
+    // /**
+    //  * Obtiene el refrigerante
+    //  */
+    // public function refrigerante()
+    // {
+    //     return $this->belongsTo(Refrigerante::class, 'modelo_id', 'id');
+    // }
 
-    /**
-     * Obtiene el extintor
-     */
-    public function extintor()
-    {
-        return $this->belongsTo(Extintor::class, 'modelo_id', 'id');
-    }
+    // /**
+    //  * Obtiene el extintor
+    //  */
+    // public function extintor()
+    // {
+    //     return $this->belongsTo(Extintor::class, 'modelo_id', 'id');
+    // }
 
-    /**
-     * Obtiene el lubricante
-     */
-    public function lubricante()
-    {
-        return $this->belongsTo(Lubricante::class, 'modelo_id', 'id');
-    }
+    // /**
+    //  * Obtiene el lubricante
+    //  */
+    // public function lubricante()
+    // {
+    //     return $this->belongsTo(Lubricante::class, 'modelo_id', 'id');
+    // }
 
-    /**
-     * Obtiene la fuga
-     */
-    public function fuga()
-    {
-        return $this->belongsTo(fuga::class, 'modelo_id', 'id');
-    }
+    // /**
+    //  * Obtiene la fuga
+    //  */
+    // public function fuga()
+    // {
+    //     return $this->belongsTo(fuga::class, 'modelo_id', 'id');
+    // }
 
-    /**
-     * Obtiene el aislamiento
-     */
-    public function aislamiento()
-    {
-        return $this->belongsTo(Aislamiento::class, 'modelo_id', 'id');
-    }
+    // /**
+    //  * Obtiene el aislamiento
+    //  */
+    // public function aislamiento()
+    // {
+    //     return $this->belongsTo(Aislamiento::class, 'modelo_id', 'id');
+    // }
 
-    /**
-     * Obtiene el emision
-     */
-    public function emision()
-    {
-        return $this->belongsTo(Emision::class, 'modelo_id', 'id');
-    }
+    // /**
+    //  * Obtiene el emision
+    //  */
+    // public function emision()
+    // {
+    //     return $this->belongsTo(Emision::class, 'modelo_id', 'id');
+    // }
 
-    /**
-     * Obtiene el fermentacion
-     */
-    public function fermentacion()
-    {
-        return $this->belongsTo(Fermentacion::class, 'modelo_id', 'id');
-    }
+    // /**
+    //  * Obtiene el fermentacion
+    //  */
+    // public function fermentacion()
+    // {
+    //     return $this->belongsTo(Fermentacion::class, 'modelo_id', 'id');
+    // }
 
-    /**
-     * Obtiene el estiercol
-     */
-    public function estiercol()
-    {
-        return $this->belongsTo(Estiercol::class, 'modelo_id', 'id');
-    }
+    // /**
+    //  * Obtiene el estiercol
+    //  */
+    // public function estiercol()
+    // {
+    //     return $this->belongsTo(Estiercol::class, 'modelo_id', 'id');
+    // }
 
     /**
      * Obtiene el subproceso de la fuente de emision
