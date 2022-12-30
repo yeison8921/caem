@@ -80,7 +80,7 @@
                                 </td>
                                 <td>
                                     <a
-                                        v-if="[1].includes(userLogged.rol_id)"
+                                        v-if="['1'].includes(userLogged.rol_id)"
                                         :href="'/empresas/edit/' + e.id"
                                         class="btn btn-success"
                                         title="Actualizar empresa"
