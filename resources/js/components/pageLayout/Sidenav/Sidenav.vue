@@ -30,6 +30,7 @@
     </aside>
 </template>
 <script>
+import User from "../../../models/User";
 import NavbarSide from "./NavbarSide.vue";
 import SidenavList from "./SidenavList.vue";
 export default {
@@ -51,16 +52,13 @@ export default {
             type: Boolean,
             default: false,
         },
-        userLogged: {
-            type: Object,
-            default: {},
-        },
     },
     data() {
         return {
             showSidenav: true,
             isLoggedIn: this.isLogged,
             currentRoute: this.routeSelected,
+            userLogged: new User(),
         };
     },
     watch: {
@@ -70,8 +68,18 @@ export default {
         isLogged: function (val) {
             this.isLoggedIn = val;
         },
-        userLogged: function (val) {
-            this.userLogged = val;
+    },
+    mounted() {
+        this.getCurrentUser();
+    },
+    methods: {
+        async getCurrentUser() {
+            await axios
+                .get("api/user")
+                .then((response) => {
+                    this.userLogged = response.data;
+                })
+                .catch((error) => {});
         },
     },
 };
