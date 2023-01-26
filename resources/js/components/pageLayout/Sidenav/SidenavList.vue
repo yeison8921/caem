@@ -29,7 +29,9 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1, 2, 4].includes(userLogged.rol_id)
+                                        [1, 2, 4].includes(
+                                            parseInt(userLogged.rol_id)
+                                        )
                                     "
                                     :to="{ name: 'Procesos' }"
                                     :url="'/procesos'"
@@ -39,7 +41,9 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1, 2, 3, 4].includes(userLogged.rol_id)
+                                        [1, 2, 3, 4].includes(
+                                            parseInt(userLogged.rol_id)
+                                        )
                                     "
                                     :to="{ name: 'Resultados' }"
                                     :url="'/resultados'"
@@ -50,7 +54,10 @@
                         </template>
                     </sidenav-collapse>
                 </li>
-                <li class="nav-item" v-if="[1, 4].includes(userLogged.rol_id)">
+                <li
+                    class="nav-item"
+                    v-if="[1, 4].includes(parseInt(userLogged.rol_id))"
+                >
                     <sidenav-collapse
                         collapse-ref="AdminLinks"
                         nav-text="Administración"
@@ -65,7 +72,9 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1].includes(userLogged.rol_id)
+                                        [1].includes(
+                                            parseInt(userLogged.rol_id)
+                                        )
                                     "
                                     :to="{ name: 'Parámetros' }"
                                     :url="'/parametros'"
@@ -75,7 +84,9 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1].includes(userLogged.rol_id)
+                                        [1].includes(
+                                            parseInt(userLogged.rol_id)
+                                        )
                                     "
                                     :to="{ name: 'Convenios' }"
                                     :url="'/convenios'"
@@ -85,7 +96,9 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1, 4].includes(userLogged.rol_id)
+                                        [1, 4].includes(
+                                            parseInt(userLogged.rol_id)
+                                        )
                                     "
                                     :to="{ name: 'Empresas' }"
                                     :url="'/empresas'"
@@ -95,7 +108,9 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1, 4].includes(userLogged.rol_id)
+                                        [1, 4].includes(
+                                            parseInt(userLogged.rol_id)
+                                        )
                                     "
                                     :to="{ name: 'Sedes' }"
                                     :url="'/sedes'"
@@ -105,7 +120,9 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1, 4].includes(userLogged.rol_id)
+                                        [1, 4].includes(
+                                            parseInt(serLogged.rol_id)
+                                        )
                                     "
                                     :to="{ name: 'Autorización' }"
                                     :url="'/autorizaciones'"
@@ -115,7 +132,9 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1].includes(userLogged.rol_id)
+                                        [1].includes(
+                                            parseInt(userLogged.rol_id)
+                                        )
                                     "
                                     :to="{ name: 'Fuentes de emisión' }"
                                     :url="'/fuentes'"
