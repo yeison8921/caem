@@ -42,7 +42,7 @@ class ConvenioEmailController extends Controller
             AllowedFilter::exact('convenio.codigo'),
             AllowedFilter::exact('convenio_id'),
             AllowedFilter::exact('email'),
-        ])->allowedIncludes('convenio', 'sede', 'registrado');
+        ])->allowedIncludes('convenio', 'sede', 'registrado', 'sede.empresa');
         return $query->get();
     }
 

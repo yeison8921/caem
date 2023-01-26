@@ -200,6 +200,14 @@
                                 }"
                             />
                         </div>
+                        <div class="text-end">
+                            <p>
+                                <b>
+                                    Total obtenido =
+                                    {{ promedio_cumplimiento }}%
+                                </b>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -243,6 +251,7 @@ export default {
             array_huella_carbono_fuente: [],
             array_huella_carbono_tipo: [],
             array_cumplimiento: [],
+            promedio_cumplimiento: "",
             options_empresa: [],
             options_sede: [{ id: -1, nombre: "Todas" }],
             options_periodo: [],
@@ -380,6 +389,8 @@ export default {
                         this.array_huella_carbono_tipo =
                             response.data["huella_carbono_tipo"];
                         this.array_cumplimiento = response.data["cumplimiento"];
+                        this.promedio_cumplimiento =
+                            response.data["promedio_cumplimiento"];
 
                         setTimeout(() => {
                             this.$refs.huellaCarbonoCategoria.cargarGrafica();

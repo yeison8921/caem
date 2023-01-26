@@ -580,10 +580,13 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
             array_push($array_colores_tipo, sprintf('#%06X', mt_rand(0, 0xFFFFFF)));
         }
 
+        $suma = 0;
         foreach ($array_cumplimiento as $a) {
+            $suma += $a;
             array_push($array_colores_cumplimiento, sprintf('#%06X', mt_rand(0, 0xFFFFFF)));
         }
 
+        $array_resultados['promedio_cumplimiento'] = $suma / count($array_cumplimiento);
         $array_resultados['total_huella_carbono'] = $total_huella_carbono;
         $array_resultados['cumplimiento'] = [$array_cumplimiento, $array_colores_cumplimiento];
         $array_resultados['huella_carbono_categoria'] = [$array_labels_categoria, $array_totales_categoria, $array_colores_categoria];
