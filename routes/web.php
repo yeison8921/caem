@@ -43,6 +43,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/welcome', [App\Http\Controllers\WelcomeController::class, 'index'])->name('welcome');
 
 Route::group(['middleware' => 'auth'], function () {
+
+
+    // Perfil
+    Route::get('/perfil',  function () {
+        return view('auth/perfil');
+    });
+
     // Convenios
     Route::get('/convenios',  function () {
         if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
@@ -173,5 +180,8 @@ Route::group(['middleware' => 'auth'], function () {
     // Resultado
     Route::get('/resultados',  function () {
         return view('resultado/index_resultado');
+    });
+    Route::get('/resultados-excel',  function () {
+        return view('resultado/index_resultado_excel');
     });
 });

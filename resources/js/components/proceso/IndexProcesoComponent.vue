@@ -8,10 +8,10 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <ul class="nav flex-column mb-3">
+                <ul class="nav nav-tabs">
                     <li class="nav-item" role="presentation">
                         <button
-                            class="btn btn-link nav-link active"
+                            class="nav-link active"
                             id="formulario-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#formulario"
@@ -23,9 +23,9 @@
                             Formulario
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item" role="presentation" v-if="etapa >= 2">
                         <button
-                            class="btn btn-link nav-link"
+                            class="nav-link"
                             id="construccion-proceso-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#construccion-proceso"
@@ -33,7 +33,7 @@
                             role="tab"
                             aria-controls="construccion-proceso"
                             aria-selected="false"
-                            :disabled="informacion_empresa_existe"
+                            ref="tabConstruccionProceso"
                             @click="recargarProcesos()"
                         >
                             Construcción del proceso productivo de la empresa
@@ -42,10 +42,10 @@
                     <li
                         class="nav-item"
                         role="presentation"
-                        v-if="parseInt(ie.datos_proveedores)"
+                        v-if="parseInt(ie.datos_proveedores) && etapa >= 3"
                     >
                         <button
-                            class="btn btn-link nav-link"
+                            class="nav-link"
                             id="consumos-indirectos-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#consumos-indirectos"
@@ -53,15 +53,14 @@
                             role="tab"
                             aria-controls="consumos-indirectos"
                             aria-selected="false"
-                            :disabled="informacion_empresa_existe"
                             @click="recargarEmisiones()"
                         >
                             Consumos indirectos
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item" role="presentation" v-if="etapa >= 4">
                         <button
-                            class="btn btn-link nav-link"
+                            class="nav-link"
                             id="consumos-transversales-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#consumos-transversales"
@@ -69,15 +68,14 @@
                             role="tab"
                             aria-controls="consumos-transversales"
                             aria-selected="false"
-                            :disabled="informacion_empresa_existe"
                             @click="recargarTrasversales()"
                         >
                             Consumos transversales (de apoyo) en la organización
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item" role="presentation" v-if="etapa >= 5">
                         <button
-                            class="btn btn-link nav-link"
+                            class="nav-link"
                             id="inicio-consumos-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#inicio-consumos"
@@ -85,15 +83,14 @@
                             role="tab"
                             aria-controls="inicio-consumos"
                             aria-selected="false"
-                            :disabled="informacion_empresa_existe"
                             @click="recargarInformacionInicio()"
                         >
                             Información inicio de consumos
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    <li class="nav-item" role="presentation" v-if="etapa >= 6">
                         <button
-                            class="btn btn-link nav-link"
+                            class="nav-link"
                             id="construccion-anio-tab"
                             data-bs-toggle="pill"
                             data-bs-target="#construccion-anio"
@@ -101,7 +98,6 @@
                             role="tab"
                             aria-controls="construccion-anio"
                             aria-selected="false"
-                            :disabled="informacion_empresa_existe"
                             @click="getFuentesEmision()"
                         >
                             Construcción de año base de emisiones de GEI
@@ -944,7 +940,7 @@
                                     >
                                         <h2 class="accordion-header">
                                             <button
-                                                class="accordion-button"
+                                                class="accordion-button border-bottom font-weight-bold collapsed"
                                                 type="button"
                                                 data-bs-toggle="collapse"
                                                 :data-bs-target="
@@ -958,6 +954,14 @@
                                                 "
                                             >
                                                 {{ p.nombre }}
+                                                <i
+                                                    class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3"
+                                                    aria-hidden="true"
+                                                ></i>
+                                                <i
+                                                    class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3"
+                                                    aria-hidden="true"
+                                                ></i>
                                             </button>
                                         </h2>
 
@@ -988,6 +992,7 @@
                                                     />
                                                 </div>
                                                 <div
+                                                    style="padding-left: 20px"
                                                     class="accordion"
                                                     id="accordionSubprocesos"
                                                 >
@@ -1003,22 +1008,7 @@
                                                             id="flush-headingOne"
                                                         >
                                                             <button
-                                                                style="
-                                                                    border-top-left-radius: var(
-                                                                        --bs-accordion-inner-border-radius
-                                                                    );
-                                                                    border-top-right-radius: var(
-                                                                        --bs-accordion-inner-border-radius
-                                                                    );
-                                                                    border-top: var(
-                                                                            --bs-accordion-border-width
-                                                                        )
-                                                                        solid
-                                                                        var(
-                                                                            --bs-accordion-border-color
-                                                                        ) !important;
-                                                                "
-                                                                class="accordion-button collapsed"
+                                                                class="accordion-button border-bottom font-weight-bold collapsed"
                                                                 type="button"
                                                                 data-bs-toggle="collapse"
                                                                 :data-bs-target="
@@ -1034,6 +1024,14 @@
                                                                 "
                                                             >
                                                                 {{ sp.nombre }}
+                                                                <i
+                                                                    class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3"
+                                                                    aria-hidden="true"
+                                                                ></i>
+                                                                <i
+                                                                    class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3"
+                                                                    aria-hidden="true"
+                                                                ></i>
                                                             </button>
                                                         </h2>
                                                         <div
@@ -1042,7 +1040,7 @@
                                                                 ip +
                                                                 is
                                                             "
-                                                            class="accordion-collapse collapse"
+                                                            class="accordion-collapse collapse show"
                                                             :aria-labelledby="
                                                                 'flush-heading' +
                                                                 ip +
@@ -2019,22 +2017,6 @@
                         <form @submit.prevent="guardarInicioConsumo">
                             <div class="mb-3">
                                 <label class="required"
-                                    >Unidad principal de producción y/o
-                                    servicios de la empresa</label
-                                >
-                                <Multiselect
-                                    v-model="ie.unidad_id"
-                                    :options="options_unidad"
-                                    valueProp="id"
-                                    label="nombre"
-                                    placeholder="Seleccione una opción"
-                                    :searchable="true"
-                                    required
-                                    :disabled="accion_inicio == 'ver'"
-                                />
-                            </div>
-                            <div class="mb-3">
-                                <label class="required"
                                     >Año de incio de consumos</label
                                 >
                                 <Multiselect
@@ -2060,6 +2042,18 @@
                                     placeholder="Seleccione una opción"
                                     :searchable="true"
                                     required
+                                    :disabled="accion_inicio == 'ver'"
+                                />
+                            </div>
+                            <div class="mb-3">
+                                <label>Unidades producidas </label>
+                                <label style="color: red"
+                                    >(Valor total para todo el periodo)</label
+                                >
+                                <input
+                                    v-model="ie.unidades_producidas"
+                                    class="form-control"
+                                    type="text"
                                     :disabled="accion_inicio == 'ver'"
                                 />
                             </div>
@@ -2635,7 +2629,7 @@
                                             :id="'heading-fuente-' + j"
                                         >
                                             <button
-                                                class="accordion-button"
+                                                class="accordion-button border-bottom font-weight-bold collapsed"
                                                 :class="
                                                     j != 0 ? 'collapsed' : ''
                                                 "
@@ -2650,6 +2644,14 @@
                                                 "
                                             >
                                                 {{ i }}
+                                                <i
+                                                    class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3"
+                                                    aria-hidden="true"
+                                                ></i>
+                                                <i
+                                                    class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3"
+                                                    aria-hidden="true"
+                                                ></i>
                                             </button>
                                         </h2>
                                         <div
@@ -2836,7 +2838,7 @@ export default {
                 sustento_metodologico: null,
                 compartira_reporte: null,
                 toma_decisiones: null,
-                unidad_id: null,
+                unidades_producidas: null,
                 anio_inicio: null,
                 mes_inicio: null,
                 usuario_creacion_id: null,
@@ -2844,6 +2846,7 @@ export default {
                 sede_id: null,
             }),
 
+            etapa: 1,
             paso: 1,
             emisiones_indirectas: {
                 energias: {
@@ -2988,7 +2991,6 @@ export default {
             options_viaje: [],
             options_trasversal: [],
             options_sf6: [],
-            options_unidad: [],
             options_equipo_consumo: [],
             options_metodologia: [],
             options_anio: [],
@@ -3009,11 +3011,35 @@ export default {
         this.getParametros(7, "options_anio");
         this.getParametros(8, "options_mes");
         this.getParametros(12, "options_metodologia");
-        this.getParametros(13, "options_unidad");
         this.getOptionsFuenteEmision();
         this.recargarFormularioEmisiones();
+        this.tabActiva();
     },
     methods: {
+        tabActiva() {
+            setTimeout(() => {
+                console.log("entras");
+                switch (this.etapa) {
+                    case 2:
+                        $("#construccion-proceso-tab").click();
+                        break;
+                    case 3:
+                        $("#consumos-indirectos-tab").click();
+                        break;
+                    case 4:
+                        $("#consumos-transversales-tab").click();
+                        break;
+                    case 5:
+                        $("#inicio-consumos-tab").click();
+                        break;
+                    case 6:
+                        $("#construccion-anio-tab").click();
+                        break;
+                    default:
+                        break;
+                }
+            }, 5000);
+        },
         async recargarFormularioEmisiones() {
             if (!this.user.empresa_id) {
                 await this.getUserLogged();
@@ -3031,7 +3057,8 @@ export default {
 
             if (Object.keys(informacionEmpresa).length != 0) {
                 this.accion_formulario = "ver";
-                this.informacion_empresa_existe = false;
+                this.etapa = 2;
+                this.recargarProcesos();
             }
         },
         async recargarProcesos() {
@@ -3044,6 +3071,14 @@ export default {
                     if (response.data.length != 0) {
                         this.procesos = response.data;
                         this.accion_procesos = "ver";
+
+                        if (this.ie.datos_proveedores == 1) {
+                            this.etapa = 3;
+                            this.recargarEmisiones();
+                        } else {
+                            this.etapa = 4;
+                            this.recargarTrasversales();
+                        }
                     }
                 })
                 .catch((error) => {
@@ -3064,6 +3099,8 @@ export default {
                     if (Object.keys(response.data).length != 0) {
                         this.emisiones_indirectas = response.data;
                         this.accion_emisiones = "ver";
+                        this.etapa = 4;
+                        this.recargarTrasversales();
                     }
                 })
                 .catch((error) => {
@@ -3084,6 +3121,8 @@ export default {
                     if (Object.keys(response.data).length != 0) {
                         this.trasversales = response.data;
                         this.accion_trasversales = "ver";
+                        this.etapa = 5;
+                        this.recargarInformacionInicio();
                     }
                 })
                 .catch((error) => {
@@ -3102,6 +3141,7 @@ export default {
 
             if (informacionEmpresa.anio_inicio != null) {
                 this.accion_inicio = "ver";
+                this.etapa = 6;
             }
         },
         async getUserLogged() {
@@ -3119,7 +3159,6 @@ export default {
             //5 tamaños de empresa
             //6 número de empleados
             //12 metodologías
-            //13 Unidad producción y/o servicios
 
             this[variable] = await Parametro.where(
                 "tipo_parametro_id",
@@ -3222,33 +3261,10 @@ export default {
                     "success"
                 );
                 this.recargarFormularioEmisiones();
+                setTimeout(() => {
+                    $("#construccion-proceso-tab").click();
+                }, 200);
                 this.paso = 1;
-                $("#construccion-proceso-tab").click();
-            }
-        },
-        guardarEmisionesIndirectas() {
-            if (this.accion_emisiones != "ver") {
-                this.$root.mostrarCargando("Guardando información");
-                axios
-                    .post("/api/guardarEmisionesIndirectas", {
-                        emisiones: this.emisiones_indirectas,
-                    })
-                    .then((response) => {
-                        Swal.close();
-                        this.$root.mostrarMensaje(
-                            "Éxito",
-                            "Información guardada exitosamente",
-                            "success"
-                        );
-                        this.recargarEmisiones();
-                    })
-                    .catch((error) => {
-                        Swal.fire(
-                            "Error",
-                            "No se pudo obtener la información de la persona, por favor inténtelo nuevamente",
-                            "error"
-                        );
-                    });
             }
         },
 
@@ -3267,6 +3283,13 @@ export default {
                             "success"
                         );
                         this.recargarProcesos();
+                        setTimeout(() => {
+                            if (this.ie.datos_proveedores == 1) {
+                                $("#consumos-indirectos-tab").click();
+                            } else {
+                                $("#consumos-transversales-tab").click();
+                            }
+                        }, 500);
                     })
                     .catch((error) => {
                         Swal.fire(
@@ -3277,24 +3300,35 @@ export default {
                     });
             }
         },
-        async guardarDatosConsumos() {
-            this.$root.mostrarCargando("Guardando información");
-            axios
-                .post("api/guardarDatosConsumos", {
-                    fuentes_emision: this.fuentes_emision,
-                })
-                .then((response) => {
-                    Swal.close();
-                    this.$root.mostrarMensaje(
-                        "Éxito",
-                        "Información guardada exitosamente",
-                        "success"
-                    );
-                    setTimeout(() => {
-                        this.getFuentesEmision();
-                    }, 1000);
-                })
-                .catch((error) => {});
+
+        guardarEmisionesIndirectas() {
+            if (this.accion_emisiones != "ver") {
+                this.$root.mostrarCargando("Guardando información");
+                axios
+                    .post("/api/guardarEmisionesIndirectas", {
+                        emisiones: this.emisiones_indirectas,
+                    })
+                    .then((response) => {
+                        Swal.close();
+                        this.$root.mostrarMensaje(
+                            "Éxito",
+                            "Información guardada exitosamente",
+                            "success"
+                        );
+                        this.recargarEmisiones();
+
+                        setTimeout(() => {
+                            $("#consumos-transversales-tab").click();
+                        }, 200);
+                    })
+                    .catch((error) => {
+                        Swal.fire(
+                            "Error",
+                            "No se pudo obtener la información de la persona, por favor inténtelo nuevamente",
+                            "error"
+                        );
+                    });
+            }
         },
 
         async guardarTrasversales() {
@@ -3312,6 +3346,9 @@ export default {
                             "success"
                         );
                         this.recargarTrasversales();
+                        setTimeout(() => {
+                            $("#inicio-consumos-tab").click();
+                        }, 200);
                     })
                     .catch((error) => {
                         Swal.fire(
@@ -3321,6 +3358,54 @@ export default {
                         );
                     });
             }
+        },
+
+        async guardarInicioConsumo() {
+            if (this.accion_inicio != "ver") {
+                this.$root.mostrarCargando("Guardando información");
+
+                let informacion_empresa = await InformacionEmpresa.where({
+                    empresa_id: this.user.empresa_id,
+                    sede_id: this.user.sede_id,
+                }).first();
+
+                informacion_empresa.unidades_producidas =
+                    this.ie.unidades_producidas;
+                informacion_empresa.anio_inicio = this.ie.anio_inicio;
+                informacion_empresa.mes_inicio = this.ie.mes_inicio;
+                await informacion_empresa.save();
+
+                Swal.close();
+                this.$root.mostrarMensaje(
+                    "Éxito",
+                    "Información guardada exitosamente",
+                    "success"
+                );
+                this.recargarInformacionInicio();
+                setTimeout(() => {
+                    $("#construccion-anio-tab").click();
+                }, 200);
+            }
+        },
+
+        async guardarDatosConsumos() {
+            // this.$root.mostrarCargando("Guardando información");
+            axios
+                .post("api/guardarDatosConsumos", {
+                    fuentes_emision: this.fuentes_emision,
+                })
+                .then((response) => {
+                    Swal.close();
+                    this.$root.mostrarMensaje(
+                        "Éxito",
+                        "Información guardada exitosamente",
+                        "success"
+                    );
+                    setTimeout(() => {
+                        this.getFuentesEmision();
+                    }, 1000);
+                })
+                .catch((error) => {});
         },
 
         async getFuentesEmision() {
@@ -3341,30 +3426,6 @@ export default {
             this.tablaEmisiones();
 
             Swal.close();
-        },
-
-        async guardarInicioConsumo() {
-            if (this.accion_inicio != "ver") {
-                this.$root.mostrarCargando("Guardando información");
-
-                let informacion_empresa = await InformacionEmpresa.where({
-                    empresa_id: this.user.empresa_id,
-                    sede_id: this.user.sede_id,
-                }).first();
-
-                informacion_empresa.unidad_id = this.ie.unidad_id;
-                informacion_empresa.anio_inicio = this.ie.anio_inicio;
-                informacion_empresa.mes_inicio = this.ie.mes_inicio;
-                await informacion_empresa.save();
-
-                Swal.close();
-                this.$root.mostrarMensaje(
-                    "Éxito",
-                    "Información guardada exitosamente",
-                    "success"
-                );
-                this.recargarInformacionInicio();
-            }
         },
 
         async tablaEmisiones() {

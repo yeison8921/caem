@@ -20,7 +20,7 @@ class User extends Authenticatable
     public const TYPE_EMPRESARIO = 2;
     public const TYPE_LIDER_CONVENIO = 3;
     public const TYPE_LIDER_CAEM = 4;
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -33,7 +33,7 @@ class User extends Authenticatable
         'email',
         'password',
         'cargo',
-        'estado', // 0 sin aprovar, 1 aprobado, 2 rechazado
+        'estado', // 0 sin aprobar, 1 aprobado, 2 rechazado
         'rol_id',
         'empresa_id',
         'sede_id',

@@ -16,9 +16,10 @@ class CreateGeisTable extends Migration
         Schema::create('geis', function (Blueprint $table) {
             $table->id();
             $table->string('gei');
-            $table->integer('ar5pcg_gwp');
-            $table->integer('ar4pcg_gwp');
-            $table->integer('srpcg_gwp');
+            $table->float('ar6pcg_gwp');
+            $table->float('ar5pcg_gwp');
+            $table->float('ar4pcg_gwp');
+            $table->float('srpcg_gwp');
             $table->timestamps();
         });
     }

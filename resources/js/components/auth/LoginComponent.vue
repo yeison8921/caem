@@ -159,7 +159,7 @@ export default {
                 .then((response) => {
                     localStorage.setItem("token", response.data.token);
                     localStorage.setItem("user", response.data.user);
-                    this.$root.redirectIndex("/");
+                    this.$root.redirectIndex("/resultados");
                     this.$root.cerrarCargando();
                 })
                 .catch((error) => {

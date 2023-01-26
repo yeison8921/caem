@@ -5,7 +5,9 @@ namespace App\Repositories;
 use App\Exceptions\GeneralException;
 use App\Models\Combustible;
 use App\Models\ResultadoFuenteEmision;
+use App\Models\InformacionEmpresa;
 use App\Models\FactorT;
+use App\Models\FuenteEmision;
 use App\Models\Gei;
 use Illuminate\Support\Facades\DB;
 use stdClass;
@@ -17,16 +19,17 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
 {
     protected $array_factores;
     protected $array_biogenicos;
-    protected $array_geis;
+    protected $array_ar = ['_ar5', '_ar6'];
+    protected $json_geis;
     protected $array_emisiones = [
         'Combustible_solido' => ['co2', 'ch4', 'n2o'],
         'Combustible_liquido' => ['co2', 'ch4', 'n2o'],
         'Combustible_gaseoso' => ['co2', 'ch4', 'n2o'],
-        'Refrigerante' => ['co2'],
+        'Refrigerante' => ['compuestos_fluorados'],
         'Extintor' => ['co2'],
         'Lubricante' => ['co2'],
         'Fuga' => ['co2'],
-        'Aislamiento' => ['co2'],
+        'Aislamiento' => ['sf6'],
         'Embalse' => ['ch4'],
         'Mineria' => ['ch4'],
         'Industrial' => ['co2'],
@@ -42,6 +45,10 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
         'Otro' => ['co2'],
         'Residuo' => ['ch4'],
         'Trasversal' => ['co2', 'ch4', 'n2o'],
+        'Producto' => ['co2'],
+        'Activo' => ['co2'],
+        'Inversion' => ['co2'],
+        'Otro' => ['co2'],
     ];
 
     /**
@@ -115,124 +122,475 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
     {
         $geis = Gei::all();
 
-        foreach ($geis as $gei) {
-            $this->array_geis[$gei['gei']] = $gei['ar5pcg_gwp'];
+        $this->json_geis = new \stdClass;
+        $ar5 = new \stdClass;
+        $ar6 = new \stdClass;
+
+        foreach ($geis as $k => $gei) {
+            $nombre = $gei['gei'];
+            $ar5->$nombre = $gei['ar5pcg_gwp'];
+            $ar6->$nombre = $gei['ar6pcg_gwp'];
         }
+        $this->json_geis->_ar5 = $ar5;
+        $this->json_geis->_ar6 = $ar6;
     }
 
     public function guardarDatosConsumos($request)
     {
         $fuentes_emision = $request->fuentes_emision;
 
-        foreach ($fuentes_emision as $kfe => $fuente_emision) {
-            foreach ($fuente_emision as $skfe => $fe) {
-                $numero_datos = 0;
-                $total = 0;
-                foreach ($fe['resultado'] as $kd => $d) {
-                    if (str_contains($kd, 'dato_')) {
-                        if (!is_null($d)) {
-                            $numero_datos++;
-                            $total += floatval($d);
-                        }
-                    }
-                }
-
-                $fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] = $numero_datos;
-                $fuentes_emision[$kfe][$skfe]['resultado']['total'] = $total;
-
-                if ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] > 1) {
-                    $fuentes_emision[$kfe][$skfe]['resultado']['promedio'] = $fuentes_emision[$kfe][$skfe]['resultado']['total'] / $fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'];
-                }
-
-                $total2 = 0;
-                foreach ($fe['resultado'] as $kd => $d) {
-                    if (str_contains($kd, 'dato_')) {
-                        if (!is_null($d)) {
-                            $total2 += ($d - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']) * ($d - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
-                        }
-                    }
-                }
-
-                if ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] > 1) {
-                    $fuentes_emision[$kfe][$skfe]['resultado']['desviacion_estandar'] = sqrt(($total2 / ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] - 1)));
-                    $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_datos'] = 1 - (($fuentes_emision[$kfe][$skfe]['resultado']['promedio'] - (($fuentes_emision[$kfe][$skfe]['resultado']['desviacion_estandar'] * $this->array_factores[$fuentes_emision[$kfe][$skfe]['resultado']['numero_datos']]) / (sqrt($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'])))) / $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
-                }
-
-                if ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] != 1) {
-                    $fuentes_emision[$kfe][$skfe]['resultado']['factor_t'] = $this->array_factores[$fuentes_emision[$kfe][$skfe]['resultado']['numero_datos']];
-                }
-
-                $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_sistematica_adicional'] == '' ? 0 : $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_sistematica_adicional'];
-
-                foreach ($this->array_emisiones[$fuentes_emision[$kfe][$skfe]['fuente_emision']] as $k => $e) {
-                    $tipo_fuente = '';
-                    $factor_emision = '';
-                    $unidad_factor = '';
-                    $incertidumbre_factor = '';
-                    $biogenico = '';
-
-                    if (($fuentes_emision[$kfe][$skfe]['fuentetable_type'] == 'App\Models\Combustible' || $fuentes_emision[$kfe][$skfe]['fuentetable_type'] == 'App\Models\Trasversal') && $e != 'co2') {
-
-                        //Establecer tipo fuente para combustible
-                        $tipo_fuente = $tipo_fuente = ($fuentes_emision[$kfe][$skfe]['tipo'] == 'fuentes_moviles' ||  $tipo_fuente = $fuentes_emision[$kfe][$skfe]['tipo'] == 'transportes') ? 'fuente_movil' : 'fuente_fija';
-                        $factor_emision = 'kg_' . $tipo_fuente;
-                        $unidad_factor = '_' . $tipo_fuente;
-                        $incertidumbre_factor = '_' . $tipo_fuente;
-                    }
-
-                    if ($fuentes_emision[$kfe][$skfe]['fuentetable_type'] == 'App\Models\Combustible' && $e == 'co2') {
-                        if (in_array($fuentes_emision[$kfe][$skfe]['fuentetable']['nombre'], $this->array_biogenicos)) {
-                            $biogenico = '_biogenico';
+        foreach ($this->array_ar as $ar) {
+            foreach ($fuentes_emision as $kfe => $fuente_emision) {
+                foreach ($fuente_emision as $skfe => $fe) {
+                    $numero_datos = 0;
+                    $total = 0;
+                    foreach ($fe['resultado'] as $kd => $d) {
+                        if (str_contains($kd, 'dato_')) {
+                            if (!is_null($d)) {
+                                $numero_datos++;
+                                $total += floatval($d);
+                            }
                         }
                     }
 
-                    if ($fuentes_emision[$kfe][$skfe]['fuente_emision'] == 'Fermentacion' || ($fuentes_emision[$kfe][$skfe]['fuente_emision'] == 'Estiercol' && $e == 'ch4')) {
-                        if ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] > 0) {
-                            $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e] = $fuentes_emision[$kfe][$skfe]['fuentetable']['factor_emision_' . $e . $factor_emision] / $fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'];
+                    $fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] = $numero_datos;
+                    $fuentes_emision[$kfe][$skfe]['resultado']['total'] = $total;
+
+                    if ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] > 1) {
+                        $fuentes_emision[$kfe][$skfe]['resultado']['promedio'] = $fuentes_emision[$kfe][$skfe]['resultado']['total'] / $fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'];
+                    }
+
+                    $total2 = 0;
+                    foreach ($fe['resultado'] as $kd => $d) {
+                        if (str_contains($kd, 'dato_')) {
+                            if (!is_null($d)) {
+                                $total2 += ($d - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']) * ($d - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
+                            }
                         }
-                    } else {
-                        $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e . $biogenico] = $fuentes_emision[$kfe][$skfe]['fuentetable']['factor_emision_' . $e . $factor_emision];
                     }
 
-                    $fuentes_emision[$kfe][$skfe]['resultado']['unidad_factor_emision_' . $e] = $fe['fuentetable']['unidad_factor_emision_' . $e . $unidad_factor];
-
-                    $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton' . $biogenico] = ($fuentes_emision[$kfe][$skfe]['resultado']['total'] * $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e . $biogenico]) / 1000;
-                    $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton_eq' . $biogenico] = $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton' . $biogenico] * $this->array_geis[$e];
-
-                    if ($fuentes_emision[$kfe][$skfe]['resultado']['total'] > 0) {
-                        $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_factor_emision_' . $e . $biogenico] = $fe['fuentetable']['incertidumbre_' . $e . '_2' . $incertidumbre_factor];
-                    }
-                    if ($fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton' . $biogenico] > 0) {
-                        $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_emision_' . $e . $biogenico] = sqrt(($fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_datos'] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_datos']) + ($fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_factor_emision_' . $e . $biogenico] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_factor_emision_' . $e . $biogenico]) + ($fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_sistematica_adicional'] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_sistematica_adicional']));
-                    }
-                    $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_' . $e . $biogenico] = pow(($fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton_eq' . $biogenico] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_emision_' . $e . $biogenico]), 2);
-
-                    if ($biogenico == '') {
-                        $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono'] =  $fuentes_emision[$kfe][$skfe]['resultado']['emision_co2_ton_eq'] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_ch4_ton_eq'] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_n2o_ton_eq'] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_compuestos_fluorados_ton_eq'] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_sf6_ton_eq'] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_nf3_ton_eq'];
-                    } else {
-                        $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono' . $biogenico] =  $fuentes_emision[$kfe][$skfe]['resultado']['emision_co2_ton_eq' . $biogenico];
+                    if ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] > 1) {
+                        $fuentes_emision[$kfe][$skfe]['resultado']['desviacion_estandar'] = sqrt(($total2 / ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] - 1)));
+                        $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_datos'] = 1 - (($fuentes_emision[$kfe][$skfe]['resultado']['promedio'] - (($fuentes_emision[$kfe][$skfe]['resultado']['desviacion_estandar'] * $this->array_factores[$fuentes_emision[$kfe][$skfe]['resultado']['numero_datos']]) / (sqrt($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'])))) / $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
                     }
 
-                    $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_fuente' . $biogenico] = 0;
+                    if ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] != 1) {
+                        $fuentes_emision[$kfe][$skfe]['resultado']['factor_t'] = $this->array_factores[$fuentes_emision[$kfe][$skfe]['resultado']['numero_datos']];
+                    }
 
-                    if ($fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono' . $biogenico] > 0) {
-                        if ($biogenico == '') {
-                            $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_fuente'] = sqrt(($fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_co2'] + $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_ch4'] + $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_n2o'] + $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_compuestos_fluorados'] + $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_sf6'])) / $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono'];
+                    $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_sistematica_adicional'] == '' ? 0 : $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_sistematica_adicional'];
+
+                    foreach ($this->array_emisiones[$fuentes_emision[$kfe][$skfe]['fuente_emision']] as $k => $e) {
+                        $tipo_fuente = '';
+                        $factor_emision = '';
+                        $unidad_factor = '';
+                        $incertidumbre_factor = '';
+                        $biogenico = '';
+
+                        if (($fuentes_emision[$kfe][$skfe]['fuentetable_type'] == 'App\Models\Combustible' || $fuentes_emision[$kfe][$skfe]['fuentetable_type'] == 'App\Models\Trasversal') && $e != 'co2') {
+                            //Establecer tipo fuente para combustible
+                            $tipo_fuente = $tipo_fuente = ($fuentes_emision[$kfe][$skfe]['tipo'] == 'fuentes_moviles' || $tipo_fuente = $fuentes_emision[$kfe][$skfe]['tipo'] == 'transportes') ? 'fuente_movil' : 'fuente_fija';
+                            $factor_emision = 'kg_' . $tipo_fuente;
+                            $unidad_factor = '_' . $tipo_fuente;
+                            $incertidumbre_factor = '_' . $tipo_fuente;
+                        }
+
+                        if ($fuentes_emision[$kfe][$skfe]['fuentetable_type'] == 'App\Models\Combustible' && $e == 'co2') {
+                            if (in_array($fuentes_emision[$kfe][$skfe]['fuentetable']['nombre'], $this->array_biogenicos)) {
+                                $biogenico = '_biogenico';
+                            }
+                        }
+
+                        if ($fuentes_emision[$kfe][$skfe]['fuente_emision'] == 'Fermentacion' || ($fuentes_emision[$kfe][$skfe]['fuente_emision'] == 'Estiercol' && $e == 'ch4')) {
+                            if ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] > 0) {
+                                $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e . $ar] = $fuentes_emision[$kfe][$skfe]['fuentetable']['factor_emision_' . $e . $factor_emision] / $fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'];
+                            }
                         } else {
-                            $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_fuente' . $biogenico] = sqrt(($fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_co2' . $biogenico])) / $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono' . $biogenico];
+                            if ($e == 'sf6') {
+                                $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e . $biogenico . $ar] = $fuentes_emision[$kfe][$skfe]['fuentetable']['factor_emision_' . $e . $factor_emision] / $this->json_geis->$ar->$e;;
+                            } else {
+                                $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e . $biogenico . $ar] = $fuentes_emision[$kfe][$skfe]['fuentetable']['factor_emision_' . $e . $factor_emision];
+                            }
+                        }
+
+                        $fuentes_emision[$kfe][$skfe]['resultado']['unidad_factor_emision_' . $e . $ar] = $fe['fuentetable']['unidad_factor_emision_' . $e . $unidad_factor];
+
+                        $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton' . $biogenico . $ar] = ($fuentes_emision[$kfe][$skfe]['resultado']['total'] * $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e . $biogenico . $ar]) / 1000;
+                        $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton_eq' . $biogenico . $ar] = $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton' . $biogenico . $ar] * $this->json_geis->$ar->$e;
+
+                        if ($fuentes_emision[$kfe][$skfe]['resultado']['total'] > 0) {
+                            $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_factor_emision_' . $e . $biogenico . $ar] = $fe['fuentetable']['incertidumbre_' . $e . '_2' . $incertidumbre_factor];
+                        }
+                        if ($fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton' . $biogenico . $ar] > 0) {
+                            $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_emision_' . $e . $biogenico . $ar] = sqrt(($fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_datos'] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_datos']) + ($fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_factor_emision_' . $e . $biogenico . $ar] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_factor_emision_' . $e . $biogenico . $ar]) + ($fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_sistematica_adicional'] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_sistematica_adicional']));
+                        }
+                        $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_' . $e . $biogenico . $ar] = pow(($fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton_eq' . $biogenico . $ar] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_emision_' . $e . $biogenico . $ar]), 2);
+
+                        if ($biogenico == '') {
+                            $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono' . $ar] = $fuentes_emision[$kfe][$skfe]['resultado']['emision_co2_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_ch4_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_n2o_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_compuestos_fluorados_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_sf6_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_nf3_ton_eq' . $ar];
+                        } else {
+                            $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono' . $biogenico . $ar] = $fuentes_emision[$kfe][$skfe]['resultado']['emision_co2_ton_eq' . $biogenico . $ar];
+                        }
+
+                        $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_fuente' . $biogenico . $ar] = 0;
+
+                        if ($fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono' . $biogenico . $ar] > 0) {
+                            if ($biogenico == '') {
+                                $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_fuente' . $ar] = sqrt(($fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_co2' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_ch4' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_n2o' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_compuestos_fluorados' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_sf6' . $ar])) / $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono' . $ar];
+                            } else {
+                                $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_fuente' . $biogenico . $ar] = sqrt(($fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_co2' . $biogenico . $ar])) / $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono' . $biogenico . $ar];
+                            }
                         }
                     }
-                }
 
-                if ($fuentes_emision[$kfe][$skfe]['resultado']['id'] != '') {
-                    $resultado = ResultadoFuenteEmision::find($fuentes_emision[$kfe][$skfe]['resultado']['id']);
-                    $resultado->update($fuentes_emision[$kfe][$skfe]['resultado']);
-                } else {
-                    $resultado = new ResultadoFuenteEmision();
-                    $resultado->create($fuentes_emision[$kfe][$skfe]['resultado']);
+                    if ($fuentes_emision[$kfe][$skfe]['resultado']['id'] != '') {
+                        $resultado = ResultadoFuenteEmision::find($fuentes_emision[$kfe][$skfe]['resultado']['id']);
+                        $resultado->update($fuentes_emision[$kfe][$skfe]['resultado']);
+                    } else {
+                        $resultado = new ResultadoFuenteEmision();
+                        $resultado->create($fuentes_emision[$kfe][$skfe]['resultado']);
+                    }
                 }
             }
         }
         return $fuentes_emision;
+    }
+
+    public function getDatosGraficas($request)
+    {
+        $array_resultados = [];
+
+        $resultados = FuenteEmision::where('empresa_id', $request->empresa_id);
+
+
+        if ($request->sede_id != -1) {
+            $resultados = $resultados->where('sede_id', $request->sede_id);
+        } else {
+            if ($request->periodo != -1) {
+                $resultados = $resultados->where('sede_id', $request->periodo);
+            }
+        }
+
+        $resultados = $resultados->with('fuentetable', 'resultado')->get();
+
+        if ($request->reporte == 'corporativo') {
+            $request->reporte = '';
+        }
+
+        $total_huella_carbono = 0;
+
+        $array_categorias = [
+            ['fuentes_fijas', 'fuentes_moviles', 'emisiones'],
+            ['energias'],
+            ['tranportes'],
+            ['productos'],
+            ['usos', 'fines', 'activos', 'inversiones'],
+            ['otros'],
+            ['trasversales'],
+        ];
+
+        $array_fuentes_emision = [
+            'Combustible_liquido',
+            'Combustible_gaseoso',
+            'Combustible_solido',
+            'Refrigerante',
+            'Extintor',
+            'Lubricante',
+            'Fuga',
+            'Aislamiento',
+            'Embalse',
+            'Mineria',
+            'Industrial',
+            'Fermentacion',
+            'Estiercol',
+            'Residuo_agropecuario',
+            'Fertilizante',
+            'Cal',
+            'Residuo_organizacional',
+            'Energia_electrica',
+            'Transporte',
+            'Equipo',
+            'Materia_prima',
+            'Residuo',
+            'Producto',
+            'Activo',
+            'Inversion',
+            'Otro',
+        ];
+
+        $array_labels_categoria = [
+            'CATEGORIA 1',
+            'CATEGORIA 2',
+            'CATEGORIA 3',
+        ];
+        $array_totales_categoria = [0, 0, 0];
+        $array_colores_categoria = [];
+
+        $array_labels_gei = [
+            'CO2',
+        ];
+        $array_totales_gei = [0];
+        $array_colores_gei = [];
+
+        $array_labels_fuente = [
+            'Combustibles líquidos',
+            'Combustibles gaseosos',
+            'Combustibles solidos',
+            'Refrigerantes y espumantes',
+            'Extintores',
+            'Lubricantes',
+            'Fugas de CO2 en proceso',
+            'Consumo aislante eléctrico',
+            'Manejo de embalses',
+            'Minería',
+            'Industrial',
+            'Fermentación entérica',
+            'Manejo de estiércol',
+            'Manejo de residuos agropecuarios',
+            'Uso fertilizanteS',
+            'Cal aplicada',
+            'Manejo de residuos organizacionales',
+            'Consumo de energía eléctrica',
+            'Transporte de carga',
+            'Equipos',
+            'Materias primas',
+            'Manejo de residuos',
+            'Producto',
+            // 'Fin de vida',
+            'Activo',
+            'Inversión',
+            'Otros',
+        ];
+        $array_totales_fuente = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        $array_colores_fuente = [];
+
+        if ($request->reporte == '') {
+            array_push(
+                $array_labels_categoria,
+                'CATEGORIA 4',
+                'CATEGORIA 5',
+                'CATEGORIA 6',
+                'CATEGORIA 7',
+            );
+            array_push($array_totales_categoria, 0, 0, 0, 0);
+
+            array_push(
+                $array_labels_gei,
+                'CH4',
+                'N2O',
+                'COMPUESTOS FLUORADOS',
+                'SF6',
+                'NF3',
+            );
+            array_push(
+                $array_totales_gei,
+                0,
+                0,
+                0,
+                0,
+                0
+            );
+        }
+
+        $array_labels_tipo = [];
+        $array_totales_tipo  = [];
+        $array_colores_tipo = [];
+
+        foreach ($resultados as $key => $resultado) {
+            if ($resultado["resultado"] != null) {
+
+                $total_huella_carbono += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
+
+                //obtener datos categoría
+                foreach ($array_categorias as $key => $value) {
+                    if (in_array($resultado['tipo'], $value) && $key < count($array_totales_categoria)) {
+                        $array_totales_categoria[$key] += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
+                    }
+                }
+
+                //obtener datos gei
+                $array_totales_gei[0] += $resultado["resultado"]['emision_co2_ton_eq' . $request->reporte . $request->ar];
+
+                if ($request->reporte == '') {
+                    $array_totales_gei[1] += $resultado["resultado"]['emision_ch4_ton_eq' . $request->ar];
+                    $array_totales_gei[2] += $resultado["resultado"]['emision_n2o_ton_eq' . $request->ar];
+                    $array_totales_gei[3] += $resultado["resultado"]['emision_compuestos_fluorados_ton_eq' . $request->ar];
+                    $array_totales_gei[4] += $resultado["resultado"]['emision_sf6_ton_eq' . $request->ar];
+                    $array_totales_gei[5] += $resultado["resultado"]['emision_nf3_ton_eq' . $request->ar];
+                }
+
+                //obtener datos por fuente
+                foreach ($array_fuentes_emision as $key => $value) {
+                    if ($resultado['fuente_emision'] == $value) {
+                        $array_totales_fuente[$key] += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
+                    }
+                }
+
+                //obtener datos por subtotal
+                // if ($request->reporte == '') {
+                //     if ($resultado['tipo'] == 'fuentes_moviles') {
+                //         $array_totales_fuente[0] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'fuentes_fijas') {
+                //         $array_totales_fuente[1] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'emisiones') {
+                //         $array_totales_fuente[2] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'energias' && $resultado['fuente_emision'] != 'Energia_electrica') {
+                //         $array_totales_fuente[3] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'energias' && $resultado['fuente_emision'] == 'Energia_electrica') {
+                //         $array_totales_fuente[4] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'transportes' && $resultado['fuente_emision'] != 'Transporte') {
+                //         $array_totales_fuente[5] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'transportes' && $resultado['fuente_emision'] == 'Transporte') {
+                //         $array_totales_fuente[6] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'productos' && $resultado['fuente_emision'] != 'Residuo') {
+                //         $array_totales_fuente[7] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'productos' && $resultado['fuente_emision'] == 'Residuo') {
+                //         $array_totales_fuente[8] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'usos' && $resultado['fuente_emision'] == 'Producto') {
+                //         $array_totales_fuente[9] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'fines' && $resultado['fuente_emision'] == 'Producto') {
+                //         $array_totales_fuente[10] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'activos' && $resultado['fuente_emision'] == 'Activo') {
+                //         $array_totales_fuente[11] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'inversiones' && $resultado['fuente_emision'] == 'Inversion') {
+                //         $array_totales_fuente[12] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'otros' && $resultado['fuente_emision'] == 'Otro') {
+                //         $array_totales_fuente[13] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                // } else {
+                //     if ($resultado['tipo'] == 'fuentes_moviles') {
+                //         $array_totales_fuente[0] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'fuentes_fijas') {
+                //         $array_totales_fuente[1] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'energias' && $resultado['fuente_emision'] != 'Energia_electrica') {
+                //         $array_totales_fuente[2] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                //     if ($resultado['tipo'] == 'transportes' && $resultado['fuente_emision'] != 'Transporte') {
+                //         $array_totales_fuente[3] += $resultado["resultado"]['huella_carbono' . $request->reporte];
+                //     }
+                // }
+
+                //obtener datos por tipo
+                if ($request->reporte == '') {
+                    if ($resultado["resultado"]['huella_carbono' . $request->ar] > 0) {
+                        array_push($array_labels_tipo, $resultado['fuentetable']['nombre'] . ' - ' . $resultado['tipo_mostrar']);
+                        array_push($array_totales_tipo, $resultado["resultado"]['huella_carbono' . $request->ar]);
+                    }
+                } else {
+                    if (in_array($resultado['fuentetable']['nombre'], $this->array_biogenicos)) {
+                        if ($resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar] > 0) {
+                            array_push($array_labels_tipo, $resultado['fuentetable']['nombre'] . ' - ' . $resultado['tipo_mostrar']);
+                            array_push($array_totales_tipo, $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar]);
+                        }
+                    }
+                }
+            }
+        }
+
+        //obtener datos cumplimiento
+        $data = InformacionEmpresa::where('empresa_id', $request->empresa_id);
+
+        if ($request->sede_id != -1) {
+            $data = $data->where('sede_id', $request->sede_id);
+        }
+        $data = $data->get();
+
+        $array_cumplimiento = [];
+        $array_colores_cumplimiento = [];
+        $suma_pertinencia = 0;
+        $suma_integralidad = 0;
+        $suma_coherencia = 0;
+        $suma_exactitud = 0;
+        $suma_transparencia = 0;
+
+
+        foreach ($data as $key => $value) {
+            $suma_pertinencia += $value->efecto_invernadero + $value->sumideros;
+            $suma_integralidad += $value->informacion_mensual + $value->diagrama_procesos + $value->areas_sumideros;
+            $suma_coherencia += $value->informacion_centralizada + $value->soportes_consumos + $value->informacion_anio;
+            $suma_exactitud += $value->estimaciones_consumos + $value->consumos_energeticos + $value->sustento_metodologico;
+            $suma_transparencia += $value->compartira_reporte + $value->toma_decisiones;
+        }
+
+        $array_cumplimiento[0] = (($suma_pertinencia * 100) / 4) / count($data);
+        $array_cumplimiento[1] = (($suma_integralidad * 100) / 6) / count($data);
+        $array_cumplimiento[2] = (($suma_coherencia * 100) / 6) / count($data);
+        $array_cumplimiento[3] = (($suma_exactitud * 100) / 6) / count($data);
+        $array_cumplimiento[4] = (($suma_transparencia * 100) / 4) / count($data);
+
+
+        //quitando los resultados 0 del array de fuente
+        $sub_array = [];
+        foreach ($array_totales_fuente as $key => $value) {
+            if ($value == 0) {
+                array_push($sub_array, $key);
+            }
+        }
+
+        foreach (array_reverse($sub_array) as $k => $v) {
+            array_splice($array_totales_fuente, $v, 1);
+            array_splice($array_labels_fuente, $v, 1);
+        }
+
+        //quitando y sumando los repetidos array de tipo
+        foreach (array_count_values($array_labels_tipo) as $key => $val) {
+            $suma = 0;
+            if ($val == 2) {
+                $sub_array = array_keys($array_labels_tipo, $key);
+                foreach ($sub_array as $k => $v) {
+                    $suma += $array_totales_tipo[$v];
+                }
+                foreach (array_reverse($sub_array) as $k => $v) {
+                    array_splice($array_labels_tipo, $v, 1);
+                    array_splice($array_totales_tipo, $v, 1);
+                }
+                array_push($array_labels_tipo, $key);
+                array_push($array_totales_tipo, $suma);
+            }
+        }
+
+        foreach ($array_labels_categoria as $a) {
+            array_push($array_colores_categoria, sprintf('#%06X', mt_rand(0, 0xFFFFFF)));
+        }
+
+        foreach ($array_labels_gei as $a) {
+            array_push($array_colores_gei, sprintf('#%06X', mt_rand(0, 0xFFFFFF)));
+        }
+
+        foreach ($array_labels_fuente as $a) {
+            array_push($array_colores_fuente, sprintf('#%06X', mt_rand(0, 0xFFFFFF)));
+        }
+
+        foreach ($array_labels_tipo as $a) {
+            array_push($array_colores_tipo, sprintf('#%06X', mt_rand(0, 0xFFFFFF)));
+        }
+
+        foreach ($array_cumplimiento as $a) {
+            array_push($array_colores_cumplimiento, sprintf('#%06X', mt_rand(0, 0xFFFFFF)));
+        }
+
+        $array_resultados['total_huella_carbono'] = $total_huella_carbono;
+        $array_resultados['cumplimiento'] = [$array_cumplimiento, $array_colores_cumplimiento];
+        $array_resultados['huella_carbono_categoria'] = [$array_labels_categoria, $array_totales_categoria, $array_colores_categoria];
+        $array_resultados['huella_carbono_gei'] = [$array_labels_gei, $array_totales_gei, $array_colores_gei];
+        $array_resultados['huella_carbono_fuente'] = [$array_labels_fuente, $array_totales_fuente, $array_colores_fuente];
+        $array_resultados['huella_carbono_tipo'] = [$array_labels_tipo, $array_totales_tipo, $array_colores_tipo];
+
+        return $array_resultados;
     }
 }

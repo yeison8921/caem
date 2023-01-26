@@ -78,4 +78,9 @@ class ResultadoFuenteEmisionController extends Controller
     {
         return $this->resultadoFuenteEmisionRepository->guardarDatosConsumos($request);
     }
+
+    public function getDatosGraficas(Request $request)
+    {
+        return $this->resultadoFuenteEmisionRepository->getDatosGraficas($request);
+    }
 }

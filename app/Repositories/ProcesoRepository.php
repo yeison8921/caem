@@ -55,7 +55,6 @@ class ProcesoRepository extends BaseRepository
                 $subproceso->nombre = $sp['nombre'];
                 $subproceso->descripcion = $sp['descripcion'];
                 $subproceso->proceso_id = $proceso->id;
-                //por validar el id de la empresa y sede se envia desde el vue
                 $subproceso->empresa_id = $usuarioEmpresaId;
                 $subproceso->sede_id = $usuarioSedeId;
                 $subproceso->save();
@@ -86,7 +85,6 @@ class ProcesoRepository extends BaseRepository
                                     $fuente_emision->fuentetable_type = $modelo;
                                     $fuente_emision->fuentetable_id = $v;
                                     $fuente_emision->subproceso_id = $subproceso->id;
-                                    //por validar el id de la empresa, sede e informacion se envia desde el vue
                                     $fuente_emision->informacion_empresa_id = $informacionEmpresa->id;
                                     $fuente_emision->empresa_id = $usuarioEmpresaId;
                                     $fuente_emision->sede_id = $usuarioSedeId;
@@ -150,9 +148,9 @@ class ProcesoRepository extends BaseRepository
                 $je->Industrial = [];
                 $je->Fermentacion = [];
                 $je->Estiercol = [];
-                $je->Residuos_organizacionales = [];
-                $je->Residuos_agropecuarios = [];
-                $je->Fertilizant = [];
+                $je->Residuo_organizacional = [];
+                $je->Residuo_agropecuario = [];
+                $je->Fertilizante = [];
                 $je->Cal = [];
 
                 foreach ($sp->fuentesEmision as $f) {

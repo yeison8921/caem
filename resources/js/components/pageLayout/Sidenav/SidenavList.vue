@@ -10,7 +10,10 @@
                     <h6
                         class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
                         :class="'me-4'"
-                    ></h6>
+                    >
+                        {{ empresa }} <br />
+                        {{ sede }}
+                    </h6>
                 </li>
                 <li class="nav-item">
                     <sidenav-collapse
@@ -24,18 +27,9 @@
                         <template #list>
                             <ul class="nav ms-4 ps-3">
                                 <sidenav-item
-                                    v-if="isLoggedIn"
-                                    :to="{ name: 'Inicio' }"
-                                    :url="'/'"
-                                    mini-icon="I"
-                                    text="Inicio"
-                                />
-                                <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        ['1', '2', '4'].includes(
-                                            userLogged.rol_id
-                                        )
+                                        [1, 2, 4].includes(userLogged.rol_id)
                                     "
                                     :to="{ name: 'Procesos' }"
                                     :url="'/procesos'"
@@ -45,9 +39,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        ['1', '2', '3', '4'].includes(
-                                            userLogged.rol_id
-                                        )
+                                        [1, 2, 3, 4].includes(userLogged.rol_id)
                                     "
                                     :to="{ name: 'Resultados' }"
                                     :url="'/resultados'"
@@ -58,11 +50,7 @@
                         </template>
                     </sidenav-collapse>
                 </li>
-
-                <li
-                    class="nav-item"
-                    v-if="['1', '4'].includes(userLogged.rol_id)"
-                >
+                <li class="nav-item" v-if="[1, 4].includes(userLogged.rol_id)">
                     <sidenav-collapse
                         collapse-ref="AdminLinks"
                         nav-text="Administración"
@@ -77,7 +65,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        ['1'].includes(userLogged.rol_id)
+                                        [1].includes(userLogged.rol_id)
                                     "
                                     :to="{ name: 'Parámetros' }"
                                     :url="'/parametros'"
@@ -87,7 +75,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        ['1'].includes(userLogged.rol_id)
+                                        [1].includes(userLogged.rol_id)
                                     "
                                     :to="{ name: 'Convenios' }"
                                     :url="'/convenios'"
@@ -97,7 +85,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        ['1', '4'].includes(userLogged.rol_id)
+                                        [1, 4].includes(userLogged.rol_id)
                                     "
                                     :to="{ name: 'Empresas' }"
                                     :url="'/empresas'"
@@ -107,7 +95,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        ['1', '4'].includes(userLogged.rol_id)
+                                        [1, 4].includes(userLogged.rol_id)
                                     "
                                     :to="{ name: 'Sedes' }"
                                     :url="'/sedes'"
@@ -117,7 +105,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        ['1', '4'].includes(userLogged.rol_id)
+                                        [1, 4].includes(userLogged.rol_id)
                                     "
                                     :to="{ name: 'Autorización' }"
                                     :url="'/autorizaciones'"
@@ -127,7 +115,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        ['1'].includes(userLogged.rol_id)
+                                        [1].includes(userLogged.rol_id)
                                     "
                                     :to="{ name: 'Fuentes de emisión' }"
                                     :url="'/fuentes'"
@@ -152,7 +140,26 @@
                         </template>
                     </sidenav-collapse>
                 </li>
-
+                <li class="nav-item">
+                    <sidenav-collapse
+                        collapse-ref="UserLinks"
+                        nav-text="Usuario"
+                        :class="'active'"
+                    >
+                        <i class="fa fa-user me-sm-1" aria-hidden="true"></i>
+                        <template #list>
+                            <ul class="nav ms-4 ps-3">
+                                <sidenav-item
+                                    v-if="isLoggedIn"
+                                    :to="{ name: 'Perfil' }"
+                                    :url="'/perfil'"
+                                    mini-icon="I"
+                                    text="Perfil"
+                                />
+                            </ul>
+                        </template>
+                    </sidenav-collapse>
+                </li>
                 <li class="nav-item" v-if="isLoggedIn">
                     <a
                         href="#"
@@ -167,6 +174,7 @@
     </div>
 </template>
 <script>
+import ConvenioEmail from "../../../models/ConvenioEmail";
 import SidenavItem from "./SidenavItem.vue";
 import SidenavCollapse from "./SidenavCollapse.vue";
 import SidenavCard from "./SidenavCard.vue";
@@ -219,6 +227,8 @@ export default {
             isLoggedIn: this.isLogged,
             currentRoute: this.routeSelected,
             itemSelected: "",
+            empresa: "",
+            sede: "",
         };
     },
     watch: {
@@ -233,6 +243,7 @@ export default {
         },
     },
     mounted() {
+        this.getEmpresaByUser();
         this.itemSelected = localStorage.getItem("itemSelected");
     },
     methods: {
@@ -251,6 +262,16 @@ export default {
                         "error"
                     );
                 });
+        },
+        async getEmpresaByUser() {
+            let data = await ConvenioEmail.where("email", this.userLogged.email)
+                .include("sede", "sede.empresa")
+                .first();
+
+            if (Object.keys(data).length != 0) {
+                this.empresa = data.sede.empresa.nombre;
+                this.sede = data.sede.nombre;
+            }
         },
     },
 };

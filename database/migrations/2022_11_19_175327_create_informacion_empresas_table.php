@@ -52,7 +52,7 @@ class CreateInformacionEmpresasTable extends Migration
             $table->tinyInteger('sustento_metodologico');
             $table->tinyInteger('compartira_reporte');
             $table->tinyInteger('toma_decisiones');
-            $table->foreignId('unidad_id')->nullable()->constrained('parametros')->onDelete('restrict');
+            $table->integer('unidades_producidas')->nullable();
             $table->integer('anio_inicio')->nullable();
             $table->string('mes_inicio')->nullable();
             $table->integer('estado')->nullable();

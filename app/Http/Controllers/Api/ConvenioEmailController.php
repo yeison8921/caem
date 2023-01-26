@@ -19,7 +19,7 @@ class ConvenioEmailController extends Controller
     /**
      * @var ConvenioEmailRepository
      */
-    protected $empresa_sedeSedeRepository;
+    protected $convenioEmailRepository;
 
     /**
      * ConvenioEmailController constructor.

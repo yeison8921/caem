@@ -59,6 +59,7 @@ Vue.use(Vuelidate)
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('login-component', require('./components/auth/LoginComponent.vue').default);
 Vue.component('registro-component', require('./components/auth/RegistroComponent.vue').default);
+Vue.component('perfil-component', require('./components/auth/PerfilComponent.vue').default);
 Vue.component('index-parametro-component', require('./components/administracion/parametro/IndexParametroComponent.vue').default);
 Vue.component('index-autorizacion-component', require('./components/administracion/autorizacion/IndexAutorizacionComponent.vue').default);
 Vue.component('form-parametro-component', require('./components/administracion/parametro/FormParametroComponent.vue').default);
@@ -78,6 +79,7 @@ Vue.component('soft-switch', require('./components/SoftSwitch.vue').default);
 Vue.component('soft-button', require('./components/SoftButton.vue').default);
 Vue.component('soft-button-basic', require('./components/SoftButtonBasic.vue').default);
 Vue.component('index-resultado-component', require('./components/resultado/IndexResultadoComponent.vue').default);
+Vue.component('index-resultado-excel-component', require('./components/resultado/IndexResultadoComponentExcel.vue').default);
 Vue.component('index-fuente-component', require('./components/fuente/IndexFuenteComponent.vue').default);
 Vue.component('form-combustible-component', require('./components/fuente/combustible/FormCombustibleComponent.vue').default);
 Vue.component('form-emision-component', require('./components/fuente/emision/FormEmisionComponent.vue').default);

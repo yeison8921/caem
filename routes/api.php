@@ -131,6 +131,7 @@ Route::group(['as' => 'auth.'], function () {
         // Resultados fuente emision
         Route::apiResource('resultados_fuente_emision', ResultadoFuenteEmisionController::class);
         Route::post('guardarDatosConsumos', [ResultadoFuenteEmisionController::class, 'guardarDatosConsumos']);
+        Route::post('getDatosGraficas', [ResultadoFuenteEmisionController::class, 'getDatosGraficas']);
 
         // Convenios
         Route::apiResource('convenios', ConvenioController::class);
