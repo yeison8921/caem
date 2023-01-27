@@ -34,7 +34,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if (auth()->user()) {
+        return view('welcome');
+    } else {
+        return view('auth/login');
+    }
 });
 
 Auth::routes();

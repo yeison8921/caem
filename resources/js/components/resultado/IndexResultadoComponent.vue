@@ -85,12 +85,6 @@
                                 Huella de Carbono por Categoría
                             </h6>
                             <div class="chart">
-                                <!-- 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI',
-                                        'CATEGORIA 2 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR ENERGÍA IMPORTADA',
-                                        'CATEGORIA 3 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR EL TRANSPORTE',
-                                        'CATEGORIA 4 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR PRODUCTOS QUE UTILIZA LA ORGANIZACIÓN',
-                                        'CATEGORIA 5 - EMISIONES INDIRECTAS DE GEI ASOCIADAS CON EL USO DE LOS PRODUCTOS DE LA ORGANIZACIÓN',
-                                        'CATEGORIA 6 - EMISIONES INDIRECTAS DE GEI PROVENIENTES DE OTRAS FUENTES', -->
                                 <huella-carbono-categoria-bar
                                     ref="huellaCarbonoCategoria"
                                     :chart="{
@@ -327,6 +321,8 @@ export default {
             this.options_empresa = await Empresa.get();
         },
         async getOptionsSede() {
+            this.options_sede = [];
+            this.sede = "";
             let options =
                 this.user.rol_id != 2
                     ? await EmpresaSede.where("empresa_id", this.empresa).get()
