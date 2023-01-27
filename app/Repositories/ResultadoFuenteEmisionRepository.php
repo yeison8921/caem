@@ -583,7 +583,8 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
             array_push($array_totales_fuente_torta, (($a * 100) / $total));
         }
 
-        foreach ($array_labels_tipo as $a) {
+        foreach ($array_totales_tipo as $key => $a) {
+            $array_totales_tipo[$key] = floatval($a);
             array_push($array_colores_tipo, sprintf('#%06X40', mt_rand(0, 0xFFFFFF)));
         }
 
