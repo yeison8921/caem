@@ -6,11 +6,14 @@
             class="w-auto h-auto collapse navbar-collapse max-height-vh-100 h-100"
         >
             <ul class="navbar-nav">
-                <li class="mt-3 nav-item">
+                <li class="mt-2 nav-item">
                     <h6
                         class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
                         :class="'me-4'"
+                        style="margin: 0 1rem"
                     >
+                        {{ userLogged.first_name }} {{ userLogged.last_name }}
+                        <br />
                         {{ empresa }} <br />
                         {{ sede }}
                     </h6>
@@ -198,7 +201,7 @@
     </div>
 </template>
 <script>
-import ConvenioEmail from "../../../models/ConvenioEmail";
+import User from "../../../models/User";
 import SidenavItem from "./SidenavItem.vue";
 import SidenavCollapse from "./SidenavCollapse.vue";
 import SidenavCard from "./SidenavCard.vue";
@@ -288,13 +291,13 @@ export default {
                 });
         },
         async getEmpresaByUser() {
-            let data = await ConvenioEmail.where("email", this.userLogged.email)
-                .include("sede", "sede.empresa")
-                .first();
+            let data = await User.include("empresa", "empresaSede").find(
+                this.userLogged.id
+            );
 
             if (Object.keys(data).length != 0) {
-                this.empresa = data.sede.empresa.nombre;
-                this.sede = data.sede.nombre;
+                this.empresa = data.empresa.nombre;
+                this.sede = data.empresa_sede.nombre;
             }
         },
     },
