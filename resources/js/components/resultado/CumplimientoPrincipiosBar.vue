@@ -73,7 +73,13 @@ export default {
                             color: "black",
                             align: "end",
                             anchor: "end",
-                            offset: 10,
+                            formatter: function (value, context) {
+                                return (
+                                    Number(value.toFixed(1)).toLocaleString(
+                                        "es-co"
+                                    ) + " %"
+                                );
+                            },
                         },
                         legend: {
                             display: false,

@@ -16,7 +16,7 @@ export default {
         },
         height: {
             type: [String, Number],
-            default: "200",
+            default: "400",
         },
         title: {
             type: String,
@@ -74,8 +74,13 @@ export default {
                         datalabels: {
                             color: "black",
                             align: "end",
-                            anchor: "end",
-                            offset: 10,
+                            formatter: function (value, context) {
+                                return (
+                                    Number(value.toFixed(2)).toLocaleString(
+                                        "es-co"
+                                    ) + " %"
+                                );
+                            },
                         },
                         legend: {
                             display: false,

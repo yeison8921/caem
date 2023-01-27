@@ -319,9 +319,9 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
         ];
 
         $array_labels_categoria = [
-            'CATEGORIA 1',
-            'CATEGORIA 2',
-            'CATEGORIA 3',
+            'C 1',
+            'C 2',
+            'C 3',
         ];
         $array_totales_categoria = [0, 0, 0];
         $array_colores_categoria = [];
@@ -367,10 +367,10 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
         if ($request->reporte == '') {
             array_push(
                 $array_labels_categoria,
-                'CATEGORIA 4',
-                'CATEGORIA 5',
-                'CATEGORIA 6',
-                'CATEGORIA 7',
+                'C 4',
+                'C 5',
+                'C 6',
+                'C 7',
             );
             array_push($array_totales_categoria, 0, 0, 0, 0);
 
@@ -378,7 +378,7 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                 $array_labels_gei,
                 'CH4',
                 'N2O',
-                'COMPUESTOS FLUORADOS',
+                'COMP F',
                 'SF6',
                 'NF3',
             );
@@ -564,26 +564,33 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
             }
         }
 
-        foreach ($array_labels_categoria as $a) {
-            array_push($array_colores_categoria, sprintf('#%06X', mt_rand(0, 0xFFFFFF)));
+        foreach ($array_totales_categoria as $key => $a) {
+            array_push($array_colores_categoria, sprintf('#%06X40', mt_rand(0, 0xFFFFFF)));
         }
 
-        foreach ($array_labels_gei as $a) {
-            array_push($array_colores_gei, sprintf('#%06X', mt_rand(0, 0xFFFFFF)));
+        foreach ($array_labels_gei as $key => $a) {
+            array_push($array_colores_gei, sprintf('#%06X40', mt_rand(0, 0xFFFFFF)));
         }
 
-        foreach ($array_labels_fuente as $a) {
-            array_push($array_colores_fuente, sprintf('#%06X', mt_rand(0, 0xFFFFFF)));
+        $total = 0;
+        $array_totales_fuente_torta = [];
+        foreach ($array_totales_fuente as $a) {
+            $total += $a;
+            array_push($array_colores_fuente, sprintf('#%06X40', mt_rand(0, 0xFFFFFF)));
+        }
+
+        foreach ($array_totales_fuente as $a) {
+            array_push($array_totales_fuente_torta, (($a * 100) / $total));
         }
 
         foreach ($array_labels_tipo as $a) {
-            array_push($array_colores_tipo, sprintf('#%06X', mt_rand(0, 0xFFFFFF)));
+            array_push($array_colores_tipo, sprintf('#%06X40', mt_rand(0, 0xFFFFFF)));
         }
 
         $suma = 0;
         foreach ($array_cumplimiento as $a) {
             $suma += $a;
-            array_push($array_colores_cumplimiento, sprintf('#%06X', mt_rand(0, 0xFFFFFF)));
+            array_push($array_colores_cumplimiento, sprintf('#%06X40', mt_rand(0, 0xFFFFFF)));
         }
 
         $array_resultados['promedio_cumplimiento'] = $suma / count($array_cumplimiento);
@@ -592,6 +599,7 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
         $array_resultados['huella_carbono_categoria'] = [$array_labels_categoria, $array_totales_categoria, $array_colores_categoria];
         $array_resultados['huella_carbono_gei'] = [$array_labels_gei, $array_totales_gei, $array_colores_gei];
         $array_resultados['huella_carbono_fuente'] = [$array_labels_fuente, $array_totales_fuente, $array_colores_fuente];
+        $array_resultados['huella_carbono_fuente_torta'] = [$array_labels_fuente, $array_totales_fuente_torta, $array_colores_fuente];
         $array_resultados['huella_carbono_tipo'] = [$array_labels_tipo, $array_totales_tipo, $array_colores_tipo];
 
         return $array_resultados;

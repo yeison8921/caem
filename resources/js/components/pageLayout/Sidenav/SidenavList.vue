@@ -22,7 +22,10 @@
                         :class="currentRoute === 'general' ? 'active' : ''"
                     >
                         <template #icon>
-                            <Document />
+                            <i
+                                class="fas fa-chart-line fa-4x"
+                                style="color: #21d4fd"
+                            ></i>
                         </template>
                         <template #list>
                             <ul class="nav ms-4 ps-3">
@@ -35,8 +38,8 @@
                                     "
                                     :to="{ name: 'Procesos' }"
                                     :url="'/procesos'"
-                                    mini-icon="P"
-                                    text="Procesos"
+                                    mini-icon="ID"
+                                    text="Ingresar datos"
                                 />
                                 <sidenav-item
                                     v-if="
@@ -64,7 +67,7 @@
                         :class="'active'"
                     >
                         <template #icon>
-                            <Basket />
+                            <!-- <i class="fas fa-chart-bar"></i> -->
                         </template>
                         <template #list>
                             <ul class="nav ms-4 ps-3">
@@ -165,7 +168,9 @@
                         nav-text="Usuario"
                         :class="'active'"
                     >
-                        <i class="fa fa-user me-sm-1" aria-hidden="true"></i>
+                        <template #icon>
+                            <i class="fas fa-user" style="color: #21d4fd"></i>
+                        </template>
                         <template #list>
                             <ul class="nav ms-4 ps-3">
                                 <sidenav-item

@@ -65,7 +65,7 @@
                                                     color="success"
                                                     full-width
                                                     @clickBtn="login"
-                                                    >Inicia sesión
+                                                    >Iniciar sesión
                                                 </soft-button>
                                             </div>
                                         </form>

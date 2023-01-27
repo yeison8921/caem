@@ -3,7 +3,7 @@
         <div class="row">
             <div class="form-group">
                 <br />
-                <h2>Procesos</h2>
+                <h2>Ingresar datos</h2>
             </div>
         </div>
         <div class="card">
@@ -938,6 +938,7 @@
                                         v-for="(p, ip) in procesos"
                                         v-bind:key="ip"
                                     >
+                                        <br />
                                         <h2 class="accordion-header">
                                             <button
                                                 class="accordion-button border-bottom font-weight-bold collapsed"
@@ -992,7 +993,7 @@
                                                     />
                                                 </div>
                                                 <div
-                                                    style="padding-left: 20px"
+                                                    style="padding-left: 30px"
                                                     class="accordion"
                                                     id="accordionSubprocesos"
                                                 >

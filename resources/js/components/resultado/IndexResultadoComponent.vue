@@ -57,156 +57,178 @@
                     </div>
                     <div class="mb-3 text-end">
                         <button type="submit" class="btn btn-primary">
-                            Consultar
+                            Calcular
                         </button>
                     </div>
                 </form>
             </div>
             <div class="col-lg-10" v-if="mostrar_graficas">
                 <div class="row mb-5">
-                    <div class="col-lg-4 border-end">
+                    <div class="col-lg-4">
                         <div
                             class="card h-100 text-center justify-content-center"
                         >
                             <div>
-                                <h5>Total Huella de Carbono CO2 Equivalente</h5>
-                                <h3>{{ total_huella_carbono }} ton</h3>
+                                <h5>
+                                    Total Huella de Carbono<br />
+                                    CO2 Equivalente
+                                </h5>
+                                <br />
+                                <br />
+                                <h2>{{ total_huella_carbono }} ton</h2>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 border-end">
-                        <h6 class="text-center">
-                            Huella de Carbono por Categoría
-                        </h6>
-                        <div class="chart">
-                            <!-- 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI',
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <h6 class="text-center">
+                                Huella de Carbono por Categoría
+                            </h6>
+                            <div class="chart">
+                                <!-- 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI',
                                         'CATEGORIA 2 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR ENERGÍA IMPORTADA',
                                         'CATEGORIA 3 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR EL TRANSPORTE',
                                         'CATEGORIA 4 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR PRODUCTOS QUE UTILIZA LA ORGANIZACIÓN',
                                         'CATEGORIA 5 - EMISIONES INDIRECTAS DE GEI ASOCIADAS CON EL USO DE LOS PRODUCTOS DE LA ORGANIZACIÓN',
                                         'CATEGORIA 6 - EMISIONES INDIRECTAS DE GEI PROVENIENTES DE OTRAS FUENTES', -->
-                            <huella-carbono-categoria-bar
-                                ref="huellaCarbonoCategoria"
-                                :chart="{
-                                    labels: array_huella_carbono_categoria[0],
-                                    datasets: {
-                                        label: 'Total huella carbono por categoría',
-                                        data: array_huella_carbono_categoria[1],
-                                        backgroundColor:
-                                            array_huella_carbono_categoria[2],
-                                    },
-                                }"
-                            />
+                                <huella-carbono-categoria-bar
+                                    ref="huellaCarbonoCategoria"
+                                    :chart="{
+                                        labels: array_huella_carbono_categoria[0],
+                                        datasets: {
+                                            label: 'Total huella carbono por categoría',
+                                            data: array_huella_carbono_categoria[1],
+                                            backgroundColor:
+                                                array_huella_carbono_categoria[2],
+                                        },
+                                    }"
+                                />
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <h6 class="text-center">Huella de Carbono por GEI</h6>
-                        <div class="chart">
-                            <huella-carbono-gei-bar
-                                ref="huellaCarbonoGeiBar"
-                                :chart="{
-                                    labels: array_huella_carbono_gei[0],
-                                    datasets: {
-                                        label: 'Total huella carbono por GEI',
-                                        data: array_huella_carbono_gei[1],
-                                        backgroundColor:
-                                            array_huella_carbono_gei[2],
-                                    },
-                                }"
-                            />
+                        <div class="card">
+                            <h6 class="text-center">
+                                Huella de Carbono por GEI
+                            </h6>
+                            <div class="chart">
+                                <huella-carbono-gei-bar
+                                    ref="huellaCarbonoGeiBar"
+                                    :chart="{
+                                        labels: array_huella_carbono_gei[0],
+                                        datasets: {
+                                            label: 'Total huella carbono por GEI',
+                                            data: array_huella_carbono_gei[1],
+                                            backgroundColor:
+                                                array_huella_carbono_gei[2],
+                                        },
+                                    }"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row mb-5">
                     <div class="col-lg-6">
-                        <h6 class="text-center">
-                            Huella de Carbono por Fuente
-                        </h6>
-                        <div class="chart">
-                            <huella-carbono-fuente-bar
-                                ref="huellaCarbonoFuenteBar"
-                                :chart="{
-                                    labels: array_huella_carbono_fuente[0],
-                                    datasets: {
-                                        label: 'Total huella carbono por fuente',
-                                        data: array_huella_carbono_fuente[1],
-                                        backgroundColor:
-                                            array_huella_carbono_fuente[2],
-                                    },
-                                }"
-                            />
+                        <div class="card">
+                            <h6 class="text-center">
+                                Huella de Carbono por Fuente
+                            </h6>
+                            <div class="chart">
+                                <huella-carbono-fuente-bar
+                                    ref="huellaCarbonoFuenteBar"
+                                    :chart="{
+                                        labels: array_huella_carbono_fuente[0],
+                                        datasets: {
+                                            label: 'Total huella carbono por fuente',
+                                            data: array_huella_carbono_fuente[1],
+                                            backgroundColor:
+                                                array_huella_carbono_fuente[2],
+                                        },
+                                    }"
+                                />
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <h6 class="text-center">
-                            Huella de Carbono por Fuente
-                        </h6>
-                        <div class="chart">
-                            <huella-carbono-fuente-pie
-                                ref="huellaCarbonoFuentePie"
-                                id="pie-chart-component"
-                                height="300"
-                                :chart="{
-                                    labels: array_huella_carbono_fuente[0],
-                                    datasets: {
-                                        label: 'Total huella carbono por fuente',
-                                        data: array_huella_carbono_fuente[1],
-                                        backgroundColor:
-                                            array_huella_carbono_fuente[2],
-                                    },
-                                }"
-                            />
+                        <div class="card">
+                            <h6 class="text-center">
+                                Huella de Carbono por Fuente
+                            </h6>
+                            <div class="chart">
+                                <huella-carbono-fuente-pie
+                                    ref="huellaCarbonoFuentePie"
+                                    id="pie-chart-component"
+                                    height="300"
+                                    :chart="{
+                                        labels: array_huella_carbono_fuente_torta[0],
+                                        datasets: {
+                                            label: 'Total huella carbono por fuente',
+                                            data: array_huella_carbono_fuente_torta[1],
+                                            backgroundColor:
+                                                array_huella_carbono_fuente_torta[2],
+                                        },
+                                    }"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row mb-5">
                     <div class="col-lg-6">
-                        <h6 class="text-center">
-                            Huella de Carbono por Tipo o clase
-                        </h6>
-                        <div class="chart">
-                            <huella-carbono-tipo-bar
-                                ref="huellaCarbonoTipoBar"
-                                :chart="{
-                                    labels: array_huella_carbono_tipo[0],
-                                    datasets: {
-                                        label: 'Huella de carbono por fuente de emisión',
-                                        data: array_huella_carbono_tipo[1],
-                                        backgroundColor:
-                                            array_huella_carbono_tipo[2],
-                                    },
-                                }"
-                            />
+                        <div class="card">
+                            <h6 class="text-center">
+                                Huella de Carbono por Tipo o clase
+                            </h6>
+
+                            <div class="chart">
+                                <huella-carbono-tipo-bar
+                                    ref="huellaCarbonoTipoBar"
+                                    :chart="{
+                                        labels: array_huella_carbono_tipo[0],
+                                        datasets: {
+                                            label: 'Huella de carbono por fuente de emisión',
+                                            data: array_huella_carbono_tipo[1],
+                                            backgroundColor:
+                                                array_huella_carbono_tipo[2],
+                                        },
+                                    }"
+                                />
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <h6 class="text-center">Cumplimiento de principios</h6>
-                        <div class="chart">
-                            <cumplimiento-principios-bar
-                                ref="cumplimientoPrincipiosBar"
-                                :chart="{
-                                    labels: [
-                                        'PERTINENCIA',
-                                        'INTEGRALIDAD',
-                                        'COHERENCIA',
-                                        'EXACTITUD',
-                                        'TRANSPARENCIA',
-                                    ],
-                                    datasets: {
-                                        label: 'Porcentaje de cumplimiento',
-                                        data: array_cumplimiento[0],
-                                        backgroundColor: array_cumplimiento[1],
-                                    },
-                                }"
-                            />
-                        </div>
-                        <div class="text-end">
-                            <p>
-                                <b>
-                                    Total obtenido =
-                                    {{ promedio_cumplimiento }}%
-                                </b>
-                            </p>
+                        <div class="card">
+                            <h6 class="text-center">
+                                Cumplimiento de principios
+                            </h6>
+                            <div class="chart">
+                                <cumplimiento-principios-bar
+                                    ref="cumplimientoPrincipiosBar"
+                                    :chart="{
+                                        labels: [
+                                            'PERTINENCIA',
+                                            'INTEGRALIDAD',
+                                            'COHERENCIA',
+                                            'EXACTITUD',
+                                            'TRANSPARENCIA',
+                                        ],
+                                        datasets: {
+                                            label: 'Porcentaje de cumplimiento',
+                                            data: array_cumplimiento[0],
+                                            backgroundColor:
+                                                array_cumplimiento[1],
+                                        },
+                                    }"
+                                />
+                            </div>
+                            <div class="text-end">
+                                <p>
+                                    <b>
+                                        {{ promedio_cumplimiento }}
+                                    </b>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -249,6 +271,7 @@ export default {
             array_huella_carbono_categoria: [],
             array_huella_carbono_gei: [],
             array_huella_carbono_fuente: [],
+            array_huella_carbono_fuente_torta: [],
             array_huella_carbono_tipo: [],
             array_cumplimiento: [],
             promedio_cumplimiento: "",
@@ -378,19 +401,30 @@ export default {
                 .then((response) => {
                     if (response.data["total_huella_carbono"] != 0) {
                         this.mostrar_graficas = true;
-                        this.total_huella_carbono =
-                            response.data["total_huella_carbono"];
+
+                        this.total_huella_carbono = Number(
+                            response.data["total_huella_carbono"].toFixed(1)
+                        ).toLocaleString("es-co");
                         this.array_huella_carbono_categoria =
                             response.data["huella_carbono_categoria"];
                         this.array_huella_carbono_gei =
                             response.data["huella_carbono_gei"];
                         this.array_huella_carbono_fuente =
                             response.data["huella_carbono_fuente"];
+                        this.array_huella_carbono_fuente_torta =
+                            response.data["huella_carbono_fuente_torta"];
                         this.array_huella_carbono_tipo =
                             response.data["huella_carbono_tipo"];
                         this.array_cumplimiento = response.data["cumplimiento"];
+
                         this.promedio_cumplimiento =
-                            response.data["promedio_cumplimiento"];
+                            "Total obtenido = " +
+                            Number(
+                                response.data["promedio_cumplimiento"].toFixed(
+                                    1
+                                )
+                            ).toLocaleString("es-co") +
+                            " %";
 
                         setTimeout(() => {
                             this.$refs.huellaCarbonoCategoria.cargarGrafica();

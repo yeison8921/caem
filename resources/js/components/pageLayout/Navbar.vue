@@ -1,6 +1,7 @@
 <template>
+    <div></div>
     <!-- Navbar -->
-    <nav
+    <!-- <nav
         class="top-0 navbar navbar-expand-lg position-absolute z-index-3"
         :class="isBlur ? isBlur : 'shadow-none my-2 navbar-transparent w-100'"
     >
@@ -131,7 +132,7 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav> -->
     <!-- End Navbar -->
 </template>
 

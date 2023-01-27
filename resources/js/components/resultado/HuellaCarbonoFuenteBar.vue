@@ -15,7 +15,7 @@ export default {
         },
         height: {
             type: [String, Number],
-            default: "400",
+            default: "300",
         },
         chart: {
             type: Object,
@@ -71,13 +71,11 @@ export default {
                             color: "black",
                             align: "end",
                             anchor: "end",
-                            offset: 10,
-                            // formatter: function (value, index, values) {
-                            //     if (value == 0) {
-                            //         value = "";
-                            //     }
-                            //     return value;
-                            // },
+                            formatter: function (value, context) {
+                                return Number(value.toFixed(1)).toLocaleString(
+                                    "es-co"
+                                );
+                            },
                         },
                         legend: {
                             display: false,
