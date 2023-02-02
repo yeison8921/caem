@@ -15,6 +15,7 @@
                             v-model="fuga.nombre"
                             type="text"
                             class="form-control"
+                            required
                         />
                     </div>
                     <div class="mb-3">
@@ -25,6 +26,7 @@
                             v-model="fuga.unidad_consumo"
                             type="text"
                             class="form-control"
+                            required
                         />
                     </div>
                     <div class="mb-3">
@@ -36,6 +38,7 @@
                             type="number"
                             step="any"
                             class="form-control"
+                            required
                         />
                     </div>
                     <div class="mb-3">
@@ -46,6 +49,7 @@
                             v-model="fuga.unidad_factor_emision_co2"
                             type="text"
                             class="form-control"
+                            required
                         />
                     </div>
                     <div class="mb-3">
@@ -57,6 +61,7 @@
                             type="number"
                             step="any"
                             class="form-control"
+                            required
                         />
                     </div>
                     <div class="mb-3">
@@ -68,6 +73,7 @@
                             type="number"
                             step="any"
                             class="form-control"
+                            required
                         />
                     </div>
                     <div class="mb-3">
@@ -78,6 +84,7 @@
                             v-model="fuga.fuente_bibliografica_co2"
                             type="text"
                             class="form-control"
+                            required
                         />
                     </div>
 

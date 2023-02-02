@@ -19,6 +19,7 @@ class ElectricidadSeeder extends Seeder
          */
 
         $electricidades = [
+            ['nombre' => 'Energía eléctrica adquirida (Factor emisión XM-UPME 2021)', 'unidad_consumo' => 'KWh', 'factor_emision_co2' => '0.126', 'unidad_factor_emision_co2' => 'kgCO2 e/KWh', 'incertidumbre_co2_1' => '0.05000', 'incertidumbre_co2_2' => '0.10000', 'fuente_bibliografica_co2' => 'XM, 2022'],
             ['nombre' => 'Energía eléctrica adquirida (Factor emisión XM-UPME 2020)', 'unidad_consumo' => 'KWh', 'factor_emision_co2' => '0.203', 'unidad_factor_emision_co2' => 'kgCO2 e/KWh', 'incertidumbre_co2_1' => '0.05000', 'incertidumbre_co2_2' => '0.10000', 'fuente_bibliografica_co2' => 'XM, 2021'],
             ['nombre' => 'Energía eléctrica adquirida (Factor emisión UPME-FECOC 2019)', 'unidad_consumo' => 'KWh', 'factor_emision_co2' => '0.166', 'unidad_factor_emision_co2' => 'kgCO2 e/KWh', 'incertidumbre_co2_1' => '0.05000', 'incertidumbre_co2_2' => '0.10000', 'fuente_bibliografica_co2' => 'UPME, 2020'],
             ['nombre' => 'Energía eléctrica adquirida (Factor emisión UPME-FECOC 2018)', 'unidad_consumo' => 'KWh', 'factor_emision_co2' => '0.128', 'unidad_factor_emision_co2' => 'kgCO2 e/KWh', 'incertidumbre_co2_1' => '0.05000', 'incertidumbre_co2_2' => '0.10000', 'fuente_bibliografica_co2' => 'UPME, 2019'],

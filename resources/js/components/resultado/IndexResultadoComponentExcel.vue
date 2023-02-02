@@ -227,9 +227,7 @@
                                 <tbody>
                                     <template v-for="a in el">
                                         <tr :key="a.id" class="table-active">
-                                            <td>
-                                                {{ a[0] }}
-                                            </td>
+                                            <td>{{ a[0] }}</td>
                                             <td style="display;none"></td>
                                             <td style="display;none"></td>
                                             <td style="display;none"></td>
@@ -297,6 +295,7 @@
                                         <tr
                                             :key="a.id"
                                             v-for="(f, fi) in fuentes(
+                                                a[0],
                                                 a[1],
                                                 a[2],
                                                 0
@@ -600,8 +599,9 @@
                                             <td>
                                                 {{
                                                     f.resultado[
-                                                        "unidad_factor_emision_sf6"
-                                                    ] + ar
+                                                        "unidad_factor_emision_sf6" +
+                                                            ar
+                                                    ]
                                                 }}
                                             </td>
                                             <td>
@@ -647,14 +647,16 @@
                                             <td>
                                                 {{
                                                     f.resultado[
-                                                        "factor_emision_nf3"
+                                                        "factor_emision_nf3" +
+                                                            ar
                                                     ]
                                                 }}
                                             </td>
                                             <td>
                                                 {{
                                                     f.resultado[
-                                                        "unidad_factor_emision_nf3"
+                                                        "unidad_factor_emision_nf3" +
+                                                            ar
                                                     ]
                                                 }}
                                             </td>
@@ -1072,6 +1074,7 @@
                                         <tr
                                             :key="a.id"
                                             v-for="(f, fi) in fuentes(
+                                                a[0],
                                                 a[1],
                                                 a[2],
                                                 1
@@ -1393,7 +1396,7 @@ export default {
                             "SUBTOTAL EMISIONES DE PROCESO",
                         ],
                         [
-                            " ",
+                            "",
                             ["fuentes_fijas", "fuentes_moviles", "emisiones"],
                             [
                                 "Combustible_solido",
@@ -1414,7 +1417,7 @@ export default {
                                 "Residuo_agropecuario",
                                 "Fertilizante",
                             ],
-                            "TOTAL CATEGORIA 1",
+                            "TOTAL CATEGORÍA 1",
                         ],
                     ],
                 },
@@ -1438,7 +1441,7 @@ export default {
                                 "SUBTOTAL ENERGÍA IMPORTADA",
                             ],
                             [
-                                " ",
+                                "",
                                 ["energias"],
                                 [
                                     "Combustible_solido",
@@ -1446,7 +1449,7 @@ export default {
                                     "Combustible_gaseoso",
                                     "Energia_electrica",
                                 ],
-                                "TOTAL CATEGORIA 2",
+                                "TOTAL CATEGORÍA 2",
                             ],
                         ],
                 },
@@ -1468,11 +1471,11 @@ export default {
                             [
                                 "TRANSPORTE CARGA Y PASAJEROS",
                                 "transportes",
-                                ["Transporte"],
+                                ["Transporte_carga", "Transporte_pasajeros"],
                                 "SUBTOTAL VIAJES AÉREOS Y TRANSPORTE DE CARGA",
                             ],
                             [
-                                " ",
+                                "",
                                 ["transportes"],
                                 [
                                     "Combustible_liquido",
@@ -1480,9 +1483,10 @@ export default {
                                     "Refrigerante",
                                     "Extintor",
                                     "Lubricante",
-                                    "Transporte",
+                                    "Transporte_carga",
+                                    "Transporte_pasajeros",
                                 ],
-                                "TOTAL CATEGORIA 3",
+                                "TOTAL CATEGORÍA 3",
                             ],
                         ],
                 },
@@ -1497,6 +1501,7 @@ export default {
                                     "Extintor",
                                     "Lubricante",
                                     "Aislamiento",
+                                    "Producto",
                                 ],
                                 "SUBTOTAL PRODUCTOS",
                             ],
@@ -1504,7 +1509,7 @@ export default {
                                 "BIENES Y PRODUCTOS",
                                 "productos",
                                 ["Equipo"],
-                                "SUBTOTAL BIENES DE CAPITAL",
+                                "SUBTOTAL EQUIPOS",
                             ],
                             [
                                 "BIENES Y PRODUCTOS",
@@ -1515,22 +1520,24 @@ export default {
                             [
                                 "SERVICIOS",
                                 "productos",
-                                ["Residuo"],
+                                ["Residuo_organizacional", "Servicio"],
                                 "SUBTOTAL SERVICIOS",
                             ],
                             [
-                                " ",
+                                "",
                                 ["productos"],
                                 [
                                     "Refrigerante",
                                     "Extintor",
                                     "Lubricante",
                                     "Aislamiento",
+                                    "Producto",
                                     "Equipo",
                                     "Materia_prima",
-                                    "Residuo",
+                                    "Servicio",
+                                    "Residuo_organizacional",
                                 ],
-                                "TOTAL CATEGORIA 4",
+                                "TOTAL CATEGORÍA 4",
                             ],
                         ],
                 },
@@ -1545,27 +1552,27 @@ export default {
                             ],
                             [
                                 "FIN DE VIDA",
-                                "fines",
-                                ["Producto"],
+                                "usos",
+                                ["Fin"],
                                 "SUBTOTAL FIN DE VIDA",
                             ],
                             [
                                 "ACTIVOS ARRENDADOS",
-                                "activos",
+                                "usos",
                                 ["Activo"],
                                 "SUBTOTAL ACTIVOS",
                             ],
                             [
                                 "INVERSIONES",
-                                "inversiones",
+                                "usos",
                                 ["Inversion"],
                                 "SUBTOTAL INVERSIONES",
                             ],
                             [
-                                " ",
-                                ["usos", "fines", "activos", "inversiones"],
+                                "",
+                                ["usos"],
                                 ["Producto", "Activo", "Inversion"],
-                                "TOTAL CATEGORIA 5",
+                                "TOTAL CATEGORÍA 5",
                             ],
                         ],
                 },
@@ -1573,7 +1580,7 @@ export default {
                     "CATEGORIA 6 - EMISIONES INDIRECTAS DE GEI PROVENIENTES DE OTRAS FUENTES":
                         [
                             ["OTROS", "otros", ["Otro"], "SUBTOTAL OTROS"],
-                            [" ", ["otros"], ["Otro"], "TOTAL CATEGORIA 6"],
+                            ["", ["otros"], ["Otro"], "TOTAL CATEGORÍA 6"],
                         ],
                 },
                 {
@@ -1585,10 +1592,10 @@ export default {
                             "SUBTOTAL TRASVERSALES",
                         ],
                         [
-                            " ",
+                            "",
                             ["trasversales"],
                             ["Trasversales"],
-                            "TOTAL CATEGORIA 7",
+                            "TOTAL CATEGORÍA 7",
                         ],
                     ],
                 },
@@ -1612,18 +1619,12 @@ export default {
                             ],
                             "SUBTOTAL FUENTES FIJAS",
                         ],
-                        // [
-                        //     "EMISIONES DE PROCESO",
-                        //     "emisiones",
-                        //     [
-                        //         "Refrigerante",
-                        //         "Extintor",
-                        //         "Lubricante",
-                        //         "Fuga",
-                        //         "Aislamiento",
-                        //     ],
-                        //     "SUBTOTAL OTROS FUENTES FIJAS",
-                        // ],
+                        [
+                            "",
+                            ["fuentes_moviles", "fuentes_fijas"],
+                            ["Combustible_solido", "Combustible_liquido","Combustible_gaseoso"],
+                            "TOTAL CATEGORÍA 1",
+                        ],
                     ],
                 },
                 {
@@ -1639,6 +1640,12 @@ export default {
                                 ],
                                 "SUBTOTAL ENERGÍA IMPORTADA",
                             ],
+                            [
+                            "",
+                            ["energias"],
+                            ["Combustible_solido", "Combustible_liquido","Combustible_gaseoso"],
+                            "TOTAL CATEGORÍA 2"
+                            ],
                         ],
                 },
                 {
@@ -1650,6 +1657,12 @@ export default {
                                 ["Combustible_liquido", "Combustible_gaseoso"],
                                 "SUBTOTAL COMBUSTIBLES",
                             ],
+                            [
+                            "",
+                            ["transportes"],
+                            ["Combustible_liquido","Combustible_gaseoso"],
+                            "TOTAL CATEGORÍA 3"
+                            ],  
                         ],
                 },
             ],
@@ -1659,33 +1672,6 @@ export default {
     mounted() {
         this.getUserLogged();
     },
-    // computed: {
-    //     totalIncertidumbre() {
-    //         let total = 0;
-    //         let total_huella = 0;
-    //         let suma = 0;
-    //         Object.keys(this.resultado).forEach((key) => {
-    //             Object.keys(this.resultado[key]).forEach((k) => {
-    //                 suma += Math.pow(
-    //                     this.resultado[key][k]["resultado"][
-    //                         "huella_carbono" + this.ar
-    //                     ] *
-    //                         this.resultado[key][k]["resultado"][
-    //                             "incertidumbre_fuente" + this.ar
-    //                         ],
-    //                     2
-    //                 );
-
-    //                 total_huella +=
-    //                     this.resultado[key][k]["resultado"][
-    //                         "huella_carbono" + this.ar
-    //                     ];
-    //             });
-    //         });
-    //         total = (Math.sqrt(suma) / total_huella) * 100;
-    //         return total;
-    //     },
-    // },
     methods: {
         async getUserLogged() {
             await axios
@@ -1720,34 +1706,36 @@ export default {
                 this.options_sede.push(e);
             });
         },
-        fuentes(tipo, array_fuente_emision, $biogenico) {
+        fuentes(fila, tipo, array_fuente_emision, $biogenico) {
             let fuentes = [];
-            Object.keys(this.resultado).forEach((key) => {
-                Object.keys(this.resultado[key]).forEach((k) => {
-                    if ($biogenico) {
-                        if (
-                            this.resultado[key][k]["tipo"] == tipo &&
-                            this.resultado[key][k]["fuentetable"][
-                                "biogenico"
-                            ] == $biogenico &&
-                            array_fuente_emision.includes(
-                                this.resultado[key][k]["fuente_emision"]
-                            )
-                        ) {
-                            fuentes.push(this.resultado[key][k]);
+            if (fila != "") {
+                Object.keys(this.resultado).forEach((key) => {
+                    Object.keys(this.resultado[key]).forEach((k) => {
+                        if ($biogenico) {
+                            if (
+                                this.resultado[key][k]["tipo"] == tipo &&
+                                this.resultado[key][k]["fuentetable"][
+                                    "biogenico"
+                                ] == $biogenico &&
+                                array_fuente_emision.includes(
+                                    this.resultado[key][k]["fuente_emision"]
+                                )
+                            ) {
+                                fuentes.push(this.resultado[key][k]);
+                            }
+                        } else {
+                            if (
+                                this.resultado[key][k]["tipo"] == tipo &&
+                                array_fuente_emision.includes(
+                                    this.resultado[key][k]["fuente_emision"]
+                                )
+                            ) {
+                                fuentes.push(this.resultado[key][k]);
+                            }
                         }
-                    } else {
-                        if (
-                            this.resultado[key][k]["tipo"] == tipo &&
-                            array_fuente_emision.includes(
-                                this.resultado[key][k]["fuente_emision"]
-                            )
-                        ) {
-                            fuentes.push(this.resultado[key][k]);
-                        }
-                    }
+                    });
                 });
-            });
+            }
 
             return fuentes;
         },
@@ -1946,6 +1934,7 @@ export default {
             axios
                 .get("api/getFuentesEmision/" + this.empresa + "/" + this.sede)
                 .then((response) => {
+                    this.mostrar_tablas = true;
                     this.resultado = response.data;
                     for (let i = 0; i < 7; i++) {
                         $("#tabla-resultados-" + i)
@@ -1965,9 +1954,9 @@ export default {
                                 "#tabla-biogenicos-" + i
                             );
                         }
-                        this.mostrar_tablas = true;
+
                         Swal.close();
-                    }, 2000);
+                    }, 1000);
                 })
                 .catch((error) => {});
         },
@@ -1978,4 +1967,4 @@ export default {
 table.table {
     width: auto;
 }
-</style>
+</style

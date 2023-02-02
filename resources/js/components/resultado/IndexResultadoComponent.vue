@@ -457,4 +457,8 @@ export default {
 table.table {
     width: auto;
 }
+:root {
+    --ms-font-size: 14px;
+    --ms-option-font-size: 12px;
+}
 </style>

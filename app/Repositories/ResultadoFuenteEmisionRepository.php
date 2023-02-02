@@ -40,7 +40,11 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
         'Residuo_agropecuario' => ['ch4', 'n2o'],
         'Fertilizante' => ['n2o'],
         'Energia_electrica' => ['co2'],
-        'Transporte' => ['co2'],
+        'Transporte_carga' => ['co2'],
+        'Transporte_pasajeros' => ['co2'],
+        'Materia_prima' => ['co2'],
+        'Servicio' => ['co2'],
+        'Fin' => ['co2'],
         'Equipo' => ['co2'],
         'Otro' => ['co2'],
         'Residuo' => ['ch4'],
@@ -214,7 +218,6 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                         }
 
                         $fuentes_emision[$kfe][$skfe]['resultado']['unidad_factor_emision_' . $e . $ar] = $fe['fuentetable']['unidad_factor_emision_' . $e . $unidad_factor];
-
                         $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton' . $biogenico . $ar] = ($fuentes_emision[$kfe][$skfe]['resultado']['total'] * $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e . $biogenico . $ar]) / 1000;
                         $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton_eq' . $biogenico . $ar] = $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton' . $biogenico . $ar] * $this->json_geis->$ar->$e;
 
@@ -248,7 +251,8 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                         $resultado->update($fuentes_emision[$kfe][$skfe]['resultado']);
                     } else {
                         $resultado = new ResultadoFuenteEmision();
-                        $resultado->create($fuentes_emision[$kfe][$skfe]['resultado']);
+                        $id_insertado  = $resultado->create($fuentes_emision[$kfe][$skfe]['resultado'])->id;
+                        $fuentes_emision[$kfe][$skfe]['resultado']['id'] = $id_insertado;
                     }
                 }
             }

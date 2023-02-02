@@ -13,9 +13,12 @@
                         style="margin: 0 1rem"
                     >
                         {{ userLogged.first_name }} {{ userLogged.last_name }}
-                        <br />
-                        {{ empresa }} <br />
-                        {{ sede }}
+                        <span v-if="empresa != ''">
+                            <br />
+                            Empresa: {{ empresa }}
+                            <br />
+                            Sede: {{ sede }}
+                        </span>
                     </h6>
                 </li>
                 <li class="nav-item">
@@ -70,7 +73,7 @@
                         :class="'active'"
                     >
                         <template #icon>
-                            <!-- <i class="fas fa-chart-bar"></i> -->
+                            <i class="fas fa-cog" style="color: #21d4fd"></i>
                         </template>
                         <template #list>
                             <ul class="nav ms-4 ps-3">
@@ -127,7 +130,7 @@
                                     v-if="
                                         isLoggedIn &&
                                         [1, 4].includes(
-                                            parseInt(serLogged.rol_id)
+                                            parseInt(userLogged.rol_id)
                                         )
                                     "
                                     :to="{ name: 'Autorización' }"
@@ -295,7 +298,7 @@ export default {
                 this.userLogged.id
             );
 
-            if (Object.keys(data).length != 0) {
+            if (this.userLogged.rol_id == 2) {
                 this.empresa = data.empresa.nombre;
                 this.sede = data.empresa_sede.nombre;
             }

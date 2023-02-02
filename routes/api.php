@@ -17,9 +17,11 @@ use App\Http\Controllers\Api\FugaController;
 use App\Http\Controllers\Api\InformacionEmpresaController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\LubricanteController;
+use App\Http\Controllers\Api\OtroController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\ParametroController;
 use App\Http\Controllers\Api\ProcesoController;
+use App\Http\Controllers\Api\ProductoController;
 use App\Http\Controllers\Api\RefrigeranteController;
 use App\Http\Controllers\Api\ResultadoFuenteEmisionController;
 use App\Http\Controllers\Api\Sf6Controller;
@@ -109,11 +111,14 @@ Route::group(['as' => 'auth.'], function () {
         // Viajes
         Route::apiResource('viajes', ViajeController::class);
 
+        // Productos
+        Route::apiResource('productos', ProductoController::class);
+
         // Trasversales
         Route::apiResource('trasversales', TrasversalController::class);
 
         // Sf6
-        Route::apiResource('sf6s', Sf6Controller::class);
+        Route::apiResource('otros', OtroController::class);
 
         // Procesos
         Route::apiResource('procesos', ProcesoController::class);

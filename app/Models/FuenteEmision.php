@@ -73,15 +73,6 @@ class FuenteEmision extends Model
             case 'usos':
                 $texto = 'Uso de productos';
                 break;
-            case 'fines':
-                $texto = 'Fin de vida';
-                break;
-            case 'activos':
-                $texto = 'Activos arrendados';
-                break;
-            case 'inversiones':
-                $texto = 'Inversiones';
-                break;
             case 'otros':
                 $texto = 'Otros';
                 break;
@@ -112,16 +103,13 @@ class FuenteEmision extends Model
                 $texto = 'Consumo de combustibles gaseosos';
                 break;
             case 'Refrigerante':
-                $texto = 'Refrigerantes';
+                $texto = 'Consumo de refrigerantes y espumantes';
                 break;
             case 'Extintor':
-                $texto = 'Extintores';
+                $texto = 'Uso de extintores';
                 break;
             case 'Lubricante':
-                $texto = 'Lubricantes';
-                break;
-            case 'Refrigerante':
-                $texto = 'Consumo de refrigerantes';
+                $texto = 'Consumo de lubricantes';
                 break;
             case 'Fuga':
                 $texto = 'Fugas de CO2 en proceso';
@@ -130,62 +118,51 @@ class FuenteEmision extends Model
                 $texto = 'Consumo de aislante eléctrico';
                 break;
             case 'Embalse':
-                $texto = 'Manejo de embalses';
+                $texto = 'Uso de embalses o represamientos de agua';
                 break;
             case 'Mineria':
-                $texto = 'Minería';
-                break;
-            case 'Industrial':
-                $texto = 'Industrial';
+                $texto = 'Procesos de minería';
                 break;
             case 'Fermentacion':
-                $texto = 'Fermentación Entérica';
+                $texto = 'Procesos agricolas (ganadería - fermentación entérica)';
                 break;
             case 'Estiercol':
-                $texto = 'Manejo de Estiércol';
+                $texto = 'Procesos agrícolas (manejo de estiércol)';
                 break;
             case 'Residuo_agropecuario':
-                $texto = 'Manejo de residuos agropecuarios';
+                $texto = 'Proceso agrícolas (manejo de residuos agropecuarios)';
                 break;
             case 'Fertilizante':
-                $texto = 'Uso fertilizantes';
+                $texto = 'Procesos agrícolas (uso de fertilizantes)';
                 break;
             case 'Cal':
-                $texto = 'Cal aplicada';
+                $texto = 'Procesos con cal';
                 break;
             case 'Residuo_organizacional':
-                $texto = 'Manejo residuos organizacionales';
+                $texto = 'Procesos de gestión de residuos';
                 break;
             case 'Energia_electrica':
                 $texto = 'Consumo de energía eléctrica';
                 break;
-            case 'Transporte':
+            case 'Transporte_carga':
                 $texto = 'Transporte de carga';
                 break;
-            case 'Residuo':
-                $texto = 'Manejo de residuos';
+            case 'Transporte_pasajeros':
+                $texto = 'Transporte de pasajeros';
                 break;
             case 'Materia_prima':
                 $texto = 'Materias primas';
                 break;
-            case 'Equipo':
-                $texto = 'Equipo';
-                break;
-            case 'Producto':
-                $texto = 'Producto';
-                break;
-                break;
-            case 'Activo':
-                $texto = 'Activo';
+            case 'Fin':
+                $texto = 'Fin de vida';
                 break;
             case 'Inversion':
                 $texto = 'Inversión';
                 break;
             case 'Otros':
-                $texto = 'Otros';
-                break;
-            case 'Trasversal':
-                $texto = 'Trasversal';
+
+            default:
+                $texto = $this->fuente_emision;
                 break;
         }
         return $texto;
@@ -234,79 +211,6 @@ class FuenteEmision extends Model
         }
         return $texto;
     }
-
-
-    // /**
-    //  * Obtiene el combustible
-    //  */
-    // public function combustible()
-    // {
-    //     return $this->belongsTo('App\Models\Combustible', 'modeltable');
-    // }
-
-    // /**
-    //  * Obtiene el refrigerante
-    //  */
-    // public function refrigerante()
-    // {
-    //     return $this->belongsTo(Refrigerante::class, 'modelo_id', 'id');
-    // }
-
-    // /**
-    //  * Obtiene el extintor
-    //  */
-    // public function extintor()
-    // {
-    //     return $this->belongsTo(Extintor::class, 'modelo_id', 'id');
-    // }
-
-    // /**
-    //  * Obtiene el lubricante
-    //  */
-    // public function lubricante()
-    // {
-    //     return $this->belongsTo(Lubricante::class, 'modelo_id', 'id');
-    // }
-
-    // /**
-    //  * Obtiene la fuga
-    //  */
-    // public function fuga()
-    // {
-    //     return $this->belongsTo(fuga::class, 'modelo_id', 'id');
-    // }
-
-    // /**
-    //  * Obtiene el aislamiento
-    //  */
-    // public function aislamiento()
-    // {
-    //     return $this->belongsTo(Aislamiento::class, 'modelo_id', 'id');
-    // }
-
-    // /**
-    //  * Obtiene el emision
-    //  */
-    // public function emision()
-    // {
-    //     return $this->belongsTo(Emision::class, 'modelo_id', 'id');
-    // }
-
-    // /**
-    //  * Obtiene el fermentacion
-    //  */
-    // public function fermentacion()
-    // {
-    //     return $this->belongsTo(Fermentacion::class, 'modelo_id', 'id');
-    // }
-
-    // /**
-    //  * Obtiene el estiercol
-    //  */
-    // public function estiercol()
-    // {
-    //     return $this->belongsTo(Estiercol::class, 'modelo_id', 'id');
-    // }
 
     /**
      * Obtiene el subproceso de la fuente de emision

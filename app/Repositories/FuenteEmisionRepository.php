@@ -88,28 +88,25 @@ class FuenteEmisionRepository extends BaseRepository
             $jt->Refrigerante = [];
             $jt->Extintor = [];
             $jt->Lubricante = [];
-            $jt->Transporte = [];
+            $jt->Transporte_carga = [];
+            $jt->Transporte_pasajeros = [];
 
             $jp = new stdClass();
             $jp->Refrigerante = [];
             $jp->Extintor = [];
             $jp->Lubricante = [];
             $jp->Aislamiento = [];
+            $jp->Producto = [];
             $jp->Equipo = [];
             $jp->Materia_prima = [];
-            $jp->Residuo = [];
+            $jp->Servicio = [];
+            $jp->Residuo_organizacional = [];
 
             $ju = new stdClass();
             $ju->Producto = [];
-
-            $jf = new stdClass();
-            $jf->Producto = [];
-
-            $ja = new stdClass();
-            $ja->Activo = [];
-
-            $ji = new stdClass();
-            $ji->Inversion = [];
+            $ju->Fin = [];
+            $ju->Activo = [];
+            $ju->Inversion = [];
 
             $jo = new stdClass();
             $jo->Otro = [];
@@ -129,15 +126,6 @@ class FuenteEmisionRepository extends BaseRepository
                 if ($f->tipo == 'usos') {
                     array_push($ju->$fuente, $f->fuentetable_id);
                 }
-                if ($f->tipo == 'fines') {
-                    array_push($jf->$fuente, $f->fuentetable_id);
-                }
-                if ($f->tipo == 'activos') {
-                    array_push($ja->$fuente, $f->fuentetable_id);
-                }
-                if ($f->tipo == 'inversiones') {
-                    array_push($ji->$fuente, $f->fuentetable_id);
-                }
                 if ($f->tipo == 'otros') {
                     array_push($jo->$fuente, $f->fuentetable_id);
                 }
@@ -147,9 +135,6 @@ class FuenteEmisionRepository extends BaseRepository
             $jei->transportes = $jt;
             $jei->productos = $jp;
             $jei->usos = $ju;
-            $jei->fines = $jf;
-            $jei->activos = $ja;
-            $jei->inversiones = $ji;
             $jei->otros = $jo;
         }
 
@@ -208,21 +193,19 @@ class FuenteEmisionRepository extends BaseRepository
                 $modelo = 'App\Models\\';
 
                 if (str_contains($ksf, 'Combustible')) {
-                    $modelo .= 'Combustible';
-                } elseif ($ksf == 'Embalse' || $ksf == 'Mineria' || $ksf == 'Industrial' || $ksf == 'Residuo_organizacional' || $ksf == 'Residuo') {
+                    $modelo .= explode("_", $ksf)[0];
+                } else if (str_contains($ksf, 'Transporte')) {
+                    $modelo .= 'Viaje';
+                } elseif ($ksf == 'Embalse' || $ksf == 'Mineria' || $ksf == 'Industrial' || $ksf == 'Residuo_organizacional') {
                     $modelo .= 'Emision';
-                } elseif ($ksf == 'Producto' || $ksf == 'Activo' || $ksf == 'Inversion' || $ksf == 'Otro') {
-                    $modelo .= 'Sf6';
+                } elseif ($ksf == 'Producto' || $ksf == 'Equipo' || $ksf == 'Materia_prima' || $ksf == 'Servicio' || $ksf == 'Fin' || $ksf == 'Activo' || $ksf == 'Inversion' || $ksf == 'Servicio') {
+                    $modelo .= 'Producto';
                 } elseif ($ksf == 'Cal') {
                     $modelo .= 'Fertilizante';
                 } elseif ($ksf == 'Energia_electrica') {
                     $modelo .= 'Electricidad';
                 } elseif ($ksf == 'Materia_prima') {
                     $modelo .= 'Aislamiento';
-                } elseif ($ksf == 'Transporte') {
-                    $modelo .= 'Viaje';
-                } elseif ($ksf == 'Equipo') {
-                    $modelo .= 'Fuga';
                 } else {
                     $modelo .= $ksf;
                 }
@@ -234,7 +217,6 @@ class FuenteEmisionRepository extends BaseRepository
                         $fuente_emision->fuente_emision = $ksf;
                         $fuente_emision->fuentetable_type = $modelo;
                         $fuente_emision->fuentetable_id = $v;
-                        //por validar el id de la empresa, sede e informacion se envia desde el vue
                         $usuarioEmpresaId = auth('api')->user()->empresa_id;
                         $usuarioSedeId = auth('api')->user()->sede_id;
                         $informacionEmpresa = InformacionEmpresa::where('empresa_id', $usuarioEmpresaId)->where('sede_id', $usuarioSedeId)->first();

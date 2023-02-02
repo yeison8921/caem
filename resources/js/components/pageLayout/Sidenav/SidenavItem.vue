@@ -46,9 +46,6 @@ export default {
     mounted() {
         this.itemSelected = localStorage.getItem("itemSelected");
         if (this.dataUrl == this.itemSelected) {
-            console.log(
-                this.$el.parentElement.parentElement.previousElementSibling.click()
-            );
             this.$el.parentElement.parentElement.previousElementSibling;
         }
     },

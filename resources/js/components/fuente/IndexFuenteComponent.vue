@@ -24,10 +24,7 @@
                             <div class="d-grid gap-2">
                                 <a
                                     :href="
-                                        fuente.includes('combustibles') ||
-                                        fuente.includes('emisiones') ||
-                                        fuente.includes('estiercoles') ||
-                                        fuente.includes('fertilizantes')
+                                        fuente.includes('_')
                                             ? fuente.split('_')[0] +
                                               '/' +
                                               fuente.split('_')[1] +
@@ -63,14 +60,7 @@
                                     <td>
                                         <a
                                             :href="
-                                                fuente.includes(
-                                                    'combustibles'
-                                                ) ||
-                                                fuente.includes('emisiones') ||
-                                                fuente.includes(
-                                                    'estiercoles'
-                                                ) ||
-                                                fuente.includes('fertilizantes')
+                                                fuente.includes('_')
                                                     ? fuente.split('_')[0] +
                                                       '/' +
                                                       fuente.split('_')[1] +
@@ -116,8 +106,9 @@ import Estiercol from "../../models/Estiercol";
 import Fertilizante from "../../models/Fertilizante";
 import Electricidad from "../../models/Electricidad";
 import Viaje from "../../models/Viaje";
+import Producto from "../../models/Producto";
 import Trasversal from "../../models/Trasversal";
-import Sf6 from "../../models/Sf6";
+import Otro from "../../models/Otro";
 
 export default {
     data() {
@@ -150,8 +141,18 @@ export default {
 
                 { value: "electricidades", label: "Electricidad" },
                 { value: "viajes", label: "Viaje" },
+
+                {
+                    value: "productos_utiliza",
+                    label: "Productos que utiliza la organización",
+                },
+                {
+                    value: "productos_uso",
+                    label: "Uso de productos de la organización",
+                },
+
                 { value: "trasversales", label: "Trasversales" },
-                { value: "sf6s", label: "Sf6" },
+                { value: "otros", label: "Otros" },
             ],
             fuente: "",
             fuentes: "",
@@ -187,18 +188,15 @@ export default {
                 modelo = Electricidad;
             } else if (this.fuente == "viajes") {
                 modelo = Viaje;
+            } else if (this.fuente.includes("productos")) {
+                modelo = Producto;
             } else if (this.fuente == "trasversales") {
                 modelo = Trasversal;
-            } else if (this.fuente == "sf6s") {
-                modelo = Sf6;
+            } else if (this.fuente == "otros") {
+                modelo = Otro;
             }
 
-            if (
-                this.fuente.includes("combustible") ||
-                this.fuente.includes("emision") ||
-                this.fuente.includes("estiercol") ||
-                this.fuente.includes("fertilizante")
-            ) {
+            if (this.fuente.includes("_")) {
                 this.fuentes = await modelo
                     .where("tipo", this.fuente.split("_")[1])
                     .get();

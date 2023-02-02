@@ -1102,7 +1102,9 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label>
-                                                                        Combustibles
+                                                                        Consumo
+                                                                        de
+                                                                        combustibles
                                                                         sólidos</label
                                                                     >
                                                                     <Multiselect
@@ -1131,7 +1133,9 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label
-                                                                        >Combustibles
+                                                                        >Consumo
+                                                                        de
+                                                                        combustibles
                                                                         líquidos</label
                                                                     >
                                                                     <Multiselect
@@ -1160,7 +1164,9 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label>
-                                                                        Combustibles
+                                                                        Consumo
+                                                                        de
+                                                                        combustibles
                                                                         gaseosos</label
                                                                     >
                                                                     <Multiselect
@@ -1189,7 +1195,11 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label>
-                                                                        Refrigerantes</label
+                                                                        Consumo
+                                                                        de
+                                                                        refrigerantes
+                                                                        y
+                                                                        espumantes</label
                                                                     >
                                                                     <Multiselect
                                                                         v-model="
@@ -1217,7 +1227,8 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label
-                                                                        >Extintores</label
+                                                                        >Uso de
+                                                                        extintores</label
                                                                     >
                                                                     <Multiselect
                                                                         v-model="
@@ -1245,7 +1256,9 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label
-                                                                        >Lubricantes</label
+                                                                        >Consumo
+                                                                        de
+                                                                        lubricantes</label
                                                                     >
                                                                     <Multiselect
                                                                         v-model="
@@ -1304,7 +1317,9 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label>
-                                                                        Aislante
+                                                                        Consumo
+                                                                        de
+                                                                        aislante
                                                                         eléctrico
                                                                     </label>
                                                                     <Multiselect
@@ -1339,10 +1354,12 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label
-                                                                        >Manejo
-                                                                        de
-                                                                        embalses</label
-                                                                    >
+                                                                        >Uso de
+                                                                        embalses
+                                                                        o
+                                                                        represamientos
+                                                                        de agua
+                                                                    </label>
                                                                     <Multiselect
                                                                         v-model="
                                                                             sp
@@ -1369,7 +1386,9 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label
-                                                                        >Minería</label
+                                                                        >Procesos
+                                                                        de
+                                                                        minería</label
                                                                     >
                                                                     <Multiselect
                                                                         v-model="
@@ -1397,7 +1416,8 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label
-                                                                        >Industrial</label
+                                                                        >Procesos
+                                                                        industriales</label
                                                                     >
                                                                     <Multiselect
                                                                         v-model="
@@ -1425,9 +1445,13 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label
-                                                                        >Fermentación
-                                                                        entérica</label
-                                                                    >
+                                                                        >Procesos
+                                                                        agricolas
+                                                                        (ganadería
+                                                                        -
+                                                                        fermentación
+                                                                        entérica)
+                                                                    </label>
                                                                     <Multiselect
                                                                         v-model="
                                                                             sp
@@ -1454,10 +1478,12 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label
-                                                                        >Manejo
+                                                                        >Procesos
+                                                                        agrícolas
+                                                                        (manejo
                                                                         de
-                                                                        estiércol</label
-                                                                    >
+                                                                        estiércol)
+                                                                    </label>
                                                                     <Multiselect
                                                                         v-model="
                                                                             sp
@@ -1484,9 +1510,11 @@
                                                                     class="mb-3"
                                                                 >
                                                                     <label
-                                                                        >Manejo
-                                                                        Residuos
-                                                                        Organizacionales
+                                                                        >Procesos
+                                                                        de
+                                                                        gestión
+                                                                        de
+                                                                        residuos
                                                                     </label>
                                                                     <Multiselect
                                                                         v-model="
@@ -1525,7 +1553,9 @@
                                                                         class="mb-3"
                                                                     >
                                                                         <label
-                                                                            >Combustibles
+                                                                            >Consumo
+                                                                            de
+                                                                            combustibles
                                                                             líquidos</label
                                                                         >
                                                                         <Multiselect
@@ -1554,7 +1584,9 @@
                                                                         class="mb-3"
                                                                     >
                                                                         <label>
-                                                                            Combustibles
+                                                                            Consumo
+                                                                            de
+                                                                            combustibles
                                                                             gaseosos</label
                                                                         >
                                                                         <Multiselect
@@ -1583,8 +1615,12 @@
                                                                         class="mb-3"
                                                                     >
                                                                         <label>
-                                                                            Refrigerantes</label
-                                                                        >
+                                                                            Consumo
+                                                                            de
+                                                                            refrigerantes
+                                                                            y
+                                                                            espumantes
+                                                                        </label>
                                                                         <Multiselect
                                                                             v-model="
                                                                                 sp
@@ -1611,8 +1647,10 @@
                                                                         class="mb-3"
                                                                     >
                                                                         <label
-                                                                            >Extintores</label
-                                                                        >
+                                                                            >Uso
+                                                                            de
+                                                                            extintores
+                                                                        </label>
                                                                         <Multiselect
                                                                             v-model="
                                                                                 sp
@@ -1639,8 +1677,10 @@
                                                                         class="mb-3"
                                                                     >
                                                                         <label
-                                                                            >Lubricantes</label
-                                                                        >
+                                                                            >Consumo
+                                                                            de
+                                                                            lubricantes
+                                                                        </label>
                                                                         <Multiselect
                                                                             v-model="
                                                                                 sp
@@ -1679,10 +1719,12 @@
                                                                         class="mb-3"
                                                                     >
                                                                         <label
-                                                                            >Manejo
+                                                                            >Proceso
+                                                                            agrícolas
+                                                                            (manejo
                                                                             de
                                                                             residuos
-                                                                            agropecuarios
+                                                                            agropecuarios)
                                                                         </label>
                                                                         <Multiselect
                                                                             v-model="
@@ -1710,8 +1752,11 @@
                                                                         class="mb-3"
                                                                     >
                                                                         <label
-                                                                            >Uso
-                                                                            fertilizantes
+                                                                            >Procesos
+                                                                            agrícolas
+                                                                            (uso
+                                                                            de
+                                                                            fertilizantes)
                                                                         </label>
                                                                         <Multiselect
                                                                             v-model="
@@ -1739,8 +1784,9 @@
                                                                         class="mb-3"
                                                                     >
                                                                         <label
-                                                                            >Cal
-                                                                            aplicada
+                                                                            >Procesos
+                                                                            con
+                                                                            cal
                                                                         </label>
                                                                         <Multiselect
                                                                             v-model="
@@ -2086,7 +2132,9 @@
                                 <div class="card-body">
                                     <p>ELECTRICIDAD IMPORTADA</p>
                                     <div class="mb-3">
-                                        <label>Energía eléctrica</label>
+                                        <label
+                                            >Consumo de energía eléctrica</label
+                                        >
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.energias
@@ -2105,7 +2153,9 @@
                                     </div>
                                     <p>ENERGÍA IMPORTADA</p>
                                     <div class="mb-3">
-                                        <label>Combustibles sólidos</label>
+                                        <label
+                                            >Consumo de combustibles sólidos
+                                        </label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.energias
@@ -2125,7 +2175,10 @@
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label>Combustibles líquidos</label>
+                                        <label
+                                            >Consumo de combustibles
+                                            líquidos</label
+                                        >
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.energias
@@ -2145,7 +2198,10 @@
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label>Combustibles gaseosos</label>
+                                        <label
+                                            >Consumo de combustibles
+                                            gaseosos</label
+                                        >
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.energias
@@ -2176,7 +2232,10 @@
                                 <div class="card-body">
                                     <p>FUENTES MÓVILES</p>
                                     <div class="mb-3">
-                                        <label>Combustibles líquidos</label>
+                                        <label
+                                            >Consumo de combustibles
+                                            líquidos</label
+                                        >
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.transportes
@@ -2196,7 +2255,10 @@
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label>Combustibles gaseosos</label>
+                                        <label
+                                            >Consumo de combustibles
+                                            gaseosos</label
+                                        >
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.transportes
@@ -2216,7 +2278,10 @@
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label>Refrigerantes</label>
+                                        <label
+                                            >Consumo de refrigerantes y
+                                            espumantes</label
+                                        >
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.transportes
@@ -2234,7 +2299,7 @@
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label>Extintores</label>
+                                        <label>Uso de extintores</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.transportes
@@ -2252,7 +2317,7 @@
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label>Lubricantes</label>
+                                        <label>Consumo de lubricantes</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.transportes
@@ -2275,7 +2340,25 @@
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.transportes
-                                                    .Transporte
+                                                    .Transporte_carga
+                                            "
+                                            :options="options_viaje"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            :disabled="
+                                                accion_emisiones == 'ver'
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Transporte de pasajeros</label>
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.transportes
+                                                    .Transporte_pasajeros
                                             "
                                             :options="options_viaje"
                                             mode="tags"
@@ -2301,8 +2384,8 @@
                                     <p>BIENES Y PRODUCTOS</p>
                                     <div class="mb-3">
                                         <label
-                                            >Refrigerantes y espumantes (Fuentes
-                                            fijas)</label
+                                            >Uso de refrigerantes y espumantes
+                                            (Fuentes fijas)</label
                                         >
                                         <Multiselect
                                             v-model="
@@ -2322,7 +2405,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label
-                                            >Extintores (Fuentes fijas)</label
+                                            >Uso de extintores (Fuentes
+                                            fijas)</label
                                         >
                                         <Multiselect
                                             v-model="
@@ -2342,7 +2426,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label
-                                            >Lubricantes (Fuentes
+                                            >Consumo de lubricantes (Fuentes
                                             móviles)</label
                                         >
                                         <Multiselect
@@ -2362,7 +2446,10 @@
                                         />
                                     </div>
                                     <div class="mb-3">
-                                        <label>Aislante eléctrico</label>
+                                        <label
+                                            >Consumo de aislante
+                                            eléctrico</label
+                                        >
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.productos
@@ -2380,13 +2467,31 @@
                                         />
                                     </div>
                                     <div class="mb-3">
+                                        <label>Productos</label>
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.productos
+                                                    .Producto
+                                            "
+                                            :options="options_producto"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            :disabled="
+                                                accion_emisiones == 'ver'
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
                                         <label>Equipos</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.productos
                                                     .Equipo
                                             "
-                                            :options="options_fuga"
+                                            :options="options_equipo"
                                             mode="tags"
                                             valueProp="id"
                                             label="nombre"
@@ -2404,7 +2509,7 @@
                                                 emisiones_indirectas.productos
                                                     .Materia_prima
                                             "
-                                            :options="options_aislamiento"
+                                            :options="options_materia_prima"
                                             mode="tags"
                                             valueProp="id"
                                             label="nombre"
@@ -2417,11 +2522,29 @@
                                     </div>
                                     <p>SERVICIOS</p>
                                     <div class="mb-3">
-                                        <label>Manejo de residuos</label>
+                                        <label>Servicios</label>
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.productos
-                                                    .Residuo
+                                                    .Servicio
+                                            "
+                                            :options="options_servicio"
+                                            mode="tags"
+                                            valueProp="id"
+                                            label="nombre"
+                                            placeholder="Selección múltiple"
+                                            :searchable="true"
+                                            :disabled="
+                                                accion_emisiones == 'ver'
+                                            "
+                                        />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label>Gestion de residuos</label>
+                                        <Multiselect
+                                            v-model="
+                                                emisiones_indirectas.productos
+                                                    .Residuo_organizacional
                                             "
                                             :options="
                                                 options_residuo_organizacional
@@ -2449,13 +2572,15 @@
                                 <div class="card-body">
                                     <p>USO DE PRODUCTOS</p>
                                     <div class="mb-3">
-                                        <label>Producto</label>
+                                        <label
+                                            >Producto de la organización</label
+                                        >
                                         <Multiselect
                                             v-model="
                                                 emisiones_indirectas.usos
                                                     .Producto
                                             "
-                                            :options="options_sf6"
+                                            :options="options_uso"
                                             mode="tags"
                                             valueProp="id"
                                             label="nombre"
@@ -2468,13 +2593,14 @@
                                     </div>
                                     <p>FIN DE VIDA</p>
                                     <div class="mb-3">
-                                        <label>Producto</label>
+                                        <label
+                                            >Producto de la organización</label
+                                        >
                                         <Multiselect
                                             v-model="
-                                                emisiones_indirectas.fines
-                                                    .Producto
+                                                emisiones_indirectas.usos.Fin
                                             "
-                                            :options="options_sf6"
+                                            :options="options_destino"
                                             mode="tags"
                                             valueProp="id"
                                             label="nombre"
@@ -2490,10 +2616,9 @@
                                         <label>Activo</label>
                                         <Multiselect
                                             v-model="
-                                                emisiones_indirectas.activos
-                                                    .Activo
+                                                emisiones_indirectas.usos.Activo
                                             "
-                                            :options="options_sf6"
+                                            :options="options_activo"
                                             mode="tags"
                                             valueProp="id"
                                             label="nombre"
@@ -2506,13 +2631,13 @@
                                     </div>
                                     <p>INVERSIONES</p>
                                     <div class="mb-3">
-                                        <label>Activo</label>
+                                        <label>Inversión</label>
                                         <Multiselect
                                             v-model="
-                                                emisiones_indirectas.inversiones
+                                                emisiones_indirectas.usos
                                                     .Inversion
                                             "
-                                            :options="options_sf6"
+                                            :options="options_inversion"
                                             mode="tags"
                                             valueProp="id"
                                             label="nombre"
@@ -2540,7 +2665,7 @@
                                             v-model="
                                                 emisiones_indirectas.otros.Otro
                                             "
-                                            :options="options_sf6"
+                                            :options="options_otro"
                                             mode="tags"
                                             valueProp="id"
                                             label="nombre"
@@ -2796,9 +2921,10 @@ import Estiercol from "../../models/Estiercol";
 import Fertilizante from "../../models/Fertilizante";
 import Electricidad from "../../models/Electricidad";
 import Viaje from "../../models/Viaje";
+import Producto from "../../models/Producto";
 import User from "../../models/User";
 import Trasversal from "../../models/Trasversal";
-import Sf6 from "../../models/Sf6";
+import Otro from "../../models/Otro";
 
 export default {
     data() {
@@ -2863,27 +2989,24 @@ export default {
                     Refrigerante: [],
                     Extintor: [],
                     Lubricante: [],
-                    Transporte: [],
+                    Transporte_carga: [],
+                    Transporte_pasajeros: [],
                 },
                 productos: {
                     Refrigerante: [],
                     Extintor: [],
                     Lubricante: [],
                     Aislamiento: [],
+                    Producto: [],
                     Equipo: [],
                     Materia_prima: [],
-                    Residuo: [],
+                    Servicio: [],
+                    Residuo_organizacional: [],
                 },
                 usos: {
                     Producto: [],
-                },
-                fines: {
-                    Producto: [],
-                },
-                activos: {
+                    Fin: [],
                     Activo: [],
-                },
-                inversiones: {
                     Inversion: [],
                 },
                 otros: {
@@ -2925,9 +3048,9 @@ export default {
                                 Industrial: [],
                                 Fermentacion: [],
                                 Estiercol: [],
-                                Residuos_organizacionales: [],
-                                Residuos_agropecuarios: [],
-                                Fertilizant: [],
+                                Residuo_organizacional: [],
+                                Residuo_agropecuario: [],
+                                Fertilizante: [],
                                 Cal: [],
                             },
                         },
@@ -2990,8 +3113,16 @@ export default {
             options_cal: [],
             options_electricidad: [],
             options_viaje: [],
+            options_producto: [],
+            options_equipo: [],
+            options_materia_prima: [],
+            options_servicio: [],
+            options_uso: [],
+            options_destino: [],
+            options_activo: [],
+            options_inversion: [],
             options_trasversal: [],
-            options_sf6: [],
+            options_otro: [],
             options_equipo_consumo: [],
             options_metodologia: [],
             options_anio: [],
@@ -3019,7 +3150,6 @@ export default {
     methods: {
         tabActiva() {
             setTimeout(() => {
-                console.log("entras");
                 switch (this.etapa) {
                     case 2:
                         $("#construccion-proceso-tab").click();
@@ -3168,20 +3298,23 @@ export default {
         },
         async getOptionsFuenteEmision() {
             this.$root.mostrarCargando("Cargando información");
-            this.options_combustible_solido = await Combustible.where(
-                "tipo",
+            let combustibles = await Combustible.get();
+
+            this.filtroArrayOpciones(
+                combustibles,
+                "options_combustible_solido",
                 "solido"
-            ).get();
-
-            this.options_combustible_liquido = await Combustible.where(
-                "tipo",
+            );
+            this.filtroArrayOpciones(
+                combustibles,
+                "options_combustible_liquido",
                 "liquido"
-            ).get();
-
-            this.options_combustible_gaseoso = await Combustible.where(
-                "tipo",
+            );
+            this.filtroArrayOpciones(
+                combustibles,
+                "options_combustible_gaseoso",
                 "gaseoso"
-            ).get();
+            );
 
             this.options_refrigerante = await Refrigerante.get();
             this.options_extintor = await Extintor.get();
@@ -3189,43 +3322,106 @@ export default {
             this.options_fuga = await Fuga.get();
             this.options_aislamiento = await Aislamiento.get();
 
-            this.options_embalse = await Emision.where("tipo", "Embalse").get();
-            this.options_mineria = await Emision.where("tipo", "Mineria").get();
-            this.options_industrial = await Emision.where(
-                "tipo",
-                "Industrial"
-            ).get();
-            this.options_residuo_organizacional = await Emision.where(
-                "tipo",
-                "Residuo"
-            ).get();
+            let emisiones = await Emision.get();
+
+            this.filtroArrayOpciones(emisiones, "options_embalse", "embalse");
+            this.filtroArrayOpciones(emisiones, "options_mineria", "mineria");
+            this.filtroArrayOpciones(
+                emisiones,
+                "options_industrial",
+                "industrial"
+            );
+            this.filtroArrayOpciones(
+                emisiones,
+                "options_residuo_organizacional",
+                "residuo"
+            );
 
             this.options_fermentacion = await Fermentacion.get();
 
-            this.options_estiercol = await Estiercol.where(
-                "tipo",
-                "Estiercol"
-            ).get();
+            let estiercoles = await Estiercol.get();
 
-            this.options_residuo_agropecuario = await Estiercol.where(
-                "tipo",
-                "Residuo"
-            ).get();
+            this.filtroArrayOpciones(
+                estiercoles,
+                "options_estiercol",
+                "estiercol"
+            );
+            this.filtroArrayOpciones(
+                estiercoles,
+                "options_residuo_agropecuario",
+                "residuo"
+            );
 
-            this.options_fertilizante = await Fertilizante.where(
-                "tipo",
-                "Fertilizante"
-            ).get();
+            let fertilizantes = await Fertilizante.get();
 
-            this.options_cal = await Fertilizante.where("tipo", "Cal").get();
+            this.filtroArrayOpciones(
+                fertilizantes,
+                "options_fertilizante",
+                "fertilizante"
+            );
+            this.filtroArrayOpciones(fertilizantes, "options_cal", "cal");
 
             this.options_electricidad = await Electricidad.get();
             this.options_viaje = await Viaje.get();
 
+            let productos = await Producto.get();
+            this.filtroArrayOpciones(
+                productos,
+                "options_producto",
+                "utiliza",
+                "producto"
+            );
+            this.filtroArrayOpciones(
+                productos,
+                "options_equipo",
+                "utiliza",
+                "equipo"
+            );
+            this.filtroArrayOpciones(
+                productos,
+                "options_materia_prima",
+                "utiliza",
+                "materia_prima"
+            );
+            this.filtroArrayOpciones(
+                productos,
+                "options_servicio",
+                "utiliza",
+                "servicio"
+            );
+            this.filtroArrayOpciones(productos, "options_uso", "uso", "uso");
+            this.filtroArrayOpciones(
+                productos,
+                "options_destino",
+                "uso",
+                "destino"
+            );
+            this.filtroArrayOpciones(
+                productos,
+                "options_activo",
+                "uso",
+                "activo"
+            );
+            this.filtroArrayOpciones(
+                productos,
+                "options_inversion",
+                "uso",
+                "inversion"
+            );
+
             this.options_trasversal = await Trasversal.get();
-            this.options_sf6 = await Sf6.get();
+            this.options_otro = await Otro.get();
 
             Swal.close();
+        },
+        filtroArrayOpciones(array, variable, tipo, subtipo = "") {
+            if (subtipo == "") {
+                this[variable] = array.filter((el) => el.tipo === tipo);
+            } else {
+                this[variable] = array.filter(
+                    (el) => el.tipo === tipo && el.subtipo === subtipo
+                );
+            }
         },
         changeMetodologia() {
             this.ie.otra_metodologia = null;

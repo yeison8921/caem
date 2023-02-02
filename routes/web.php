@@ -13,7 +13,9 @@ use App\Http\Controllers\Api\FermentacionController;
 use App\Http\Controllers\Api\FertilizanteController;
 use App\Http\Controllers\Api\FugaController;
 use App\Http\Controllers\Api\LubricanteController;
+use App\Http\Controllers\Api\OtroController;
 use App\Http\Controllers\Api\ParametroController;
+use App\Http\Controllers\Api\ProductoController;
 use App\Http\Controllers\Api\RefrigeranteController;
 use App\Http\Controllers\Api\Sf6Controller;
 use App\Http\Controllers\Api\TrasversalController;
@@ -173,13 +175,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/viajes/create', [ViajeController::class, 'formViaje']);
     Route::get('/viajes/edit/{id}', [ViajeController::class, 'formViaje']);
 
+    //Productos
+    Route::get('/productos/{tipo}/create', [ProductoController::class, 'formProducto']);
+    Route::get('/productos/{tipo}/edit/{id}', [ProductoController::class, 'formProducto']);
+
     //Trasversales
     Route::get('/trasversales/create', [TrasversalController::class, 'formTrasversal']);
     Route::get('/trasversales/edit/{id}', [TrasversalController::class, 'formTrasversal']);
 
     //Sf6
-    Route::get('/sf6s/create', [Sf6Controller::class, 'formSf6']);
-    Route::get('/sf6s/edit/{id}', [Sf6Controller::class, 'formSf6']);
+    Route::get('/otros/create', [OtroController::class, 'formOtro']);
+    Route::get('/otros/edit/{id}', [OtroController::class, 'formOtro']);
 
     // Resultado
     Route::get('/resultados',  function () {
