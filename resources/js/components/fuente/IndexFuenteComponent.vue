@@ -114,33 +114,69 @@ export default {
     data() {
         return {
             options_fuente: [
-                { value: "combustibles_liquido", label: "Combustible líquido" },
-                { value: "combustibles_solido", label: "Combustible sólido" },
-                { value: "combustibles_gaseoso", label: "Combustible gaseoso" },
-                { value: "refrigerantes", label: "Refrigerante" },
-                { value: "extintores", label: "Extintor" },
-                { value: "lubricantes", label: "Lubricante" },
-                { value: "fugas", label: "Fuga" },
-                { value: "aislamientos", label: "Aislamiento" },
-
-                { value: "emisiones_embalse", label: "Manejo de embalses" },
-                { value: "emisiones_mineria", label: "Minería" },
-                { value: "emisiones_industrial", label: "Industrial" },
-                { value: "emisiones_residuo", label: "Residuo organizacional" },
-
-                { value: "fermentaciones", label: "Fermentación Entérica" },
-
-                { value: "estiercoles_estiercol", label: "Estiercol" },
                 {
-                    value: "estiercoles_residuo",
-                    label: "Residuo agropecuario",
+                    value: "combustibles_liquido",
+                    label: "Consumo de combustible líquido",
+                },
+                {
+                    value: "combustibles_solido",
+                    label: "Consumo de combustible sólido",
+                },
+                {
+                    value: "combustibles_gaseoso",
+                    label: "Consumo de combustible gaseoso",
+                },
+                {
+                    value: "refrigerantes",
+                    label: "Consumo de refrigerantes y espumantes",
+                },
+                { value: "extintores", label: "Uso de extintores" },
+                { value: "lubricantes", label: "Consumo de lubricantes" },
+                { value: "fugas", label: "Fugas de CO2 en proceso" },
+                {
+                    value: "aislamientos",
+                    label: "Consumo de aislante eléctrico",
                 },
 
-                { value: "fertilizantes_fertilizante", label: "Fertilizante" },
-                { value: "fertilizantes_cal", label: "Cal" },
+                {
+                    value: "emisiones_embalse",
+                    label: "Uso de embalses o represamientos de agua",
+                },
+                { value: "emisiones_mineria", label: "Procesos de minería" },
+                {
+                    value: "emisiones_industrial",
+                    label: "Procesos industriales",
+                },
+                {
+                    value: "emisiones_residuo",
+                    label: "Procesos de gestión de residuos",
+                },
 
-                { value: "electricidades", label: "Electricidad" },
-                { value: "viajes", label: "Viaje" },
+                {
+                    value: "fermentaciones",
+                    label: "Procesos agricolas (ganadería - fermentación entérica)",
+                },
+
+                {
+                    value: "estiercoles_estiercol",
+                    label: "Procesos agrícolas (manejo de estiércol)",
+                },
+                {
+                    value: "estiercoles_residuo",
+                    label: "Proceso agrícolas (manejo de residuos agropecuarios) ",
+                },
+
+                {
+                    value: "fertilizantes_fertilizante",
+                    label: "Procesos agrícolas (uso de fertilizantes)",
+                },
+                { value: "fertilizantes_cal", label: "Procesos con cal" },
+
+                {
+                    value: "electricidades",
+                    label: "Consumo de energía eléctrica",
+                },
+                { value: "viajes", label: "Viajes" },
 
                 {
                     value: "productos_utiliza",

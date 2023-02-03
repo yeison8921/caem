@@ -205,7 +205,7 @@ class FuenteEmision extends Model
             case 'otros':
                 $texto = 'CATEGORIA 6 - EMISIONES INDIRECTAS DE GEI PROVENIENTES DE OTRAS FUENTES';
                 break;
-            case 'Trasversales':
+            case 'trasversales':
                 $texto = 'CATEGORIA 7 - EMISIONES TRASVERSALES';
                 break;
         }
