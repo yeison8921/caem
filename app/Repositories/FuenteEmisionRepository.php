@@ -452,6 +452,6 @@ class FuenteEmisionRepository extends BaseRepository
             }
         }
 
-        return $fuentes;
+        return response()->json($fuentes)->setEncodingOptions(JSON_NUMERIC_CHECK);
     }
 }

@@ -2664,9 +2664,11 @@
                                                             v-if="is > 0"
                                                             type="button"
                                                             class="btn btn-danger"
-                                                            :disabled="!editar"
+                                                            :disabled="
+                                                                !editar_procesos
+                                                            "
                                                             @click="
-                                                                !editar
+                                                                !editar_procesos
                                                                     ? ''
                                                                     : is > 0
                                                                     ? procesos[
@@ -3843,7 +3845,6 @@ export default {
                     }
                 });
             });
-            console.log(tipos);
             return tipos;
         },
         changeMetodologia() {
@@ -3880,11 +3881,10 @@ export default {
                     "Información guardada exitosamente",
                     "success"
                 );
-                this.recargarFuentesEmision();
+                this.recargarFormularioEmisiones();
                 setTimeout(() => {
                     $("#seleccion-tab").click();
                 }, 200);
-                this.paso = 2;
             }
         },
         guardarFuentesEmision() {
@@ -3902,7 +3902,6 @@ export default {
                             "success"
                         );
                         this.recargarFuentesEmision();
-
                         setTimeout(() => {
                             $("#construccion-proceso-tab").click();
                         }, 500);
