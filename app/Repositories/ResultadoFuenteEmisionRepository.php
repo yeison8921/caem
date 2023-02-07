@@ -285,47 +285,50 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
 
         $array_categorias = [
             ['fuentes_fijas', 'fuentes_moviles', 'emisiones'],
-            ['energias'],
-            ['tranportes'],
-            ['productos'],
+            ['electricidad_importada', 'energia_importada'],
+            ['transportes_fuentes_moviles', 'transportes_carga_pasajeros'],
+            ['bienes_productos', 'servicios'],
             ['usos', 'fines', 'activos', 'inversiones'],
             ['otros'],
             ['trasversales'],
         ];
 
-        $array_fuentes_emision = [
-            'Combustible_liquido',
-            'Combustible_gaseoso',
-            'Combustible_solido',
-            'Refrigerante',
-            'Extintor',
-            'Lubricante',
-            'Fuga',
-            'Aislamiento',
-            'Embalse',
-            'Mineria',
-            'Industrial',
-            'Fermentacion',
-            'Estiercol',
-            'Residuo_agropecuario',
-            'Fertilizante',
-            'Cal',
-            'Residuo_organizacional',
-            'Energia_electrica',
-            'Transporte',
-            'Equipo',
-            'Materia_prima',
-            'Residuo',
-            'Producto',
+        $array_labels_fuente = [
+            'Consumo de combustibles solidos',
+            'Consumo de combustibles líquidos',
+            'Consumo de combustibles gaseosos',
+            'Consumo de refrigerantes y espumantes',
+            'Uso de extintores',
+            'Consumo de lubricantes',
+            'Fugas de CO2 en proceso',
+            'Consumo de aislante eléctrico',
+            'Uso de embalses o represamientos de agua',
+            'Procesos industriales',
+            'Procesos de minería',
+            'Procesos agricolas (ganadería - fermentación entérica)',
+            'Procesos agrícolas (manejo de estiércol)',
+            'Proceso agrícolas (manejo de residuos agropecuarios)',
+            'Procesos agrícolas (uso de fertilizantes)',
+            'Procesos con cal',
+            'Procesos de gestión de residuos',
+            'Consumo de energía eléctrica',
+            'Transporte de carga',
+            'Transporte de pasajeros',
+            'Productos',
+            'Equipos',
+            'Materias primas',
+            'Servicios',
+            'Fin de vida',
             'Activo',
-            'Inversion',
-            'Otro',
+            'Inversión',
+            'Otros',
+            'Trasversales'
         ];
 
         $array_labels_categoria = [
-            'C 1',
-            'C 2',
-            'C 3',
+            'C1',
+            'C2',
+            'C3',
         ];
         $array_totales_categoria = [0, 0, 0];
         $array_colores_categoria = [];
@@ -336,45 +339,16 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
         $array_totales_gei = [0];
         $array_colores_gei = [];
 
-        $array_labels_fuente = [
-            'Combustibles líquidos',
-            'Combustibles gaseosos',
-            'Combustibles solidos',
-            'Refrigerantes y espumantes',
-            'Extintores',
-            'Lubricantes',
-            'Fugas de CO2 en proceso',
-            'Consumo aislante eléctrico',
-            'Manejo de embalses',
-            'Minería',
-            'Industrial',
-            'Fermentación entérica',
-            'Manejo de estiércol',
-            'Manejo de residuos agropecuarios',
-            'Uso fertilizanteS',
-            'Cal aplicada',
-            'Manejo de residuos organizacionales',
-            'Consumo de energía eléctrica',
-            'Transporte de carga',
-            'Equipos',
-            'Materias primas',
-            'Manejo de residuos',
-            'Producto',
-            // 'Fin de vida',
-            'Activo',
-            'Inversión',
-            'Otros',
-        ];
-        $array_totales_fuente = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        $array_totales_fuente = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         $array_colores_fuente = [];
 
         if ($request->reporte == '') {
             array_push(
                 $array_labels_categoria,
-                'C 4',
-                'C 5',
-                'C 6',
-                'C 7',
+                'C4',
+                'C5',
+                'C6',
+                'C7',
             );
             array_push($array_totales_categoria, 0, 0, 0, 0);
 
@@ -424,70 +398,11 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                 }
 
                 //obtener datos por fuente
-                foreach ($array_fuentes_emision as $key => $value) {
-                    if ($resultado['fuente_emision'] == $value) {
+                foreach ($array_labels_fuente as $key => $value) {
+                    if ($resultado['fuente_emision_mostrar'] == $value) {
                         $array_totales_fuente[$key] += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
                     }
                 }
-
-                //obtener datos por subtotal
-                // if ($request->reporte == '') {
-                //     if ($resultado['tipo'] == 'fuentes_moviles') {
-                //         $array_totales_fuente[0] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'fuentes_fijas') {
-                //         $array_totales_fuente[1] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'emisiones') {
-                //         $array_totales_fuente[2] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'energias' && $resultado['fuente_emision'] != 'Energia_electrica') {
-                //         $array_totales_fuente[3] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'energias' && $resultado['fuente_emision'] == 'Energia_electrica') {
-                //         $array_totales_fuente[4] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'transportes' && $resultado['fuente_emision'] != 'Transporte') {
-                //         $array_totales_fuente[5] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'transportes' && $resultado['fuente_emision'] == 'Transporte') {
-                //         $array_totales_fuente[6] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'productos' && $resultado['fuente_emision'] != 'Residuo') {
-                //         $array_totales_fuente[7] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'productos' && $resultado['fuente_emision'] == 'Residuo') {
-                //         $array_totales_fuente[8] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'usos' && $resultado['fuente_emision'] == 'Producto') {
-                //         $array_totales_fuente[9] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'fines' && $resultado['fuente_emision'] == 'Producto') {
-                //         $array_totales_fuente[10] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'activos' && $resultado['fuente_emision'] == 'Activo') {
-                //         $array_totales_fuente[11] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'inversiones' && $resultado['fuente_emision'] == 'Inversion') {
-                //         $array_totales_fuente[12] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'otros' && $resultado['fuente_emision'] == 'Otro') {
-                //         $array_totales_fuente[13] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                // } else {
-                //     if ($resultado['tipo'] == 'fuentes_moviles') {
-                //         $array_totales_fuente[0] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'fuentes_fijas') {
-                //         $array_totales_fuente[1] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'energias' && $resultado['fuente_emision'] != 'Energia_electrica') {
-                //         $array_totales_fuente[2] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                //     if ($resultado['tipo'] == 'transportes' && $resultado['fuente_emision'] != 'Transporte') {
-                //         $array_totales_fuente[3] += $resultado["resultado"]['huella_carbono' . $request->reporte];
-                //     }
-                // }
 
                 //obtener datos por tipo
                 if ($request->reporte == '') {

@@ -64,162 +64,44 @@ class FuenteEmisionRepository extends BaseRepository
         return $fuente_emision;
     }
 
-    public function recargarEmisiones($request)
+    public function guardarFuentesEmision($request)
     {
-        $fuentes = FuenteEmision::whereNull('subproceso_id')->where([
-            ['empresa_id', $request->empresa_id],
-            ['sede_id', $request->sede_id],
-            ['fuente_emision', '!=', 'Trasversal']
-        ])->get();
+        $usuarioEmpresaId = auth('api')->user()->empresa_id;
+        $usuarioSedeId = auth('api')->user()->sede_id;
+        $informacionEmpresa = InformacionEmpresa::where('empresa_id', $usuarioEmpresaId)->where('sede_id', $usuarioSedeId)->first();
 
-        $jei = new stdClass();
+        foreach ($request['fuentes'] as $key => $value) {
+            foreach ($value as $subkey => $subvalue) {
+                foreach ($subvalue as $sk => $sv) {
+                    foreach ($sv as $k => $v) {
 
-        if (!$fuentes->isEmpty()) {
-            $je = new stdClass();
-            $je->Energia_electrica = [];
-            $je->Combustible_solido = [];
-            $je->Combustible_liquido = [];
-            $je->Combustible_gaseoso = [];
+                        $modelo = 'App\Models\\';
 
-            $jt = new stdClass();
-            $jt->Combustible_solido = [];
-            $jt->Combustible_liquido = [];
-            $jt->Combustible_gaseoso = [];
-            $jt->Refrigerante = [];
-            $jt->Extintor = [];
-            $jt->Lubricante = [];
-            $jt->Transporte_carga = [];
-            $jt->Transporte_pasajeros = [];
+                        if (str_contains($sk, 'Combustible')) {
+                            $modelo .= explode("_", $sk)[0];
+                        } else if (str_contains($sk, 'Transporte')) {
+                            $modelo .= 'Viaje';
+                        } elseif ($sk == 'Embalse' || $sk == 'Mineria' || $sk == 'Industrial' || $sk == 'Residuo_organizacional') {
+                            $modelo .= 'Emision';
+                        } elseif ($sk == 'Producto' || $sk == 'Equipo' || $sk == 'Materia_prima' || $sk == 'Servicio' || $sk == 'Fin' || $sk == 'Activo' || $sk == 'Inversion' || $sk == 'Servicio') {
+                            $modelo .= 'Producto';
+                        } elseif ($sk == 'Cal') {
+                            $modelo .= 'Fertilizante';
+                        } elseif ($sk == 'Energia_electrica') {
+                            $modelo .= 'Electricidad';
+                        } elseif ($sk == 'Materia_prima') {
+                            $modelo .= 'Aislamiento';
+                        } elseif ($sk == 'Residuo_agropecuario') {
+                            $modelo .= 'Estiercol';
+                        } else {
+                            $modelo .= $sk;
+                        }
 
-            $jp = new stdClass();
-            $jp->Refrigerante = [];
-            $jp->Extintor = [];
-            $jp->Lubricante = [];
-            $jp->Aislamiento = [];
-            $jp->Producto = [];
-            $jp->Equipo = [];
-            $jp->Materia_prima = [];
-            $jp->Servicio = [];
-            $jp->Residuo_organizacional = [];
-
-            $ju = new stdClass();
-            $ju->Producto = [];
-            $ju->Fin = [];
-            $ju->Activo = [];
-            $ju->Inversion = [];
-
-            $jo = new stdClass();
-            $jo->Otro = [];
-
-            foreach ($fuentes as $f) {
-                $fuente = $f->fuente_emision;
-
-                if ($f->tipo == 'energias') {
-                    array_push($je->$fuente, $f->fuentetable_id);
-                }
-                if ($f->tipo == 'transportes') {
-                    array_push($jt->$fuente, $f->fuentetable_id);
-                }
-                if ($f->tipo == 'productos') {
-                    array_push($jp->$fuente, $f->fuentetable_id);
-                }
-                if ($f->tipo == 'usos') {
-                    array_push($ju->$fuente, $f->fuentetable_id);
-                }
-                if ($f->tipo == 'otros') {
-                    array_push($jo->$fuente, $f->fuentetable_id);
-                }
-            }
-
-            $jei->energias = $je;
-            $jei->transportes = $jt;
-            $jei->productos = $jp;
-            $jei->usos = $ju;
-            $jei->otros = $jo;
-        }
-
-        return $jei;
-    }
-    public function recargarTrasversales($request)
-    {
-        $fuentes = FuenteEmision::whereNull('subproceso_id')->where([
-            ['empresa_id', $request->empresa_id],
-            ['sede_id', $request->sede_id],
-            ['fuente_emision', 'Trasversal']
-        ])->get();
-
-        $jtr = new stdClass();
-
-        if (!$fuentes->isEmpty()) {
-            $jt = new stdClass();
-            $jt->Trasversal = [];
-
-            foreach ($fuentes as $f) {
-                $fuente = $f->fuente_emision;
-                array_push($jt->$fuente, $f->fuentetable_id);
-            }
-
-            $jtr->trasversales = $jt;
-        }
-        return $jtr;
-    }
-
-    public function guardarTrasversales($trasversales)
-    {
-        foreach ($trasversales['trasversales'] as $ke => $e) {
-            foreach ($e as $ksf => $sf) {
-                foreach ($sf as $v) {
-                    $fuente_emision = new FuenteEmision;
-                    $fuente_emision->tipo = 'trasversales';
-                    $fuente_emision->fuente_emision = 'Trasversal';
-                    $fuente_emision->fuentetable_type = 'App\Models\\Trasversal';
-                    $fuente_emision->fuentetable_id = $v;
-                    $usuarioEmpresaId = auth('api')->user()->empresa_id;
-                    $usuarioSedeId = auth('api')->user()->sede_id;
-                    $informacionEmpresa = InformacionEmpresa::where('empresa_id', $usuarioEmpresaId)->where('sede_id', $usuarioSedeId)->first();
-                    $fuente_emision->informacion_empresa_id = $informacionEmpresa->id;
-                    $fuente_emision->empresa_id = $usuarioEmpresaId;
-                    $fuente_emision->sede_id = $usuarioSedeId;
-                    $fuente_emision->save();
-                }
-            }
-        }
-    }
-
-    public function guardarEmisionesIndirectas($emisiones)
-    {
-        foreach ($emisiones['emisiones'] as $ke => $e) {
-            foreach ($e as $ksf => $sf) {
-                $modelo = 'App\Models\\';
-
-                if (str_contains($ksf, 'Combustible')) {
-                    $modelo .= explode("_", $ksf)[0];
-                } else if (str_contains($ksf, 'Transporte')) {
-                    $modelo .= 'Viaje';
-                } elseif ($ksf == 'Embalse' || $ksf == 'Mineria' || $ksf == 'Industrial' || $ksf == 'Residuo_organizacional') {
-                    $modelo .= 'Emision';
-                } elseif ($ksf == 'Producto' || $ksf == 'Equipo' || $ksf == 'Materia_prima' || $ksf == 'Servicio' || $ksf == 'Fin' || $ksf == 'Activo' || $ksf == 'Inversion' || $ksf == 'Servicio') {
-                    $modelo .= 'Producto';
-                } elseif ($ksf == 'Cal') {
-                    $modelo .= 'Fertilizante';
-                } elseif ($ksf == 'Energia_electrica') {
-                    $modelo .= 'Electricidad';
-                } elseif ($ksf == 'Materia_prima') {
-                    $modelo .= 'Aislamiento';
-                } else {
-                    $modelo .= $ksf;
-                }
-
-                foreach ($sf as $v) {
-                    if ($v != -1) {
                         $fuente_emision = new FuenteEmision;
-                        $fuente_emision->tipo = $ke;
-                        $fuente_emision->fuente_emision = $ksf;
+                        $fuente_emision->tipo = $subkey;
+                        $fuente_emision->fuente_emision = $sk;
                         $fuente_emision->fuentetable_type = $modelo;
                         $fuente_emision->fuentetable_id = $v;
-                        $usuarioEmpresaId = auth('api')->user()->empresa_id;
-                        $usuarioSedeId = auth('api')->user()->sede_id;
-                        $informacionEmpresa = InformacionEmpresa::where('empresa_id', $usuarioEmpresaId)->where('sede_id', $usuarioSedeId)->first();
                         $fuente_emision->informacion_empresa_id = $informacionEmpresa->id;
                         $fuente_emision->empresa_id = $usuarioEmpresaId;
                         $fuente_emision->sede_id = $usuarioSedeId;
@@ -228,6 +110,195 @@ class FuenteEmisionRepository extends BaseRepository
                 }
             }
         }
+    }
+
+    public function recargarFuentesEmision($request)
+    {
+        $data = FuenteEmision::whereNull('subproceso_id')->where([
+            ['empresa_id', $request->empresa_id],
+            ['sede_id', $request->sede_id],
+        ])->get();
+
+        if ($data->isEmpty()) {
+            return $data;
+        }
+
+        $jf = new \stdClass();
+        $jf->c1 = new \stdClass();
+        $jf->c2 = new \stdClass();
+        $jf->c3 = new \stdClass();
+        $jf->c4 = new \stdClass();
+        $jf->c5 = new \stdClass();
+        $jf->c6 = new \stdClass();
+        $jf->c7 = new \stdClass();
+
+        //json fuentes móviles
+        $jfm = new stdClass();
+        $jfm->Combustible_liquido = [];
+        $jfm->Combustible_gaseoso = [];
+        $jfm->Refrigerante = [];
+        $jfm->Extintor = [];
+        $jfm->Lubricante = [];
+
+        //json fuentes fijas
+        $jff = new stdClass();
+        $jff->Combustible_solido = [];
+        $jff->Combustible_liquido = [];
+        $jff->Combustible_gaseoso = [];
+        $jff->Refrigerante = [];
+        $jff->Extintor = [];
+        $jff->Lubricante = [];
+        $jff->Fuga = [];
+        $jff->Aislamiento = [];
+
+        //json emisiones
+        $jem = new stdClass();
+        $jem->Embalse = [];
+        $jem->Mineria = [];
+        $jem->Industrial = [];
+        $jem->Fermentacion = [];
+        $jem->Estiercol = [];
+        $jem->Residuo_organizacional = [];
+        $jem->Residuo_agropecuario = [];
+        $jem->Fertilizante = [];
+        $jem->Cal = [];
+
+        //json electricidad
+        $jel = new stdClass();
+        $jel->Energia_electrica = [];
+
+        //json energia
+        $jen = new stdClass();
+        $jen->Combustible_solido = [];
+        $jen->Combustible_liquido = [];
+        $jen->Combustible_gaseoso = [];
+
+        //json transportes fuentes móviles
+        $jtfm = new stdClass();
+        $jtfm->Combustible_solido = [];
+        $jtfm->Combustible_liquido = [];
+        $jtfm->Combustible_gaseoso = [];
+        $jtfm->Refrigerante = [];
+        $jtfm->Extintor = [];
+        $jtfm->Lubricante = [];
+
+        //json transportes carga pasajeros
+        $jtcp = new stdClass();
+        $jtcp->Transporte_carga = [];
+        $jtcp->Transporte_pasajeros = [];
+
+
+        //json bienes productos
+        $jbp = new stdClass();
+        $jbp->Refrigerante = [];
+        $jbp->Extintor = [];
+        $jbp->Lubricante = [];
+        $jbp->Aislamiento = [];
+        $jbp->Producto = [];
+        $jbp->Equipo = [];
+        $jbp->Materia_prima = [];
+
+        //json servicios
+        $js = new stdClass();
+        $js->Servicio = [];
+        $js->Residuo_organizacional = [];
+
+        //json prosductos
+        $jp = new stdClass();
+        $jp->Producto = [];
+
+        //json fines
+        $jfi = new stdClass();
+        $jfi->Fin = [];
+
+        //json activos
+        $ja = new stdClass();
+        $ja->Activo = [];
+
+        //json inversiones
+        $ji = new stdClass();
+        $ji->Inversion = [];
+
+        //json otros
+        $jo = new stdClass();
+        $jo->Otro = [];
+
+        //json trasversal
+        $jt = new stdClass();
+        $jt->Trasversal = [];
+
+        foreach ($data as $k => $d) {
+            $fuente = $d->fuente_emision;
+            if ($d->tipo == 'fuentes_moviles') {
+                array_push($jfm->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_fijas') {
+                array_push($jff->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'emisiones') {
+                array_push($jem->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'electricidad_importada') {
+                array_push($jel->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'energia_importada') {
+                array_push($jen->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'transportes_fuentes_moviles') {
+                array_push($jtfm->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'transportes_carga_pasajeros') {
+                array_push($jtcp->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'bienes_productos') {
+                array_push($jbp->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'servicios') {
+                array_push($js->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'usos') {
+                array_push($jp->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fines') {
+                array_push($jfi->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'activos') {
+                array_push($ja->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'inversiones') {
+                array_push($ji->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'otros') {
+                array_push($jo->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'trasversales') {
+                array_push($jt->$fuente, $d->fuentetable_id);
+            }
+        }
+
+        $jf->c1->fuentes_moviles = $jfm;
+        $jf->c1->fuentes_fijas = $jff;
+        $jf->c1->emisiones = $jem;
+
+        $jf->c2->electricidad_importada = $jel;
+        $jf->c2->energia_importada = $jen;
+
+        $jf->c3->transportes_fuentes_moviles = $jtfm;
+        $jf->c3->transportes_carga_pasajeros = $jtcp;
+
+        $jf->c4->bienes_productos = $jbp;
+        $jf->c4->servicios = $js;
+
+        $jf->c5->usos = $jp;
+        $jf->c5->fines = $jfi;
+        $jf->c5->activos = $ja;
+        $jf->c5->inversiones = $ji;
+
+        $jf->c6->otros = $jo;
+
+        $jf->c7->trasversales = $jt;
+
+        return $jf;
     }
 
     public function getFuentesEmision($id_empresa, $id_sede)

@@ -127,11 +127,9 @@ Route::group(['as' => 'auth.'], function () {
 
         // Fuentes emisión
         Route::apiResource('fuentes_emision', FuenteEmisionController::class);
-        Route::post('guardarEmisionesIndirectas', [FuenteEmisionController::class, 'guardarEmisionesIndirectas']);
-        Route::post('guardarTrasversales', [FuenteEmisionController::class, 'guardarTrasversales']);
+        Route::post('guardarFuentesEmision', [FuenteEmisionController::class, 'guardarFuentesEmision']);
+        Route::post('recargarFuentesEmision', [FuenteEmisionController::class, 'recargarFuentesEmision']);
         Route::get('getFuentesEmision/{id_empresa}/{id_sede}', [FuenteEmisionController::class, 'getFuentesEmision']);
-        Route::post('recargarEmisiones', [FuenteEmisionController::class, 'recargarEmisiones']);
-        Route::post('recargarTrasversales', [FuenteEmisionController::class, 'recargarTrasversales']);
 
         // Resultados fuente emision
         Route::apiResource('resultados_fuente_emision', ResultadoFuenteEmisionController::class);

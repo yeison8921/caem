@@ -82,14 +82,9 @@ class FuenteEmisionController extends Controller
         return $this->fuenteEmisionRepository->update($request, $fuente_emision);
     }
 
-    public function guardarEmisionesIndirectas(Request $request)
+    public function guardarFuentesEmision(Request $request)
     {
-        return $this->fuenteEmisionRepository->guardarEmisionesIndirectas($request);
-    }
-
-    public function guardarTrasversales(Request $request)
-    {
-        return $this->fuenteEmisionRepository->guardarTrasversales($request);
+        return $this->fuenteEmisionRepository->guardarFuentesEmision($request);
     }
 
     public function getFuentesEmision($id_empresa, $id_sede)
@@ -97,13 +92,8 @@ class FuenteEmisionController extends Controller
         return $this->fuenteEmisionRepository->getFuentesEmision($id_empresa, $id_sede);
     }
 
-    public function recargarEmisiones(Request $request)
+    public function recargarFuentesEmision(Request $request)
     {
-        return $this->fuenteEmisionRepository->recargarEmisiones($request);
-    }
-
-    public function recargarTrasversales(Request $request)
-    {
-        return $this->fuenteEmisionRepository->recargarTrasversales($request);
+        return $this->fuenteEmisionRepository->recargarFuentesEmision($request);
     }
 }

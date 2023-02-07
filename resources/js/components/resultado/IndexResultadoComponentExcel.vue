@@ -373,8 +373,8 @@
 
                                             <td>
                                                 {{
-                                                    f[
-                                                        "resultado.factor_emision_co2" +
+                                                    f.resultado[
+                                                        "factor_emision_co2" +
                                                             ar
                                                     ]
                                                 }}
@@ -1352,7 +1352,7 @@ export default {
                             "SUBTOTAL COMBUSTIBLES FUENTES MÓVILES",
                         ],
                         [
-                            "FUENTES MÓVILES",
+                            "OTROS",
                             "fuentes_moviles",
                             ["Refrigerante", "Extintor", "Lubricante"],
                             "SUBTOTAL OTROS FUENTES MÓVILES",
@@ -1426,13 +1426,13 @@ export default {
                         [
                             [
                                 "ELECTRICIDAD IMPORTADA",
-                                "energias",
+                                "electricidad_importada",
                                 ["Energia_electrica"],
                                 "SUBTOTAL ELECTRICIDAD IMPORTADA",
                             ],
                             [
                                 "ENERGÍA IMPORTADA",
-                                "energias",
+                                "energia_importada",
                                 [
                                     "Combustible_solido",
                                     "Combustible_liquido",
@@ -1442,7 +1442,7 @@ export default {
                             ],
                             [
                                 "",
-                                ["energias"],
+                                ["electricidad_importada", "energia_importada"],
                                 [
                                     "Combustible_solido",
                                     "Combustible_liquido",
@@ -1458,25 +1458,28 @@ export default {
                         [
                             [
                                 "FUENTES MÓVILES",
-                                "transportes",
+                                "transportes_fuentes_moviles",
                                 ["Combustible_liquido", "Combustible_gaseoso"],
                                 "SUBTOTAL COMBUSTIBLES",
                             ],
                             [
                                 "FUENTES MÓVILES",
-                                "transportes",
+                                "transportes_fuentes_moviles",
                                 ["Refrigerante", "Extintor", "Lubricante"],
                                 "SUBTOTAL OTROS",
                             ],
                             [
                                 "TRANSPORTE CARGA Y PASAJEROS",
-                                "transportes",
+                                "transportes_carga_pasajeros",
                                 ["Transporte_carga", "Transporte_pasajeros"],
                                 "SUBTOTAL VIAJES AÉREOS Y TRANSPORTE DE CARGA",
                             ],
                             [
                                 "",
-                                ["transportes"],
+                                [
+                                    "transportes_fuentes_moviles",
+                                    "transportes_carga_pasajeros",
+                                ],
                                 [
                                     "Combustible_liquido",
                                     "Combustible_gaseoso",
@@ -1495,7 +1498,7 @@ export default {
                         [
                             [
                                 "BIENES Y PRODUCTOS",
-                                "productos",
+                                "bienes_productos",
                                 [
                                     "Refrigerante",
                                     "Extintor",
@@ -1507,25 +1510,25 @@ export default {
                             ],
                             [
                                 "BIENES Y PRODUCTOS",
-                                "productos",
+                                "bienes_productos",
                                 ["Equipo"],
                                 "SUBTOTAL EQUIPOS",
                             ],
                             [
                                 "BIENES Y PRODUCTOS",
-                                "productos",
+                                "bienes_productos",
                                 ["Materia_prima"],
                                 "SUBTOTAL MATERIAS PRIMAS",
                             ],
                             [
                                 "SERVICIOS",
-                                "productos",
+                                "servicios",
                                 ["Residuo_organizacional", "Servicio"],
                                 "SUBTOTAL SERVICIOS",
                             ],
                             [
                                 "",
-                                ["productos"],
+                                ["bienes_productos", "servicios"],
                                 [
                                     "Refrigerante",
                                     "Extintor",
@@ -1552,26 +1555,26 @@ export default {
                             ],
                             [
                                 "FIN DE VIDA",
-                                "usos",
+                                "fines",
                                 ["Fin"],
                                 "SUBTOTAL FIN DE VIDA",
                             ],
                             [
                                 "ACTIVOS ARRENDADOS",
-                                "usos",
+                                "activos",
                                 ["Activo"],
                                 "SUBTOTAL ACTIVOS",
                             ],
                             [
                                 "INVERSIONES",
-                                "usos",
+                                "inversiones",
                                 ["Inversion"],
                                 "SUBTOTAL INVERSIONES",
                             ],
                             [
                                 "",
-                                ["usos"],
-                                ["Producto", "Activo", "Inversion"],
+                                ["usos", "fines", "activos", "inversiones"],
+                                ["Producto", "Fin", "Activo", "Inversion"],
                                 "TOTAL CATEGORÍA 5",
                             ],
                         ],
@@ -1622,7 +1625,11 @@ export default {
                         [
                             "",
                             ["fuentes_moviles", "fuentes_fijas"],
-                            ["Combustible_solido", "Combustible_liquido","Combustible_gaseoso"],
+                            [
+                                "Combustible_solido",
+                                "Combustible_liquido",
+                                "Combustible_gaseoso",
+                            ],
                             "TOTAL CATEGORÍA 1",
                         ],
                     ],
@@ -1641,10 +1648,14 @@ export default {
                                 "SUBTOTAL ENERGÍA IMPORTADA",
                             ],
                             [
-                            "",
-                            ["energias"],
-                            ["Combustible_solido", "Combustible_liquido","Combustible_gaseoso"],
-                            "TOTAL CATEGORÍA 2"
+                                "",
+                                ["energias"],
+                                [
+                                    "Combustible_solido",
+                                    "Combustible_liquido",
+                                    "Combustible_gaseoso",
+                                ],
+                                "TOTAL CATEGORÍA 2",
                             ],
                         ],
                 },
@@ -1658,11 +1669,11 @@ export default {
                                 "SUBTOTAL COMBUSTIBLES",
                             ],
                             [
-                            "",
-                            ["transportes"],
-                            ["Combustible_liquido","Combustible_gaseoso"],
-                            "TOTAL CATEGORÍA 3"
-                            ],  
+                                "",
+                                ["transportes"],
+                                ["Combustible_liquido", "Combustible_gaseoso"],
+                                "TOTAL CATEGORÍA 3",
+                            ],
                         ],
                 },
             ],
@@ -1967,4 +1978,4 @@ export default {
 table.table {
     width: auto;
 }
-</style
+</style>

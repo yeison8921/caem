@@ -6,7 +6,6 @@
                 <h2>Ingresar datos</h2>
             </div>
         </div>
-
         <ul class="nav nav-pills nav-fill mb-3" id="tabs-ingresar-datos">
             <li class="nav-item" role="presentation">
                 <button
@@ -25,6 +24,21 @@
             <li class="nav-item" role="presentation" v-if="etapa >= 2">
                 <button
                     class="nav-link badge rounded-pill"
+                    id="seleccion-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#seleccion"
+                    type="button"
+                    role="tab"
+                    aria-controls="seleccion"
+                    aria-selected="true"
+                    @click="recargarFuentesEmision()"
+                >
+                    2 <span>Fuentes de emisión</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation" v-if="etapa >= 3">
+                <button
+                    class="nav-link badge rounded-pill"
                     id="construccion-proceso-tab"
                     data-bs-toggle="pill"
                     data-bs-target="#construccion-proceso"
@@ -35,13 +49,13 @@
                     ref="tabConstruccionProceso"
                     @click="recargarProcesos()"
                 >
-                    2
+                    3
                     <span
                         >Construcción del proceso productivo de la empresa</span
                     >
                 </button>
             </li>
-            <li
+            <!-- <li
                 class="nav-item"
                 role="presentation"
                 v-if="parseInt(ie.datos_proveedores) && etapa >= 3"
@@ -78,8 +92,9 @@
                         organización</span
                     >
                 </button>
-            </li>
-            <li class="nav-item" role="presentation" v-if="etapa >= 3">
+            </li> -->
+            <!--  -->
+            <li class="nav-item" role="presentation" v-if="etapa >= 4">
                 <button
                     class="nav-link badge rounded-pill"
                     id="inicio-consumos-tab"
@@ -91,11 +106,10 @@
                     aria-selected="false"
                     @click="recargarInformacionInicio()"
                 >
-                    {{ parseInt(ie.datos_proveedores) ? "5" : "4" }}
-                    <span>Información inicio de consumos</span>
+                    4 <span>Información inicio de consumos</span>
                 </button>
             </li>
-            <li class="nav-item" role="presentation" v-if="etapa >= 6">
+            <li class="nav-item" role="presentation" v-if="etapa >= 5">
                 <button
                     class="nav-link badge rounded-pill"
                     id="construccion-anio-tab"
@@ -107,8 +121,7 @@
                     aria-selected="false"
                     @click="getFuentesEmision()"
                 >
-                    {{ parseInt(ie.datos_proveedores) ? "6" : "5" }}
-                    <span>Construcción de año base de emisiones de GEI</span>
+                    5 <span>Construcción de año base de emisiones de GEI</span>
                 </button>
             </li>
         </ul>
@@ -133,7 +146,7 @@
                                 v-model="ie.datos_proveedores"
                                 :options="options_si_no"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                             />
                         </div>
@@ -147,7 +160,7 @@
                                 v-model="ie.fuentes_moviles"
                                 :options="options_si_no"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                             />
                         </div>
@@ -160,7 +173,7 @@
                                 v-model="ie.actividad_agricola"
                                 :options="options_si_no"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                             />
                         </div>
@@ -177,7 +190,7 @@
                                 v-model="ie.huella_base"
                                 :options="options_si_no"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                                 @input="
                                     ie.valor_huella_base = null;
@@ -199,7 +212,7 @@
                                     v-model="ie.valor_huella_base"
                                     class="form-control"
                                     type="number"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     required
                                 />
                             </div>
@@ -213,7 +226,7 @@
                                     v-model="ie.huella_comparativo"
                                     :options="options_si_no"
                                     placeholder="Seleccione una opción"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     required
                                     @input="
                                         ie.valor_huella_comparativo = null;
@@ -234,7 +247,7 @@
                                     v-model="ie.valor_huella_comparativo"
                                     class="form-control"
                                     type="number"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     required
                                 />
                             </div>
@@ -246,7 +259,7 @@
                                 <textarea
                                     v-model="ie.alcances_huella"
                                     class="form-control"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     required
                                 ></textarea>
                             </div>
@@ -260,7 +273,7 @@
                                     v-model="ie.priorizacion"
                                     :options="options_si_no"
                                     placeholder="Seleccione una opción"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     required
                                 />
                             </div>
@@ -274,7 +287,7 @@
                                     v-model="ie.indicador"
                                     :options="options_si_no"
                                     placeholder="Seleccione una opción"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     required
                                 />
                             </div>
@@ -295,7 +308,7 @@
                                 :options="options_si_no"
                                 placeholder="Seleccione una opción"
                                 required
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 @input="
                                     ie.optimizacion_procesos = null;
                                     ie.verificacion_tercero = null;
@@ -313,7 +326,7 @@
                                 </label>
                                 <Multiselect
                                     v-model="ie.optimizacion_procesos"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     :options="options_si_no"
                                     placeholder="Seleccione una opción"
                                     required
@@ -327,7 +340,7 @@
                                 </label>
                                 <Multiselect
                                     v-model="ie.verificacion_tercero"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     :options="options_si_no"
                                     placeholder="Seleccione una opción"
                                     required
@@ -353,7 +366,7 @@
                                 </label>
                                 <Multiselect
                                     v-model="ie.declaracion_conformidad_tercero"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     :options="options_si_no"
                                     placeholder="Seleccione una opción"
                                     required
@@ -386,7 +399,7 @@
                                 v-model="ie.metas_mitigacion"
                                 :options="options_si_no"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                                 @input="
                                     ie.meta_reduccion = null;
@@ -409,7 +422,7 @@
                                     v-model="ie.meta_reduccion"
                                     class="form-control"
                                     type="number"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     required
                                 />
                             </div>
@@ -421,7 +434,7 @@
                                     v-model="ie.anio_meta"
                                     :options="options_si_no"
                                     placeholder="Seleccione una opción"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     required
                                     @input="
                                         ie.anio_proyeccion_meta = null;
@@ -443,7 +456,7 @@
                                     v-model="ie.anio_proyeccion_meta"
                                     class="form-control"
                                     type="number"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     required
                                 />
                             </div>
@@ -458,7 +471,7 @@
                                     v-model="ie.meta_alineada"
                                     :options="options_si_no"
                                     placeholder="Seleccione una opción"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     required
                                 />
                             </div>
@@ -512,7 +525,7 @@
                                 </label>
                                 <Multiselect
                                     v-model="ie.seguimiento_cumplimiento"
-                                    :disabled="accion_formulario == 'ver'"
+                                    :disabled="!editar_formulario"
                                     :options="options_si_no"
                                     placeholder="Seleccione una opción"
                                     required
@@ -537,7 +550,7 @@
                                 v-model="ie.efecto_invernadero"
                                 :options="options_puntaje_1"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                             />
                         </div>
@@ -550,7 +563,7 @@
                                 v-model="ie.sumideros"
                                 :options="options_puntaje_1"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                             />
                         </div>
@@ -566,7 +579,7 @@
                                 v-model="ie.informacion_mensual"
                                 :options="options_puntaje_2"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                             />
                         </div>
@@ -580,7 +593,7 @@
                                 v-model="ie.diagrama_procesos"
                                 :options="options_puntaje_1"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                             />
                         </div>
@@ -593,7 +606,7 @@
                                 v-model="ie.areas_sumideros"
                                 :options="options_puntaje_1"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                             />
                         </div>
@@ -608,7 +621,7 @@
                             <Multiselect
                                 v-model="ie.informacion_centralizada"
                                 :options="options_puntaje_1"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 placeholder="Seleccione una opción"
                                 required
                             />
@@ -622,7 +635,7 @@
                             <Multiselect
                                 v-model="ie.soportes_consumos"
                                 :options="options_puntaje_1"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 placeholder="Seleccione una opción"
                                 required
                             />
@@ -635,7 +648,7 @@
                             <Multiselect
                                 v-model="ie.informacion_anio"
                                 :options="options_puntaje_1"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 placeholder="Seleccione una opción"
                                 required
                             />
@@ -651,7 +664,7 @@
                             <Multiselect
                                 v-model="ie.estimaciones_consumos"
                                 :options="options_puntaje_1"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 placeholder="Seleccione una opción"
                                 required
                             />
@@ -665,7 +678,7 @@
                                 v-model="ie.consumos_energeticos"
                                 :options="options_puntaje_1"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                             />
                         </div>
@@ -679,7 +692,7 @@
                                 v-model="ie.sustento_metodologico"
                                 :options="options_puntaje_1"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                             />
                         </div>
@@ -695,7 +708,7 @@
                                 v-model="ie.compartira_reporte"
                                 :options="options_puntaje_1"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                             />
                         </div>
@@ -708,7 +721,7 @@
                                 v-model="ie.toma_decisiones"
                                 :options="options_puntaje_1"
                                 placeholder="Seleccione una opción"
-                                :disabled="accion_formulario == 'ver'"
+                                :disabled="!editar_formulario"
                                 required
                             />
                         </div>
@@ -741,20 +754,1218 @@
             </div>
             <div
                 class="tab-pane fade"
+                id="seleccion"
+                role="tabpanel"
+                aria-labelledby="seleccion-tab"
+            >
+                <br />
+                <form @submit.prevent="guardarFuentesEmision()">
+                    <div class="mb-3 accordion" id="accordion-categorias">
+                        <div
+                            class="accordion-item"
+                            v-for="(value, key, index) in fuentes"
+                            v-bind:key="key"
+                        >
+                            <p
+                                style="font-size: 14px"
+                                class="accordion-header"
+                                :id="'heading-c-' + index"
+                            >
+                                <button
+                                    class="accordion-button border-bottom font-weight-bold collapsed"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    :data-bs-target="'#panel-c-' + index"
+                                >
+                                    {{ ac[key] }}
+                                    <i
+                                        class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3"
+                                        aria-hidden="true"
+                                    ></i>
+                                    <i
+                                        class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3"
+                                        aria-hidden="true"
+                                    ></i>
+                                </button>
+                            </p>
+                            <div
+                                :id="'panel-c-' + index"
+                                class="accordion-collapse collapse"
+                            >
+                                <div class="accordion-body">
+                                    <div
+                                        class="accordion-item"
+                                        v-for="(val, k, i) in value"
+                                        v-bind:key="k"
+                                    >
+                                        <p
+                                            style="font-size: 13px"
+                                            class="accordion-header"
+                                            :id="'heading-sc-' + index + i"
+                                        >
+                                            <button
+                                                class="accordion-button border-bottom font-weight-bold collapsed"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                :data-bs-target="
+                                                    '#panel-sc-' + index + i
+                                                "
+                                            >
+                                                {{ asc[k] }}
+                                                <i
+                                                    class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3"
+                                                    aria-hidden="true"
+                                                ></i>
+                                                <i
+                                                    class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3"
+                                                    aria-hidden="true"
+                                                ></i>
+                                            </button>
+                                        </p>
+                                        <div
+                                            :id="'panel-sc-' + index + i"
+                                            class="accordion-collapse collapse"
+                                        >
+                                            <div class="accordion-body">
+                                                <div
+                                                    v-if="
+                                                        k == 'fuentes_moviles'
+                                                    "
+                                                >
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de
+                                                            combustibles
+                                                            líquidos</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Combustible_liquido
+                                                            "
+                                                            :options="
+                                                                options_combustible_liquido
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>
+                                                            Consumo de
+                                                            combustibles
+                                                            gaseosos</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Combustible_gaseoso
+                                                            "
+                                                            :options="
+                                                                options_combustible_gaseoso
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>
+                                                            Consumo de
+                                                            refrigerantes y
+                                                            espumantes
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Refrigerante
+                                                            "
+                                                            :options="
+                                                                options_refrigerante
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Uso de
+                                                            extintores</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Extintor
+                                                            "
+                                                            :options="
+                                                                options_extintor
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de
+                                                            lubricantes
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Lubricante
+                                                            "
+                                                            :options="
+                                                                options_lubricante
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    v-if="k == 'fuentes_fijas'"
+                                                >
+                                                    <div class="mb-3">
+                                                        <label>
+                                                            Consumo de
+                                                            combustibles
+                                                            sólidos</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Combustible_solido
+                                                            "
+                                                            :options="
+                                                                options_combustible_solido
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de
+                                                            combustibles
+                                                            líquidos</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Combustible_liquido
+                                                            "
+                                                            :options="
+                                                                options_combustible_liquido
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>
+                                                            Consumo de
+                                                            combustibles
+                                                            gaseosos</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Combustible_gaseoso
+                                                            "
+                                                            :options="
+                                                                options_combustible_gaseoso
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>
+                                                            Consumo de
+                                                            refrigerantes y
+                                                            espumantes</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Refrigerante
+                                                            "
+                                                            :options="
+                                                                options_refrigerante
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Uso de
+                                                            extintores</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Extintor
+                                                            "
+                                                            :options="
+                                                                options_extintor
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de
+                                                            lubricantes</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Lubricante
+                                                            "
+                                                            :options="
+                                                                options_lubricante
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Fugas de CO2 en
+                                                            proceso</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="val.Fuga"
+                                                            :options="
+                                                                options_fuga
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>
+                                                            Consumo de aislante
+                                                            eléctrico
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Aislamiento
+                                                            "
+                                                            :options="
+                                                                options_aislamiento
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div v-if="k == 'emisiones'">
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Uso de embalses o
+                                                            represamientos de
+                                                            agua
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Embalse
+                                                            "
+                                                            :options="
+                                                                options_embalse
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Procesos de
+                                                            minería</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Mineria
+                                                            "
+                                                            :options="
+                                                                options_mineria
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Procesos
+                                                            industriales</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Industrial
+                                                            "
+                                                            :options="
+                                                                options_industrial
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Procesos agricolas
+                                                            (ganadería -
+                                                            fermentación
+                                                            entérica)
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Fermentacion
+                                                            "
+                                                            :options="
+                                                                options_fermentacion
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Procesos agrícolas
+                                                            (manejo de
+                                                            estiércol)
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Estiercol
+                                                            "
+                                                            :options="
+                                                                options_estiercol
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Proceso agrícolas
+                                                            (manejo de residuos
+                                                            agropecuarios)
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Residuo_agropecuario
+                                                            "
+                                                            :options="
+                                                                options_residuo_agropecuario
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Procesos agrícolas
+                                                            (uso de
+                                                            fertilizantes)
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Fertilizante
+                                                            "
+                                                            :options="
+                                                                options_fertilizante
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Procesos con cal
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="val.Cal"
+                                                            :options="
+                                                                options_cal
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Procesos de gestión
+                                                            de residuos
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Residuo_organizacional
+                                                            "
+                                                            :options="
+                                                                options_residuo_organizacional
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    v-if="
+                                                        k ==
+                                                        'electricidad_importada'
+                                                    "
+                                                >
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de energía
+                                                            eléctrica</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Energia_electrica
+                                                            "
+                                                            :options="
+                                                                options_electricidad
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    v-if="
+                                                        k == 'energia_importada'
+                                                    "
+                                                >
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de
+                                                            combustibles sólidos
+                                                        </label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Combustible_solido
+                                                            "
+                                                            :options="
+                                                                options_combustible_solido
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de
+                                                            combustibles
+                                                            líquidos</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Combustible_liquido
+                                                            "
+                                                            :options="
+                                                                options_combustible_liquido
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de
+                                                            combustibles
+                                                            gaseosos</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Combustible_gaseoso
+                                                            "
+                                                            :options="
+                                                                options_combustible_gaseoso
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    v-if="
+                                                        k ==
+                                                        'transportes_fuentes_moviles'
+                                                    "
+                                                >
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de
+                                                            combustibles
+                                                            líquidos</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Combustible_liquido
+                                                            "
+                                                            :options="
+                                                                options_combustible_liquido
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de
+                                                            combustibles
+                                                            gaseosos</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Combustible_gaseoso
+                                                            "
+                                                            :options="
+                                                                options_combustible_gaseoso
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de
+                                                            refrigerantes y
+                                                            espumantes</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Refrigerante
+                                                            "
+                                                            :options="
+                                                                options_refrigerante
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Uso de
+                                                            extintores</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Extintor
+                                                            "
+                                                            :options="
+                                                                options_extintor
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de
+                                                            lubricantes</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Lubricante
+                                                            "
+                                                            :options="
+                                                                options_lubricante
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    v-if="
+                                                        k ==
+                                                        'transportes_carga_pasajeros'
+                                                    "
+                                                >
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Transporte de
+                                                            carga</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Transporte_carga
+                                                            "
+                                                            :options="
+                                                                options_viaje
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Transporte de
+                                                            pasajeros</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Transporte_pasajeros
+                                                            "
+                                                            :options="
+                                                                options_viaje
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    v-if="
+                                                        k == 'bienes_productos'
+                                                    "
+                                                >
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Uso de
+                                                            refrigerantes y
+                                                            espumantes (Fuentes
+                                                            fijas)</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Refrigerante
+                                                            "
+                                                            :options="
+                                                                options_refrigerante
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Uso de extintores
+                                                            (Fuentes
+                                                            fijas)</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Extintor
+                                                            "
+                                                            :options="
+                                                                options_extintor
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de
+                                                            lubricantes (Fuentes
+                                                            móviles)</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Lubricante
+                                                            "
+                                                            :options="
+                                                                options_lubricante
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumo de aislante
+                                                            eléctrico</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Aislamiento
+                                                            "
+                                                            :options="
+                                                                options_aislamiento
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Productos</label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Producto
+                                                            "
+                                                            :options="
+                                                                options_producto
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Equipos</label>
+                                                        <Multiselect
+                                                            v-model="val.Equipo"
+                                                            :options="
+                                                                options_equipo
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Materias
+                                                            primas</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Materia_prima
+                                                            "
+                                                            :options="
+                                                                options_materia_prima
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div v-if="k == 'servicios'">
+                                                    <div class="mb-3">
+                                                        <label>Servicios</label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Servicio
+                                                            "
+                                                            :options="
+                                                                options_servicio
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Gestion de
+                                                            residuos</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Residuo_organizacional
+                                                            "
+                                                            :options="
+                                                                options_residuo_organizacional
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div v-if="k == 'usos'">
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Producto de la
+                                                            organización</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Producto
+                                                            "
+                                                            :options="
+                                                                options_uso
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div v-if="k == 'fines'">
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Producto de la
+                                                            organización</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="val.Fin"
+                                                            :options="
+                                                                options_destino
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div v-if="k == 'activos'">
+                                                    <div class="mb-3">
+                                                        <label>Activo</label>
+                                                        <Multiselect
+                                                            v-model="val.Activo"
+                                                            :options="
+                                                                options_activo
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div v-if="k == 'inversiones'">
+                                                    <div class="mb-3">
+                                                        <label>Inversión</label>
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Inversion
+                                                            "
+                                                            :options="
+                                                                options_inversion
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div v-if="k == 'otros'">
+                                                    <div class="mb-3">
+                                                        <label>Otros</label>
+                                                        <Multiselect
+                                                            v-model="val.Otro"
+                                                            :options="
+                                                                options_otro
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div v-if="k == 'trasversales'">
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Consumos
+                                                            transversales</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Trasversal
+                                                            "
+                                                            :options="
+                                                                options_trasversal
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-lg-4 offset-lg-4 d-grid gap-2">
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            :disabled="!editar_fuente"
+                        >
+                            Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div
+                class="tab-pane fade"
                 id="construccion-proceso"
                 role="tabpanel"
                 aria-labelledby="construccion-proceso-tab"
             >
                 <br />
                 <form @submit.prevent="guardarProcesos">
-                    <div class="accordion" id="acordeon-procesos">
+                    <div class="mb-3 accordion" id="acordeon-procesos">
                         <div
                             class="accordion-item"
                             v-for="(p, ip) in procesos"
                             v-bind:key="ip"
                         >
-                            <br />
-                            <h2 class="accordion-header">
+                            <h4 class="accordion-header">
                                 <button
                                     class="accordion-button border-bottom font-weight-bold collapsed"
                                     type="button"
@@ -777,7 +1988,7 @@
                                         aria-hidden="true"
                                     ></i>
                                 </button>
-                            </h2>
+                            </h4>
 
                             <div
                                 :id="'panelsStayOpen-collapse-' + ip"
@@ -795,7 +2006,7 @@
                                             v-model="p.nombre"
                                             type="text"
                                             class="form-control"
-                                            :disabled="accion_procesos == 'ver'"
+                                            :disabled="!editar_procesos"
                                         />
                                     </div>
                                     <div
@@ -808,7 +2019,7 @@
                                             v-for="(sp, is) in p.subprocesos"
                                             v-bind:key="is"
                                         >
-                                            <h2
+                                            <h5
                                                 class="accordion-header"
                                                 id="flush-headingOne"
                                             >
@@ -838,7 +2049,7 @@
                                                         aria-hidden="true"
                                                     ></i>
                                                 </button>
-                                            </h2>
+                                            </h5>
                                             <div
                                                 :id="'flush-collapse' + ip + is"
                                                 class="accordion-collapse collapse show"
@@ -858,8 +2069,7 @@
                                                             type="text"
                                                             class="form-control"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                             required
                                                         />
@@ -874,14 +2084,13 @@
                                                             "
                                                             class="form-control"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                             required
                                                         ></textarea>
                                                     </div>
 
-                                                    <h2>Fuentes fijas</h2>
+                                                    <h6>Fuentes fijas</h6>
                                                     <div class="mb-3">
                                                         <label>
                                                             Consumo de
@@ -902,8 +2111,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -927,8 +2135,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -952,8 +2159,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -977,8 +2183,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -1001,8 +2206,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -1025,8 +2229,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -1049,8 +2252,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -1073,15 +2275,14 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
 
-                                                    <h2>
+                                                    <h6>
                                                         Emisiones de proceso
-                                                    </h2>
+                                                    </h6>
 
                                                     <div class="mb-3">
                                                         <label
@@ -1103,8 +2304,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -1127,8 +2327,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -1151,8 +2350,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -1177,8 +2375,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -1202,8 +2399,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -1226,8 +2422,7 @@
                                                             placeholder="Selección múltiple"
                                                             :searchable="true"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                         />
                                                     </div>
@@ -1238,7 +2433,7 @@
                                                             )
                                                         "
                                                     >
-                                                        <h2>Fuentes móviles</h2>
+                                                        <h6>Fuentes móviles</h6>
                                                         <div class="mb-3">
                                                             <label
                                                                 >Consumo de
@@ -1262,8 +2457,7 @@
                                                                     true
                                                                 "
                                                                 :disabled="
-                                                                    accion_procesos ==
-                                                                    'ver'
+                                                                    !editar_procesos
                                                                 "
                                                             />
                                                         </div>
@@ -1290,8 +2484,7 @@
                                                                     true
                                                                 "
                                                                 :disabled="
-                                                                    accion_procesos ==
-                                                                    'ver'
+                                                                    !editar_procesos
                                                                 "
                                                             />
                                                         </div>
@@ -1318,8 +2511,7 @@
                                                                     true
                                                                 "
                                                                 :disabled="
-                                                                    accion_procesos ==
-                                                                    'ver'
+                                                                    !editar_procesos
                                                                 "
                                                             />
                                                         </div>
@@ -1345,8 +2537,7 @@
                                                                     true
                                                                 "
                                                                 :disabled="
-                                                                    accion_procesos ==
-                                                                    'ver'
+                                                                    !editar_procesos
                                                                 "
                                                             />
                                                         </div>
@@ -1372,8 +2563,7 @@
                                                                     true
                                                                 "
                                                                 :disabled="
-                                                                    accion_procesos ==
-                                                                    'ver'
+                                                                    !editar_procesos
                                                                 "
                                                             />
                                                         </div>
@@ -1411,8 +2601,7 @@
                                                                     true
                                                                 "
                                                                 :disabled="
-                                                                    accion_procesos ==
-                                                                    'ver'
+                                                                    !editar_procesos
                                                                 "
                                                             />
                                                         </div>
@@ -1439,8 +2628,7 @@
                                                                     true
                                                                 "
                                                                 :disabled="
-                                                                    accion_procesos ==
-                                                                    'ver'
+                                                                    !editar_procesos
                                                                 "
                                                             />
                                                         </div>
@@ -1465,8 +2653,7 @@
                                                                     true
                                                                 "
                                                                 :disabled="
-                                                                    accion_procesos ==
-                                                                    'ver'
+                                                                    !editar_procesos
                                                                 "
                                                             />
                                                         </div>
@@ -1477,13 +2664,9 @@
                                                             v-if="is > 0"
                                                             type="button"
                                                             class="btn btn-danger"
-                                                            :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
-                                                            "
+                                                            :disabled="!editar"
                                                             @click="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar
                                                                     ? ''
                                                                     : is > 0
                                                                     ? procesos[
@@ -1504,12 +2687,10 @@
                                                             type="button"
                                                             class="btn btn-success"
                                                             :disabled="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                             "
                                                             @click="
-                                                                accion_procesos ==
-                                                                'ver'
+                                                                !editar_procesos
                                                                     ? ''
                                                                     : procesos[
                                                                           ip
@@ -1591,9 +2772,9 @@
                                             v-if="ip > 0"
                                             type="button"
                                             class="btn btn-danger"
-                                            :disabled="accion_procesos == 'ver'"
+                                            :disabled="!editar_procesos"
                                             @click="
-                                                accion_procesos == 'ver'
+                                                !editar_procesos
                                                     ? ''
                                                     : ip > 0
                                                     ? procesos.splice(ip, 1)
@@ -1605,9 +2786,9 @@
                                         <button
                                             type="button"
                                             class="btn btn-success"
-                                            :disabled="accion_procesos == 'ver'"
+                                            :disabled="!editar_procesos"
                                             @click="
-                                                accion_procesos == 'ver'
+                                                !editar_procesos
                                                     ? ''
                                                     : procesos.splice(
                                                           ip + 1,
@@ -1687,13 +2868,14 @@
                         <button
                             type="submit"
                             class="btn btn-primary"
-                            :disabled="accion_procesos == 'ver'"
+                            :disabled="!editar_procesos"
                         >
                             Guardar
                         </button>
                     </div>
                 </form>
             </div>
+
             <div
                 class="tab-pane fade"
                 id="inicio-consumos"
@@ -1712,7 +2894,7 @@
                             placeholder="Seleccione una opción"
                             :searchable="true"
                             required
-                            :disabled="accion_inicio == 'ver'"
+                            :disabled="!editar_inicio"
                         />
                     </div>
                     <div class="mb-3">
@@ -1725,7 +2907,7 @@
                             placeholder="Seleccione una opción"
                             :searchable="true"
                             required
-                            :disabled="accion_inicio == 'ver'"
+                            :disabled="!editar_inicio"
                         />
                     </div>
                     <div class="mb-3">
@@ -1737,495 +2919,14 @@
                             v-model="ie.unidades_producidas"
                             class="form-control"
                             type="text"
-                            :disabled="accion_inicio == 'ver'"
+                            :disabled="!editar_inicio"
                         />
                     </div>
                     <div class="mb-3 col-lg-4 offset-lg-4 d-grid gap-2">
                         <button
                             type="submit"
                             class="btn btn-primary"
-                            :disabled="accion_inicio == 'ver'"
-                        >
-                            Guardar
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <div
-                class="tab-pane fade"
-                id="consumos-indirectos"
-                role="tabpanel"
-                aria-labelledby="consumos-indirectos-tab"
-            >
-                <br />
-                <form @submit.prevent="guardarEmisionesIndirectas">
-                    <div class="mb-5">
-                        <p>
-                            <b>
-                                EMISIONES INDIRECTAS DE GEI CAUSADAS POR ENERGÍA
-                                IMPORTADA
-                            </b>
-                        </p>
-                        <p>ELECTRICIDAD IMPORTADA</p>
-                        <div class="mb-3">
-                            <label>Consumo de energía eléctrica</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.energias
-                                        .Energia_electrica
-                                "
-                                :options="options_electricidad"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <p>ENERGÍA IMPORTADA</p>
-                        <div class="mb-3">
-                            <label>Consumo de combustibles sólidos </label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.energias
-                                        .Combustible_solido
-                                "
-                                :options="options_combustible_solido"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Consumo de combustibles líquidos</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.energias
-                                        .Combustible_liquido
-                                "
-                                :options="options_combustible_liquido"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Consumo de combustibles gaseosos</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.energias
-                                        .Combustible_gaseoso
-                                "
-                                :options="options_combustible_gaseoso"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                    </div>
-                    <div class="mb-5">
-                        <p>
-                            <b>
-                                EMISIONES INDIRECTAS DE GEI CAUSADAS POR EL
-                                TRANSPORTE
-                            </b>
-                        </p>
-
-                        <p>FUENTES MÓVILES</p>
-                        <div class="mb-3">
-                            <label>Consumo de combustibles líquidos</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.transportes
-                                        .Combustible_liquido
-                                "
-                                :options="options_combustible_liquido"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Consumo de combustibles gaseosos</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.transportes
-                                        .Combustible_gaseoso
-                                "
-                                :options="options_combustible_gaseoso"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Consumo de refrigerantes y espumantes</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.transportes
-                                        .Refrigerante
-                                "
-                                :options="options_refrigerante"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Uso de extintores</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.transportes.Extintor
-                                "
-                                :options="options_extintor"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Consumo de lubricantes</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.transportes.Lubricante
-                                "
-                                :options="options_lubricante"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <p>TRANSPORTE CARGA Y PASAJEROS</p>
-                        <div class="mb-3">
-                            <label>Transporte de carga</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.transportes
-                                        .Transporte_carga
-                                "
-                                :options="options_viaje"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Transporte de pasajeros</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.transportes
-                                        .Transporte_pasajeros
-                                "
-                                :options="options_viaje"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                    </div>
-                    <div class="mb-5">
-                        <p>
-                            <b>
-                                EMISIONES INDIRECTAS DE GEI CAUSADAS POR
-                                PRODUCTOS QUE UTILIZA LA ORGANIZACIÓN
-                            </b>
-                        </p>
-
-                        <p>BIENES Y PRODUCTOS</p>
-                        <div class="mb-3">
-                            <label
-                                >Uso de refrigerantes y espumantes (Fuentes
-                                fijas)</label
-                            >
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.productos.Refrigerante
-                                "
-                                :options="options_refrigerante"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Uso de extintores (Fuentes fijas)</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.productos.Extintor
-                                "
-                                :options="options_extintor"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label
-                                >Consumo de lubricantes (Fuentes móviles)</label
-                            >
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.productos.Lubricante
-                                "
-                                :options="options_lubricante"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Consumo de aislante eléctrico</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.productos.Aislamiento
-                                "
-                                :options="options_aislamiento"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Productos</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.productos.Producto
-                                "
-                                :options="options_producto"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Equipos</label>
-                            <Multiselect
-                                v-model="emisiones_indirectas.productos.Equipo"
-                                :options="options_equipo"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Materias primas</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.productos.Materia_prima
-                                "
-                                :options="options_materia_prima"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <p>SERVICIOS</p>
-                        <div class="mb-3">
-                            <label>Servicios</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.productos.Servicio
-                                "
-                                :options="options_servicio"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label>Gestion de residuos</label>
-                            <Multiselect
-                                v-model="
-                                    emisiones_indirectas.productos
-                                        .Residuo_organizacional
-                                "
-                                :options="options_residuo_organizacional"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                    </div>
-                    <div class="mb-5">
-                        <p>
-                            <b>
-                                EMISIONES INDIRECTAS DE GEI ASOCIADAS CON EL USO
-                                DE LOS PRODUCTOS DE LA ORGANIZACIÓN
-                            </b>
-                        </p>
-                        <p>USO DE PRODUCTOS</p>
-                        <div class="mb-3">
-                            <label>Producto de la organización</label>
-                            <Multiselect
-                                v-model="emisiones_indirectas.usos.Producto"
-                                :options="options_uso"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <p>FIN DE VIDA</p>
-                        <div class="mb-3">
-                            <label>Producto de la organización</label>
-                            <Multiselect
-                                v-model="emisiones_indirectas.usos.Fin"
-                                :options="options_destino"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <p>ACTIVOS ARRENDADOS</p>
-                        <div class="mb-3">
-                            <label>Activo</label>
-                            <Multiselect
-                                v-model="emisiones_indirectas.usos.Activo"
-                                :options="options_activo"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                        <p>INVERSIONES</p>
-                        <div class="mb-3">
-                            <label>Inversión</label>
-                            <Multiselect
-                                v-model="emisiones_indirectas.usos.Inversion"
-                                :options="options_inversion"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                    </div>
-                    <div class="mb-5">
-                        <b>
-                            EMISIONES INDIRECTAS DE GEI PROVENIENTES DE OTRAS
-                            FUENTES
-                        </b>
-                        <p>OTROS</p>
-                        <div class="mb-3">
-                            <label>Otros</label>
-                            <Multiselect
-                                v-model="emisiones_indirectas.otros.Otro"
-                                :options="options_otro"
-                                mode="tags"
-                                valueProp="id"
-                                label="nombre"
-                                placeholder="Selección múltiple"
-                                :searchable="true"
-                                :disabled="accion_emisiones == 'ver'"
-                            />
-                        </div>
-                    </div>
-                    <div class="mb-3 col-lg-4 offset-lg-4 d-grid gap-2">
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                            :disabled="accion_emisiones == 'ver'"
-                        >
-                            Guardar
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <div
-                class="tab-pane fade"
-                id="consumos-transversales"
-                role="tabpanel"
-                aria-labelledby="consumos-transversales-tab"
-            >
-                <br />
-
-                <form @submit.prevent="guardarTrasversales">
-                    <div class="mb-3">
-                        <label>Consumos transversales</label>
-                        <Multiselect
-                            v-model="trasversales.trasversales.Trasversal"
-                            :options="options_trasversal"
-                            mode="tags"
-                            valueProp="id"
-                            label="nombre"
-                            placeholder="Selección múltiple"
-                            :searchable="true"
-                            :disabled="accion_trasversales == 'ver'"
-                        />
-                    </div>
-                    <div class="mb-3 col-lg-4 offset-lg-4 d-grid gap-2">
-                        <button
-                            type="submit"
-                            class="btn btn-primary"
-                            :disabled="accion_trasversales == 'ver'"
+                            :disabled="!editar_inicio"
                         >
                             Guardar
                         </button>
@@ -2247,7 +2948,8 @@
                                 v-for="(c, i) in filtrarCategorias()"
                                 v-bind:key="i"
                             >
-                                <h4
+                                <p
+                                    style="font-size: 14px"
                                     class="accordion-header"
                                     :id="'heading-categoria-' + i"
                                 >
@@ -2269,7 +2971,7 @@
                                             aria-hidden="true"
                                         ></i>
                                     </button>
-                                </h4>
+                                </p>
                                 <div
                                     :id="'panel-categoria-' + i"
                                     class="accordion-collapse collapse"
@@ -2286,7 +2988,8 @@
                                                 ) in filtrarSubcategorias(c)"
                                                 v-bind:key="si"
                                             >
-                                                <h4
+                                                <p
+                                                    style="font-size: 13px"
                                                     class="accordion-header"
                                                     :id="
                                                         'heading-subcategoria-' +
@@ -2314,7 +3017,7 @@
                                                             aria-hidden="true"
                                                         ></i>
                                                     </button>
-                                                </h4>
+                                                </p>
                                                 <div
                                                     :id="
                                                         'panel-subcategoria-' +
@@ -2337,7 +3040,10 @@
                                                                 )"
                                                                 v-bind:key="fi"
                                                             >
-                                                                <h5
+                                                                <p
+                                                                    style="
+                                                                        font-size: 12px;
+                                                                    "
                                                                     class="accordion-header"
                                                                     :id="
                                                                         'heading-subcategoria-' +
@@ -2367,7 +3073,7 @@
                                                                             aria-hidden="true"
                                                                         ></i>
                                                                     </button>
-                                                                </h5>
+                                                                </p>
                                                                 <div
                                                                     :id="
                                                                         'panel-fuente-' +
@@ -2388,15 +3094,20 @@
                                                                                 class="accordion-item"
                                                                                 v-for="(
                                                                                     t,
+                                                                                    tk,
                                                                                     ti
                                                                                 ) in filtrarTipo(
+                                                                                    sc,
                                                                                     fe
                                                                                 )"
                                                                                 v-bind:key="
-                                                                                    ti
+                                                                                    tk
                                                                                 "
                                                                             >
-                                                                                <h6
+                                                                                <p
+                                                                                    style="
+                                                                                        font-size: 12px;
+                                                                                    "
                                                                                     class="accordion-header"
                                                                                     :id="
                                                                                         'heading-tipo-' +
@@ -2419,8 +3130,12 @@
                                                                                         "
                                                                                     >
                                                                                         {{
-                                                                                            t
+                                                                                            tk
                                                                                         }}
+                                                                                        -
+                                                                                        ({{
+                                                                                            t
+                                                                                        }})
                                                                                         <i
                                                                                             class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3"
                                                                                             aria-hidden="true"
@@ -2430,7 +3145,7 @@
                                                                                             aria-hidden="true"
                                                                                         ></i>
                                                                                     </button>
-                                                                                </h6>
+                                                                                </p>
                                                                                 <div
                                                                                     :id="
                                                                                         'panel-tipo-' +
@@ -2470,7 +3185,7 @@
                                                                                                         fuente
                                                                                                             .fuentetable
                                                                                                             .nombre ==
-                                                                                                        t
+                                                                                                        tk
                                                                                                     "
                                                                                                 >
                                                                                                     <label>
@@ -2550,8 +3265,6 @@
             </div>
         </div>
     </div>
-    <!-- </div>
-    </div> -->
 </template>
 <script>
 import Parametro from "../../models/Parametro";
@@ -2622,47 +3335,130 @@ export default {
 
             etapa: 1,
             paso: 1,
-            emisiones_indirectas: {
-                energias: {
-                    Energia_electrica: [],
-                    Combustible_solido: [],
-                    Combustible_liquido: [],
-                    Combustible_gaseoso: [],
-                },
-                transportes: {
-                    Combustible_solido: [],
-                    Combustible_liquido: [],
-                    Combustible_gaseoso: [],
-                    Refrigerante: [],
-                    Extintor: [],
-                    Lubricante: [],
-                    Transporte_carga: [],
-                    Transporte_pasajeros: [],
-                },
-                productos: {
-                    Refrigerante: [],
-                    Extintor: [],
-                    Lubricante: [],
-                    Aislamiento: [],
-                    Producto: [],
-                    Equipo: [],
-                    Materia_prima: [],
-                    Servicio: [],
-                    Residuo_organizacional: [],
-                },
-                usos: {
-                    Producto: [],
-                    Fin: [],
-                    Activo: [],
-                    Inversion: [],
-                },
-                otros: {
-                    Otro: [],
-                },
+
+            ac: {
+                c1: "CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI",
+                c2: "CATEGORIA 2 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR ENERGÍA IMPORTADA",
+                c3: "CATEGORIA 3 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR EL TRANSPORTE",
+                c4: "CATEGORIA 4 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR PRODUCTOS QUE UTILIZA LA ORGANIZACIÓN",
+                c5: "CATEGORIA 5 - EMISIONES INDIRECTAS DE GEI ASOCIADAS CON EL USO DE LOS PRODUCTOS DE LA ORGANIZACIÓN",
+                c6: "CATEGORIA 6 - EMISIONES INDIRECTAS DE GEI PROVENIENTES DE OTRAS FUENTES",
+                c7: "CATEGORIA 7 - EMISIONES TRASVERSALES",
             },
-            trasversales: {
-                trasversales: {
-                    Trasversal: [],
+
+            asc: {
+                fuentes_fijas: "FUENTES FIJAS",
+                fuentes_moviles: "FUENTES MÓVILES",
+                emisiones: "EMISIONES DE PROCESO",
+                electricidad_importada: "ELECTRICIDAD IMPORTADA",
+                energia_importada: "ENERGÍA IMPORTADA (TÉRMICA)",
+                transportes_fuentes_moviles: "FUENTES MÓVILES",
+                transportes_carga_pasajeros: "TRANSPORTE CARGA Y PASAJEROS",
+                bienes_productos: "BIENES Y PRODUCTOS",
+                servicios: "SERVICIOS",
+                usos: "USO DE PRODUCTOS",
+                fines: "FIN DE VIDA",
+                activos: "ACTIVOS ARRENDADOS",
+                inversiones: "INVERSIONES",
+                otros: "Otros",
+                trasversales: "Trasversales",
+            },
+
+            fuentes: {
+                c1: {
+                    fuentes_moviles: {
+                        Combustible_liquido: [],
+                        Combustible_gaseoso: [],
+                        Refrigerante: [],
+                        Extintor: [],
+                        Lubricante: [],
+                    },
+                    fuentes_fijas: {
+                        Combustible_solido: [],
+                        Combustible_liquido: [],
+                        Combustible_gaseoso: [],
+                        Refrigerante: [],
+                        Extintor: [],
+                        Lubricante: [],
+                        Fuga: [],
+                        Aislamiento: [],
+                    },
+                    emisiones: {
+                        Embalse: [],
+                        Mineria: [],
+                        Industrial: [],
+                        Fermentacion: [],
+                        Estiercol: [],
+                        Residuo_organizacional: [],
+                        Residuo_agropecuario: [],
+                        Fertilizante: [],
+                        Cal: [],
+                    },
+                },
+
+                c2: {
+                    electricidad_importada: {
+                        Energia_electrica: [],
+                    },
+                    energia_importada: {
+                        Combustible_solido: [],
+                        Combustible_liquido: [],
+                        Combustible_gaseoso: [],
+                    },
+                },
+
+                c3: {
+                    transportes_fuentes_moviles: {
+                        Combustible_solido: [],
+                        Combustible_liquido: [],
+                        Combustible_gaseoso: [],
+                        Refrigerante: [],
+                        Extintor: [],
+                        Lubricante: [],
+                    },
+                    transportes_carga_pasajeros: {
+                        Transporte_carga: [],
+                        Transporte_pasajeros: [],
+                    },
+                },
+                c4: {
+                    bienes_productos: {
+                        Refrigerante: [],
+                        Extintor: [],
+                        Lubricante: [],
+                        Aislamiento: [],
+                        Producto: [],
+                        Equipo: [],
+                        Materia_prima: [],
+                    },
+                    servicios: {
+                        Servicio: [],
+                        Residuo_organizacional: [],
+                    },
+                },
+                c5: {
+                    usos: {
+                        Producto: [],
+                    },
+                    fines: {
+                        Fin: [],
+                    },
+                    activos: {
+                        Activo: [],
+                    },
+                    inversiones: {
+                        Inversion: [],
+                    },
+                },
+                c6: {
+                    otros: {
+                        Otro: [],
+                    },
+                },
+                c7: {
+                    trasversales: {
+                        Trasversal: [],
+                    },
                 },
             },
             procesos: [
@@ -2774,13 +3570,11 @@ export default {
             options_metodologia: [],
             options_anio: [],
             options_mes: [],
-            required: "Este campo es requerido",
             bsPopover: null,
-            accion_formulario: "crear",
-            accion_procesos: "crear",
-            accion_emisiones: "crear",
-            accion_inicio: "crear",
-            accion_trasversales: "crear",
+            editar_formulario: 1,
+            editar_fuente: 1,
+            editar_procesos: 1,
+            editar_inicio: 1,
             informacion_empresa_existe: true,
             user: new User(),
         };
@@ -2799,128 +3593,21 @@ export default {
             setTimeout(() => {
                 switch (this.etapa) {
                     case 2:
-                        $("#construccion-proceso-tab").click();
+                        $("#seleccion-tab").click();
                         break;
                     case 3:
-                        $("#consumos-indirectos-tab").click();
+                        $("#construccion-proceso-tab").click();
                         break;
                     case 4:
-                        $("#consumos-transversales-tab").click();
-                        break;
-                    case 5:
                         $("#inicio-consumos-tab").click();
                         break;
-                    case 6:
+                    case 5:
                         $("#construccion-anio-tab").click();
                         break;
                     default:
                         break;
                 }
             }, 5000);
-        },
-        async recargarFormularioEmisiones() {
-            if (!this.user.empresa_id) {
-                await this.getUserLogged();
-            }
-            let informacionEmpresa = await InformacionEmpresa.where({
-                empresa_id: this.user.empresa_id,
-                sede_id: this.user.sede_id,
-            }).first();
-
-            this.ie =
-                informacionEmpresa &&
-                Object.keys(informacionEmpresa).length != 0
-                    ? informacionEmpresa
-                    : this.ie;
-
-            if (Object.keys(informacionEmpresa).length != 0) {
-                this.accion_formulario = "ver";
-                this.etapa = 2;
-                this.recargarProcesos();
-            }
-        },
-        async recargarProcesos() {
-            axios
-                .post("/api/recargarProcesos", {
-                    empresa_id: this.user.empresa_id,
-                    sede_id: this.user.sede_id,
-                })
-                .then((response) => {
-                    if (response.data.length != 0) {
-                        this.procesos = response.data;
-                        this.accion_procesos = "ver";
-
-                        if (this.ie.datos_proveedores == 1) {
-                            this.etapa = 3;
-                            this.recargarEmisiones();
-                        } else {
-                            this.etapa = 4;
-                            this.recargarTrasversales();
-                        }
-                    }
-                })
-                .catch((error) => {
-                    Swal.fire(
-                        "Error",
-                        "No se pudo obtener la información de los procesos, por favor inténtelo nuevamente",
-                        "error"
-                    );
-                });
-        },
-        async recargarEmisiones() {
-            axios
-                .post("/api/recargarEmisiones", {
-                    empresa_id: this.user.empresa_id,
-                    sede_id: this.user.sede_id,
-                })
-                .then((response) => {
-                    if (Object.keys(response.data).length != 0) {
-                        this.emisiones_indirectas = response.data;
-                        this.accion_emisiones = "ver";
-                        this.etapa = 4;
-                    }
-                    this.recargarTrasversales();
-                })
-                .catch((error) => {
-                    Swal.fire(
-                        "Error",
-                        "No se pudo obtener la información de los procesos, por favor inténtelo nuevamente",
-                        "error"
-                    );
-                });
-        },
-        async recargarTrasversales() {
-            axios
-                .post("/api/recargarTrasversales", {
-                    empresa_id: this.user.empresa_id,
-                    sede_id: this.user.sede_id,
-                })
-                .then((response) => {
-                    if (Object.keys(response.data).length != 0) {
-                        this.trasversales = response.data;
-                        this.accion_trasversales = "ver";
-                        this.etapa = 5;
-                    }
-                    this.recargarInformacionInicio();
-                })
-                .catch((error) => {
-                    Swal.fire(
-                        "Error",
-                        "No se pudo obtener la información de los procesos, por favor inténtelo nuevamente",
-                        "error"
-                    );
-                });
-        },
-        async recargarInformacionInicio() {
-            let informacionEmpresa = await InformacionEmpresa.where({
-                empresa_id: this.user.empresa_id,
-                sede_id: this.user.sede_id,
-            }).first();
-
-            if (informacionEmpresa.anio_inicio != null) {
-                this.accion_inicio = "ver";
-                this.etapa = 6;
-            }
         },
         async getUserLogged() {
             await axios
@@ -3085,6 +3772,7 @@ export default {
                 return s.indexOf(v) === i;
             });
 
+            categorias.sort();
             return categorias;
         },
         filtrarSubcategorias(categoria) {
@@ -3133,26 +3821,30 @@ export default {
 
             return fuentes;
         },
-        filtrarTipo(fuente) {
-            let tipo = [];
+        filtrarTipo(tipo, fuente) {
+            let tipos = {};
 
             Object.keys(this.fuentes_emision).forEach((key) => {
                 Object.keys(this.fuentes_emision[key]).forEach((k) => {
                     if (
+                        this.fuentes_emision[key][k]["tipo_mostrar"] == tipo &&
                         this.fuentes_emision[key][k][
                             "fuente_emision_mostrar"
                         ] == fuente
                     ) {
-                        tipo.push(
+                        tipos[
                             this.fuentes_emision[key][k]["fuentetable"][
                                 "nombre"
                             ]
-                        );
+                        ] =
+                            this.fuentes_emision[key][k]["fuentetable"][
+                                "unidad_consumo"
+                            ];
                     }
                 });
             });
-
-            return tipo;
+            console.log(tipos);
+            return tipos;
         },
         changeMetodologia() {
             this.ie.otra_metodologia = null;
@@ -3170,14 +3862,14 @@ export default {
                     this.paso++;
                 }
             } else {
-                if (this.accion_formulario == "ver" && this.paso == 5) {
+                if (!this.editar_formulario && this.paso == 5) {
                     this.paso = 5;
                 } else {
                     this.paso++;
                 }
             }
 
-            if (this.paso == 6 && this.accion_formulario == "crear") {
+            if (this.paso == 6 && this.editar_formulario) {
                 this.$root.mostrarCargando("Guardando información");
 
                 await this.ie.save();
@@ -3188,16 +3880,39 @@ export default {
                     "Información guardada exitosamente",
                     "success"
                 );
-                this.recargarFormularioEmisiones();
+                this.recargarFuentesEmision();
                 setTimeout(() => {
-                    $("#construccion-proceso-tab").click();
+                    $("#seleccion-tab").click();
                 }, 200);
-                this.paso = 1;
+                this.paso = 2;
+            }
+        },
+        guardarFuentesEmision() {
+            if (this.editar_fuente) {
+                this.$root.mostrarCargando("Guardando información");
+                axios
+                    .post("api/guardarFuentesEmision", {
+                        fuentes: this.fuentes,
+                    })
+                    .then((response) => {
+                        Swal.close();
+                        this.$root.mostrarMensaje(
+                            "Éxito",
+                            "Información guardada exitosamente",
+                            "success"
+                        );
+                        this.recargarFuentesEmision();
+
+                        setTimeout(() => {
+                            $("#construccion-proceso-tab").click();
+                        }, 500);
+                    })
+                    .catch((error) => {});
             }
         },
 
         async guardarProcesos() {
-            if (this.accion_procesos != "ver") {
+            if (this.editar_procesos) {
                 this.$root.mostrarCargando("Guardando información");
                 axios
                     .post("/api/guardarProcesos", {
@@ -3212,11 +3927,7 @@ export default {
                         );
                         this.recargarProcesos();
                         setTimeout(() => {
-                            if (this.ie.datos_proveedores == 1) {
-                                $("#consumos-indirectos-tab").click();
-                            } else {
-                                $("#consumos-transversales-tab").click();
-                            }
+                            $("#inicio-consumos-tab").click();
                         }, 500);
                     })
                     .catch((error) => {
@@ -3229,67 +3940,8 @@ export default {
             }
         },
 
-        guardarEmisionesIndirectas() {
-            if (this.accion_emisiones != "ver") {
-                this.$root.mostrarCargando("Guardando información");
-                axios
-                    .post("/api/guardarEmisionesIndirectas", {
-                        emisiones: this.emisiones_indirectas,
-                    })
-                    .then((response) => {
-                        Swal.close();
-                        this.$root.mostrarMensaje(
-                            "Éxito",
-                            "Información guardada exitosamente",
-                            "success"
-                        );
-                        this.recargarEmisiones();
-
-                        setTimeout(() => {
-                            $("#consumos-transversales-tab").click();
-                        }, 200);
-                    })
-                    .catch((error) => {
-                        Swal.fire(
-                            "Error",
-                            "No se pudo obtener la información de la persona, por favor inténtelo nuevamente",
-                            "error"
-                        );
-                    });
-            }
-        },
-
-        async guardarTrasversales() {
-            if (this.accion_trasversales != "ver") {
-                this.$root.mostrarCargando("Guardando información");
-                axios
-                    .post("/api/guardarTrasversales", {
-                        trasversales: this.trasversales,
-                    })
-                    .then((response) => {
-                        Swal.close();
-                        this.$root.mostrarMensaje(
-                            "Éxito",
-                            "Información guardada exitosamente",
-                            "success"
-                        );
-                        this.recargarTrasversales();
-                        setTimeout(() => {
-                            $("#inicio-consumos-tab").click();
-                        }, 200);
-                    })
-                    .catch((error) => {
-                        Swal.fire(
-                            "Error",
-                            "No se pudo guardar la información, por favor inténtelo nuevamente",
-                            "error"
-                        );
-                    });
-            }
-        },
-
         async guardarInicioConsumo() {
-            if (this.accion_inicio != "ver") {
+            if (this.editar_inicio) {
                 this.$root.mostrarCargando("Guardando información");
 
                 let informacion_empresa = await InformacionEmpresa.where({
@@ -3317,7 +3969,7 @@ export default {
         },
 
         async guardarDatosConsumos() {
-            // this.$root.mostrarCargando("Guardando información");
+            this.$root.mostrarCargando("Guardando información");
             axios
                 .post("api/guardarDatosConsumos", {
                     fuentes_emision: this.fuentes_emision,
@@ -3336,24 +3988,82 @@ export default {
                 .catch((error) => {});
         },
 
-        async getFuentesEmision() {
-            this.$root.mostrarCargando("consultado información");
+        async recargarFormularioEmisiones() {
+            if (!this.user.empresa_id) {
+                await this.getUserLogged();
+            }
+            let informacionEmpresa = await InformacionEmpresa.where({
+                empresa_id: this.user.empresa_id,
+                sede_id: this.user.sede_id,
+            }).first();
 
+            this.ie =
+                informacionEmpresa &&
+                Object.keys(informacionEmpresa).length != 0
+                    ? informacionEmpresa
+                    : this.ie;
+
+            if (Object.keys(informacionEmpresa).length != 0) {
+                this.editar_formulario = 0;
+                this.etapa = 2;
+                this.recargarFuentesEmision();
+            }
+        },
+        async recargarFuentesEmision() {
             axios
-                .get(
-                    "api/getFuentesEmision/" +
-                        this.user.empresa_id +
-                        "/" +
-                        this.user.sede_id
-                )
-                .then((response) => {
-                    this.fuentes_emision = response.data;
+                .post("/api/recargarFuentesEmision", {
+                    empresa_id: this.user.empresa_id,
+                    sede_id: this.user.sede_id,
                 })
-                .catch((error) => {});
+                .then((response) => {
+                    if (response.data.length != 0) {
+                        this.fuentes = response.data;
+                        this.editar_fuente = 0;
+                        this.etapa = 3;
+                        this.recargarProcesos();
+                    }
+                })
+                .catch((error) => {
+                    Swal.fire(
+                        "Error",
+                        "No se pudo obtener la información de los procesos, por favor inténtelo nuevamente",
+                        "error"
+                    );
+                });
+        },
+        async recargarProcesos() {
+            axios
+                .post("/api/recargarProcesos", {
+                    empresa_id: this.user.empresa_id,
+                    sede_id: this.user.sede_id,
+                })
+                .then((response) => {
+                    if (response.data.length != 0) {
+                        this.procesos = response.data;
+                        this.editar_procesos = 0;
+                        this.etapa = 4;
+                        this.recargarInformacionInicio();
+                    }
+                })
+                .catch((error) => {
+                    Swal.fire(
+                        "Error",
+                        "No se pudo obtener la información de los procesos, por favor inténtelo nuevamente",
+                        "error"
+                    );
+                });
+        },
 
-            this.tablaEmisiones();
+        async recargarInformacionInicio() {
+            let informacionEmpresa = await InformacionEmpresa.where({
+                empresa_id: this.user.empresa_id,
+                sede_id: this.user.sede_id,
+            }).first();
 
-            Swal.close();
+            if (informacionEmpresa.anio_inicio != null) {
+                this.editar_inicio = 0;
+                this.etapa = 5;
+            }
         },
 
         async tablaEmisiones() {
@@ -3384,6 +4094,25 @@ export default {
             }
             this.array_consumos.push("INCERTIDUMBRE SISTEMATICA ADICIONAL");
         },
+        async getFuentesEmision() {
+            this.$root.mostrarCargando("consultado información");
+
+            axios
+                .get(
+                    "api/getFuentesEmision/" +
+                        this.user.empresa_id +
+                        "/" +
+                        this.user.sede_id
+                )
+                .then((response) => {
+                    this.fuentes_emision = response.data;
+                })
+                .catch((error) => {});
+
+            this.tablaEmisiones();
+
+            Swal.close();
+        },
     },
 };
 </script>
@@ -3399,11 +4128,9 @@ textarea.form-control {
 #tabs-ingresar-datos .nav-link.active span {
     display: contents;
 }
-
 #tabs-ingresar-datos .nav-link span {
     display: none;
 }
-
 #tabs-ingresar-datos .nav-link {
     color: #000 !important;
     background-color: #f8f9fa !important;

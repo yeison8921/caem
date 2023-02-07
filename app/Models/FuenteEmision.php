@@ -50,34 +50,52 @@ class FuenteEmision extends Model
         $texto = '';
         switch ($this->tipo) {
             case 'fuentes_fijas':
-                $texto = 'Fuentes fijas';
+                $texto = 'FUENTES FIJAS';
                 break;
             case 'fuentes_moviles':
-                $texto = 'Fuentes móviles';
+                $texto = 'FUENTES MÓVILES';
                 break;
             case 'emisiones':
-                $texto = 'Emisiones de proceso';
+                $texto = 'EMISIONES DE PROCESO';
                 break;
             case 'agricolas':
-                $texto = 'Agricolas';
+                $texto = 'AGRICOLAS';
                 break;
-            case 'energias':
-                $texto = 'Electricidad importada';
+            case 'electricidad_importada':
+                $texto = 'ELECTRICIDAD IMPORTADA';
                 break;
-            case 'transportes':
-                $texto = 'Transporte carga y pasajeros';
+            case 'energia_importada':
+                $texto = 'ENERGÍA IMPORTADA (TÉRMICA)';
                 break;
-            case 'productos':
-                $texto = 'Bienes y servicios';
+            case 'transportes_fuentes_moviles':
+                $texto = 'TRANSPORTE FUENTES MÓVILES';
+                break;
+            case 'transportes_carga_pasajeros':
+                $texto = 'TRANSPORTE CARGA Y PASAJEROS';
+                break;
+            case 'bienes_productos':
+                $texto = 'BIENES Y PRODUCTOS';
+                break;
+            case 'servicios':
+                $texto = 'SERVICIOS';
                 break;
             case 'usos':
-                $texto = 'Uso de productos';
+                $texto = 'USO DE PRODUCTOS';
+                break;
+            case 'fines':
+                $texto = 'FIN DE VIDA';
+                break;
+            case 'activos':
+                $texto = 'ACTIVOS ARRENDADOS';
+                break;
+            case 'inversiones':
+                $texto = 'INVERSIONES';
                 break;
             case 'otros':
-                $texto = 'Otros';
+                $texto = 'OTROS';
                 break;
             case 'trasversales':
-                $texto = 'Trasversales';
+                $texto = 'TRASVERSALES';
                 break;
         }
         return $texto;
@@ -120,6 +138,9 @@ class FuenteEmision extends Model
             case 'Embalse':
                 $texto = 'Uso de embalses o represamientos de agua';
                 break;
+            case 'Industrial':
+                $texto = 'Procesos industriales';
+                break;
             case 'Mineria':
                 $texto = 'Procesos de minería';
                 break;
@@ -150,19 +171,32 @@ class FuenteEmision extends Model
             case 'Transporte_pasajeros':
                 $texto = 'Transporte de pasajeros';
                 break;
+            case 'Producto':
+                $texto = 'Productos';
+                break;
+            case 'Equipo':
+                $texto = 'Equipos';
+                break;
             case 'Materia_prima':
                 $texto = 'Materias primas';
+                break;
+            case 'Servicio':
+                $texto = 'Servicios';
                 break;
             case 'Fin':
                 $texto = 'Fin de vida';
                 break;
+            case 'Activo':
+                $texto = 'Activo';
+                break;
             case 'Inversion':
                 $texto = 'Inversión';
                 break;
-            case 'Otros':
-
-            default:
-                $texto = $this->fuente_emision;
+            case 'Otro':
+                $texto = 'Otros';
+                break;
+            case 'Trasversales':
+                $texto = 'trasversales';
                 break;
         }
         return $texto;
@@ -177,37 +211,26 @@ class FuenteEmision extends Model
     public function getCategoriaMostrarAttribute()
     {
         $texto = '';
-        switch ($this->tipo) {
-            case 'fuentes_fijas':
-                $texto = 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI';
-                break;
-            case 'fuentes_moviles':
-                $texto = 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI';
-                break;
-            case 'emisiones':
-                $texto = 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI';
-                break;
-            case 'agricolas':
-                $texto = 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI';
-                break;
-            case 'energias':
-                $texto = 'CATEGORIA 2 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR ENERGÍA IMPORTADA';
-                break;
-            case 'transportes':
-                $texto = 'CATEGORIA 3 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR EL TRANSPORTE';
-                break;
-            case 'productos':
-                $texto = 'CATEGORIA 4 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR PRODUCTOS QUE UTILIZA LA ORGANIZACIÓN';
-                break;
-            case 'usos':
-                $texto = 'CATEGORIA 5 - EMISIONES INDIRECTAS DE GEI ASOCIADAS CON EL USO DE LOS PRODUCTOS DE LA ORGANIZACIÓN';
-                break;
-            case 'otros':
-                $texto = 'CATEGORIA 6 - EMISIONES INDIRECTAS DE GEI PROVENIENTES DE OTRAS FUENTES';
-                break;
-            case 'trasversales':
-                $texto = 'CATEGORIA 7 - EMISIONES TRASVERSALES';
-                break;
+        if ($this->tipo == 'fuentes_fijas' || $this->tipo == 'fuentes_moviles' || $this->tipo == 'emisiones' || $this->tipo == 'agricolas') {
+            $texto = 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI';
+        }
+        if ($this->tipo == 'electricidad_importada' || $this->tipo == 'energia_importada') {
+            $texto = 'CATEGORIA 2 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR ENERGÍA IMPORTADA';
+        }
+        if ($this->tipo == 'transportes_fuentes_moviles' || $this->tipo == 'transportes_carga_pasajeros') {
+            $texto = 'CATEGORIA 3 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR EL TRANSPORTE';
+        }
+        if ($this->tipo == 'bienes_productos' || $this->tipo == 'servicios') {
+            $texto = 'CATEGORIA 4 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR PRODUCTOS QUE UTILIZA LA ORGANIZACIÓN';
+        }
+        if ($this->tipo == 'usos' || $this->tipo == 'fines' || $this->tipo == 'activos' || $this->tipo == 'inversiones') {
+            $texto = 'CATEGORIA 5 - EMISIONES INDIRECTAS DE GEI ASOCIADAS CON EL USO DE LOS PRODUCTOS DE LA ORGANIZACIÓN';
+        }
+        if ($this->tipo == 'otros') {
+            $texto = 'CATEGORIA 6 - EMISIONES INDIRECTAS DE GEI PROVENIENTES DE OTRAS FUENTES';
+        }
+        if ($this->tipo == 'trasversales') {
+            $texto = 'CATEGORIA 7 - EMISIONES TRASVERSALES';
         }
         return $texto;
     }
