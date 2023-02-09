@@ -196,7 +196,7 @@ class FuenteEmision extends Model
                 $texto = 'Otros';
                 break;
             case 'Trasversales':
-                $texto = 'trasversales';
+                $texto = 'Trasversales';
                 break;
         }
         return $texto;

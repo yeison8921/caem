@@ -275,7 +275,7 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
             }
         }
 
-        $resultados = $resultados->with('fuentetable', 'resultado')->get();
+        $resultados = $resultados->whereNull('subproceso_id')->with('fuentetable', 'resultado')->get();
 
         if ($request->reporte == 'corporativo') {
             $request->reporte = '';
@@ -339,7 +339,7 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
         $array_totales_gei = [0];
         $array_colores_gei = [];
 
-        $array_totales_fuente = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        $array_totales_fuente = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         $array_colores_fuente = [];
 
         if ($request->reporte == '') {
@@ -407,7 +407,7 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                 //obtener datos por tipo
                 if ($request->reporte == '') {
                     if ($resultado["resultado"]['huella_carbono' . $request->ar] > 0) {
-                        array_push($array_labels_tipo, $resultado['fuentetable']['nombre'] . ' - ' . $resultado['tipo_mostrar']);
+                        array_push($array_labels_tipo, $resultado['fuentetable']['nombre'] . '<br>' . $resultado['tipo_mostrar']);
                         array_push($array_totales_tipo, $resultado["resultado"]['huella_carbono' . $request->ar]);
                     }
                 } else {

@@ -3614,7 +3614,7 @@ export default {
                     default:
                         break;
                 }
-            }, 5000);
+            }, 3000);
         },
         async getUserLogged() {
             await axios

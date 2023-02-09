@@ -61,7 +61,22 @@ export default {
                         },
                     ],
                 },
-                plugins: [ChartDataLabels],
+                plugins: [
+                    ChartDataLabels,
+                    {
+                        beforeInit: function (chart) {
+                            chart.data.labels.forEach(function (
+                                label,
+                                index,
+                                labelsArr
+                            ) {
+                                if (/<br>/.test(label)) {
+                                    labelsArr[index] = label.split("<br>");
+                                }
+                            });
+                        },
+                    },
+                ],
                 options: {
                     indexAxis: "y",
                     responsive: true,
