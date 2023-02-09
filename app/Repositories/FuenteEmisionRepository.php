@@ -306,6 +306,7 @@ class FuenteEmisionRepository extends BaseRepository
         $fuentes = FuenteEmision::groupBy('fuentetable_type', 'fuentetable_id', 'tipo')
             ->with('fuentetable', 'resultado')
             ->where([['empresa_id', $id_empresa], ['sede_id', $id_sede]])
+            ->whereNull('subproceso_id')
             ->get()
             ->groupBy('tipo_mostrar');
 

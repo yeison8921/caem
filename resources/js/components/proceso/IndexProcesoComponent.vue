@@ -202,7 +202,7 @@
                                 "
                             />
                         </div>
-                        <div v-if="ie.huella_base">
+                        <div v-if="parseInt(ie.huella_base)">
                             <div class="mb-3">
                                 <label class="required"
                                     >¿Cuál es el valor de la huella de carbono
@@ -237,7 +237,12 @@
                                 />
                             </div>
                         </div>
-                        <div v-if="ie.huella_base && ie.huella_comparativo">
+                        <div
+                            v-if="
+                                parseInt(ie.huella_base) &&
+                                parseInt(ie.huella_comparativo)
+                            "
+                        >
                             <div class="mb-3">
                                 <label class="required"
                                     >¿Cuál es el valor de la huella de carbono
@@ -317,7 +322,7 @@
                                 "
                             />
                         </div>
-                        <div v-if="ie.verificacion_interna">
+                        <div v-if="parseInt(ie.verificacion_interna)">
                             <div class="mb-3">
                                 <label class="required"
                                     >¿Se optimizaron los procesos de cálculo y
@@ -354,8 +359,8 @@
                         </div>
                         <div
                             v-if="
-                                ie.verificacion_interna &&
-                                ie.verificacion_tercero
+                                parseInt(ie.verificacion_interna) &&
+                                parseInt(ie.verificacion_tercero)
                             "
                         >
                             <div class="mb-3">
@@ -412,7 +417,7 @@
                                 "
                             />
                         </div>
-                        <div v-if="ie.metas_mitigacion">
+                        <div v-if="parseInt(ie.metas_mitigacion)">
                             <div class="mb-3">
                                 <label class="required"
                                     >¿Cuál es la meta de reducción de emisiones
@@ -447,7 +452,7 @@
                             </div>
                         </div>
 
-                        <div v-if="ie.anio_meta">
+                        <div v-if="parseInt(ie.anio_meta)">
                             <div class="mb-3">
                                 <label class="required"
                                     >¿A que año está proyectada esta meta?
@@ -3884,7 +3889,7 @@ export default {
                 this.recargarFormularioEmisiones();
                 setTimeout(() => {
                     $("#seleccion-tab").click();
-                }, 200);
+                }, 500);
             }
         },
         guardarFuentesEmision() {
@@ -3963,7 +3968,7 @@ export default {
                 this.recargarInformacionInicio();
                 setTimeout(() => {
                     $("#construccion-anio-tab").click();
-                }, 200);
+                }, 500);
             }
         },
 
