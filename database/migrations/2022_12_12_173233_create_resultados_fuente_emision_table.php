@@ -168,6 +168,7 @@ class CreateResultadosFuenteEmisionTable extends Migration
             $table->foreignId('sede_id')->constrained('empresa_sedes')->onDelete('restrict');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

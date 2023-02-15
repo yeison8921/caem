@@ -129,7 +129,7 @@ Route::group(['as' => 'auth.'], function () {
         Route::apiResource('fuentes_emision', FuenteEmisionController::class);
         Route::post('guardarFuentesEmision', [FuenteEmisionController::class, 'guardarFuentesEmision']);
         Route::post('recargarFuentesEmision', [FuenteEmisionController::class, 'recargarFuentesEmision']);
-        Route::get('getFuentesEmision/{id_empresa}/{id_sede}', [FuenteEmisionController::class, 'getFuentesEmision']);
+        Route::post('getFuentesEmision', [FuenteEmisionController::class, 'getFuentesEmision']);
 
         // Resultados fuente emision
         Route::apiResource('resultados_fuente_emision', ResultadoFuenteEmisionController::class);

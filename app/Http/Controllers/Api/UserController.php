@@ -53,7 +53,7 @@ class UserController extends Controller
     {
         $query = QueryBuilder::for(User::class)
             ->allowedIncludes([
-                'role',
+                'rol',
                 'empresa',
                 'empresaSede',
             ])
@@ -65,6 +65,7 @@ class UserController extends Controller
                 AllowedFilter::exact('name'),
                 AllowedFilter::exact('email'),
                 AllowedFilter::exact('estado'),
+                AllowedFilter::exact('rol_id'),
             ]);
 
         if (request('limit')) {
@@ -84,7 +85,7 @@ class UserController extends Controller
     {
         return QueryBuilder::for(User::whereId($user->id))
             ->allowedIncludes([
-                'role',
+                'rol',
                 'empresa',
                 'empresaSede',
             ])
@@ -124,5 +125,14 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         return $user->delete();
+    }
+
+    public function formUsuario($id_usuario = '')
+    {
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return $this->userRepository->formUsuario($id_usuario);
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
 }

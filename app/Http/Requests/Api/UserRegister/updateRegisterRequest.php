@@ -31,7 +31,6 @@ class updateRegisterRequest extends FormRequest
             'first_name' => ['sometimes', 'string', 'max:100'],
             'email' => ['sometimes', 'string', 'email', 'max:255'],
             'password' => ['sometimes', 'string', 'max:100'],
-            'estado' => ['nullable', 'integer'],
         ];
     }
 }

@@ -17,8 +17,8 @@ use App\Http\Controllers\Api\OtroController;
 use App\Http\Controllers\Api\ParametroController;
 use App\Http\Controllers\Api\ProductoController;
 use App\Http\Controllers\Api\RefrigeranteController;
-use App\Http\Controllers\Api\Sf6Controller;
 use App\Http\Controllers\Api\TrasversalController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ViajeController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +54,24 @@ Route::group(['middleware' => 'auth'], function () {
     // Perfil
     Route::get('/perfil',  function () {
         return view('auth/perfil');
+    });
+
+    // Usuarios
+    Route::get('/usuarios',  function () {
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return view('administracion/usuario/index_usuario');
+        }
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
+    });
+    Route::get('/usuarios/create', [UserController::class, 'formUsuario']);
+    Route::get('/usuarios/edit/{id_usuario}', [UserController::class, 'formUsuario']);
+
+    // empresarios
+    Route::get('/empresarios',  function () {
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+            return view('administracion/usuario/index_empresario');
+        }
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     });
 
     // Convenios
@@ -102,7 +120,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Proceseo
     Route::get('/procesos',  function () {
-        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM, User::TYPE_EMPRESARIO])) {
+        if (in_array(auth()->user()->rol_id, [User::TYPE_LIDER_CAEM, User::TYPE_EMPRESARIO])) {
             return view('proceso/index_proceso');
         }
 

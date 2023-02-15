@@ -18,8 +18,8 @@ class User extends Authenticatable
     public const STATUS_REJECTED = 2;
     public const TYPE_ADMIN = 1;
     public const TYPE_EMPRESARIO = 2;
-    public const TYPE_LIDER_CONVENIO = 3;
-    public const TYPE_LIDER_CAEM = 4;
+    public const TYPE_LIDER_CAEM = 3;
+    // public const TYPE_LIDER_CONVENIO = 3;
 
     /**
      * The attributes that are mass assignable.
@@ -70,6 +70,13 @@ class User extends Authenticatable
             (strlen($password) === 95 && preg_match('/^\$argon2i\$/', $password)) ?
             $password :
             Hash::make($password);
+    }
+    /**
+     * Obtiene el rol.
+     */
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class);
     }
     /**
      * Obtiene la empresa.

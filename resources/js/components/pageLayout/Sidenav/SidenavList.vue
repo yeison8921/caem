@@ -38,11 +38,11 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1, 2, 4].includes(
+                                        [2, 3].includes(
                                             parseInt(userLogged.rol_id)
                                         )
                                     "
-                                    :to="{ name: 'Procesos' }"
+                                    :to="{ name: 'Ingresar datos' }"
                                     :url="'/procesos'"
                                     mini-icon="ID"
                                     text="Ingresar datos"
@@ -50,7 +50,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1, 2, 3, 4].includes(
+                                        [1, 2, 3].includes(
                                             parseInt(userLogged.rol_id)
                                         )
                                     "
@@ -65,7 +65,7 @@
                 </li>
                 <li
                     class="nav-item"
-                    v-if="[1, 4].includes(parseInt(userLogged.rol_id))"
+                    v-if="[1, 3].includes(parseInt(userLogged.rol_id))"
                 >
                     <sidenav-collapse
                         collapse-ref="AdminLinks"
@@ -97,6 +97,30 @@
                                             parseInt(userLogged.rol_id)
                                         )
                                     "
+                                    :to="{ name: 'Usuarios' }"
+                                    :url="'/usuarios'"
+                                    mini-icon="U"
+                                    text="Usuarios"
+                                />
+                                <sidenav-item
+                                    v-if="
+                                        isLoggedIn &&
+                                        [1].includes(
+                                            parseInt(userLogged.rol_id)
+                                        )
+                                    "
+                                    :to="{ name: 'Empresarios' }"
+                                    :url="'/empresarios'"
+                                    mini-icon="e"
+                                    text="Empresarios"
+                                />
+                                <sidenav-item
+                                    v-if="
+                                        isLoggedIn &&
+                                        [1].includes(
+                                            parseInt(userLogged.rol_id)
+                                        )
+                                    "
                                     :to="{ name: 'Convenios' }"
                                     :url="'/convenios'"
                                     mini-icon="C"
@@ -105,7 +129,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1, 4].includes(
+                                        [1, 3].includes(
                                             parseInt(userLogged.rol_id)
                                         )
                                     "
@@ -117,7 +141,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1, 4].includes(
+                                        [1, 3].includes(
                                             parseInt(userLogged.rol_id)
                                         )
                                     "
@@ -129,7 +153,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1, 4].includes(
+                                        [1, 3].includes(
                                             parseInt(userLogged.rol_id)
                                         )
                                     "
@@ -189,6 +213,15 @@
                             </ul>
                         </template>
                     </sidenav-collapse>
+                </li>
+                <li class="nav-item" v-if="isLoggedIn">
+                    <a
+                        href="#"
+                        target="_blank"
+                        class="mb-0 btn btn-sm btn-round me-1 bg-gradient-info"
+                        style="margin-left: 40px; bottom: 8vh; position: fixed"
+                        >&nbsp&nbsp&nbsp&nbspTutoriales&nbsp&nbsp&nbsp&nbsp</a
+                    >
                 </li>
                 <li class="nav-item" v-if="isLoggedIn">
                     <a

@@ -87,9 +87,9 @@ class FuenteEmisionController extends Controller
         return $this->fuenteEmisionRepository->guardarFuentesEmision($request);
     }
 
-    public function getFuentesEmision($id_empresa, $id_sede)
+    public function getFuentesEmision(Request $request)
     {
-        return $this->fuenteEmisionRepository->getFuentesEmision($id_empresa, $id_sede);
+        return $this->fuenteEmisionRepository->getFuentesEmision($request);
     }
 
     public function recargarFuentesEmision(Request $request)

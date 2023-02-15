@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Exceptions\GeneralException;
 use App\Models\FuenteEmision;
 use App\Models\InformacionEmpresa;
+use App\Models\ResultadoFuenteEmision;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
@@ -66,46 +67,89 @@ class FuenteEmisionRepository extends BaseRepository
 
     public function guardarFuentesEmision($request)
     {
-        $usuarioEmpresaId = auth('api')->user()->empresa_id;
-        $usuarioSedeId = auth('api')->user()->sede_id;
-        $informacionEmpresa = InformacionEmpresa::where('empresa_id', $usuarioEmpresaId)->where('sede_id', $usuarioSedeId)->first();
+        if ($request->actualizar) {
+            foreach ($request['fuentes'] as $key => $value) {
+                foreach ($value as $subkey => $subvalue) {
+                    $tipo = $subkey;
+                    $array_nuevos[$tipo] = [];
+                }
+            }
+            foreach ($request['fuentes'] as $key => $value) {
+                foreach ($value as $subkey => $subvalue) {
+                    foreach ($subvalue as $sk => $sv) {
+                        foreach ($sv as $k => $v) {
+                            $tipo = $subkey;
+                            if (array_key_exists($tipo, $array_nuevos)) {
+                                array_push($array_nuevos[$tipo], $v);
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach ($array_nuevos as $ka => $kv) {
+                ResultadoFuenteEmision::where([
+                    ['tipo', $ka],
+                    ['empresa_id', $request->empresa_id],
+                    ['sede_id', $request->sede_id],
+                    ['informacion_empresa_id', $request->informacion_empresa_id],
+                ])->whereNotIn('fuentetable_id', $array_nuevos[$ka])->delete();
+
+                FuenteEmision::where([
+                    ['tipo', $ka],
+                    ['empresa_id', $request->empresa_id],
+                    ['sede_id', $request->sede_id],
+                    ['informacion_empresa_id', $request->informacion_empresa_id],
+                ])->whereNotIn('fuentetable_id', $array_nuevos[$ka])->delete();
+            }
+        }
 
         foreach ($request['fuentes'] as $key => $value) {
             foreach ($value as $subkey => $subvalue) {
                 foreach ($subvalue as $sk => $sv) {
                     foreach ($sv as $k => $v) {
+                        $fuente_existe = FuenteEmision::where([
+                            ['tipo', $subkey],
+                            ['fuente_emision', $sk],
+                            ['fuentetable_id', $v],
+                            ['empresa_id', $request->empresa_id],
+                            ['sede_id', $request->sede_id],
+                            ['informacion_empresa_id', $request->informacion_empresa_id],
+                        ])->first();
 
-                        $modelo = 'App\Models\\';
+                        if (is_null($fuente_existe)) {
+                            $modelo = 'App\Models\\';
 
-                        if (str_contains($sk, 'Combustible')) {
-                            $modelo .= explode("_", $sk)[0];
-                        } else if (str_contains($sk, 'Transporte')) {
-                            $modelo .= 'Viaje';
-                        } elseif ($sk == 'Embalse' || $sk == 'Mineria' || $sk == 'Industrial' || $sk == 'Residuo_organizacional') {
-                            $modelo .= 'Emision';
-                        } elseif ($sk == 'Producto' || $sk == 'Equipo' || $sk == 'Materia_prima' || $sk == 'Servicio' || $sk == 'Fin' || $sk == 'Activo' || $sk == 'Inversion' || $sk == 'Servicio') {
-                            $modelo .= 'Producto';
-                        } elseif ($sk == 'Cal') {
-                            $modelo .= 'Fertilizante';
-                        } elseif ($sk == 'Energia_electrica') {
-                            $modelo .= 'Electricidad';
-                        } elseif ($sk == 'Materia_prima') {
-                            $modelo .= 'Aislamiento';
-                        } elseif ($sk == 'Residuo_agropecuario') {
-                            $modelo .= 'Estiercol';
-                        } else {
-                            $modelo .= $sk;
+                            if (str_contains($sk, 'Combustible')) {
+                                $modelo .= explode("_", $sk)[0];
+                            } else if (str_contains($sk, 'Transporte')) {
+                                $modelo .= 'Viaje';
+                            } elseif ($sk == 'Embalse' || $sk == 'Mineria' || $sk == 'Industrial' || $sk == 'Residuo_organizacional') {
+                                $modelo .= 'Emision';
+                            } elseif ($sk == 'Producto' || $sk == 'Equipo' || $sk == 'Materia_prima' || $sk == 'Servicio' || $sk == 'Fin' || $sk == 'Activo' || $sk == 'Inversion' || $sk == 'Servicio') {
+                                $modelo .= 'Producto';
+                            } elseif ($sk == 'Cal') {
+                                $modelo .= 'Fertilizante';
+                            } elseif ($sk == 'Energia_electrica') {
+                                $modelo .= 'Electricidad';
+                            } elseif ($sk == 'Materia_prima') {
+                                $modelo .= 'Aislamiento';
+                            } elseif ($sk == 'Residuo_agropecuario') {
+                                $modelo .= 'Estiercol';
+                            } else {
+                                $modelo .= $sk;
+                            }
+
+                            $fuente_emision = new FuenteEmision;
+                            $fuente_emision->tipo = $subkey;
+                            $fuente_emision->fuente_emision = $sk;
+                            $fuente_emision->fuentetable_type = $modelo;
+                            $fuente_emision->fuentetable_id = $v;
+                            $fuente_emision->informacion_empresa_id = $request->informacion_empresa_id;
+                            $fuente_emision->empresa_id = $request->empresa_id;
+                            $fuente_emision->sede_id = $request->sede_id;
+                            $fuente_emision->save();
                         }
-
-                        $fuente_emision = new FuenteEmision;
-                        $fuente_emision->tipo = $subkey;
-                        $fuente_emision->fuente_emision = $sk;
-                        $fuente_emision->fuentetable_type = $modelo;
-                        $fuente_emision->fuentetable_id = $v;
-                        $fuente_emision->informacion_empresa_id = $informacionEmpresa->id;
-                        $fuente_emision->empresa_id = $usuarioEmpresaId;
-                        $fuente_emision->sede_id = $usuarioSedeId;
-                        $fuente_emision->save();
                     }
                 }
             }
@@ -117,6 +161,7 @@ class FuenteEmisionRepository extends BaseRepository
         $data = FuenteEmision::whereNull('subproceso_id')->where([
             ['empresa_id', $request->empresa_id],
             ['sede_id', $request->sede_id],
+            ['informacion_empresa_id', $request->informacion_empresa_id],
         ])->get();
 
         if ($data->isEmpty()) {
@@ -186,7 +231,6 @@ class FuenteEmisionRepository extends BaseRepository
         $jtcp = new stdClass();
         $jtcp->Transporte_carga = [];
         $jtcp->Transporte_pasajeros = [];
-
 
         //json bienes productos
         $jbp = new stdClass();
@@ -301,11 +345,15 @@ class FuenteEmisionRepository extends BaseRepository
         return $jf;
     }
 
-    public function getFuentesEmision($id_empresa, $id_sede)
+    public function getFuentesEmision($request)
     {
         $fuentes = FuenteEmision::groupBy('fuentetable_type', 'fuentetable_id', 'tipo')
             ->with('fuentetable', 'resultado')
-            ->where([['empresa_id', $id_empresa], ['sede_id', $id_sede]])
+            ->where([
+                ['empresa_id', $request->empresa_id],
+                ['sede_id', $request->sede_id],
+                ['informacion_empresa_id', $request->informacion_empresa_id]
+            ])
             ->whereNull('subproceso_id')
             ->get()
             ->groupBy('tipo_mostrar');

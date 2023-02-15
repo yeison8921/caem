@@ -266,22 +266,38 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
 
         $resultados = FuenteEmision::where('empresa_id', $request->empresa_id);
 
+        $unidades_totales_producidas = InformacionEmpresa::where('empresa_id', $request->empresa_id);
 
         if ($request->sede_id != -1) {
             $resultados = $resultados->where('sede_id', $request->sede_id);
-        } else {
-            if ($request->periodo != -1) {
-                $resultados = $resultados->where('sede_id', $request->periodo);
-            }
+            $unidades_totales_producidas = $unidades_totales_producidas->where('sede_id', $request->sede_id);
+        }
+
+        if ($request->periodo != -1) {
+            $resultados = $resultados->where('informacion_empresa_id', $request->periodo);
+            $unidades_totales_producidas = $unidades_totales_producidas->where('id', $request->periodo);
         }
 
         $resultados = $resultados->whereNull('subproceso_id')->with('fuentetable', 'resultado')->get();
+        $unidades_totales_producidas = $unidades_totales_producidas->get();
+
+        $unidades_producidas = null;
+
+        foreach ($unidades_totales_producidas as $u) {
+            if (!is_null($u->unidades_producidas)) {
+                $unidades_producidas += $u->unidades_producidas;
+            }
+        }
 
         if ($request->reporte == 'corporativo') {
             $request->reporte = '';
         }
 
         $total_huella_carbono = 0;
+
+        $array_labels_directa = ['Directas', 'Indirectas'];
+        $array_totales_directa = [0, 0];
+        $array_colores_directa = [];
 
         $array_categorias = [
             ['fuentes_fijas', 'fuentes_moviles', 'emisiones'],
@@ -379,8 +395,16 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
 
                 $total_huella_carbono += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
 
+                //obtener datos directa indirecta
                 //obtener datos categoría
                 foreach ($array_categorias as $key => $value) {
+                    if (in_array($resultado['tipo'], $value)) {
+                        if ($key == 0) {
+                            $array_totales_directa[0] += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
+                        } else {
+                            $array_totales_directa[1] += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
+                        }
+                    }
                     if (in_array($resultado['tipo'], $value) && $key < count($array_totales_categoria)) {
                         $array_totales_categoria[$key] += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
                     }
@@ -483,6 +507,9 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
             }
         }
 
+        foreach ($array_totales_directa as $key => $a) {
+            array_push($array_colores_directa, sprintf('#%06X40', mt_rand(0, 0xFFFFFF)));
+        }
         foreach ($array_totales_categoria as $key => $a) {
             array_push($array_colores_categoria, sprintf('#%06X40', mt_rand(0, 0xFFFFFF)));
         }
@@ -513,14 +540,23 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
             array_push($array_colores_cumplimiento, sprintf('#%06X40', mt_rand(0, 0xFFFFFF)));
         }
 
+
+        if (is_null($unidades_producidas)) {
+            $total_huella_carbono_unidad_produccion = 'No se registraron unidades de producción para el periodo seleccionado';
+        } else {
+            $total_huella_carbono_unidad_produccion = 'Total Huella de Carbono CO2 equivalente por unidad de producción = ' . ($total_huella_carbono / $unidades_producidas) . ' ton/u';
+        }
+
         $array_resultados['promedio_cumplimiento'] = $suma / count($array_cumplimiento);
         $array_resultados['total_huella_carbono'] = $total_huella_carbono;
         $array_resultados['cumplimiento'] = [$array_cumplimiento, $array_colores_cumplimiento];
+        $array_resultados['huella_carbono_directa_indirecta'] = [$array_labels_directa, $array_totales_directa, $array_colores_directa];
         $array_resultados['huella_carbono_categoria'] = [$array_labels_categoria, $array_totales_categoria, $array_colores_categoria];
         $array_resultados['huella_carbono_gei'] = [$array_labels_gei, $array_totales_gei, $array_colores_gei];
         $array_resultados['huella_carbono_fuente'] = [$array_labels_fuente, $array_totales_fuente, $array_colores_fuente];
         $array_resultados['huella_carbono_fuente_torta'] = [$array_labels_fuente, $array_totales_fuente_torta, $array_colores_fuente];
         $array_resultados['huella_carbono_tipo'] = [$array_labels_tipo, $array_totales_tipo, $array_colores_tipo];
+        $array_resultados['total_huella_carbono_unidad_produccion'] = $total_huella_carbono_unidad_produccion;
 
         return $array_resultados;
     }

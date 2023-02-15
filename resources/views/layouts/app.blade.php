@@ -28,29 +28,20 @@
 <body>
     <div id="app" class="g-sidenav-show">
         @if (auth()->check())
-        <side-nav :class="'fixed-start'" :routeSelected="'{{url()->current();}}'"
-        :is-logged="{{auth()->check() ? 'true' : 'false'}}"
-        :user-logged="{{auth()->user() ? auth()->user() : '{}'}}"
-        ></side-nav>
+        <side-nav :class="'fixed-start'" :routeSelected="'{{url()->current();}}'" :is-logged="{{auth()->check() ? 'true' : 'false'}}" :user-logged="{{auth()->user() ? auth()->user() : '{}'}}"></side-nav>
         @endif
-        <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg" >
+        <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
             <!-- nav -->
             @if (!auth()->check())
-                <nav-bar-component 
-                is-blur="blur blur-rounded my-3 py-2 start-0 end-0 mx-4 shadow"
-                btn-background="bg-gradient-success"
-                :dark-mode="true"
-                :is-logged="{{auth()->check() ? 'true' : 'false'}}" 
-                :user-logged="{{auth()->user() ? auth()->user() : '{}'}}">
-                </nav-bar-component>
-            @else            
-                <nav-bar-side>
-                </nav-bar-side>
+            <nav-bar-component is-blur="blur blur-rounded my-3 py-2 start-0 end-0 mx-4 shadow" btn-background="bg-gradient-success" :dark-mode="true" :is-logged="{{auth()->check() ? 'true' : 'false'}}" :user-logged="{{auth()->user() ? auth()->user() : '{}'}}">
+            </nav-bar-component>
+            @else
+            <nav-bar-side>
+            </nav-bar-side>
             @endif
-                <div style="height: 73vh !important;">
-                    @yield('content')
-
-                </div>
+            <div style="height: 73vh !important;">
+                @yield('content')
+            </div>
             <!-- <app-footer /> -->
         </main>
     </div>

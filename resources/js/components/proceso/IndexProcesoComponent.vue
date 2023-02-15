@@ -6,7 +6,71 @@
                 <h2>Ingresar datos</h2>
             </div>
         </div>
-        <ul class="nav nav-pills nav-fill mb-3" id="tabs-ingresar-datos">
+        <div class="text-end" v-if="user.rol_id == 2">
+            <button
+                v-if="huella_existe"
+                type="button"
+                class="btn btn-success"
+                @click="nuevaHuella()"
+            >
+                Nueva huella
+            </button>
+        </div>
+        <form
+            @submit.prevent="
+                recargarFormularioEmisiones();
+                tabActiva();
+            "
+            v-if="user.rol_id == 3"
+        >
+            <div class="row mb-3">
+                <div class="col-lg-3">
+                    <label class="required">Empresa</label>
+                    <Multiselect
+                        valueProp="id"
+                        label="nombre"
+                        v-model="empresa_id"
+                        :options="options_empresa"
+                        placeholder="Seleccione una opción"
+                        @input="getOptionsSede()"
+                        required
+                    />
+                </div>
+                <div class="col-lg-3">
+                    <label class="required">Sede</label>
+                    <Multiselect
+                        valueProp="id"
+                        label="nombre"
+                        v-model="sede_id"
+                        :options="options_sede"
+                        placeholder="Seleccione una opción"
+                        @input="getOptionsPeriodo()"
+                        required
+                    />
+                </div>
+                <div class="col-lg-3">
+                    <label class="required">Periodo</label>
+                    <Multiselect
+                        v-model="ie_id"
+                        :options="options_ie"
+                        placeholder="Seleccione una opción"
+                        required
+                    />
+                </div>
+                <div class="col-lg-3">
+                    <label>&nbsp</label>
+                    <br />
+                    <button type="submit" class="btn btn-success">
+                        Consultar
+                    </button>
+                </div>
+            </div>
+        </form>
+        <ul
+            class="nav nav-pills nav-fill mb-3"
+            id="tabs-ingresar-datos"
+            v-if="mostrar_formulario"
+        >
             <li class="nav-item" role="presentation">
                 <button
                     class="nav-link active badge rounded-pill"
@@ -55,45 +119,6 @@
                     >
                 </button>
             </li>
-            <!-- <li
-                class="nav-item"
-                role="presentation"
-                v-if="parseInt(ie.datos_proveedores) && etapa >= 3"
-            >
-                <button
-                    class="nav-link badge rounded-pill"
-                    id="consumos-indirectos-tab"
-                    data-bs-toggle="pill"
-                    data-bs-target="#consumos-indirectos"
-                    type="button"
-                    role="tab"
-                    aria-controls="consumos-indirectos"
-                    aria-selected="false"
-                    @click="recargarEmisiones()"
-                >
-                    3 <span>Consumos indirectos</span>
-                </button>
-            </li>
-            <li class="nav-item" role="presentation" v-if="etapa >= 3">
-                <button
-                    class="nav-link badge rounded-pill"
-                    id="consumos-transversales-tab"
-                    data-bs-toggle="pill"
-                    data-bs-target="#consumos-transversales"
-                    type="button"
-                    role="tab"
-                    aria-controls="consumos-transversales"
-                    aria-selected="false"
-                    @click="recargarTrasversales()"
-                >
-                    {{ parseInt(ie.datos_proveedores) ? "4" : "3" }}
-                    <span
-                        >Consumos transversales (de apoyo) en la
-                        organización</span
-                    >
-                </button>
-            </li> -->
-            <!--  -->
             <li class="nav-item" role="presentation" v-if="etapa >= 4">
                 <button
                     class="nav-link badge rounded-pill"
@@ -125,7 +150,11 @@
                 </button>
             </li>
         </ul>
-        <div class="tab-content" id="pills-tabContent">
+        <div
+            class="tab-content"
+            id="pills-tabContent"
+            v-if="mostrar_formulario"
+        >
             <div
                 class="tab-pane fade show active"
                 id="formulario"
@@ -387,6 +416,7 @@
                                     v-model="ie.acciones_mejora"
                                     :options="options_si_no"
                                     placeholder="Seleccione una opción"
+                                    :disabled="!editar_formulario"
                                     required
                                 />
                             </div>
@@ -495,9 +525,7 @@
                                             label="nombre"
                                             placeholder="Seleccione una opción"
                                             required
-                                            :disabled="
-                                                accion_formulario == 'ver'
-                                            "
+                                            :disabled="!editar_formulario"
                                             @input="changeMetodologia()"
                                         />
                                     </div>
@@ -750,7 +778,11 @@
                             </button>
                         </div>
                         <div class="col-lg-6 text-end">
-                            <button type="submit" class="btn btn-primary">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                :disabled="paso == 5 && !editar_formulario"
+                            >
                                 {{ this.paso != 5 ? "Siguiente" : "Guardar" }}
                             </button>
                         </div>
@@ -758,6 +790,7 @@
                 </form>
             </div>
             <div
+                v-if="etapa >= 2"
                 class="tab-pane fade"
                 id="seleccion"
                 role="tabpanel"
@@ -1957,6 +1990,7 @@
                 </form>
             </div>
             <div
+                v-if="etapa >= 3"
                 class="tab-pane fade"
                 id="construccion-proceso"
                 role="tabpanel"
@@ -2431,13 +2465,7 @@
                                                             "
                                                         />
                                                     </div>
-                                                    <div
-                                                        v-if="
-                                                            parseInt(
-                                                                ie.fuentes_moviles
-                                                            )
-                                                        "
-                                                    >
+                                                    <div>
                                                         <h6>Fuentes móviles</h6>
                                                         <div class="mb-3">
                                                             <label
@@ -2708,6 +2736,7 @@
                                                                               1,
                                                                           0,
                                                                           {
+                                                                              id: '',
                                                                               nombre: 'Nuevo subproceso',
                                                                               descripcion:
                                                                                   '',
@@ -2801,9 +2830,11 @@
                                                           ip + 1,
                                                           0,
                                                           {
+                                                              id: '',
                                                               nombre: 'Nuevo proceso',
                                                               subprocesos: [
                                                                   {
+                                                                      id: '',
                                                                       nombre: 'Nuevo subproceso',
                                                                       descripcion:
                                                                           '',
@@ -2884,6 +2915,7 @@
             </div>
 
             <div
+                v-if="etapa >= 4"
                 class="tab-pane fade"
                 id="inicio-consumos"
                 role="tabpanel"
@@ -2941,6 +2973,7 @@
                 </form>
             </div>
             <div
+                v-if="etapa >= 5"
                 class="tab-pane fade"
                 id="construccion-anio"
                 role="tabpanel"
@@ -3228,6 +3261,9 @@
                                                                                                         class="form-control"
                                                                                                         type="number"
                                                                                                         step="any"
+                                                                                                        :disabled="
+                                                                                                            !editar_consumos
+                                                                                                        "
                                                                                                     />
                                                                                                     <input
                                                                                                         v-else
@@ -3240,6 +3276,9 @@
                                                                                                         class="form-control"
                                                                                                         type="number"
                                                                                                         step="any"
+                                                                                                        :disabled="
+                                                                                                            !editar_consumos
+                                                                                                        "
                                                                                                     />
                                                                                                 </template>
                                                                                             </div>
@@ -3263,7 +3302,11 @@
                     </div>
                     <div class="row mb-3">
                         <div class="mb-3 col-lg-4 offset-lg-4 d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                                :disabled="!editar_consumos"
+                            >
                                 Guardar
                             </button>
                         </div>
@@ -3275,6 +3318,8 @@
 </template>
 <script>
 import Parametro from "../../models/Parametro";
+import Empresa from "../../models/Empresa";
+import EmpresaSede from "../../models/EmpresaSede";
 import InformacionEmpresa from "../../models/InformacionEmpresa";
 import Combustible from "../../models/Combustible";
 import Refrigerante from "../../models/Refrigerante";
@@ -3296,49 +3341,10 @@ import Otro from "../../models/Otro";
 export default {
     data() {
         return {
-            ie: new InformacionEmpresa({
-                datos_proveedores: null,
-                fuentes_moviles: null,
-                actividad_agricola: null,
-                huella_base: null,
-                valor_huella_base: null,
-                huella_comparativo: null,
-                valor_huella_comparativo: null,
-                alcances_huella: null,
-                priorizacion: null,
-                indicador: null,
-                verificacion_interna: null,
-                optimizacion_procesos: null,
-                verificacion_tercero: null,
-                declaracion_conformidad_tercero: null,
-                acciones_mejora: null,
-                metas_mitigacion: null,
-                meta_reduccion: null,
-                anio_meta: null,
-                anio_proyeccion_meta: null,
-                meta_alineada: null,
-                metodologias: null,
-                seguimiento_cumplimiento: null,
-                efecto_invernadero: null,
-                sumideros: null,
-                informacion_mensual: null,
-                diagrama_procesos: null,
-                areas_sumideros: null,
-                informacion_centralizada: null,
-                soportes_consumos: null,
-                informacion_anio: null,
-                estimaciones_consumos: null,
-                consumos_energeticos: null,
-                sustento_metodologico: null,
-                compartira_reporte: null,
-                toma_decisiones: null,
-                unidades_producidas: null,
-                anio_inicio: null,
-                mes_inicio: null,
-                usuario_creacion_id: null,
-                empresa_id: null,
-                sede_id: null,
-            }),
+            ie: new InformacionEmpresa({}),
+            empresa_id: "",
+            sede_id: "",
+            ie_id: "", //informacion empresa
 
             etapa: 1,
             paso: 1,
@@ -3371,108 +3377,14 @@ export default {
                 trasversales: "Trasversales",
             },
 
-            fuentes: {
-                c1: {
-                    fuentes_moviles: {
-                        Combustible_liquido: [],
-                        Combustible_gaseoso: [],
-                        Refrigerante: [],
-                        Extintor: [],
-                        Lubricante: [],
-                    },
-                    fuentes_fijas: {
-                        Combustible_solido: [],
-                        Combustible_liquido: [],
-                        Combustible_gaseoso: [],
-                        Refrigerante: [],
-                        Extintor: [],
-                        Lubricante: [],
-                        Fuga: [],
-                        Aislamiento: [],
-                    },
-                    emisiones: {
-                        Embalse: [],
-                        Mineria: [],
-                        Industrial: [],
-                        Fermentacion: [],
-                        Estiercol: [],
-                        Residuo_organizacional: [],
-                        Residuo_agropecuario: [],
-                        Fertilizante: [],
-                        Cal: [],
-                    },
-                },
-
-                c2: {
-                    electricidad_importada: {
-                        Energia_electrica: [],
-                    },
-                    energia_importada: {
-                        Combustible_solido: [],
-                        Combustible_liquido: [],
-                        Combustible_gaseoso: [],
-                    },
-                },
-
-                c3: {
-                    transportes_fuentes_moviles: {
-                        Combustible_solido: [],
-                        Combustible_liquido: [],
-                        Combustible_gaseoso: [],
-                        Refrigerante: [],
-                        Extintor: [],
-                        Lubricante: [],
-                    },
-                    transportes_carga_pasajeros: {
-                        Transporte_carga: [],
-                        Transporte_pasajeros: [],
-                    },
-                },
-                c4: {
-                    bienes_productos: {
-                        Refrigerante: [],
-                        Extintor: [],
-                        Lubricante: [],
-                        Aislamiento: [],
-                        Producto: [],
-                        Equipo: [],
-                        Materia_prima: [],
-                    },
-                    servicios: {
-                        Servicio: [],
-                        Residuo_organizacional: [],
-                    },
-                },
-                c5: {
-                    usos: {
-                        Producto: [],
-                    },
-                    fines: {
-                        Fin: [],
-                    },
-                    activos: {
-                        Activo: [],
-                    },
-                    inversiones: {
-                        Inversion: [],
-                    },
-                },
-                c6: {
-                    otros: {
-                        Otro: [],
-                    },
-                },
-                c7: {
-                    trasversales: {
-                        Trasversal: [],
-                    },
-                },
-            },
+            fuentes: "",
             procesos: [
                 {
+                    id: "",
                     nombre: "Proceso 1",
                     subprocesos: [
                         {
+                            id: "",
                             nombre: "Subproceso 1",
                             descripcion: "",
                             fuentes_fijas: {
@@ -3530,6 +3442,10 @@ export default {
                 "DICIEMBRE",
             ],
 
+            options_empresa: [],
+            options_sede: [],
+            options_ie: [],
+
             options_si_no: [
                 { value: 0, label: "No" },
                 { value: 1, label: "Si" },
@@ -3582,7 +3498,10 @@ export default {
             editar_fuente: 1,
             editar_procesos: 1,
             editar_inicio: 1,
+            editar_consumos: 1,
             informacion_empresa_existe: true,
+            huella_existe: 0,
+            mostrar_formulario: false,
             user: new User(),
         };
     },
@@ -3591,14 +3510,17 @@ export default {
         this.getParametros(7, "options_anio");
         this.getParametros(8, "options_mes");
         this.getParametros(12, "options_metodologia");
+        this.cargarVariableFuentes();
         this.getOptionsFuenteEmision();
-        this.recargarFormularioEmisiones();
         this.tabActiva();
     },
     methods: {
         tabActiva() {
             setTimeout(() => {
                 switch (this.etapa) {
+                    case 1:
+                        $("#formulario-tab").click();
+                        break;
                     case 2:
                         $("#seleccion-tab").click();
                         break;
@@ -3614,6 +3536,7 @@ export default {
                     default:
                         break;
                 }
+                Swal.close();
             }, 3000);
         },
         async getUserLogged() {
@@ -3621,6 +3544,13 @@ export default {
                 .get("api/user")
                 .then((response) => {
                     this.user = response.data;
+                    if (this.user.rol_id == 2) {
+                        this.empresa_id = this.user.empresa_id;
+                        this.sede_id = this.user.sede_id;
+                        this.recargarFormularioEmisiones();
+                    } else {
+                        this.getOptionsEmpresa();
+                    }
                 })
                 .catch((error) => {});
         },
@@ -3637,6 +3567,66 @@ export default {
                 tipo_parametro_id
             ).get();
         },
+        async getOptionsEmpresa() {
+            this.options_empresa = await Empresa.get();
+        },
+        async getOptionsSede() {
+            this.options_sede = [];
+            this.sede_id = "";
+            this.options_ie = [];
+            this.ie_id = "";
+
+            if (this.empresa_id != "" && this.empresa_id != null) {
+                this.options_sede = await EmpresaSede.where(
+                    "empresa_id",
+                    this.empresa_id
+                ).get();
+            }
+        },
+        async getOptionsPeriodo() {
+            this.options_ie = [];
+            this.ie_id = "";
+            if (this.sede_id != "" && this.sede_id != null) {
+                let informacion_empresa = await InformacionEmpresa.where(
+                    "sede_id",
+                    this.sede_id
+                ).get();
+
+                informacion_empresa.forEach((e) => {
+                    if (e.anio_inicio != null) {
+                        let fecha_base = new Date(
+                            e.anio_inicio + "-" + e.mes_inicio + "-01 00:00"
+                        );
+
+                        var future = new Date(
+                            fecha_base.getFullYear(),
+                            fecha_base.getMonth() + 12,
+                            1
+                        );
+
+                        let mes_fecha_base =
+                            this.array_meses[fecha_base.getMonth()];
+
+                        var mes_futuro = this.array_meses[future.getMonth()];
+                        var anio_futuro = future.getFullYear();
+
+                        var json = {
+                            value: e.id,
+                            label:
+                                mes_fecha_base +
+                                " " +
+                                e.anio_inicio +
+                                " a " +
+                                mes_futuro +
+                                " " +
+                                anio_futuro,
+                        };
+                        this.options_ie.push(json);
+                    }
+                });
+            }
+        },
+
         async getOptionsFuenteEmision() {
             this.$root.mostrarCargando("Cargando información");
             let combustibles = await Combustible.get();
@@ -3752,8 +3742,6 @@ export default {
 
             this.options_trasversal = await Trasversal.get();
             this.options_otro = await Otro.get();
-
-            Swal.close();
         },
         filtroArrayOpciones(array, variable, tipo, subtipo = "") {
             if (subtipo == "") {
@@ -3895,9 +3883,16 @@ export default {
         guardarFuentesEmision() {
             if (this.editar_fuente) {
                 this.$root.mostrarCargando("Guardando información");
+
+                let actualizar = this.user.rol_id == 2 ? 0 : 1;
+
                 axios
                     .post("api/guardarFuentesEmision", {
                         fuentes: this.fuentes,
+                        empresa_id: this.empresa_id,
+                        sede_id: this.sede_id,
+                        informacion_empresa_id: this.ie.id,
+                        actualizar: actualizar,
                     })
                     .then((response) => {
                         Swal.close();
@@ -3918,9 +3913,16 @@ export default {
         async guardarProcesos() {
             if (this.editar_procesos) {
                 this.$root.mostrarCargando("Guardando información");
+
+                let actualizar = this.user.rol_id == 2 ? 0 : 1;
+
                 axios
                     .post("/api/guardarProcesos", {
                         procesos: this.procesos,
+                        empresa_id: this.empresa_id,
+                        sede_id: this.sede_id,
+                        informacion_empresa_id: this.ie.id,
+                        actualizar: actualizar,
                     })
                     .then((response) => {
                         Swal.close();
@@ -3947,17 +3949,7 @@ export default {
         async guardarInicioConsumo() {
             if (this.editar_inicio) {
                 this.$root.mostrarCargando("Guardando información");
-
-                let informacion_empresa = await InformacionEmpresa.where({
-                    empresa_id: this.user.empresa_id,
-                    sede_id: this.user.sede_id,
-                }).first();
-
-                informacion_empresa.unidades_producidas =
-                    this.ie.unidades_producidas;
-                informacion_empresa.anio_inicio = this.ie.anio_inicio;
-                informacion_empresa.mes_inicio = this.ie.mes_inicio;
-                await informacion_empresa.save();
+                await this.ie.save();
 
                 Swal.close();
                 this.$root.mostrarMensaje(
@@ -3973,33 +3965,74 @@ export default {
         },
 
         async guardarDatosConsumos() {
-            this.$root.mostrarCargando("Guardando información");
-            axios
-                .post("api/guardarDatosConsumos", {
-                    fuentes_emision: this.fuentes_emision,
-                })
-                .then((response) => {
-                    Swal.close();
-                    this.$root.mostrarMensaje(
-                        "Éxito",
-                        "Información guardada exitosamente",
-                        "success"
-                    );
-                    setTimeout(() => {
-                        this.getFuentesEmision();
-                    }, 1000);
-                })
-                .catch((error) => {});
+            if (this.editar_consumos) {
+                let texto_adicional =
+                    this.user.rol_id == 2
+                        ? ", una vez guardados no podrá modificar la información"
+                        : "";
+                Swal.fire({
+                    title: "Atención",
+                    html:
+                        "¿Está seguro que quiere guardar los datos de consumo" +
+                        texto_adicional +
+                        "?",
+                    icon: "question",
+                    showCancelButton: true,
+                    cancelButtonText: "No",
+                    confirmButtonText: "Si, guardar",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.$root.mostrarCargando("Guardando información");
+                        try {
+                            axios
+                                .post("api/guardarDatosConsumos", {
+                                    fuentes_emision: this.fuentes_emision,
+                                })
+                                .then((response) => {
+                                    Swal.close();
+                                    this.$root.mostrarMensaje(
+                                        "Éxito",
+                                        "Información guardada exitosamente",
+                                        "success"
+                                    );
+                                    setTimeout(() => {
+                                        this.$root.redirectIndex("/resultados");
+                                        // this.getFuentesEmision();
+                                    }, 100);
+                                });
+                        } catch (error) {
+                            this.$root.mostrarMensaje(
+                                "Error",
+                                "Ha ocurrido un error al guardar los datos de consumos, por favor intentelo nuevamente",
+                                "error"
+                            );
+                        }
+                    }
+                });
+            }
         },
 
         async recargarFormularioEmisiones() {
+            if (this.user.rol_id == 3) {
+                this.$root.mostrarCargando("Cargando información");
+            }
+            this.mostrar_formulario = true;
             if (!this.user.empresa_id) {
                 await this.getUserLogged();
             }
-            let informacionEmpresa = await InformacionEmpresa.where({
-                empresa_id: this.user.empresa_id,
-                sede_id: this.user.sede_id,
-            }).first();
+            let json = {
+                empresa_id: this.empresa_id,
+                sede_id: this.sede_id,
+            };
+
+            if (this.user.rol_id == 2) {
+                json.estado = 1;
+            } else {
+                json.id = this.ie_id;
+            }
+            let informacionEmpresa = await InformacionEmpresa.where(
+                json
+            ).first();
 
             this.ie =
                 informacionEmpresa &&
@@ -4008,7 +4041,9 @@ export default {
                     : this.ie;
 
             if (Object.keys(informacionEmpresa).length != 0) {
-                this.editar_formulario = 0;
+                this.paso = 1;
+                this.huella_existe = 1;
+                this.editar_formulario = this.user.rol_id == 2 ? 0 : 1;
                 this.etapa = 2;
                 this.recargarFuentesEmision();
             }
@@ -4016,15 +4051,18 @@ export default {
         async recargarFuentesEmision() {
             axios
                 .post("/api/recargarFuentesEmision", {
-                    empresa_id: this.user.empresa_id,
-                    sede_id: this.user.sede_id,
+                    empresa_id: this.empresa_id,
+                    sede_id: this.sede_id,
+                    informacion_empresa_id: this.ie.id,
                 })
                 .then((response) => {
                     if (response.data.length != 0) {
                         this.fuentes = response.data;
-                        this.editar_fuente = 0;
+                        this.editar_fuente = this.user.rol_id == 2 ? 0 : 1;
                         this.etapa = 3;
                         this.recargarProcesos();
+                    } else {
+                        this.cargarVariableFuentes();
                     }
                 })
                 .catch((error) => {
@@ -4038,13 +4076,14 @@ export default {
         async recargarProcesos() {
             axios
                 .post("/api/recargarProcesos", {
-                    empresa_id: this.user.empresa_id,
-                    sede_id: this.user.sede_id,
+                    empresa_id: this.empresa_id,
+                    sede_id: this.sede_id,
+                    informacion_empresa_id: this.ie.id,
                 })
                 .then((response) => {
                     if (response.data.length != 0) {
                         this.procesos = response.data;
-                        this.editar_procesos = 0;
+                        this.editar_procesos = this.user.rol_id == 2 ? 0 : 1;
                         this.etapa = 4;
                         this.recargarInformacionInicio();
                     }
@@ -4059,23 +4098,17 @@ export default {
         },
 
         async recargarInformacionInicio() {
-            let informacionEmpresa = await InformacionEmpresa.where({
-                empresa_id: this.user.empresa_id,
-                sede_id: this.user.sede_id,
-            }).first();
+            let informacionEmpresa = await InformacionEmpresa.find(this.ie.id);
 
             if (informacionEmpresa.anio_inicio != null) {
-                this.editar_inicio = 0;
+                this.editar_inicio = this.user.rol_id == 2 ? 0 : 1;
                 this.etapa = 5;
             }
         },
 
         async tablaEmisiones() {
             this.array_consumos = [];
-            let informacion_empresa = await InformacionEmpresa.where({
-                empresa_id: this.user.empresa_id,
-                sede_id: this.user.sede_id,
-            }).first();
+            let informacion_empresa = await InformacionEmpresa.find(this.ie.id);
 
             this.fecha_base = new Date(
                 informacion_empresa.anio_inicio +
@@ -4102,13 +4135,23 @@ export default {
             this.$root.mostrarCargando("consultado información");
 
             axios
-                .get(
-                    "api/getFuentesEmision/" +
-                        this.user.empresa_id +
-                        "/" +
-                        this.user.sede_id
-                )
+                .post("api/getFuentesEmision", {
+                    empresa_id: this.empresa_id,
+                    sede_id: this.sede_id,
+                    informacion_empresa_id: this.ie.id,
+                })
                 .then((response) => {
+                    let r = response.data;
+                    Object.keys(r).forEach((key) => {
+                        Object.keys(r[key]).forEach((k) => {
+                            if (r[key][k]["resultado"]["id"] != "") {
+                                this.editar_consumos = 0;
+                            }
+                        });
+                    });
+                    if (this.user.rol_id == 3) {
+                        this.editar_consumos = 1;
+                    }
                     this.fuentes_emision = response.data;
                 })
                 .catch((error) => {});
@@ -4116,6 +4159,152 @@ export default {
             this.tablaEmisiones();
 
             Swal.close();
+        },
+        cargarVariableFuentes() {
+            this.fuentes = {
+                c1: {
+                    fuentes_moviles: {
+                        Combustible_liquido: [],
+                        Combustible_gaseoso: [],
+                        Refrigerante: [],
+                        Extintor: [],
+                        Lubricante: [],
+                    },
+                    fuentes_fijas: {
+                        Combustible_solido: [],
+                        Combustible_liquido: [],
+                        Combustible_gaseoso: [],
+                        Refrigerante: [],
+                        Extintor: [],
+                        Lubricante: [],
+                        Fuga: [],
+                        Aislamiento: [],
+                    },
+                    emisiones: {
+                        Embalse: [],
+                        Mineria: [],
+                        Industrial: [],
+                        Fermentacion: [],
+                        Estiercol: [],
+                        Residuo_organizacional: [],
+                        Residuo_agropecuario: [],
+                        Fertilizante: [],
+                        Cal: [],
+                    },
+                },
+
+                c2: {
+                    electricidad_importada: {
+                        Energia_electrica: [],
+                    },
+                    energia_importada: {
+                        Combustible_solido: [],
+                        Combustible_liquido: [],
+                        Combustible_gaseoso: [],
+                    },
+                },
+
+                c3: {
+                    transportes_fuentes_moviles: {
+                        Combustible_solido: [],
+                        Combustible_liquido: [],
+                        Combustible_gaseoso: [],
+                        Refrigerante: [],
+                        Extintor: [],
+                        Lubricante: [],
+                    },
+                    transportes_carga_pasajeros: {
+                        Transporte_carga: [],
+                        Transporte_pasajeros: [],
+                    },
+                },
+                c4: {
+                    bienes_productos: {
+                        Refrigerante: [],
+                        Extintor: [],
+                        Lubricante: [],
+                        Aislamiento: [],
+                        Producto: [],
+                        Equipo: [],
+                        Materia_prima: [],
+                    },
+                    servicios: {
+                        Servicio: [],
+                        Residuo_organizacional: [],
+                    },
+                },
+                c5: {
+                    usos: {
+                        Producto: [],
+                    },
+                    fines: {
+                        Fin: [],
+                    },
+                    activos: {
+                        Activo: [],
+                    },
+                    inversiones: {
+                        Inversion: [],
+                    },
+                },
+                c6: {
+                    otros: {
+                        Otro: [],
+                    },
+                },
+                c7: {
+                    trasversales: {
+                        Trasversal: [],
+                    },
+                },
+            };
+        },
+        nuevaHuella() {
+            Swal.fire({
+                title: "Atención",
+                html: "¿Está seguro que quiere registrar una nueva huella?",
+                icon: "question",
+                showCancelButton: true,
+                cancelButtonText: "No",
+                confirmButtonText: "Si",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$root.mostrarCargando("Generando nueva huella");
+                    try {
+                        this.desactivarHuellaActual();
+                    } catch (error) {
+                        this.$root.mostrarMensaje(
+                            "Error",
+                            "Ha ocurrido un error al generar una nueva huella, por favor intentelo nuevamente",
+                            "error"
+                        );
+                    }
+                }
+            });
+        },
+        async desactivarHuellaActual() {
+            this.ie.estado = 0;
+            await this.ie.save();
+
+            Swal.close();
+            this.ie = new InformacionEmpresa({});
+            this.etapa = 1;
+            this.editar_formulario = 1;
+            this.editar_fuente = 1;
+            this.editar_procesos = 1;
+            this.editar_inicio = 1;
+            this.editar_consumos = 1;
+
+            this.recargarFormularioEmisiones();
+            this.tabActiva();
+
+            setTimeout(() => {
+                this.$root.mostrarMensaje(
+                    "Éxito",
+                    "Huella generada correctamente",
+                    "success"
+                );
+            }, 500);
         },
     },
 };

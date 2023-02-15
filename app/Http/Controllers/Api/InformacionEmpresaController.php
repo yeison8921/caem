@@ -38,8 +38,10 @@ class InformacionEmpresaController extends Controller
     public function index()
     {
         $query = QueryBuilder::for(InformacionEmpresa::class)->allowedFilters([
+            AllowedFilter::exact('id'),
             AllowedFilter::exact('empresa_id'),
             AllowedFilter::exact('sede_id'),
+            AllowedFilter::exact('estado'),
         ]);;
 
         return $query->get();

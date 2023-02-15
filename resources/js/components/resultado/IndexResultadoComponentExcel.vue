@@ -23,11 +23,20 @@
                     </div>
                     <div class="mb-3">
                         <Multiselect
-                            v-model="sede"
-                            :options="options_sede"
                             valueProp="id"
                             label="nombre"
+                            v-model="sede"
+                            :options="options_sede"
                             placeholder="Sede"
+                            @input="getOptionsPeriodo()"
+                            required
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <Multiselect
+                            v-model="periodo"
+                            :options="options_periodo"
+                            placeholder="Periodo"
                             required
                         />
                     </div>
@@ -1332,15 +1341,32 @@ export default {
         return {
             empresa: "",
             sede: "",
+            periodo: "",
             ar: "",
             options_empresa: [],
             options_sede: [],
+            options_periodo: [],
             options_ar: [
                 { value: "_ar5", label: "AR5" },
                 { value: "_ar6", label: "AR6" },
             ],
             mostrar_tablas: false,
             resultado: [],
+
+            array_meses: [
+                "ENERO",
+                "FEBRERO",
+                "MARZO",
+                "ABRIL",
+                "MAYO",
+                "JUNIO",
+                "JULIO",
+                "AGOSTO",
+                "SEPTIEMBRE",
+                "OCTUBRE",
+                "NOVIEMBRE",
+                "DICIEMBRE",
+            ],
 
             array_tablas: [
                 {
@@ -1717,6 +1743,47 @@ export default {
                 this.options_sede.push(e);
             });
         },
+        async getOptionsPeriodo() {
+            this.options_periodo = [];
+            this.periodo = "";
+            if (this.sede != "" && this.sede != null) {
+                let informacion_empresa = await InformacionEmpresa.where(
+                    "sede_id",
+                    this.sede
+                ).get();
+
+                informacion_empresa.forEach((e) => {
+                    let fecha_base = new Date(
+                        e.anio_inicio + "-" + e.mes_inicio + "-01 00:00"
+                    );
+
+                    var future = new Date(
+                        fecha_base.getFullYear(),
+                        fecha_base.getMonth() + 12,
+                        1
+                    );
+
+                    let mes_fecha_base =
+                        this.array_meses[fecha_base.getMonth()];
+
+                    var mes_futuro = this.array_meses[future.getMonth()];
+                    var anio_futuro = future.getFullYear();
+
+                    var json = {
+                        value: e.id,
+                        label:
+                            mes_fecha_base +
+                            " " +
+                            e.anio_inicio +
+                            " a " +
+                            mes_futuro +
+                            " " +
+                            anio_futuro,
+                    };
+                    this.options_periodo.push(json);
+                });
+            }
+        },
         fuentes(fila, tipo, array_fuente_emision, $biogenico) {
             let fuentes = [];
             if (fila != "") {
@@ -1943,7 +2010,11 @@ export default {
         async getFuentesEmision() {
             this.$root.mostrarCargando("Consultando información");
             axios
-                .get("api/getFuentesEmision/" + this.empresa + "/" + this.sede)
+                .post("api/getFuentesEmision", {
+                    empresa_id: this.empresa,
+                    sede_id: this.sede,
+                    informacion_empresa_id: this.periodo,
+                })
                 .then((response) => {
                     this.mostrar_tablas = true;
                     this.resultado = response.data;

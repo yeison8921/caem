@@ -35,7 +35,7 @@ class UserRepository extends BaseRepository
      * @throws \Exception
      * @throws \Throwable
      */
-    public function create(array $data) : User
+    public function create(array $data): User
     {
         return DB::transaction(function () use ($data) {
             $user = User::create($data);
@@ -47,7 +47,7 @@ class UserRepository extends BaseRepository
         });
     }
 
-       /**
+    /**
      * @param User  $user
      * @param array     $data
      *
@@ -56,7 +56,7 @@ class UserRepository extends BaseRepository
      * @throws \Exception
      * @throws \Throwable
      */
-    public function update(User $user, array $data) : User
+    public function update(User $user, array $data): User
     {
         return DB::transaction(function () use ($user, $data) {
             if ($user->update($data))
@@ -64,5 +64,17 @@ class UserRepository extends BaseRepository
 
             throw new GeneralException("User update error");
         });
+    }
+
+    public function formUsuario($id_usuario)
+    {
+        $data = [];
+        $data['id_usuario'] = $id_usuario;
+        if ($id_usuario != '') {
+            $data['accion'] = 'Actualizar';
+        } else {
+            $data['accion'] = 'Crear';
+        }
+        return view('administracion/usuario/form_usuario', $data);
     }
 }

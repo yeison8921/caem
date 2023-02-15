@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-2">
+            <div class="col-lg-3">
                 <form @submit.prevent="getDatosGraficas">
                     <div class="mb-3" v-if="user.rol_id != 2">
                         <Multiselect
@@ -62,9 +62,9 @@
                     </div>
                 </form>
             </div>
-            <div class="col-lg-10" v-if="mostrar_graficas">
+            <div class="col-lg-9" v-if="mostrar_graficas">
                 <div class="row mb-5">
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 mb-3">
                         <div
                             class="card h-100 text-center justify-content-center"
                         >
@@ -79,7 +79,31 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 mb-3">
+                        <div class="card">
+                            <h6 class="text-center">
+                                Huella de Carbono emisiones directas e
+                                indirectas
+                            </h6>
+                            <div class="chart">
+                                <huella-carbono-directa-indirecta-bar
+                                    ref="huellaCarbonoDirectaIndirecta"
+                                    :chart="{
+                                        labels: huella_carbono_directa_indirecta[0],
+                                        datasets: {
+                                            label: 'Total huella carbono por categoría',
+                                            data: huella_carbono_directa_indirecta[1],
+                                            backgroundColor:
+                                                huella_carbono_directa_indirecta[2],
+                                        },
+                                    }"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-5">
+                    <div class="col-lg-6 mb-3">
                         <div class="card">
                             <h6 class="text-center">
                                 Huella de Carbono por Categoría
@@ -100,7 +124,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 mb-3">
                         <div class="card">
                             <h6 class="text-center">
                                 Huella de Carbono por GEI
@@ -123,7 +147,7 @@
                     </div>
                 </div>
                 <div class="row mb-5">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 mb-3">
                         <div class="card">
                             <h6 class="text-center">
                                 Huella de Carbono por Fuente
@@ -144,7 +168,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 mb-3">
                         <div class="card">
                             <h6 class="text-center">
                                 Huella de Carbono por Fuente
@@ -169,7 +193,7 @@
                     </div>
                 </div>
                 <div class="row mb-5">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 mb-3">
                         <div class="card">
                             <h6 class="text-center">
                                 Huella de Carbono por Tipo o clase
@@ -191,7 +215,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 mb-3">
                         <div class="card">
                             <h6 class="text-center">
                                 Cumplimiento de principios
@@ -226,6 +250,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="row text-end">
+                    <p>
+                        <b>
+                            {{ total_huella_carbono_unidad_produccion }}
+                        </b>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -235,6 +266,7 @@ import User from "../../models/User";
 import Empresa from "../../models/Empresa";
 import EmpresaSede from "../../models/EmpresaSede";
 import InformacionEmpresa from "../../models/InformacionEmpresa";
+import HuellaCarbonoDirectaIndirectaBar from "./HuellaCarbonoDirectaIndirectaBar.vue";
 import HuellaCarbonoCategoriaBar from "./HuellaCarbonoCategoriaBar.vue";
 import HuellaCarbonoGeiBar from "./HuellaCarbonoGeiBar.vue";
 import HuellaCarbonoFuenteBar from "./HuellaCarbonoFuenteBar.vue";
@@ -245,6 +277,7 @@ import CumplimientoPrincipiosBar from "./CumplimientoPrincipiosBar.vue";
 export default {
     name: "Charts",
     components: {
+        HuellaCarbonoDirectaIndirectaBar,
         HuellaCarbonoCategoriaBar,
         HuellaCarbonoGeiBar,
         HuellaCarbonoFuenteBar,
@@ -262,6 +295,7 @@ export default {
             reporte: "",
             total_huella_carbono: "",
             mostrar_graficas: false,
+            huella_carbono_directa_indirecta: [],
             array_huella_carbono_categoria: [],
             array_huella_carbono_gei: [],
             array_huella_carbono_fuente: [],
@@ -269,6 +303,7 @@ export default {
             array_huella_carbono_tipo: [],
             array_cumplimiento: [],
             promedio_cumplimiento: "",
+            total_huella_carbono_unidad_produccion: "",
             options_empresa: [],
             options_sede: [{ id: -1, nombre: "Todas" }],
             options_periodo: [],
@@ -321,7 +356,7 @@ export default {
             this.options_empresa = await Empresa.get();
         },
         async getOptionsSede() {
-            this.options_sede = [];
+            this.options_sede = [{ id: -1, nombre: "Todas" }];
             this.sede = "";
             let options =
                 this.user.rol_id != 2
@@ -370,7 +405,7 @@ export default {
                     var anio_futuro = future.getFullYear();
 
                     var json = {
-                        value: e.sede_id,
+                        value: e.id,
                         label:
                             mes_fecha_base +
                             " " +
@@ -401,6 +436,8 @@ export default {
                         this.total_huella_carbono = Number(
                             response.data["total_huella_carbono"].toFixed(1)
                         ).toLocaleString("es-co");
+                        this.huella_carbono_directa_indirecta =
+                            response.data["huella_carbono_directa_indirecta"];
                         this.array_huella_carbono_categoria =
                             response.data["huella_carbono_categoria"];
                         this.array_huella_carbono_gei =
@@ -412,6 +449,10 @@ export default {
                         this.array_huella_carbono_tipo =
                             response.data["huella_carbono_tipo"];
                         this.array_cumplimiento = response.data["cumplimiento"];
+                        this.total_huella_carbono_unidad_produccion =
+                            response.data[
+                                "total_huella_carbono_unidad_produccion"
+                            ];
 
                         this.promedio_cumplimiento =
                             "Total obtenido = " +

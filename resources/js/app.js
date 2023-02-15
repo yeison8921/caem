@@ -64,6 +64,9 @@ Vue.component('index-parametro-component', require('./components/administracion/
 Vue.component('index-autorizacion-component', require('./components/administracion/autorizacion/IndexAutorizacionComponent.vue').default);
 Vue.component('form-parametro-component', require('./components/administracion/parametro/FormParametroComponent.vue').default);
 Vue.component('index-convenio-component', require('./components/administracion/convenio/IndexConvenioComponent.vue').default);
+Vue.component('index-usuario-component', require('./components/administracion/usuario/IndexUsuarioComponent.vue').default);
+Vue.component('index-empresario-component', require('./components/administracion/usuario/IndexEmpresarioComponent.vue').default);
+Vue.component('form-usuario-component', require('./components/administracion/usuario/FormUsuarioComponent.vue').default);
 Vue.component('form-convenio-component', require('./components/administracion/convenio/FormConvenioComponent.vue').default);
 Vue.component('index-empresa-component', require('./components/administracion/empresa/IndexEmpresaComponent.vue').default);
 Vue.component('form-empresa-component', require('./components/administracion/empresa/FormEmpresaComponent.vue').default);
@@ -392,8 +395,7 @@ const app = new Vue({
         redirectIndex(url) {
             setTimeout(() => {
                 window.location.href = url;
-            }, 2000);
+            }, 1000);
         },
-
     }
 });

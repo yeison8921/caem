@@ -654,13 +654,11 @@ export default {
                 }
 
                 Swal.close();
-
                 this.$root.mostrarMensaje(
                     "Éxito",
                     "Guardado exitosamente",
                     "success"
                 );
-
                 this.$root.redirectIndex("/convenios");
             }
         },

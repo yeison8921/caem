@@ -19,16 +19,16 @@ class EmpresaSedeController extends Controller
     /**
      * @var EmpresaSedeRepository
      */
-    protected $empresa_sedeSedeRepository;
+    protected $empresaSedeRepository;
 
     /**
      * EmpresaSedeController constructor.
      *
-     * @param  EmpresaSedeRepository  $empresa_sedeSedeRepository
+     * @param  EmpresaSedeRepository  $empresaSedeRepository
      */
-    public function __construct(EmpresaSedeRepository $empresa_sedeSedeRepository)
+    public function __construct(EmpresaSedeRepository $empresaSedeRepository)
     {
-        $this->empresaSedeRepository = $empresa_sedeSedeRepository;
+        $this->empresaSedeRepository = $empresaSedeRepository;
     }
 
     /**
@@ -92,16 +92,16 @@ class EmpresaSedeController extends Controller
 
     public function crearSede($empresa_id)
     {
-        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM])) {
             return $this->empresaSedeRepository->formSede($id_sede = '', $empresa_id);
         }
 
         return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     }
-    
+
     public function ActualizarSede($id_sede)
     {
-        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM])) {
             return $this->empresaSedeRepository->formSede($id_sede, $empresa_id = "");
         }
 

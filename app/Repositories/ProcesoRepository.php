@@ -33,37 +33,92 @@ class ProcesoRepository extends BaseRepository
         return Proceso::class;
     }
 
-    public function guardarProcesos($procesos)
+    public function guardarProcesos($request)
     {
-        $usuarioEmpresaId = auth('api')->user()->empresa_id;
-        $usuarioSedeId = auth('api')->user()->sede_id;
 
-        //verificar si se borro algun id
-        foreach ($procesos['procesos'] as $p) {
-            //Crear proceso
-            $proceso = new Proceso;
-            $informacionEmpresa = InformacionEmpresa::where('empresa_id', $usuarioEmpresaId)->where('sede_id', $usuarioSedeId)->first();
-            $proceso->informacion_empresa_id = $informacionEmpresa->id;
-            $proceso->empresa_id = $usuarioEmpresaId;
-            $proceso->sede_id = $usuarioSedeId;
-            $proceso->nombre = $p['nombre'];
-            $proceso->save();
+        if ($request->actualizar) {
+
+            $array_procesos = [];
+            $array_subprocesos = [];
+            $array_nuevos = [];
+
+            foreach ($request['procesos'] as $p) {
+                if ($p['id'] != '') {
+                    array_push($array_procesos, $p['id']);
+                }
+                foreach ($p['subprocesos'] as $kp => $sp) {
+                    if ($sp['id'] != '') {
+                        array_push($array_subprocesos, $sp['id']);
+                    }
+                    foreach ($sp as $kf => $fuente) {
+                        if ($kf != 'id' && $kf != 'nombre' && $kf != 'descripcion') {
+                            $tipo = $kf;
+                            $array_nuevos[$tipo][$sp['id']] = [];
+                            foreach ($fuente as $ksf => $sf) {
+                                $array_nuevos[$tipo][$sp['id']][$ksf] = [];
+                                foreach ($sf as $v) {
+                                    array_push($array_nuevos[$tipo][$sp['id']][$ksf], $v);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach ($array_nuevos as $key => $value) {
+                foreach ($value as $sk => $sv) {
+                    foreach ($sv as $k => $v) {
+                        FuenteEmision::where([
+                            ['subproceso_id', $sk],
+                            ['tipo', $key],
+                            ['fuente_emision', $k],
+                        ])->whereNotIn('fuentetable_id', $v)->delete();
+                    }
+                }
+            }
+
+            FuenteEmision::whereNotIn('subproceso_id', $array_subprocesos)->delete();
+            Subproceso::whereNotIn('id', $array_subprocesos)->delete();
+            Proceso::whereNotIn('id', $array_procesos)->delete();
+        }
+
+        foreach ($request['procesos'] as $p) {
+            if ($p['id'] == '') {
+                $proceso = new Proceso;
+                $proceso->informacion_empresa_id = $request->informacion_empresa_id;
+                $proceso->empresa_id = $request->empresa_id;
+                $proceso->sede_id =  $request->sede_id;
+                $proceso->nombre = $p['nombre'];
+                $proceso->save();
+                $proceso_id = $proceso->id;
+            } else {
+                $proceso_id = $p['id'];
+            }
             foreach ($p['subprocesos'] as $sp) {
-
-                //Crear subproceso
-                $subproceso = new Subproceso;
-                $subproceso->nombre = $sp['nombre'];
-                $subproceso->descripcion = $sp['descripcion'];
-                $subproceso->proceso_id = $proceso->id;
-                $subproceso->empresa_id = $usuarioEmpresaId;
-                $subproceso->sede_id = $usuarioSedeId;
-                $subproceso->save();
-
+                if ($sp['id'] == '') {
+                    $subproceso = new Subproceso;
+                    $subproceso->nombre = $sp['nombre'];
+                    $subproceso->descripcion = $sp['descripcion'];
+                    $subproceso->proceso_id = $proceso_id;
+                    $subproceso->empresa_id = $request->empresa_id;
+                    $subproceso->sede_id = $request->sede_id;
+                    $subproceso->save();
+                    $subproceso_id = $subproceso->id;
+                } else {
+                    $subproceso_id = $sp['id'];
+                }
                 foreach ($sp as $kf => $fuente) {
-                    if ($kf != 'nombre' && $kf != 'descripcion') {
+                    if ($kf != 'id' && $kf != 'nombre' && $kf != 'descripcion') {
                         foreach ($fuente as $ksf => $sf) {
                             foreach ($sf as $v) {
-                                if ($v != -1) {
+                                $fuente_existe = FuenteEmision::where([
+                                    ['tipo', $kf],
+                                    ['fuente_emision', $ksf],
+                                    ['fuentetable_id', $v],
+                                    ['subproceso_id', $sp['id']],
+                                ])->first();
+
+                                if (is_null($fuente_existe)) {
                                     //Crear fuente emision
                                     $fuente_emision = new FuenteEmision;
                                     $fuente_emision->tipo = $kf;
@@ -84,10 +139,10 @@ class ProcesoRepository extends BaseRepository
 
                                     $fuente_emision->fuentetable_type = $modelo;
                                     $fuente_emision->fuentetable_id = $v;
-                                    $fuente_emision->subproceso_id = $subproceso->id;
-                                    $fuente_emision->informacion_empresa_id = $informacionEmpresa->id;
-                                    $fuente_emision->empresa_id = $usuarioEmpresaId;
-                                    $fuente_emision->sede_id = $usuarioSedeId;
+                                    $fuente_emision->subproceso_id = $subproceso_id;
+                                    $fuente_emision->informacion_empresa_id = $request->informacion_empresa_id;
+                                    $fuente_emision->empresa_id = $request->empresa_id;
+                                    $fuente_emision->sede_id = $request->sede_id;
                                     $fuente_emision->save();
                                 }
                             }
@@ -103,7 +158,8 @@ class ProcesoRepository extends BaseRepository
         $procesos = Proceso::with('subprocesos', 'subprocesos.fuentesEmision')->where(
             [
                 ['empresa_id', $request->empresa_id],
-                ['sede_id', $request->sede_id]
+                ['sede_id', $request->sede_id],
+                ['informacion_empresa_id', $request->informacion_empresa_id],
             ]
         )->get();
 
