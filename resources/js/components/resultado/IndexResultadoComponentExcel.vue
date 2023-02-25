@@ -110,7 +110,7 @@
                                 class="table table-fit table-sm table-bordered"
                                 :id="'tabla-resultados-' + ia"
                             >
-                                <thead>
+                                <thead style="font-size: 13px">
                                     <tr>
                                         <th colspan="16">CONSUMO</th>
                                         <th colspan="5">INCERTIDUMBRE DATOS</th>
@@ -233,7 +233,7 @@
                                         <th>COLUMNA AUXILIAR</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style="font-size: 11px">
                                     <template v-for="a in el">
                                         <tr :key="a.id" class="table-active">
                                             <td>{{ a[0] }}</td>
@@ -995,7 +995,7 @@
                                 class="table table-fit table-sm table-bordered"
                                 :id="'tabla-biogenicos-' + ia"
                             >
-                                <thead>
+                                <thead style="font-size: 13px">
                                     <tr>
                                         <th colspan="16">CONSUMO</th>
                                         <th colspan="5">INCERTIDUMBRE DATOS</th>
@@ -1044,12 +1044,10 @@
                                         <th>COLUMNA AUXILIAR</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style="font-size: 11px">
                                     <template v-for="a in el">
                                         <tr :key="a.id" class="table-active">
-                                            <td>
-                                                {{ a[0] }}
-                                            </td>
+                                            <td v-html="a[0]"></td>
                                             <td style="display;none"></td>
                                             <td style="display;none"></td>
                                             <td style="display;none"></td>
@@ -1239,11 +1237,7 @@
                                             "
                                             :key="a.id"
                                         >
-                                            <td>
-                                                <b>
-                                                    {{ a[3] }}
-                                                </b>
-                                            </td>
+                                            <td v-html="a[3]"></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -1373,7 +1367,7 @@ export default {
                     "CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI": [
                         [
                             "FUENTES MÓVILES",
-                            ["fuentes_moviles"],
+                            "fuentes_moviles",
                             ["Combustible_liquido", "Combustible_gaseoso"],
                             "SUBTOTAL COMBUSTIBLES FUENTES MÓVILES",
                         ],
@@ -1636,7 +1630,31 @@ export default {
                             "FUENTES MÓVILES",
                             "fuentes_moviles",
                             ["Combustible_liquido", "Combustible_gaseoso"],
-                            "SUBTOTAL FUENTES MÓVILES",
+                            "<b>SUBTOTAL FUENTES MÓVILES</b>",
+                        ],
+                        [
+                            "FUENTES MÓVILES EXTRA<br>Diésel o ACPM (sin mezcla biodiesel)",
+                            "fuentes_moviles_biogenico_26",
+                            ["Combustible_liquido"],
+                            "<b>SUBTOTAL FUENTES MÓVILES EXTRA<br>Diésel o ACPM (sin mezcla biodiesel)</b>",
+                        ],
+                        [
+                            "FUENTES MÓVILES EXTRA<br>Gasolina Motor (sin mezcla bioetanol)",
+                            "fuentes_moviles_biogenico_27",
+                            ["Combustible_liquido"],
+                            "<b>SUBTOTAL FUENTES MÓVILES EXTRA<br>Gasolina Motor (sin mezcla bioetanol)</b>",
+                        ],
+                        [
+                            "FUENTES MÓVILES EXTRA<br>Diésel B10 (Mezcla comercial)",
+                            "fuentes_moviles_biogenico_37",
+                            ["Combustible_liquido"],
+                            "<b>SUBTOTAL FUENTES MÓVILES EXTRA<br>Diésel B10 (Mezcla comercial)</b>",
+                        ],
+                        [
+                            "FUENTES MÓVILES EXTRA<br>Gasolina E10 (Mezcla comercial)",
+                            "fuentes_moviles_biogenico_38",
+                            ["Combustible_liquido"],
+                            "<b>SUBTOTAL FUENTES MÓVILES EXTRA<br>Gasolina E10 (Mezcla comercial)</b>",
                         ],
                         [
                             "FUENTES FIJAS",
@@ -1646,17 +1664,52 @@ export default {
                                 "Combustible_liquido",
                                 "Combustible_gaseoso",
                             ],
-                            "SUBTOTAL FUENTES FIJAS",
+                            "<b>SUBTOTAL FUENTES FIJAS<b>",
+                        ],
+                        [
+                            "FUENTES FIJAS EXTRA<br>Diésel o ACPM (sin mezcla biodiesel)",
+                            "fuentes_fijas_biogenico_26",
+                            ["Combustible_liquido"],
+                            "<b>SUBTOTAL FUENTES FIJAS EXTRA<br>Diésel o ACPM (sin mezcla biodiesel)<b>",
+                        ],
+                        [
+                            "FUENTES FIJAS EXTRA<br>Gasolina Motor (sin mezcla bioetanol)",
+                            "fuentes_fijas_biogenico_27",
+                            ["Combustible_liquido"],
+                            "<b>SUBTOTAL FUENTES FIJAS EXTRA<br>Gasolina Motor (sin mezcla bioetanol)<b>",
+                        ],
+                        [
+                            "FUENTES FIJAS EXTRA<br>Diésel B10 (Mezcla comercial)",
+                            "fuentes_fijas_biogenico_37",
+                            ["Combustible_liquido"],
+                            "<b>SUBTOTAL FUENTES FIJAS EXTRA<br>Diésel B10 (Mezcla comercial)<b>",
+                        ],
+                        [
+                            "FUENTES FIJAS EXTRA<br>Gasolina E10 (Mezcla comercial)",
+                            "fuentes_fijas_biogenico_38",
+                            ["Combustible_liquido"],
+                            "<b>SUBTOTAL FUENTES FIJAS EXTRA<br>Gasolina E10 (Mezcla comercial)<b>",
                         ],
                         [
                             "",
-                            ["fuentes_moviles", "fuentes_fijas"],
+                            [
+                                "fuentes_moviles",
+                                "fuentes_fijas",
+                                "fuentes_moviles_biogenico_26",
+                                "fuentes_moviles_biogenico_27",
+                                "fuentes_moviles_biogenico_37",
+                                "fuentes_moviles_biogenico_38",
+                                "fuentes_fijas_biogenico_26",
+                                "fuentes_fijas_biogenico_27",
+                                "fuentes_fijas_biogenico_37",
+                                "fuentes_fijas_biogenico_38",
+                            ],
                             [
                                 "Combustible_solido",
                                 "Combustible_liquido",
                                 "Combustible_gaseoso",
                             ],
-                            "TOTAL CATEGORÍA 1",
+                            "<b>TOTAL CATEGORÍA 1</b>",
                         ],
                     ],
                 },
@@ -1671,7 +1724,31 @@ export default {
                                     "Combustible_liquido",
                                     "Combustible_gaseoso",
                                 ],
-                                "SUBTOTAL ENERGÍA IMPORTADA",
+                                "<b>SUBTOTAL ENERGÍA IMPORTADA</b>",
+                            ],
+                            [
+                                "ENERGÍA IMPORTADA EXTRA<br>Diésel o ACPM (sin mezcla biodiesel)",
+                                "energia_importada_biogenico_26",
+                                ["Combustible_liquido"],
+                                "<b>SUBTOTAL ENERGÍA IMPORTADA EXTRA<br>Diésel o ACPM (sin mezcla biodiesel)",
+                            ],
+                            [
+                                "ENERGÍA IMPORTADA EXTRA<br>Gasolina Motor (sin mezcla bioetanol)",
+                                "energia_importada_biogenico_37",
+                                ["Combustible_liquido"],
+                                "<b>SUBTOTAL ENERGÍA IMPORTADA EXTRA<br>Gasolina Motor (sin mezcla bioetanol)",
+                            ],
+                            [
+                                "ENERGÍA IMPORTADA EXTRA<br>Diésel B10 (Mezcla comercial)",
+                                "energia_importada_biogenico_27",
+                                ["Combustible_liquido"],
+                                "<b>SUBTOTAL ENERGÍA IMPORTADA EXTRA<br>Diésel B10 (Mezcla comercial)",
+                            ],
+                            [
+                                "ENERGÍA IMPORTADA EXTRA<br>Gasolina E10 (Mezcla comercial)",
+                                "energia_importada_biogenico_38",
+                                ["Combustible_liquido"],
+                                "<b>SUBTOTAL ENERGÍA IMPORTADA EXTRA<br>Gasolina E10 (Mezcla comercial)",
                             ],
                             [
                                 "",
@@ -1680,8 +1757,12 @@ export default {
                                     "Combustible_solido",
                                     "Combustible_liquido",
                                     "Combustible_gaseoso",
+                                    "energia_importada_biogenico_26",
+                                    "energia_importada_biogenico_37",
+                                    "energia_importada_biogenico_27",
+                                    "energia_importada_biogenico_38",
                                 ],
-                                "TOTAL CATEGORÍA 2",
+                                "<b>TOTAL CATEGORÍA 2</b>",
                             ],
                         ],
                 },
@@ -1692,13 +1773,43 @@ export default {
                                 "FUENTES MÓVILES",
                                 "transportes",
                                 ["Combustible_liquido", "Combustible_gaseoso"],
-                                "SUBTOTAL COMBUSTIBLES",
+                                "<b>SUBTOTAL TRANSPORTE</b>",
+                            ],
+                            [
+                                "TRANSPORTE EXTRA<br>Diésel o ACPM (sin mezcla biodiesel)",
+                                "transportes_fuentes_moviles_biogenico_26",
+                                ["Combustible_liquido"],
+                                "<b>SUBTOTAL TRANSPORTE EXTRA<br>Diésel o ACPM (sin mezcla biodiesel)",
+                            ],
+                            [
+                                "TRANSPORTE EXTRA<br>Gasolina Motor (sin mezcla bioetanol)",
+                                "transportes_fuentes_moviles_biogenico_37",
+                                ["Combustible_liquido"],
+                                "<b>SUBTOTAL TRANSPORTE EXTRA<br>Gasolina Motor (sin mezcla bioetanol)",
+                            ],
+                            [
+                                "TRANSPORTE EXTRA<br>Diésel B10 (Mezcla comercial)",
+                                "transportes_fuentes_moviles_biogenico_27",
+                                ["Combustible_liquido"],
+                                "<b>SUBTOTAL TRANSPORTE EXTRA<br>Diésel B10 (Mezcla comercial)",
+                            ],
+                            [
+                                "TRANSPORTE EXTRA<br>Gasolina E10 (Mezcla comercial)",
+                                "transportes_fuentes_moviles_biogenico_38",
+                                ["Combustible_liquido"],
+                                "<b>SUBTOTAL TRANSPORTE EXTRA<br>Gasolina E10 (Mezcla comercial)",
                             ],
                             [
                                 "",
-                                ["transportes"],
+                                [
+                                    "transportes",
+                                    "transportes_fuentes_moviles_biogenico_26",
+                                    "transportes_fuentes_moviles_biogenico_37",
+                                    "transportes_fuentes_moviles_biogenico_27",
+                                    "transportes_fuentes_moviles_biogenico_38",
+                                ],
                                 ["Combustible_liquido", "Combustible_gaseoso"],
-                                "TOTAL CATEGORÍA 3",
+                                "<b>TOTAL CATEGORÍA 3</b>",
                             ],
                         ],
                 },
@@ -1785,6 +1896,7 @@ export default {
             }
         },
         fuentes(fila, tipo, array_fuente_emision, $biogenico) {
+            console.log(tipo);
             let fuentes = [];
             if (fila != "") {
                 Object.keys(this.resultado).forEach((key) => {

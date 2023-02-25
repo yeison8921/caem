@@ -23,7 +23,7 @@
                 </div>
                 <div class="mb-3">
                     <table
-                        class="table table-bordered table-hover table-stripered"
+                        class="table table-bordered table-hover table-striped"
                         id="tabla-usuarios"
                         width="100%"
                     >
@@ -31,9 +31,8 @@
                             <tr>
                                 <th>Correo</th>
                                 <th>Nombres</th>
+                                <th>Celular</th>
                                 <th>Rol</th>
-                                <th>Empresa</th>
-                                <th>Sede</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -41,22 +40,9 @@
                             <tr v-for="(u, i) in usuarios" v-bind:key="i">
                                 <td>{{ u.email }}</td>
                                 <td>{{ u.first_name + " " + u.last_name }}</td>
+                                <td>{{ u.phone }}</td>
                                 <td>
                                     {{ u.rol.nombre }}
-                                </td>
-                                <td>
-                                    {{
-                                        u.empresa == null
-                                            ? "No aplica"
-                                            : u.empresa.nombre
-                                    }}
-                                </td>
-                                <td>
-                                    {{
-                                        u.empresa_sede == null
-                                            ? "No aplica"
-                                            : u.empresa_sede.nombre
-                                    }}
                                 </td>
                                 <td>
                                     <a
@@ -66,6 +52,22 @@
                                     >
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                    <button
+                                        class="btn btn-danger"
+                                        title="Desactivar usuario"
+                                        :disabled="u.rol_id == 1"
+                                        @click="
+                                            u.rol_id == 1
+                                                ? ''
+                                                : confirmarDesactivarUsuario(
+                                                      u.id,
+                                                      u.first_name,
+                                                      u.last_name
+                                                  )
+                                        "
+                                    >
+                                        <i class="fa-solid fa-ban"></i>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -91,11 +93,54 @@ export default {
         async getUsuarios() {
             this.$root.mostrarCargando();
             this.usuarios = await User.whereIn("rol_id", [1, 3])
+                .where("estado", 1)
                 .include("rol", "empresa", "empresaSede")
                 .get();
+            $("#tabla-usuarios").DataTable().destroy();
+            this.$tablaGlobal("#tabla-usuarios");
             Swal.close();
-            $("#tabla-usuarios").DataTable().clear().destroy();
-            this.$tablaUsuarios("#tabla-usuarios");
+        },
+        async confirmarDesactivarUsuario(id_usuario, first_name, last_name) {
+            Swal.fire({
+                title: "Atención",
+                html:
+                    "¿Está seguro que quiere desactivar el usuario " +
+                    first_name +
+                    " " +
+                    last_name +
+                    "?",
+                icon: "question",
+                showCancelButton: true,
+                cancelButtonText: "No",
+                confirmButtonText: "Si",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    try {
+                        this.desactivarUsuario(id_usuario);
+                    } catch (error) {
+                        this.$root.mostrarMensaje(
+                            "Error",
+                            "Ha ocurrido un error al desactivar el usuario, por favor intentelo nuevamente",
+                            "error"
+                        );
+                    }
+                }
+            });
+        },
+        async desactivarUsuario(id_usuario) {
+            this.$root.mostrarCargando("Desactivando");
+            let user = await User.find(id_usuario);
+            user.estado = 0;
+            user.save();
+            Swal.close();
+            this.$root.mostrarMensaje(
+                "Éxito",
+                "Usuario desactivado correctamente",
+                "success"
+            );
+            setTimeout(() => {
+                this.getUsuarios();
+            }, 1000);
         },
     },
 };

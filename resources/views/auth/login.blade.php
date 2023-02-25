@@ -32,6 +32,11 @@
                     <label>Contraseña</label>
                     <div class="form-group">
                       <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                      <div class="text-end mt-1">
+                        <a href="forgot-password" class="mx-auto mb-4 text-sm text-success text-gradient font-weight-bold">
+                          Olvidé mi contraseña
+                        </a>
+                      </div>
                       @error('password')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -44,6 +49,11 @@
                     </div>
                   </form>
                 </div>
+                @if($errors->has('error'))
+                <div class="alert alert-danger">
+                  Su cuenta no ha sido activada
+                </div>
+                @endif
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
                     ¿No tiene una cuenta?

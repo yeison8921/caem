@@ -15,11 +15,10 @@ class CreateInformacionEmpresasTable extends Migration
     {
         Schema::create('informacion_empresas', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('datos_proveedores');
-            $table->tinyInteger('fuentes_moviles');
-            $table->tinyInteger('actividad_agricola');
-            $table->tinyInteger('huella_base');
-
+            $table->tinyInteger('datos_proveedores')->nullable();
+            $table->tinyInteger('fuentes_moviles')->nullable();
+            $table->tinyInteger('actividad_agricola')->nullable();
+            $table->tinyInteger('huella_base')->nullable();
             $table->integer('valor_huella_base')->nullable();
             $table->tinyInteger('huella_comparativo')->nullable();
             $table->integer('valor_huella_comparativo')->nullable();
@@ -39,19 +38,19 @@ class CreateInformacionEmpresasTable extends Migration
             $table->tinyInteger('metodologia')->nullable();
             $table->string('otra_metodologia')->nullable();
             $table->tinyInteger('seguimiento_cumplimiento')->nullable();
-            $table->tinyInteger('efecto_invernadero');
-            $table->tinyInteger('sumideros');
-            $table->tinyInteger('informacion_mensual');
-            $table->tinyInteger('diagrama_procesos');
-            $table->tinyInteger('areas_sumideros');
-            $table->tinyInteger('informacion_centralizada');
-            $table->tinyInteger('soportes_consumos');
-            $table->tinyInteger('informacion_anio');
-            $table->tinyInteger('estimaciones_consumos');
-            $table->tinyInteger('consumos_energeticos');
-            $table->tinyInteger('sustento_metodologico');
-            $table->tinyInteger('compartira_reporte');
-            $table->tinyInteger('toma_decisiones');
+            $table->tinyInteger('efecto_invernadero')->nullable();
+            $table->tinyInteger('sumideros')->nullable();
+            $table->tinyInteger('informacion_mensual')->nullable();
+            $table->tinyInteger('diagrama_procesos')->nullable();
+            $table->tinyInteger('areas_sumideros')->nullable();
+            $table->tinyInteger('informacion_centralizada')->nullable();
+            $table->tinyInteger('soportes_consumos')->nullable();
+            $table->tinyInteger('informacion_anio')->nullable();
+            $table->tinyInteger('estimaciones_consumos')->nullable();
+            $table->tinyInteger('consumos_energeticos')->nullable();
+            $table->tinyInteger('sustento_metodologico')->nullable();
+            $table->tinyInteger('compartira_reporte')->nullable();
+            $table->tinyInteger('toma_decisiones')->nullable();
             $table->integer('unidades_producidas')->nullable();
             $table->integer('anio_inicio')->nullable();
             $table->string('mes_inicio')->nullable();

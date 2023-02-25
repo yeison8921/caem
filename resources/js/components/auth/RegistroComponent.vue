@@ -1,5 +1,5 @@
 <template>
-    <div class="card" style="padding-top: 70px ;">
+    <div class="card" style="padding-top: 70px">
         <div class="card-body">
             <ul
                 class="nav nav-pills nav-fill mb-3"
@@ -270,22 +270,41 @@
                                 <span class="input-group-text"
                                     ><i class="fa-solid fa-lock"></i
                                 ></span>
+
                                 <input
-                                    v-model.trim="user.password"
+                                    v-model="$v.user.password.$model"
                                     type="password"
                                     id="contrasena"
-                                    class="form-control"
+                                    class="form-control contrasena"
                                     :class="{
                                         'is-invalid': $v.user.password.$error,
                                         'is-valid': !$v.user.password.$invalid,
                                     }"
                                 />
+                                <span
+                                    class="input-group-text"
+                                    @click="showPassword()"
+                                    ><i
+                                        class="fa-solid fa-eye"
+                                        id="ver-contrasena"
+                                    ></i
+                                ></span>
+
                                 <div class="invalid-feedback">
                                     <span v-if="!$v.user.password.required">{{
                                         required
                                     }}</span>
                                     <span v-if="!$v.user.password.minLength"
                                         >Mínimo 8 caracteres</span
+                                    >
+                                    <span
+                                        v-if="
+                                            !$v.user.password.passwordValidator
+                                                .test
+                                        "
+                                        >La contraseña debe incluir como mínimo
+                                        una mayúscula, una minúscula, un número
+                                        y carácter especial</span
                                     >
                                 </div>
                             </div>
@@ -302,7 +321,7 @@
                                     v-model.trim="user.verify_password"
                                     type="password"
                                     id="verify_password"
-                                    class="form-control"
+                                    class="form-control contrasena"
                                     :class="{
                                         'is-invalid':
                                             $v.user.verify_password.$error,
@@ -613,7 +632,7 @@
                                 >
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label class="form-label required"
                                 >Ciudad o municipio</label
                             >
@@ -636,6 +655,85 @@
                             <div class="invalid-feedback">
                                 <span v-if="!$v.sede.ciudad_id.required">
                                     {{ required }}</span
+                                >
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input
+                                    v-model.trim="user.acepta_politicas"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="tratamiento-datos"
+                                    :class="{
+                                        'is-invalid':
+                                            $v.user.acepta_politicas.$error,
+                                        'is-valid':
+                                            !$v.user.acepta_politicas.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span
+                                        v-if="!$v.user.acepta_politicas.sameAs"
+                                    >
+                                        {{ required }}</span
+                                    >
+                                </div>
+                                <span class="check">
+                                    Ley de Protección de Datos Personales: “La
+                                    autorización suministrada en el presente
+                                    formulario faculta a CAEM para que dé a sus
+                                    datos aquí recopilados el tratamiento
+                                    señalado en la
+                                    <a
+                                        href="pdf/politica_de_privacidad.pdf"
+                                        target="_blank"
+                                        style="color: #208943"
+                                        >Política de Privacidad</a
+                                    >
+                                    para el Tratamiento de Datos Personales” de
+                                    CAEM, el cual incluye, entre otras, el envío
+                                    de información promocional, así como la
+                                    invitación a eventos.
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input
+                                    v-model.trim="user.acepta_terminos"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    id="terminos-condiciones"
+                                    :class="{
+                                        'is-invalid':
+                                            $v.user.acepta_terminos.$error,
+                                        'is-valid':
+                                            !$v.user.acepta_terminos.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span
+                                        v-if="!$v.user.acepta_terminos.sameAs"
+                                    >
+                                        {{ required }}</span
+                                    >
+                                </div>
+                                <span class="check">
+                                    Acepto que he leído y comprendido los
+                                    siguientes
+                                    <a
+                                        href="pdf/terminos_y_condiciones.pdf"
+                                        target="_blank"
+                                        style="color: #208943"
+                                        >Términos y condiciones de uso</a
+                                    >, y al hacer click en el recuadro, así como
+                                    utilizar el presente servicio, dejo
+                                    constancia expresa que los acepto de manera
+                                    libre y consciente habiendo de mi parte
+                                    revisado satisfactoriamente la información
+                                    la cual considero adecuada y
+                                    suficiente.</span
                                 >
                             </div>
                         </div>
@@ -680,7 +778,12 @@ import {
     sameAs,
     minLength,
     maxLength,
+    helpers,
 } from "vuelidate/lib/validators";
+const passwordValidator = helpers.regex(
+    "passwordValidator",
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+);
 import User from "../../models/User";
 import Empresa from "../../models/Empresa";
 import EmpresaSede from "../../models/EmpresaSede";
@@ -704,6 +807,8 @@ export default {
                 rol_id: "",
                 empresa_id: "",
                 sede_id: "",
+                acepta_politicas: "",
+                acepta_terminos: "",
             }),
 
             empresa: new Empresa({
@@ -774,10 +879,19 @@ export default {
             password: {
                 required,
                 minLength: minLength(8),
+                passwordValidator,
             },
             verify_password: {
                 required,
                 sameAsPassword: sameAs("password"),
+            },
+            acepta_politicas: {
+                required,
+                sameAs: sameAs(() => true), // add this line in validation
+            },
+            acepta_terminos: {
+                required,
+                sameAs: sameAs(() => true), // add this line in validation
             },
         },
         empresa: {
@@ -896,7 +1010,14 @@ export default {
                 }
             }
             if (this.paso == 2) {
-                if (!this.$v.user.$invalid) {
+                if (
+                    !this.$v.user.first_name.$invalid &&
+                    !this.$v.user.last_name.$invalid &&
+                    !this.$v.user.phone.$invalid &&
+                    !this.$v.user.cargo.$invalid &&
+                    !this.$v.user.password.$invalid &&
+                    !this.$v.user.verify_password.$invalid
+                ) {
                     this.$v.$reset();
                     this.paso = 3;
                     this.mostrar_form_empresa = false;
@@ -909,6 +1030,8 @@ export default {
             }
             if (this.paso == 3) {
                 if (!this.$v.$invalid) {
+                    this.$root.mostrarCargando("Guardando información");
+
                     //Empresa
                     if (!this.empresa_existe) {
                         delete this.empresa["id"];
@@ -934,21 +1057,28 @@ export default {
                     await this.user.save();
 
                     if (this.convenio_id == "") {
-                        this.$root.mostrarMensaje(
-                            "Éxito",
-                            "Usuario creado sin convenio, a la espera de revisión de pago",
-                            "success"
-                        );
+                        axios
+                            .post("/api/enviarNotificacionRegistroSinConvenio")
+                            .then((response) => {
+                                this.$root.mostrarMensaje(
+                                    "Éxito",
+                                    "Usuario creado sin convenio, a la espera de revisión de pago",
+                                    "success"
+                                );
+                                setTimeout(() => {
+                                    this.cancelar();
+                                }, 2000);
+                            });
                     } else {
                         this.$root.mostrarMensaje(
                             "Éxito",
                             "Usuario creado por convenio",
                             "success"
                         );
+                        setTimeout(() => {
+                            this.cancelar();
+                        }, 2000);
                     }
-                    setTimeout(() => {
-                        this.cancelar();
-                    }, 2000);
                 }
             }
         },
@@ -1076,6 +1206,23 @@ export default {
                 );
             }
         },
+        showPassword() {
+            var fields = document.getElementsByClassName("contrasena");
+            for (var i = 0; i < fields.length; i++) {
+                const type =
+                    fields.item(i).type === "password" ? "text" : "password";
+                fields.item(i).setAttribute("type", type);
+            }
+            var icon = document.getElementById("ver-contrasena");
+
+            if (icon.classList.contains("fa-eye")) {
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        },
         limpiarFormUser() {
             Object.keys(this.user).forEach((key) => {
                 if (key != "email") {
@@ -1111,6 +1258,9 @@ export default {
 .nav-link:hover,
 .nav-link:focus {
     color: #000;
+}
+.check a:hover {
+    text-decoration: underline;
 }
 </style>
 <style src="@vueform/multiselect/themes/default.css"></style>

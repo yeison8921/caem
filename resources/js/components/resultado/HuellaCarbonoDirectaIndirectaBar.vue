@@ -84,11 +84,6 @@ export default {
                     },
                     scales: {
                         y: {
-                            min: 0,
-                            max: 5000,
-                            ticks: {
-                                stepSize: 1000,
-                            },
                             grid: {
                                 drawBorder: false,
                                 display: true,

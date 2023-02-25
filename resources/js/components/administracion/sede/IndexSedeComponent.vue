@@ -60,6 +60,7 @@
                                 <th>Nombre</th>
                                 <th>Departamento</th>
                                 <th>Ciudad</th>
+                                <th>Empresario(s)</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -69,6 +70,17 @@
                                 <td>{{ s.departamento.nombre }}</td>
                                 <td>
                                     {{ s.ciudad.nombre }}
+                                </td>
+                                <td>
+                                    <ol>
+                                        <li
+                                            v-for="(e, i) in s.empresarios"
+                                            v-bind:key="i"
+                                        >
+                                            {{ e.first_name }}
+                                            {{ e.last_name }} - {{ e.email }}
+                                        </li>
+                                    </ol>
                                 </td>
                                 <td>
                                     <a
@@ -141,7 +153,8 @@ export default {
                 this.sedes = await EmpresaSede.include(
                     "empresa",
                     "departamento",
-                    "ciudad"
+                    "ciudad",
+                    "empresarios"
                 )
                     .where("empresa_id", this.empresa_id)
                     .get();

@@ -40,7 +40,6 @@ class ProcesoRepository extends BaseRepository
 
             $array_procesos = [];
             $array_subprocesos = [];
-            $array_nuevos = [];
 
             foreach ($request['procesos'] as $p) {
                 if ($p['id'] != '') {
@@ -50,34 +49,9 @@ class ProcesoRepository extends BaseRepository
                     if ($sp['id'] != '') {
                         array_push($array_subprocesos, $sp['id']);
                     }
-                    foreach ($sp as $kf => $fuente) {
-                        if ($kf != 'id' && $kf != 'nombre' && $kf != 'descripcion') {
-                            $tipo = $kf;
-                            $array_nuevos[$tipo][$sp['id']] = [];
-                            foreach ($fuente as $ksf => $sf) {
-                                $array_nuevos[$tipo][$sp['id']][$ksf] = [];
-                                foreach ($sf as $v) {
-                                    array_push($array_nuevos[$tipo][$sp['id']][$ksf], $v);
-                                }
-                            }
-                        }
-                    }
                 }
             }
 
-            foreach ($array_nuevos as $key => $value) {
-                foreach ($value as $sk => $sv) {
-                    foreach ($sv as $k => $v) {
-                        FuenteEmision::where([
-                            ['subproceso_id', $sk],
-                            ['tipo', $key],
-                            ['fuente_emision', $k],
-                        ])->whereNotIn('fuentetable_id', $v)->delete();
-                    }
-                }
-            }
-
-            FuenteEmision::whereNotIn('subproceso_id', $array_subprocesos)->delete();
             Subproceso::whereNotIn('id', $array_subprocesos)->delete();
             Proceso::whereNotIn('id', $array_procesos)->delete();
         }
@@ -103,51 +77,6 @@ class ProcesoRepository extends BaseRepository
                     $subproceso->empresa_id = $request->empresa_id;
                     $subproceso->sede_id = $request->sede_id;
                     $subproceso->save();
-                    $subproceso_id = $subproceso->id;
-                } else {
-                    $subproceso_id = $sp['id'];
-                }
-                foreach ($sp as $kf => $fuente) {
-                    if ($kf != 'id' && $kf != 'nombre' && $kf != 'descripcion') {
-                        foreach ($fuente as $ksf => $sf) {
-                            foreach ($sf as $v) {
-                                $fuente_existe = FuenteEmision::where([
-                                    ['tipo', $kf],
-                                    ['fuente_emision', $ksf],
-                                    ['fuentetable_id', $v],
-                                    ['subproceso_id', $sp['id']],
-                                ])->first();
-
-                                if (is_null($fuente_existe)) {
-                                    //Crear fuente emision
-                                    $fuente_emision = new FuenteEmision;
-                                    $fuente_emision->tipo = $kf;
-                                    $fuente_emision->fuente_emision = $ksf;
-
-                                    $modelo = 'App\Models\\';
-                                    if (str_contains($ksf, 'Combustible')) {
-                                        $modelo .= 'Combustible';
-                                    } elseif ($ksf == 'Embalse' || $ksf == 'Mineria' || $ksf == 'Industrial' || $ksf == 'Residuo_organizacional') {
-                                        $modelo .= 'Emision';
-                                    } elseif ($ksf == 'Cal') {
-                                        $modelo .= 'Fertilizante';
-                                    } elseif ($ksf == 'Residuo_agropecuario') {
-                                        $modelo .= 'Estiercol';
-                                    } else {
-                                        $modelo .= $ksf;
-                                    }
-
-                                    $fuente_emision->fuentetable_type = $modelo;
-                                    $fuente_emision->fuentetable_id = $v;
-                                    $fuente_emision->subproceso_id = $subproceso_id;
-                                    $fuente_emision->informacion_empresa_id = $request->informacion_empresa_id;
-                                    $fuente_emision->empresa_id = $request->empresa_id;
-                                    $fuente_emision->sede_id = $request->sede_id;
-                                    $fuente_emision->save();
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -177,53 +106,6 @@ class ProcesoRepository extends BaseRepository
                 $jsp->nombre = $sp->nombre;
                 $jsp->descripcion = $sp->descripcion;
                 array_push($jp->subprocesos, $jsp);
-
-                //json fuentes fijas
-                $jff = new stdClass();
-                $jff->Combustible_solido = [];
-                $jff->Combustible_liquido = [];
-                $jff->Combustible_gaseoso = [];
-                $jff->Refrigerante = [];
-                $jff->Extintor = [];
-                $jff->Lubricante = [];
-                $jff->Fuga = [];
-                $jff->Aislamiento = [];
-
-                //json fuentes móviles
-                $jfm = new stdClass();
-                $jfm->Combustible_liquido = [];
-                $jfm->Combustible_gaseoso = [];
-                $jfm->Refrigerante = [];
-                $jfm->Extintor = [];
-                $jfm->Lubricante = [];
-
-                //json emisiones
-                $je = new stdClass();
-                $je->Embalse = [];
-                $je->Mineria = [];
-                $je->Industrial = [];
-                $je->Fermentacion = [];
-                $je->Estiercol = [];
-                $je->Residuo_organizacional = [];
-                $je->Residuo_agropecuario = [];
-                $je->Fertilizante = [];
-                $je->Cal = [];
-
-                foreach ($sp->fuentesEmision as $f) {
-                    $fuente = $f->fuente_emision;
-                    if ($f->tipo == 'fuentes_fijas') {
-                        array_push($jff->$fuente, $f->fuentetable_id);
-                    }
-                    if ($f->tipo == 'fuentes_moviles') {
-                        array_push($jfm->$fuente, $f->fuentetable_id);
-                    }
-                    if ($f->tipo == 'emisiones') {
-                        array_push($je->$fuente, $f->fuentetable_id);
-                    }
-                }
-                $jsp->fuentes_fijas = $jff;
-                $jsp->fuentes_moviles = $jfm;
-                $jsp->emisiones = $je;
             }
         }
 

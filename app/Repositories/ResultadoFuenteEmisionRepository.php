@@ -9,6 +9,7 @@ use App\Models\InformacionEmpresa;
 use App\Models\FactorT;
 use App\Models\FuenteEmision;
 use App\Models\Gei;
+use App\Models\PorcentajeCombustible;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
@@ -17,9 +18,11 @@ use stdClass;
  */
 class ResultadoFuenteEmisionRepository extends BaseRepository
 {
+    protected $array_porcentajes;
     protected $array_factores;
     protected $array_biogenicos;
     protected $array_ar = ['_ar5', '_ar6'];
+    protected $array_combustibles_porcentaje_corporativo = [26, 37, 27, 38];
     protected $json_geis;
     protected $array_emisiones = [
         'Combustible_solido' => ['co2', 'ch4', 'n2o'],
@@ -62,6 +65,7 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
      */
     public function __construct()
     {
+        $this->getPorcentajes();
         $this->getFactoresT();
         $this->getGeis();
         $this->getBiogenicos();
@@ -108,9 +112,18 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
     //     return $resultado_fuente_emision;
     // }
 
+    public function getPorcentajes()
+    {
+        $porcentajes = PorcentajeCombustible::get(['nombre', 'valor']);
+        foreach ($porcentajes as $key => $v) {
+            $this->array_porcentajes[$v->nombre] = $v->valor;
+            $this->array_porcentajes[$v->nombre] = $v->valor;
+        }
+    }
+
     public function getBiogenicos()
     {
-        $this->array_biogenicos = Combustible::where("biogenico", 1)->pluck('nombre')->toArray();
+        $this->array_biogenicos = Combustible::where('biogenico', 1)->pluck('nombre')->toArray();
     }
 
     public function getFactoresT()
@@ -152,7 +165,13 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                         if (str_contains($kd, 'dato_')) {
                             if (!is_null($d)) {
                                 $numero_datos++;
-                                $total += floatval($d);
+                                if (in_array($fuentes_emision[$kfe][$skfe]['fuentetable_id'], $this->array_combustibles_porcentaje_corporativo)) {
+                                    $total += floatval(($d * $this->array_porcentajes['corporativo']) / 100);
+                                } else if (str_contains($fuentes_emision[$kfe][$skfe]['tipo'], 'biogenico')) {
+                                    $total += floatval(($d * $this->array_porcentajes['biogenico']) / 100);
+                                } else {
+                                    $total += floatval($d);
+                                }
                             }
                         }
                     }
@@ -168,7 +187,13 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                     foreach ($fe['resultado'] as $kd => $d) {
                         if (str_contains($kd, 'dato_')) {
                             if (!is_null($d)) {
-                                $total2 += ($d - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']) * ($d - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
+                                if (in_array($fuentes_emision[$kfe][$skfe]['fuentetable_id'], $this->array_combustibles_porcentaje_corporativo)) {
+                                    $total2 += (floatval(($d * $this->array_porcentajes['corporativo']) / 100) - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']) * (floatval(($d * $this->array_porcentajes['corporativo']) / 100) - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
+                                } else if (str_contains($fuentes_emision[$kfe][$skfe]['tipo'], 'biogenico')) {
+                                    $total2 += (floatval(($d * $this->array_porcentajes['biogenico']) / 100) - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']) * (floatval(($d * $this->array_porcentajes['biogenico']) / 100) - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
+                                } else {
+                                    $total2 += ($d - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']) * ($d - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
+                                }
                             }
                         }
                     }
@@ -213,7 +238,11 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                             if ($e == 'sf6') {
                                 $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e . $biogenico . $ar] = $fuentes_emision[$kfe][$skfe]['fuentetable']['factor_emision_' . $e . $factor_emision] / $this->json_geis->$ar->$e;;
                             } else {
-                                $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e . $biogenico . $ar] = $fuentes_emision[$kfe][$skfe]['fuentetable']['factor_emision_' . $e . $factor_emision];
+                                if (str_contains($fuentes_emision[$kfe][$skfe]['tipo'], 'biogenico') && $e != 'co2') {
+                                    $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e . $biogenico . $ar] = 0;
+                                } else {
+                                    $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e . $biogenico . $ar] = $fuentes_emision[$kfe][$skfe]['fuentetable']['factor_emision_' . $e . $factor_emision];
+                                }
                             }
                         }
 
@@ -391,54 +420,54 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
         $array_colores_tipo = [];
 
         foreach ($resultados as $key => $resultado) {
-            if ($resultado["resultado"] != null) {
+            if ($resultado['resultado'] != null) {
 
-                $total_huella_carbono += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
+                $total_huella_carbono += $resultado['resultado']['huella_carbono' . $request->reporte . $request->ar];
 
                 //obtener datos directa indirecta
                 //obtener datos categoría
                 foreach ($array_categorias as $key => $value) {
                     if (in_array($resultado['tipo'], $value)) {
                         if ($key == 0) {
-                            $array_totales_directa[0] += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
+                            $array_totales_directa[0] += $resultado['resultado']['huella_carbono' . $request->reporte . $request->ar];
                         } else {
-                            $array_totales_directa[1] += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
+                            $array_totales_directa[1] += $resultado['resultado']['huella_carbono' . $request->reporte . $request->ar];
                         }
                     }
                     if (in_array($resultado['tipo'], $value) && $key < count($array_totales_categoria)) {
-                        $array_totales_categoria[$key] += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
+                        $array_totales_categoria[$key] += $resultado['resultado']['huella_carbono' . $request->reporte . $request->ar];
                     }
                 }
 
                 //obtener datos gei
-                $array_totales_gei[0] += $resultado["resultado"]['emision_co2_ton_eq' . $request->reporte . $request->ar];
+                $array_totales_gei[0] += $resultado['resultado']['emision_co2_ton_eq' . $request->reporte . $request->ar];
 
                 if ($request->reporte == '') {
-                    $array_totales_gei[1] += $resultado["resultado"]['emision_ch4_ton_eq' . $request->ar];
-                    $array_totales_gei[2] += $resultado["resultado"]['emision_n2o_ton_eq' . $request->ar];
-                    $array_totales_gei[3] += $resultado["resultado"]['emision_compuestos_fluorados_ton_eq' . $request->ar];
-                    $array_totales_gei[4] += $resultado["resultado"]['emision_sf6_ton_eq' . $request->ar];
-                    $array_totales_gei[5] += $resultado["resultado"]['emision_nf3_ton_eq' . $request->ar];
+                    $array_totales_gei[1] += $resultado['resultado']['emision_ch4_ton_eq' . $request->ar];
+                    $array_totales_gei[2] += $resultado['resultado']['emision_n2o_ton_eq' . $request->ar];
+                    $array_totales_gei[3] += $resultado['resultado']['emision_compuestos_fluorados_ton_eq' . $request->ar];
+                    $array_totales_gei[4] += $resultado['resultado']['emision_sf6_ton_eq' . $request->ar];
+                    $array_totales_gei[5] += $resultado['resultado']['emision_nf3_ton_eq' . $request->ar];
                 }
 
                 //obtener datos por fuente
                 foreach ($array_labels_fuente as $key => $value) {
                     if ($resultado['fuente_emision_mostrar'] == $value) {
-                        $array_totales_fuente[$key] += $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar];
+                        $array_totales_fuente[$key] += $resultado['resultado']['huella_carbono' . $request->reporte . $request->ar];
                     }
                 }
 
                 //obtener datos por tipo
                 if ($request->reporte == '') {
-                    if ($resultado["resultado"]['huella_carbono' . $request->ar] > 0) {
+                    if ($resultado['resultado']['huella_carbono' . $request->ar] > 0) {
                         array_push($array_labels_tipo, $resultado['fuentetable']['nombre'] . '<br>' . $resultado['tipo_mostrar']);
-                        array_push($array_totales_tipo, $resultado["resultado"]['huella_carbono' . $request->ar]);
+                        array_push($array_totales_tipo, $resultado['resultado']['huella_carbono' . $request->ar]);
                     }
                 } else {
                     if (in_array($resultado['fuentetable']['nombre'], $this->array_biogenicos)) {
-                        if ($resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar] > 0) {
+                        if ($resultado['resultado']['huella_carbono' . $request->reporte . $request->ar] > 0) {
                             array_push($array_labels_tipo, $resultado['fuentetable']['nombre'] . ' - ' . $resultado['tipo_mostrar']);
-                            array_push($array_totales_tipo, $resultado["resultado"]['huella_carbono' . $request->reporte . $request->ar]);
+                            array_push($array_totales_tipo, $resultado['resultado']['huella_carbono' . $request->reporte . $request->ar]);
                         }
                     }
                 }

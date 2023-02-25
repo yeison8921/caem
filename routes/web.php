@@ -15,11 +15,14 @@ use App\Http\Controllers\Api\FugaController;
 use App\Http\Controllers\Api\LubricanteController;
 use App\Http\Controllers\Api\OtroController;
 use App\Http\Controllers\Api\ParametroController;
+use App\Http\Controllers\Api\PorcentajeCombustibleController;
 use App\Http\Controllers\Api\ProductoController;
 use App\Http\Controllers\Api\RefrigeranteController;
 use App\Http\Controllers\Api\TrasversalController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ViajeController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Models\PorcentajeCombustible;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -43,14 +46,23 @@ Route::get('/', function () {
     }
 });
 
+
+//Restablecer contraseña
+Route::get('/forgot-password', function () {
+    return view('auth/passwords/email');
+    // if (!auth()->user()) {
+    // } else {
+    //     return view('auth/passwords/reset');
+    // }
+});
+
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/welcome', [App\Http\Controllers\WelcomeController::class, 'index'])->name('welcome');
 
 Route::group(['middleware' => 'auth'], function () {
-
-
     // Perfil
     Route::get('/perfil',  function () {
         return view('auth/perfil');
@@ -68,7 +80,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     // empresarios
     Route::get('/empresarios',  function () {
-        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM])) {
             return view('administracion/usuario/index_empresario');
         }
         return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
@@ -205,11 +217,24 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/otros/create', [OtroController::class, 'formOtro']);
     Route::get('/otros/edit/{id}', [OtroController::class, 'formOtro']);
 
+    //Porcentajes
+    Route::get('/porcentajes/edit/{id}', [PorcentajeCombustibleController::class, 'formPorcentaje']);
+
     // Resultado
     Route::get('/resultados',  function () {
         return view('resultado/index_resultado');
     });
     Route::get('/resultados-excel',  function () {
         return view('resultado/index_resultado_excel');
+    });
+
+    //Video tutoriales
+    Route::get('/videotutoriales',  function () {
+        return view('index_videotutoriales');
+    });
+
+    //Contraseñas
+    Route::get('/cambiar-contrasena', function () {
+        return view('auth/passwords/reset');
     });
 });

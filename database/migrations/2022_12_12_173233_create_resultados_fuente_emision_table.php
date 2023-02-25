@@ -31,8 +31,8 @@ class CreateResultadosFuenteEmisionTable extends Migration
             $table->float('dato_11', 20, 6)->nullable();
             $table->float('dato_12', 20, 6)->nullable();
 
-            $table->float('total', 20, 6)->nullable();
             $table->integer('numero_datos')->nullable();
+            $table->float('total', 20, 6)->nullable();
             $table->float('promedio', 20, 6)->nullable();
             $table->float('desviacion_estandar', 20, 6)->nullable();
             $table->float('factor_t', 20, 6)->nullable();

@@ -37,6 +37,9 @@ class User extends Authenticatable
         'rol_id',
         'empresa_id',
         'sede_id',
+        'acepta_politicas',
+        'acepta_terminos',
+
     ];
 
     /**

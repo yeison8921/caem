@@ -41,4 +41,12 @@ class EmpresaSede extends Model
     {
         return $this->belongsTo(Parametro::class, 'ciudad_id', 'id');
     }
+
+    /**
+     * Obtiene los empresarios de la sede.
+     */
+    public function empresarios()
+    {
+        return $this->hasMany(User::class, 'sede_id', 'id');
+    }
 }

@@ -105,7 +105,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1].includes(
+                                        [1, 3].includes(
                                             parseInt(userLogged.rol_id)
                                         )
                                     "
@@ -210,13 +210,20 @@
                                     mini-icon="I"
                                     text="Perfil"
                                 />
+                                <sidenav-item
+                                    v-if="isLoggedIn"
+                                    :to="{ name: 'Cambiar contraseña' }"
+                                    :url="'/cambiar-contrasena'"
+                                    mini-icon="C"
+                                    text="Cambiar contraseña"
+                                />
                             </ul>
                         </template>
                     </sidenav-collapse>
                 </li>
                 <li class="nav-item" v-if="isLoggedIn">
                     <a
-                        href="#"
+                        href="videotutoriales"
                         target="_blank"
                         class="mb-0 btn btn-sm btn-round me-1 bg-gradient-info"
                         style="margin-left: 40px; bottom: 8vh; position: fixed"

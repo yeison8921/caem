@@ -41,7 +41,7 @@ class EmpresaController extends Controller
         $query = QueryBuilder::for(Empresa::class)->allowedFilters([
             AllowedFilter::exact('nit'),
             AllowedFilter::exact('convenios.id'),
-        ])->allowedIncludes("sedes", "convenios");
+        ])->allowedIncludes('sedes', 'convenios');
 
         return $query->get();
     }
@@ -55,12 +55,12 @@ class EmpresaController extends Controller
     public function show(Empresa $empresa)
     {
         return QueryBuilder::for(Empresa::whereId($empresa->id))->allowedIncludes(
-            "codigo",
-            "sector",
-            "empleado",
-            "tamano",
-            "sedes",
-            "convenios"
+            'codigo',
+            'sector',
+            'empleado',
+            'tamano',
+            'sedes',
+            'convenios'
         )->first();
     }
 

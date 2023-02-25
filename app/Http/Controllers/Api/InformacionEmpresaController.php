@@ -42,7 +42,7 @@ class InformacionEmpresaController extends Controller
             AllowedFilter::exact('empresa_id'),
             AllowedFilter::exact('sede_id'),
             AllowedFilter::exact('estado'),
-        ]);;
+        ])->defaultSort('created_at');
 
         return $query->get();
     }

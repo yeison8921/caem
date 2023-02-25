@@ -42,7 +42,7 @@ class EmpresaSedeController extends Controller
             AllowedFilter::exact('empresa_id'),
             AllowedFilter::exact('departamento_id'),
             AllowedFilter::exact('ciudad_id'),
-        ])->allowedIncludes("empresa", "departamento", "ciudad");
+        ])->allowedIncludes('empresa', 'departamento', 'ciudad', 'empresarios');
 
         return $query->get();
     }
@@ -55,7 +55,7 @@ class EmpresaSedeController extends Controller
      */
     public function show(EmpresaSede $empresa_sede)
     {
-        return QueryBuilder::for(EmpresaSede::whereId($empresa_sede->id))->allowedIncludes("empresa", "departamento", "ciudad")->first();
+        return QueryBuilder::for(EmpresaSede::whereId($empresa_sede->id))->allowedIncludes('empresa', 'departamento', 'ciudad')->first();
     }
 
     /**
@@ -102,7 +102,7 @@ class EmpresaSedeController extends Controller
     public function ActualizarSede($id_sede)
     {
         if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM])) {
-            return $this->empresaSedeRepository->formSede($id_sede, $empresa_id = "");
+            return $this->empresaSedeRepository->formSede($id_sede, $empresa_id = '');
         }
 
         return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));

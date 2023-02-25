@@ -112,10 +112,10 @@ export default {
         async getUsuarios() {
             this.usuarios = [];
             this.$root.mostrarCargando("");
-            let usuarios = User.include("empresa", "empresaSede").where(
-                "estado",
-                this.estado_selected ? this.estado_selected : 0
-            );
+            let usuarios = User.include("empresa", "empresaSede").where({
+                estado: this.estado_selected,
+                rol_id: 2,
+            });
             this.usuarios = await usuarios.get();
 
             $("#tabla-usuarios").DataTable().clear().destroy();
@@ -123,12 +123,35 @@ export default {
 
             Swal.close();
         },
-        actualizarUsuario(usuario, estado = 1) {
+        async actualizarUsuario(usuario, estado) {
             this.$root.mostrarCargando("");
             usuario.estado = estado;
             usuario.save().then(() => {
-                this.getUsuarios();
-                Swal.close();
+                if (estado == 1) {
+                    axios
+                        .post("/api/enviarNotificacionAprobacionSinConvenio", {
+                            email: usuario.email,
+                        })
+                        .then((response) => {
+                            this.$root.mostrarMensaje(
+                                "Éxito",
+                                "Usuario aprobado correctamente",
+                                "success"
+                            );
+                            setTimeout(() => {
+                                this.getUsuarios();
+                            }, 1000);
+                        });
+                } else {
+                    this.$root.mostrarMensaje(
+                        "Éxito",
+                        "Usuario rechazado correctamente",
+                        "success"
+                    );
+                    setTimeout(() => {
+                        this.getUsuarios();
+                    }, 1000);
+                }
             });
         },
     },

@@ -20,15 +20,16 @@ use App\Http\Controllers\Api\LubricanteController;
 use App\Http\Controllers\Api\OtroController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\ParametroController;
+use App\Http\Controllers\Api\PorcentajeCombustibleController;
 use App\Http\Controllers\Api\ProcesoController;
 use App\Http\Controllers\Api\ProductoController;
 use App\Http\Controllers\Api\RefrigeranteController;
 use App\Http\Controllers\Api\ResultadoFuenteEmisionController;
-use App\Http\Controllers\Api\Sf6Controller;
 use App\Http\Controllers\Api\TipoParametroController;
 use App\Http\Controllers\Api\TrasversalController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ViajeController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -53,12 +54,23 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Empresas
 });
 
+Route::post('/sendNewPassword', [ForgotPasswordController::class, 'sendNewPassword'])->name('sendNewPassword');
+
 Route::group(['as' => 'auth.'], function () {
     Route::group(['middleware' => 'guest'], function () {
         Route::apiResource('empresas', EmpresaController::class);
         // Authentication
         //Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
         Route::post('login', [LoginController::class, 'login']);
+
+        //Cambiar contraseña
+        Route::post('checkContrasenaActual', [UserController::class, 'checkContrasenaActual']);
+        Route::post('actualizarContrasena', [UserController::class, 'actualizarContrasena']);
+
+        //Notificaciones
+        Route::post('enviarNotificacionRegistroSinConvenio', [UserController::class, 'enviarNotificacionRegistroSinConvenio']);
+        Route::post('enviarNotificacionAprobacionSinConvenio', [UserController::class, 'enviarNotificacionAprobacionSinConvenio']);
+
 
         // Registration
         Route::post('users', [RegisterController::class, 'store']);
@@ -119,6 +131,9 @@ Route::group(['as' => 'auth.'], function () {
 
         // Sf6
         Route::apiResource('otros', OtroController::class);
+
+        // Porcentajes combustible
+        Route::apiResource('porcentajes_combustible', PorcentajeCombustibleController::class);
 
         // Procesos
         Route::apiResource('procesos', ProcesoController::class);

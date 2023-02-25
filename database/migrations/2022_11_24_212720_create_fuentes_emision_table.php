@@ -20,8 +20,6 @@ class CreateFuentesEmisionTable extends Migration
             $table->string("fuente_emision")->nullable();
             $table->text("descripcion")->nullable();
             $table->text("informacion_adicional")->nullable();
-            // $table->float('dato_mes_1', 15, 8)->nullable();
-            $table->foreignId('subproceso_id')->nullable()->constrained('subprocesos')->onDelete('restrict');
             $table->foreignId('informacion_empresa_id')->constrained('informacion_empresas')->onDelete('restrict');
             $table->foreignId('empresa_id')->constrained('empresas')->onDelete('restrict');
             $table->foreignId('sede_id')->constrained('empresa_sedes')->onDelete('restrict');

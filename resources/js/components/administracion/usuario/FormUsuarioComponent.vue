@@ -267,19 +267,27 @@ export default {
             ) {
                 this.$root.mostrarCargando("Guardando");
                 this.user.save();
+                Swal.close();
+                this.$root.mostrarMensaje(
+                    "Éxito",
+                    "Usuario guardado exitosamente",
+                    "success"
+                );
+                this.$root.redirectIndex("/usuarios");
             } else {
                 if (!this.$v.user.$invalid) {
                     this.$root.mostrarCargando("Guardando");
+                    this.user.estado = 1;
                     this.user.save();
+                    Swal.close();
+                    this.$root.mostrarMensaje(
+                        "Éxito",
+                        "Usuario guardado exitosamente",
+                        "success"
+                    );
+                    this.$root.redirectIndex("/usuarios");
                 }
             }
-            Swal.close();
-            this.$root.mostrarMensaje(
-                "Éxito",
-                "Usuario guardado exitosamente",
-                "success"
-            );
-            this.$root.redirectIndex("/usuarios");
         },
     },
 };

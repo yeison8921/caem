@@ -43,7 +43,7 @@ class LoginController extends Controller
     {
         $this->registerRepository = $registerRepository;
     }
-    
+
     protected function logout(Request $request)
     {
         auth()->logout();

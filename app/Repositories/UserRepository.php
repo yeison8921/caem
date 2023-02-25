@@ -4,7 +4,11 @@ namespace App\Repositories;
 
 use App\Exceptions\GeneralException;
 use App\Models\User;
+use App\Notifications\SolicitudAprobarNotification;
+use App\Notifications\AprobacionUsuarioSinConvenioNotification;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * Class UserRepository.
@@ -76,5 +80,39 @@ class UserRepository extends BaseRepository
             $data['accion'] = 'Crear';
         }
         return view('administracion/usuario/form_usuario', $data);
+    }
+
+    public function checkContrasenaActual($request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if (Hash::check($request->password, $user->password)) {
+            return response()->json(['success' => 'Contraseña correcta'], 200);
+        } else {
+            return response()->json(['error' => 'Contraseña incorrecta'], 500);
+        }
+    }
+
+    public function actualizarContrasena($request)
+    {
+        $user = User::where('email', $request->email)->first();
+        $user->password = Hash::make($request->password);
+        $user->save();
+    }
+
+    public function enviarNotificacionRegistroSinConvenio()
+    {
+        $users_admin = User::where('rol_id', 1)->get();
+
+        foreach ($users_admin as $u) {
+            Notification::route('mail', $u->email)->notify(new SolicitudAprobarNotification($u->first_name));
+        }
+    }
+
+    public function enviarNotificacionAprobacionSinConvenio($request)
+    {
+        $user = User::where("email", $request->email)->first();
+        $name = $user->first_name;
+        $user->notify(new AprobacionUsuarioSinConvenioNotification($name));
     }
 }

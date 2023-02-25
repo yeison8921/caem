@@ -21,7 +21,10 @@
                 <div v-if="fuente != '' && fuente != null">
                     <div class="mb-3">
                         <div class="col-lg-1 offset-lg-11">
-                            <div class="d-grid gap-2">
+                            <div
+                                class="d-grid gap-2"
+                                v-if="fuente != 'porcentajes'"
+                            >
                                 <a
                                     :href="
                                         fuente.includes('_')
@@ -109,6 +112,7 @@ import Viaje from "../../models/Viaje";
 import Producto from "../../models/Producto";
 import Trasversal from "../../models/Trasversal";
 import Otro from "../../models/Otro";
+import PorcentajeCombustible from "../../models/PorcentajeCombustible";
 
 export default {
     data() {
@@ -189,6 +193,10 @@ export default {
 
                 { value: "trasversales", label: "Trasversales" },
                 { value: "otros", label: "Otros" },
+                {
+                    value: "porcentajes",
+                    label: "Porcentaje corporativo y biogenico",
+                },
             ],
             fuente: "",
             fuentes: "",
@@ -230,6 +238,8 @@ export default {
                 modelo = Trasversal;
             } else if (this.fuente == "otros") {
                 modelo = Otro;
+            } else if (this.fuente == "porcentajes") {
+                modelo = PorcentajeCombustible;
             }
 
             if (this.fuente.includes("_")) {

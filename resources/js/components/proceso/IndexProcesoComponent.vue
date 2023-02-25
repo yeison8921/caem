@@ -6,15 +6,54 @@
                 <h2>Ingresar datos</h2>
             </div>
         </div>
-        <div class="text-end" v-if="user.rol_id == 2">
-            <button
-                v-if="huella_existe"
-                type="button"
-                class="btn btn-success"
-                @click="nuevaHuella()"
-            >
-                Nueva huella
-            </button>
+        <div class="col-lg-12" v-if="user.rol_id == 2">
+            <div v-if="huellas.length != 0">
+                <table class="table align-items-center mb-3 w-100">
+                    <thead>
+                        <tr>
+                            <th>Huella</th>
+                            <th>Periodo</th>
+                            <th>Ver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(h, i) in huellas" v-bind:key="i">
+                            <td>Huella {{ i + 1 }}</td>
+                            <td>
+                                {{
+                                    h.anio_inicio == null
+                                        ? "Sin definir"
+                                        : h.periodo
+                                }}
+                            </td>
+                            <td>
+                                <button
+                                    type="button"
+                                    class="btn btn-warning btn-sm"
+                                    @click="
+                                        ie_id = h.id;
+                                        nombre_huella = 'Huella ' + (i + 1);
+                                        recargarFormularioEmisiones();
+                                        tabActiva();
+                                    "
+                                >
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-end">
+                <button
+                    v-if="huella_existe"
+                    type="button"
+                    class="btn btn-success"
+                    @click="nuevaHuella()"
+                >
+                    Nueva huella
+                </button>
+            </div>
         </div>
         <form
             @submit.prevent="
@@ -66,6 +105,11 @@
                 </div>
             </div>
         </form>
+
+        <hr />
+        <br />
+
+        <h4>{{ nombre_huella }}</h4>
         <ul
             class="nav nav-pills nav-fill mb-3"
             id="tabs-ingresar-datos"
@@ -837,6 +881,7 @@
                                         v-bind:key="k"
                                     >
                                         <p
+                                            v-if="!k.includes('biogenico')"
                                             style="font-size: 13px"
                                             class="accordion-header"
                                             :id="'heading-sc-' + index + i"
@@ -887,6 +932,13 @@
                                                             valueProp="id"
                                                             label="nombre"
                                                             placeholder="Selección múltiple"
+                                                            @input="
+                                                                agregarFuenteBiogenico(
+                                                                    key,
+                                                                    k,
+                                                                    val
+                                                                )
+                                                            "
                                                             :searchable="true"
                                                             :disabled="
                                                                 !editar_fuente
@@ -1027,6 +1079,13 @@
                                                             valueProp="id"
                                                             label="nombre"
                                                             placeholder="Selección múltiple"
+                                                            @input="
+                                                                agregarFuenteBiogenico(
+                                                                    key,
+                                                                    k,
+                                                                    val
+                                                                )
+                                                            "
                                                             :searchable="true"
                                                             :disabled="
                                                                 !editar_fuente
@@ -1442,6 +1501,13 @@
                                                             valueProp="id"
                                                             label="nombre"
                                                             placeholder="Selección múltiple"
+                                                            @input="
+                                                                agregarFuenteBiogenico(
+                                                                    key,
+                                                                    k,
+                                                                    val
+                                                                )
+                                                            "
                                                             :searchable="true"
                                                             :disabled="
                                                                 !editar_fuente
@@ -1495,6 +1561,13 @@
                                                             valueProp="id"
                                                             label="nombre"
                                                             placeholder="Selección múltiple"
+                                                            @input="
+                                                                agregarFuenteBiogenico(
+                                                                    key,
+                                                                    k,
+                                                                    val
+                                                                )
+                                                            "
                                                             :searchable="true"
                                                             :disabled="
                                                                 !editar_fuente
@@ -2129,569 +2202,6 @@
                                                         ></textarea>
                                                     </div>
 
-                                                    <h6>Fuentes fijas</h6>
-                                                    <div class="mb-3">
-                                                        <label>
-                                                            Consumo de
-                                                            combustibles
-                                                            sólidos</label
-                                                        >
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.fuentes_fijas
-                                                                    .Combustible_solido
-                                                            "
-                                                            :options="
-                                                                options_combustible_solido
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label
-                                                            >Consumo de
-                                                            combustibles
-                                                            líquidos</label
-                                                        >
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.fuentes_fijas
-                                                                    .Combustible_liquido
-                                                            "
-                                                            :options="
-                                                                options_combustible_liquido
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label>
-                                                            Consumo de
-                                                            combustibles
-                                                            gaseosos</label
-                                                        >
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.fuentes_fijas
-                                                                    .Combustible_gaseoso
-                                                            "
-                                                            :options="
-                                                                options_combustible_gaseoso
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label>
-                                                            Consumo de
-                                                            refrigerantes y
-                                                            espumantes</label
-                                                        >
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.fuentes_fijas
-                                                                    .Refrigerante
-                                                            "
-                                                            :options="
-                                                                options_refrigerante
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label
-                                                            >Uso de
-                                                            extintores</label
-                                                        >
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.fuentes_fijas
-                                                                    .Extintor
-                                                            "
-                                                            :options="
-                                                                options_extintor
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label
-                                                            >Consumo de
-                                                            lubricantes</label
-                                                        >
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.fuentes_fijas
-                                                                    .Lubricante
-                                                            "
-                                                            :options="
-                                                                options_lubricante
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label
-                                                            >Fugas de CO2 en
-                                                            proceso</label
-                                                        >
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.fuentes_fijas
-                                                                    .Fuga
-                                                            "
-                                                            :options="
-                                                                options_fuga
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label>
-                                                            Consumo de aislante
-                                                            eléctrico
-                                                        </label>
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.fuentes_fijas
-                                                                    .Aislamiento
-                                                            "
-                                                            :options="
-                                                                options_aislamiento
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-
-                                                    <h6>
-                                                        Emisiones de proceso
-                                                    </h6>
-
-                                                    <div class="mb-3">
-                                                        <label
-                                                            >Uso de embalses o
-                                                            represamientos de
-                                                            agua
-                                                        </label>
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.emisiones
-                                                                    .Embalse
-                                                            "
-                                                            :options="
-                                                                options_embalse
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label
-                                                            >Procesos de
-                                                            minería</label
-                                                        >
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.emisiones
-                                                                    .Mineria
-                                                            "
-                                                            :options="
-                                                                options_mineria
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label
-                                                            >Procesos
-                                                            industriales</label
-                                                        >
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.emisiones
-                                                                    .Industrial
-                                                            "
-                                                            :options="
-                                                                options_industrial
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label
-                                                            >Procesos agricolas
-                                                            (ganadería -
-                                                            fermentación
-                                                            entérica)
-                                                        </label>
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.emisiones
-                                                                    .Fermentacion
-                                                            "
-                                                            :options="
-                                                                options_fermentacion
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label
-                                                            >Procesos agrícolas
-                                                            (manejo de
-                                                            estiércol)
-                                                        </label>
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.emisiones
-                                                                    .Estiercol
-                                                            "
-                                                            :options="
-                                                                options_estiercol
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label
-                                                            >Procesos de gestión
-                                                            de residuos
-                                                        </label>
-                                                        <Multiselect
-                                                            v-model="
-                                                                sp.emisiones
-                                                                    .Residuo_organizacional
-                                                            "
-                                                            :options="
-                                                                options_residuo_organizacional
-                                                            "
-                                                            mode="tags"
-                                                            valueProp="id"
-                                                            label="nombre"
-                                                            placeholder="Selección múltiple"
-                                                            :searchable="true"
-                                                            :disabled="
-                                                                !editar_procesos
-                                                            "
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <h6>Fuentes móviles</h6>
-                                                        <div class="mb-3">
-                                                            <label
-                                                                >Consumo de
-                                                                combustibles
-                                                                líquidos</label
-                                                            >
-                                                            <Multiselect
-                                                                v-model="
-                                                                    sp
-                                                                        .fuentes_moviles
-                                                                        .Combustible_liquido
-                                                                "
-                                                                :options="
-                                                                    options_combustible_liquido
-                                                                "
-                                                                mode="tags"
-                                                                valueProp="id"
-                                                                label="nombre"
-                                                                placeholder="Selección múltiple"
-                                                                :searchable="
-                                                                    true
-                                                                "
-                                                                :disabled="
-                                                                    !editar_procesos
-                                                                "
-                                                            />
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label>
-                                                                Consumo de
-                                                                combustibles
-                                                                gaseosos</label
-                                                            >
-                                                            <Multiselect
-                                                                v-model="
-                                                                    sp
-                                                                        .fuentes_moviles
-                                                                        .Combustible_gaseoso
-                                                                "
-                                                                :options="
-                                                                    options_combustible_gaseoso
-                                                                "
-                                                                mode="tags"
-                                                                valueProp="id"
-                                                                label="nombre"
-                                                                placeholder="Selección múltiple"
-                                                                :searchable="
-                                                                    true
-                                                                "
-                                                                :disabled="
-                                                                    !editar_procesos
-                                                                "
-                                                            />
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label>
-                                                                Consumo de
-                                                                refrigerantes y
-                                                                espumantes
-                                                            </label>
-                                                            <Multiselect
-                                                                v-model="
-                                                                    sp
-                                                                        .fuentes_moviles
-                                                                        .Refrigerante
-                                                                "
-                                                                :options="
-                                                                    options_refrigerante
-                                                                "
-                                                                mode="tags"
-                                                                valueProp="id"
-                                                                label="nombre"
-                                                                placeholder="Selección múltiple"
-                                                                :searchable="
-                                                                    true
-                                                                "
-                                                                :disabled="
-                                                                    !editar_procesos
-                                                                "
-                                                            />
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label
-                                                                >Uso de
-                                                                extintores
-                                                            </label>
-                                                            <Multiselect
-                                                                v-model="
-                                                                    sp
-                                                                        .fuentes_moviles
-                                                                        .Extintor
-                                                                "
-                                                                :options="
-                                                                    options_extintor
-                                                                "
-                                                                mode="tags"
-                                                                valueProp="id"
-                                                                label="nombre"
-                                                                placeholder="Selección múltiple"
-                                                                :searchable="
-                                                                    true
-                                                                "
-                                                                :disabled="
-                                                                    !editar_procesos
-                                                                "
-                                                            />
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label
-                                                                >Consumo de
-                                                                lubricantes
-                                                            </label>
-                                                            <Multiselect
-                                                                v-model="
-                                                                    sp
-                                                                        .fuentes_moviles
-                                                                        .Lubricante
-                                                                "
-                                                                :options="
-                                                                    options_lubricante
-                                                                "
-                                                                mode="tags"
-                                                                valueProp="id"
-                                                                label="nombre"
-                                                                placeholder="Selección múltiple"
-                                                                :searchable="
-                                                                    true
-                                                                "
-                                                                :disabled="
-                                                                    !editar_procesos
-                                                                "
-                                                            />
-                                                        </div>
-                                                    </div>
-
-                                                    <div
-                                                        v-if="
-                                                            parseInt(
-                                                                ie.actividad_agricola
-                                                            )
-                                                        "
-                                                    >
-                                                        <h2>Agrícolas</h2>
-                                                        <div class="mb-3">
-                                                            <label
-                                                                >Proceso
-                                                                agrícolas
-                                                                (manejo de
-                                                                residuos
-                                                                agropecuarios)
-                                                            </label>
-                                                            <Multiselect
-                                                                v-model="
-                                                                    sp.emisiones
-                                                                        .Residuo_agropecuario
-                                                                "
-                                                                :options="
-                                                                    options_residuo_agropecuario
-                                                                "
-                                                                mode="tags"
-                                                                valueProp="id"
-                                                                label="nombre"
-                                                                placeholder="Selección múltiple"
-                                                                :searchable="
-                                                                    true
-                                                                "
-                                                                :disabled="
-                                                                    !editar_procesos
-                                                                "
-                                                            />
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label
-                                                                >Procesos
-                                                                agrícolas (uso
-                                                                de
-                                                                fertilizantes)
-                                                            </label>
-                                                            <Multiselect
-                                                                v-model="
-                                                                    sp.emisiones
-                                                                        .Fertilizante
-                                                                "
-                                                                :options="
-                                                                    options_fertilizante
-                                                                "
-                                                                mode="tags"
-                                                                valueProp="id"
-                                                                label="nombre"
-                                                                placeholder="Selección múltiple"
-                                                                :searchable="
-                                                                    true
-                                                                "
-                                                                :disabled="
-                                                                    !editar_procesos
-                                                                "
-                                                            />
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label
-                                                                >Procesos con
-                                                                cal
-                                                            </label>
-                                                            <Multiselect
-                                                                v-model="
-                                                                    sp.emisiones
-                                                                        .Cal
-                                                                "
-                                                                :options="
-                                                                    options_cal
-                                                                "
-                                                                mode="tags"
-                                                                valueProp="id"
-                                                                label="nombre"
-                                                                placeholder="Selección múltiple"
-                                                                :searchable="
-                                                                    true
-                                                                "
-                                                                :disabled="
-                                                                    !editar_procesos
-                                                                "
-                                                            />
-                                                        </div>
-                                                    </div>
-
                                                     <div class="mb-3 text-end">
                                                         <button
                                                             v-if="is > 0"
@@ -2740,57 +2250,6 @@
                                                                               nombre: 'Nuevo subproceso',
                                                                               descripcion:
                                                                                   '',
-                                                                              fuentes_fijas:
-                                                                                  {
-                                                                                      Combustible_solido:
-                                                                                          [],
-                                                                                      Combustible_liquido:
-                                                                                          [],
-                                                                                      Combustible_gaseoso:
-                                                                                          [],
-                                                                                      Refrigerante:
-                                                                                          [],
-                                                                                      Extintor:
-                                                                                          [],
-                                                                                      Lubricante:
-                                                                                          [],
-                                                                                      Fuga: [],
-                                                                                      aislamientos:
-                                                                                          [],
-                                                                                  },
-                                                                              fuentes_moviles:
-                                                                                  {
-                                                                                      Combustible_liquido:
-                                                                                          [],
-                                                                                      Combustible_gaseoso:
-                                                                                          [],
-                                                                                      Refrigerante:
-                                                                                          [],
-                                                                                      Extintor:
-                                                                                          [],
-                                                                                      Lubricante:
-                                                                                          [],
-                                                                                  },
-                                                                              emisiones:
-                                                                                  {
-                                                                                      Embalse:
-                                                                                          [],
-                                                                                      Mineria:
-                                                                                          [],
-                                                                                      Industrial:
-                                                                                          [],
-                                                                                      Fermentacion:
-                                                                                          [],
-                                                                                      Estiercol:
-                                                                                          [],
-                                                                                      Residuo_organizacional:
-                                                                                          [],
-                                                                                      Residuo_agropecuario:
-                                                                                          [],
-                                                                                      Fertilizante:
-                                                                                          [],
-                                                                                      Cal: [],
-                                                                                  },
                                                                           }
                                                                       )
                                                             "
@@ -2838,57 +2297,6 @@
                                                                       nombre: 'Nuevo subproceso',
                                                                       descripcion:
                                                                           '',
-                                                                      fuentes_fijas:
-                                                                          {
-                                                                              Combustible_solido:
-                                                                                  [],
-                                                                              Combustible_liquido:
-                                                                                  [],
-                                                                              Combustible_gaseoso:
-                                                                                  [],
-                                                                              Refrigerante:
-                                                                                  [],
-                                                                              Extintor:
-                                                                                  [],
-                                                                              Lubricante:
-                                                                                  [],
-                                                                              Fuga: [],
-                                                                              aislamientos:
-                                                                                  [],
-                                                                          },
-                                                                      fuentes_moviles:
-                                                                          {
-                                                                              Combustible_liquido:
-                                                                                  [],
-                                                                              Combustible_gaseoso:
-                                                                                  [],
-                                                                              Refrigerante:
-                                                                                  [],
-                                                                              Extintor:
-                                                                                  [],
-                                                                              Lubricante:
-                                                                                  [],
-                                                                          },
-                                                                      emisiones:
-                                                                          {
-                                                                              Embalse:
-                                                                                  [],
-                                                                              Mineria:
-                                                                                  [],
-                                                                              Industrial:
-                                                                                  [],
-                                                                              Fermentacion:
-                                                                                  [],
-                                                                              Estiercol:
-                                                                                  [],
-                                                                              Residuo_organizacional:
-                                                                                  [],
-                                                                              Residuo_agropecuario:
-                                                                                  [],
-                                                                              Fertilizante:
-                                                                                  [],
-                                                                              Cal: [],
-                                                                          },
                                                                   },
                                                               ],
                                                           }
@@ -3230,12 +2638,17 @@
                                                                                                 >
                                                                                                     <label>
                                                                                                         {{
-                                                                                                            ac
+                                                                                                            ac.includes(
+                                                                                                                "FUENTE"
+                                                                                                            )
+                                                                                                                ? ac +
+                                                                                                                  " DE CONSUMO"
+                                                                                                                : ac
                                                                                                         }}
                                                                                                         <i
                                                                                                             v-if="
-                                                                                                                !ac.includes(
-                                                                                                                    'CONSUMO'
+                                                                                                                ac.includes(
+                                                                                                                    'INCERTIDUMBRE'
                                                                                                                 )
                                                                                                             "
                                                                                                             class="fas fa-question-circle"
@@ -3243,7 +2656,25 @@
                                                                                                             title="Título ayuda"
                                                                                                             data-bs-content="Texto ayuda"
                                                                                                         ></i>
+                                                                                                        <small
+                                                                                                            v-if="
+                                                                                                                ac.includes(
+                                                                                                                    'FUENTE'
+                                                                                                                )
+                                                                                                            "
+                                                                                                        >
+                                                                                                            Por
+                                                                                                            ejemplo:
+                                                                                                            (Caldera,
+                                                                                                            montacarga,
+                                                                                                            camión,
+                                                                                                            procesadora
+                                                                                                            etc)
+                                                                                                        </small>
                                                                                                     </label>
+                                                                                                    {{
+                                                                                                        fuente.fuentetable_id
+                                                                                                    }}
                                                                                                     <input
                                                                                                         v-if="
                                                                                                             ac.includes(
@@ -3261,12 +2692,31 @@
                                                                                                         class="form-control"
                                                                                                         type="number"
                                                                                                         step="any"
+                                                                                                        @change="
+                                                                                                            fuente.tipo ==
+                                                                                                                'fuentes_moviles' ||
+                                                                                                            'fuentes_fijas' ||
+                                                                                                            'energia_importada' ||
+                                                                                                            'transportes_fuentes_moviles'
+                                                                                                                ? agregarDatosFuenteBiogenica(
+                                                                                                                      fuente.tipo,
+                                                                                                                      fuente.fuentetable_id,
+                                                                                                                      'dato_' +
+                                                                                                                          (ci +
+                                                                                                                              1)
+                                                                                                                  )
+                                                                                                                : ''
+                                                                                                        "
                                                                                                         :disabled="
                                                                                                             !editar_consumos
                                                                                                         "
                                                                                                     />
                                                                                                     <input
-                                                                                                        v-else
+                                                                                                        v-else-if="
+                                                                                                            ac.includes(
+                                                                                                                'INCERTIDUMBRE'
+                                                                                                            )
+                                                                                                        "
                                                                                                         v-model="
                                                                                                             fuente
                                                                                                                 .resultado[
@@ -3276,6 +2726,24 @@
                                                                                                         class="form-control"
                                                                                                         type="number"
                                                                                                         step="any"
+                                                                                                        :disabled="
+                                                                                                            !editar_consumos
+                                                                                                        "
+                                                                                                    />
+                                                                                                    <input
+                                                                                                        v-else-if="
+                                                                                                            ac.includes(
+                                                                                                                'FUENTE'
+                                                                                                            )
+                                                                                                        "
+                                                                                                        v-model="
+                                                                                                            fuente
+                                                                                                                .resultado[
+                                                                                                                'descripcion_fuente_emision'
+                                                                                                            ]
+                                                                                                        "
+                                                                                                        class="form-control"
+                                                                                                        type="text"
                                                                                                         :disabled="
                                                                                                             !editar_consumos
                                                                                                         "
@@ -3337,6 +2805,7 @@ import Producto from "../../models/Producto";
 import User from "../../models/User";
 import Trasversal from "../../models/Trasversal";
 import Otro from "../../models/Otro";
+import ResultadoFuenteEmision from "../../models/ResultadoFuenteEmision";
 
 export default {
     data() {
@@ -3375,6 +2844,11 @@ export default {
                 inversiones: "INVERSIONES",
                 otros: "Otros",
                 trasversales: "Trasversales",
+                fuentes_moviles_biogenico: "FUENTES MÓVILES BIOGÉNICO",
+                fuentes_fijas_biogenico: "FUENTES FIJAS BIOGÉNICO",
+                energia_importada_biogenico: "ENERGIA IMPORTADA BIOGÉNICO",
+                transportes_fuentes_moviles_biogenico:
+                    "TRASPORTES FUENTES MÓVILES BIOGÉNICO",
             },
 
             fuentes: "",
@@ -3387,34 +2861,6 @@ export default {
                             id: "",
                             nombre: "Subproceso 1",
                             descripcion: "",
-                            fuentes_fijas: {
-                                Combustible_solido: [],
-                                Combustible_liquido: [],
-                                Combustible_gaseoso: [],
-                                Refrigerante: [],
-                                Extintor: [],
-                                Lubricante: [],
-                                Fuga: [],
-                                Aislamiento: [],
-                            },
-                            fuentes_moviles: {
-                                Combustible_liquido: [],
-                                Combustible_gaseoso: [],
-                                Refrigerante: [],
-                                Extintor: [],
-                                Lubricante: [],
-                            },
-                            emisiones: {
-                                Embalse: [],
-                                Mineria: [],
-                                Industrial: [],
-                                Fermentacion: [],
-                                Estiercol: [],
-                                Residuo_organizacional: [],
-                                Residuo_agropecuario: [],
-                                Fertilizante: [],
-                                Cal: [],
-                            },
                         },
                     ],
                 },
@@ -3502,6 +2948,8 @@ export default {
             informacion_empresa_existe: true,
             huella_existe: 0,
             mostrar_formulario: false,
+            huellas: [],
+            nombre_huella: "",
             user: new User(),
         };
     },
@@ -3512,7 +2960,7 @@ export default {
         this.getParametros(12, "options_metodologia");
         this.cargarVariableFuentes();
         this.getOptionsFuenteEmision();
-        this.tabActiva();
+        // this.tabActiva();
     },
     methods: {
         tabActiva() {
@@ -3547,7 +2995,8 @@ export default {
                     if (this.user.rol_id == 2) {
                         this.empresa_id = this.user.empresa_id;
                         this.sede_id = this.user.sede_id;
-                        this.recargarFormularioEmisiones();
+                        this.huellaExiste();
+                        this.getHuellas();
                     } else {
                         this.getOptionsEmpresa();
                     }
@@ -3627,8 +3076,45 @@ export default {
             }
         },
 
+        async getHuellas() {
+            this.huellas = await InformacionEmpresa.where(
+                "sede_id",
+                this.sede_id
+            ).get();
+
+            if (this.huellas.length == 0) {
+                this.recargarFormularioEmisiones();
+            } else {
+                this.huellas.forEach((e) => {
+                    let fecha_base = new Date(
+                        e.anio_inicio + "-" + e.mes_inicio + "-01 00:00"
+                    );
+
+                    var future = new Date(
+                        fecha_base.getFullYear(),
+                        fecha_base.getMonth() + 12,
+                        1
+                    );
+
+                    let mes_fecha_base =
+                        this.array_meses[fecha_base.getMonth()];
+
+                    var mes_futuro = this.array_meses[future.getMonth()];
+                    var anio_futuro = future.getFullYear();
+                    e["periodo"] =
+                        mes_fecha_base +
+                        " " +
+                        e.anio_inicio +
+                        " a " +
+                        mes_futuro +
+                        " " +
+                        anio_futuro;
+                });
+            }
+        },
+
         async getOptionsFuenteEmision() {
-            this.$root.mostrarCargando("Cargando información");
+            this.$root.mostrarCargando("Cargando fuentes de consumo");
             let combustibles = await Combustible.get();
 
             this.filtroArrayOpciones(
@@ -3742,6 +3228,8 @@ export default {
 
             this.options_trasversal = await Trasversal.get();
             this.options_otro = await Otro.get();
+
+            Swal.close();
         },
         filtroArrayOpciones(array, variable, tipo, subtipo = "") {
             if (subtipo == "") {
@@ -3997,7 +3485,6 @@ export default {
                                     );
                                     setTimeout(() => {
                                         this.$root.redirectIndex("/resultados");
-                                        // this.getFuentesEmision();
                                     }, 100);
                                 });
                         } catch (error) {
@@ -4012,24 +3499,39 @@ export default {
             }
         },
 
-        async recargarFormularioEmisiones() {
-            if (this.user.rol_id == 3) {
-                this.$root.mostrarCargando("Cargando información");
+        async huellaExiste() {
+            let informacionEmpresa = await InformacionEmpresa.where({
+                empresa_id: this.empresa_id,
+                sede_id: this.sede_id,
+                id: this.ie_id,
+            }).first();
+
+            if (Object.keys(informacionEmpresa).length != 0) {
+                this.huella_existe = 1;
             }
+        },
+
+        async recargarFormularioEmisiones() {
+            this.$root.mostrarCargando("Cargando información huella");
+
+            this.editar_formulario = 1;
+
             this.mostrar_formulario = true;
             if (!this.user.empresa_id) {
                 await this.getUserLogged();
             }
+
             let json = {
                 empresa_id: this.empresa_id,
                 sede_id: this.sede_id,
             };
 
-            if (this.user.rol_id == 2) {
+            if (this.ie_id == "") {
                 json.estado = 1;
             } else {
                 json.id = this.ie_id;
             }
+
             let informacionEmpresa = await InformacionEmpresa.where(
                 json
             ).first();
@@ -4040,15 +3542,20 @@ export default {
                     ? informacionEmpresa
                     : this.ie;
 
-            if (Object.keys(informacionEmpresa).length != 0) {
+            if (informacionEmpresa.datos_proveedores != null) {
                 this.paso = 1;
                 this.huella_existe = 1;
                 this.editar_formulario = this.user.rol_id == 2 ? 0 : 1;
                 this.etapa = 2;
                 this.recargarFuentesEmision();
+            } else {
+                this.etapa = 1;
+                this.ie.empresa_id = this.empresa_id;
+                this.ie.sede_id = this.sede_id;
             }
         },
         async recargarFuentesEmision() {
+            this.editar_fuente = 1;
             axios
                 .post("/api/recargarFuentesEmision", {
                     empresa_id: this.empresa_id,
@@ -4063,6 +3570,7 @@ export default {
                         this.recargarProcesos();
                     } else {
                         this.cargarVariableFuentes();
+                        Swal.close();
                     }
                 })
                 .catch((error) => {
@@ -4074,6 +3582,20 @@ export default {
                 });
         },
         async recargarProcesos() {
+            this.editar_procesos = 1;
+            this.procesos = [
+                {
+                    id: "",
+                    nombre: "Proceso 1",
+                    subprocesos: [
+                        {
+                            id: "",
+                            nombre: "Subproceso 1",
+                            descripcion: "",
+                        },
+                    ],
+                },
+            ];
             axios
                 .post("/api/recargarProcesos", {
                     empresa_id: this.empresa_id,
@@ -4086,6 +3608,8 @@ export default {
                         this.editar_procesos = this.user.rol_id == 2 ? 0 : 1;
                         this.etapa = 4;
                         this.recargarInformacionInicio();
+                    } else {
+                        Swal.close();
                     }
                 })
                 .catch((error) => {
@@ -4098,11 +3622,15 @@ export default {
         },
 
         async recargarInformacionInicio() {
+            this.editar_inicio = 1;
             let informacionEmpresa = await InformacionEmpresa.find(this.ie.id);
 
             if (informacionEmpresa.anio_inicio != null) {
                 this.editar_inicio = this.user.rol_id == 2 ? 0 : 1;
                 this.etapa = 5;
+                this.getFuentesEmision();
+            } else {
+                Swal.close();
             }
         },
 
@@ -4130,10 +3658,9 @@ export default {
                 );
             }
             this.array_consumos.push("INCERTIDUMBRE SISTEMATICA ADICIONAL");
+            this.array_consumos.push("FUENTE");
         },
         async getFuentesEmision() {
-            this.$root.mostrarCargando("consultado información");
-
             axios
                 .post("api/getFuentesEmision", {
                     empresa_id: this.empresa_id,
@@ -4157,8 +3684,6 @@ export default {
                 .catch((error) => {});
 
             this.tablaEmisiones();
-
-            Swal.close();
         },
         cargarVariableFuentes() {
             this.fuentes = {
@@ -4191,6 +3716,14 @@ export default {
                         Fertilizante: [],
                         Cal: [],
                     },
+                    fuentes_moviles_biogenico_26: { Combustible_liquido: [] },
+                    fuentes_moviles_biogenico_37: { Combustible_liquido: [] },
+                    fuentes_moviles_biogenico_27: { Combustible_liquido: [] },
+                    fuentes_moviles_biogenico_38: { Combustible_liquido: [] },
+                    fuentes_fijas_biogenico_26: { Combustible_liquido: [] },
+                    fuentes_fijas_biogenico_37: { Combustible_liquido: [] },
+                    fuentes_fijas_biogenico_27: { Combustible_liquido: [] },
+                    fuentes_fijas_biogenico_38: { Combustible_liquido: [] },
                 },
 
                 c2: {
@@ -4202,6 +3735,10 @@ export default {
                         Combustible_liquido: [],
                         Combustible_gaseoso: [],
                     },
+                    energia_importada_biogenico_26: { Combustible_liquido: [] },
+                    energia_importada_biogenico_37: { Combustible_liquido: [] },
+                    energia_importada_biogenico_27: { Combustible_liquido: [] },
+                    energia_importada_biogenico_38: { Combustible_liquido: [] },
                 },
 
                 c3: {
@@ -4213,9 +3750,23 @@ export default {
                         Extintor: [],
                         Lubricante: [],
                     },
+
                     transportes_carga_pasajeros: {
                         Transporte_carga: [],
                         Transporte_pasajeros: [],
+                    },
+
+                    transportes_fuentes_moviles_biogenico_26: {
+                        Combustible_liquido: [],
+                    },
+                    transportes_fuentes_moviles_biogenico_37: {
+                        Combustible_liquido: [],
+                    },
+                    transportes_fuentes_moviles_biogenico_27: {
+                        Combustible_liquido: [],
+                    },
+                    transportes_fuentes_moviles_biogenico_38: {
+                        Combustible_liquido: [],
                     },
                 },
                 c4: {
@@ -4259,7 +3810,7 @@ export default {
                 },
             };
         },
-        nuevaHuella() {
+        async nuevaHuella() {
             Swal.fire({
                 title: "Atención",
                 html: "¿Está seguro que quiere registrar una nueva huella?",
@@ -4271,7 +3822,7 @@ export default {
                 if (result.isConfirmed) {
                     this.$root.mostrarCargando("Generando nueva huella");
                     try {
-                        this.desactivarHuellaActual();
+                        this.verificarHuellaFinalizada();
                     } catch (error) {
                         this.$root.mostrarMensaje(
                             "Error",
@@ -4282,12 +3833,45 @@ export default {
                 }
             });
         },
+        async verificarHuellaFinalizada() {
+            let informacion_empresa = await InformacionEmpresa.where({
+                empresa_id: this.empresa_id,
+                sede_id: this.sede_id,
+                estado: 1,
+            }).first();
+
+            this.ie_id = informacion_empresa.id;
+
+            let resultados = await ResultadoFuenteEmision.where(
+                "informacion_empresa_id",
+                this.ie_id
+            ).get();
+
+            if (resultados.length == 0) {
+                Swal.close();
+                this.$root.mostrarMensaje(
+                    "Atención",
+                    "No puede crear una nueva huella hasta que no finalice la huella actual",
+                    "warning"
+                );
+            } else {
+                this.desactivarHuellaActual();
+            }
+        },
         async desactivarHuellaActual() {
-            this.ie.estado = 0;
-            await this.ie.save();
+            let informacion_empresa = await InformacionEmpresa.find(this.ie_id);
+            informacion_empresa.estado = 0;
+            informacion_empresa.save();
+
+            this.ie = new InformacionEmpresa({});
+            this.ie.empresa_id = this.empresa_id;
+            this.ie.sede_id = this.sede_id;
+            this.ie.usuario_creacion_id = this.user.id;
+            this.ie.estado = 1;
+            this.ie.save();
 
             Swal.close();
-            this.ie = new InformacionEmpresa({});
+            this.ie_id = "";
             this.etapa = 1;
             this.editar_formulario = 1;
             this.editar_fuente = 1;
@@ -4305,6 +3889,67 @@ export default {
                     "success"
                 );
             }, 500);
+        },
+        agregarFuenteBiogenico(key, k, val) {
+            let array = [26, 27, 37, 38];
+            array.forEach((e) => {
+                let id_fuente = e == 26 || e == 37 ? 33 : 34;
+                if (val.Combustible_liquido.includes(e)) {
+                    if (
+                        !this.fuentes[key][k + "_biogenico_" + e][
+                            "Combustible_liquido"
+                        ].includes(id_fuente)
+                    ) {
+                        this.fuentes[key][k + "_biogenico_" + e][
+                            "Combustible_liquido"
+                        ].push(id_fuente);
+                    }
+                } else {
+                    let index =
+                        this.fuentes[key][k + "_biogenico_" + e][
+                            "Combustible_liquido"
+                        ].indexOf(id_fuente);
+                    if (index > -1) {
+                        this.fuentes[key][k + "_biogenico_" + e][
+                            "Combustible_liquido"
+                        ].splice(index, 1);
+                    }
+                }
+            });
+        },
+        agregarDatosFuenteBiogenica(tipo, fuentetable_id, dato) {
+            let resultado = 0;
+            Object.keys(this.fuentes_emision).forEach((key) => {
+                Object.keys(this.fuentes_emision[key]).forEach((k) => {
+                    if (
+                        this.fuentes_emision[key][k]["tipo"] == tipo &&
+                        this.fuentes_emision[key][k]["fuentetable_id"] ==
+                            fuentetable_id
+                    ) {
+                        resultado =
+                            this.fuentes_emision[key][k]["resultado"][dato];
+                    }
+                });
+            });
+
+            Object.keys(this.fuentes_emision).forEach((key) => {
+                Object.keys(this.fuentes_emision[key]).forEach((k) => {
+                    if (
+                        this.fuentes_emision[key][k]["tipo"] == tipo &&
+                        this.fuentes_emision[key][k]["fuentetable_id"] ==
+                            fuentetable_id
+                    ) {
+                    }
+
+                    if (
+                        this.fuentes_emision[key][k]["tipo"] ==
+                        tipo + "_biogenico_" + fuentetable_id
+                    ) {
+                        this.fuentes_emision[key][k]["resultado"][dato] =
+                            resultado;
+                    }
+                });
+            });
         },
     },
 };

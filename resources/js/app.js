@@ -99,6 +99,10 @@ Vue.component('form-viaje-component', require('./components/fuente/viaje/FormVia
 Vue.component('form-producto-component', require('./components/fuente/producto/FormProductoComponent.vue').default);
 Vue.component('form-trasversal-component', require('./components/fuente/trasversal/FormTrasversalComponent.vue').default);
 Vue.component('form-otro-component', require('./components/fuente/otro/FormOtroComponent.vue').default);
+Vue.component('form-porcentaje-component', require('./components/fuente/porcentaje/FormPorcentajeComponent.vue').default);
+Vue.component('index-videotutoriales-component', require('./components/IndexVideotutorialesComponent.vue').default);
+Vue.component('restablecer-contrasena-component', require('./components/auth/RestablecerContrasenaComponent.vue').default);
+Vue.component('cambiar-contrasena-component', require('./components/auth/CambiarContrasenaComponent.vue').default);
 Vue.component('Multiselect', require('@vueform/multiselect/dist/multiselect.vue2.js').default);
 
 Vue.prototype.$tablaGlobal = function(nombreTabla) {
@@ -381,7 +385,7 @@ const app = new Vue({
             });
         },
         cerrarCargando() { Swal.close(); },
-        mostrarMensaje(titulo, mensaje, icono) {
+        mostrarMensaje(titulo, mensaje, icono, timer=2000) {
             Swal.fire({
                 title: titulo,
                 html: mensaje,
@@ -389,7 +393,7 @@ const app = new Vue({
                 showConfirmButton: false,
                 allowEscapeKey: false,
                 allowOutsideClick: false,
-                timer: 2000,
+                timer: timer,
             });
         },
         redirectIndex(url) {

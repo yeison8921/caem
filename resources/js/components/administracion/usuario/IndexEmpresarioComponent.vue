@@ -19,6 +19,7 @@
                                 <th>Correo</th>
                                 <th>Nombres</th>
                                 <th>Celular</th>
+                                <th>Nit empresa</th>
                                 <th>Empresa</th>
                                 <th>Sede</th>
                             </tr>
@@ -30,7 +31,7 @@
                                 <td>
                                     {{ u.phone }}
                                 </td>
-
+                                <td>{{ u.empresa.nit }}</td>
                                 <td>
                                     {{ u.empresa.nombre }}
                                 </td>

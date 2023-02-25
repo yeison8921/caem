@@ -208,6 +208,32 @@ class FuenteEmisionRepository extends BaseRepository
         $jem->Fertilizante = [];
         $jem->Cal = [];
 
+        //json fuentes móviles biogenico
+        $jfmb26 = new stdClass();
+        $jfmb26->Combustible_liquido = [];
+
+        $jfmb37 = new stdClass();
+        $jfmb37->Combustible_liquido = [];
+
+        $jfmb27 = new stdClass();
+        $jfmb27->Combustible_liquido = [];
+
+        $jfmb38 = new stdClass();
+        $jfmb38->Combustible_liquido = [];
+
+        //json fuentes fijas biogenico
+        $jffb26 = new stdClass();
+        $jffb26->Combustible_liquido = [];
+
+        $jffb37 = new stdClass();
+        $jffb37->Combustible_liquido = [];
+
+        $jffb27 = new stdClass();
+        $jffb27->Combustible_liquido = [];
+
+        $jffb38 = new stdClass();
+        $jffb38->Combustible_liquido = [];
+
         //json electricidad
         $jel = new stdClass();
         $jel->Energia_electrica = [];
@@ -217,6 +243,19 @@ class FuenteEmisionRepository extends BaseRepository
         $jen->Combustible_solido = [];
         $jen->Combustible_liquido = [];
         $jen->Combustible_gaseoso = [];
+
+        //json energia biogenica
+        $jeib26 = new stdClass();
+        $jeib26->Combustible_liquido = [];
+
+        $jeib37 = new stdClass();
+        $jeib37->Combustible_liquido = [];
+
+        $jeib27 = new stdClass();
+        $jeib27->Combustible_liquido = [];
+
+        $jeib38 = new stdClass();
+        $jeib38->Combustible_liquido = [];
 
         //json transportes fuentes móviles
         $jtfm = new stdClass();
@@ -231,6 +270,19 @@ class FuenteEmisionRepository extends BaseRepository
         $jtcp = new stdClass();
         $jtcp->Transporte_carga = [];
         $jtcp->Transporte_pasajeros = [];
+
+        //json transporte biogenico
+        $jtb26 = new stdClass();
+        $jtb26->Combustible_liquido = [];
+
+        $jtb37 = new stdClass();
+        $jtb37->Combustible_liquido = [];
+
+        $jtb27 = new stdClass();
+        $jtb27->Combustible_liquido = [];
+
+        $jtb38 = new stdClass();
+        $jtb38->Combustible_liquido = [];
 
         //json bienes productos
         $jbp = new stdClass();
@@ -282,17 +334,65 @@ class FuenteEmisionRepository extends BaseRepository
             if ($d->tipo == 'emisiones') {
                 array_push($jem->$fuente, $d->fuentetable_id);
             }
+            if ($d->tipo == 'fuentes_moviles_biogenico_26') {
+                array_push($jfmb26->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_moviles_biogenico_37') {
+                array_push($jfmb37->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_moviles_biogenico_27') {
+                array_push($jfmb27->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_moviles_biogenico_38') {
+                array_push($jfmb38->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_fijas_biogenico_26') {
+                array_push($jffb26->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_fijas_biogenico_37') {
+                array_push($jffb37->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_fijas_biogenico_27') {
+                array_push($jffb27->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_fijas_biogenico_38') {
+                array_push($jffb38->$fuente, $d->fuentetable_id);
+            }
             if ($d->tipo == 'electricidad_importada') {
                 array_push($jel->$fuente, $d->fuentetable_id);
             }
             if ($d->tipo == 'energia_importada') {
                 array_push($jen->$fuente, $d->fuentetable_id);
             }
+            if ($d->tipo == 'energia_importada_biogenico_26') {
+                array_push($jeib26->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'energia_importada_biogenico_37') {
+                array_push($jeib37->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'energia_importada_biogenico_27') {
+                array_push($jeib27->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'energia_importada_biogenico_38') {
+                array_push($jeib38->$fuente, $d->fuentetable_id);
+            }
             if ($d->tipo == 'transportes_fuentes_moviles') {
                 array_push($jtfm->$fuente, $d->fuentetable_id);
             }
             if ($d->tipo == 'transportes_carga_pasajeros') {
                 array_push($jtcp->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'transportes_fuentes_moviles_biogenico_26') {
+                array_push($jtb26->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'transportes_fuentes_moviles_biogenico_37') {
+                array_push($jtb37->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'transportes_fuentes_moviles_biogenico_27') {
+                array_push($jtb27->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'transportes_fuentes_moviles_biogenico_38') {
+                array_push($jtb38->$fuente, $d->fuentetable_id);
             }
             if ($d->tipo == 'bienes_productos') {
                 array_push($jbp->$fuente, $d->fuentetable_id);
@@ -323,12 +423,28 @@ class FuenteEmisionRepository extends BaseRepository
         $jf->c1->fuentes_moviles = $jfm;
         $jf->c1->fuentes_fijas = $jff;
         $jf->c1->emisiones = $jem;
+        $jf->c1->fuentes_moviles_biogenico_26 = $jfmb26;
+        $jf->c1->fuentes_moviles_biogenico_37 = $jfmb37;
+        $jf->c1->fuentes_moviles_biogenico_27 = $jfmb27;
+        $jf->c1->fuentes_moviles_biogenico_38 = $jfmb38;
+        $jf->c1->fuentes_fijas_biogenico_26 = $jffb26;
+        $jf->c1->fuentes_fijas_biogenico_37 = $jffb37;
+        $jf->c1->fuentes_fijas_biogenico_27 = $jffb27;
+        $jf->c1->fuentes_fijas_biogenico_38 = $jffb38;
 
         $jf->c2->electricidad_importada = $jel;
         $jf->c2->energia_importada = $jen;
+        $jf->c2->energia_importada_biogenico_26 = $jeib26;
+        $jf->c2->energia_importada_biogenico_37 = $jeib37;
+        $jf->c2->energia_importada_biogenico_27 = $jeib27;
+        $jf->c2->energia_importada_biogenico_38 = $jeib38;
 
         $jf->c3->transportes_fuentes_moviles = $jtfm;
         $jf->c3->transportes_carga_pasajeros = $jtcp;
+        $jf->c3->transportes_fuentes_moviles_biogenico_26 = $jtb26;
+        $jf->c3->transportes_fuentes_moviles_biogenico_37 = $jtb37;
+        $jf->c3->transportes_fuentes_moviles_biogenico_27 = $jtb27;
+        $jf->c3->transportes_fuentes_moviles_biogenico_38 = $jtb38;
 
         $jf->c4->bienes_productos = $jbp;
         $jf->c4->servicios = $js;
@@ -368,6 +484,7 @@ class FuenteEmisionRepository extends BaseRepository
                     $fuentes[$i][$si]["resultado"]->fuentetable_type = $fuentes[$i][$si]["fuentetable_type"];
                     $fuentes[$i][$si]["resultado"]->fuentetable_id = $fuentes[$i][$si]["fuentetable_id"];
                     $fuentes[$i][$si]["resultado"]->tipo = $fuentes[$i][$si]["tipo"];
+                    $fuentes[$i][$si]["resultado"]->descripcion_fuente_emision = '';
                     $fuentes[$i][$si]["resultado"]->fuente_emision = $fuentes[$i][$si]["fuente_emision"];
                     $fuentes[$i][$si]["resultado"]->dato_1 = '';
                     $fuentes[$i][$si]["resultado"]->dato_2 = '';
@@ -381,12 +498,12 @@ class FuenteEmisionRepository extends BaseRepository
                     $fuentes[$i][$si]["resultado"]->dato_10 = '';
                     $fuentes[$i][$si]["resultado"]->dato_11 = '';
                     $fuentes[$i][$si]["resultado"]->dato_12 = '';
-                    $fuentes[$i][$si]["resultado"]->incertidumbre_sistematica_adicional = '';
-                    $fuentes[$i][$si]["resultado"]->total = 0;
                     $fuentes[$i][$si]["resultado"]->numero_datos = 0;
+                    $fuentes[$i][$si]["resultado"]->total = 0;
                     $fuentes[$i][$si]["resultado"]->promedio = 0;
                     $fuentes[$i][$si]["resultado"]->desviacion_estandar = 0;
                     $fuentes[$i][$si]["resultado"]->factor_t = 0;
+                    $fuentes[$i][$si]["resultado"]->incertidumbre_sistematica_adicional = '';
                     $fuentes[$i][$si]["resultado"]->incertidumbre_datos = 0;
                     $fuentes[$i][$si]["resultado"]->factor_emision_co2_biogenico_ar5 = 0;
                     $fuentes[$i][$si]["resultado"]->unidad_factor_emision_co2_biogenico_ar5 = '';

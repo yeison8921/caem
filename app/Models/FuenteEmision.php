@@ -97,6 +97,18 @@ class FuenteEmision extends Model
             case 'trasversales':
                 $texto = 'TRASVERSALES';
                 break;
+            case str_contains($this->tipo, 'fuentes_moviles_biogenico'):
+                $texto = 'FUENTES MÓVILES EXTRA';
+                break;
+            case str_contains($this->tipo, 'fuentes_fijas_biogenico'):
+                $texto = 'FUENTES FIJAS EXTRA';
+                break;
+            case str_contains($this->tipo, 'energia_importada_biogenico'):
+                $texto = 'ENERGÍA IMPORTADA EXTRA';
+                break;
+            case str_contains($this->tipo, 'transportes_fuentes_moviles_biogenico'):
+                $texto = 'TRANSPORTE FUENTE MÓVILES EXTRA';
+                break;
         }
         return $texto;
     }

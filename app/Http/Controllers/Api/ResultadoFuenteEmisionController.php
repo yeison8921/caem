@@ -38,7 +38,9 @@ class ResultadoFuenteEmisionController extends Controller
      */
     public function index()
     {
-        $query = QueryBuilder::for(ResultadoFuenteEmision::class);
+        $query = QueryBuilder::for(ResultadoFuenteEmision::class)->allowedFilters([
+            AllowedFilter::exact('informacion_empresa_id')
+        ]);
         return $query->get();
     }
 

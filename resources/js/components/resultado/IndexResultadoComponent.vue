@@ -66,7 +66,8 @@
                 <div class="row mb-5">
                     <div class="col-lg-6 mb-3">
                         <div
-                            class="card h-100 text-center justify-content-center"
+                            class="card text-center justify-content-center"
+                            style="height: 360px"
                         >
                             <div>
                                 <h5>
@@ -83,7 +84,8 @@
                         <div class="card">
                             <h6 class="text-center">
                                 Huella de Carbono emisiones directas e
-                                indirectas
+                                indirectas<br />
+                                (Ton CO2 eq)
                             </h6>
                             <div class="chart">
                                 <huella-carbono-directa-indirecta-bar
@@ -106,7 +108,8 @@
                     <div class="col-lg-6 mb-3">
                         <div class="card">
                             <h6 class="text-center">
-                                Huella de Carbono por Categoría
+                                Huella de Carbono por Categoría<br />
+                                (Ton CO2 eq)
                             </h6>
                             <div class="chart">
                                 <huella-carbono-categoria-bar
@@ -127,7 +130,8 @@
                     <div class="col-lg-6 mb-3">
                         <div class="card">
                             <h6 class="text-center">
-                                Huella de Carbono por GEI
+                                Huella de Carbono por GEI<br />
+                                (Ton CO2 eq)
                             </h6>
                             <div class="chart">
                                 <huella-carbono-gei-bar
@@ -151,6 +155,8 @@
                         <div class="card">
                             <h6 class="text-center">
                                 Huella de Carbono por Fuente
+                                <br />
+                                (Ton CO2 eq)
                             </h6>
                             <div class="chart">
                                 <huella-carbono-fuente-bar
@@ -172,6 +178,8 @@
                         <div class="card">
                             <h6 class="text-center">
                                 Huella de Carbono por Fuente
+                                <br />
+                                (Ton CO2 eq)
                             </h6>
                             <div class="chart">
                                 <huella-carbono-fuente-pie
@@ -196,7 +204,8 @@
                     <div class="col-lg-6 mb-3">
                         <div class="card">
                             <h6 class="text-center">
-                                Huella de Carbono por Tipo o clase
+                                Huella de Carbono por Tipo o clase<br />
+                                (Ton CO2 eq)
                             </h6>
 
                             <div class="chart">
@@ -218,7 +227,8 @@
                     <div class="col-lg-6 mb-3">
                         <div class="card">
                             <h6 class="text-center">
-                                Cumplimiento de principios
+                                Cumplimiento de principios<br />
+                                (Ton CO2 eq)
                             </h6>
                             <div class="chart">
                                 <cumplimiento-principios-bar
@@ -250,12 +260,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="row text-end">
-                    <p>
-                        <b>
-                            {{ total_huella_carbono_unidad_produccion }}
-                        </b>
-                    </p>
+                <div class="row mb-5">
+                    <div class="col-lg-6 offset-lg-6 mb-3">
+                        <div
+                            class="card text-center justify-content-center"
+                            style="height: 360px"
+                        >
+                            <div>
+                                <h5>
+                                    {{ total_huella_carbono_unidad_produccion }}
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -388,34 +405,36 @@ export default {
                 }
 
                 informacion_empresa.forEach((e) => {
-                    let fecha_base = new Date(
-                        e.anio_inicio + "-" + e.mes_inicio + "-01 00:00"
-                    );
+                    if (e.anio_inicio != null) {
+                        let fecha_base = new Date(
+                            e.anio_inicio + "-" + e.mes_inicio + "-01 00:00"
+                        );
 
-                    var future = new Date(
-                        fecha_base.getFullYear(),
-                        fecha_base.getMonth() + 12,
-                        1
-                    );
+                        var future = new Date(
+                            fecha_base.getFullYear(),
+                            fecha_base.getMonth() + 12,
+                            1
+                        );
 
-                    let mes_fecha_base =
-                        this.array_meses[fecha_base.getMonth()];
+                        let mes_fecha_base =
+                            this.array_meses[fecha_base.getMonth()];
 
-                    var mes_futuro = this.array_meses[future.getMonth()];
-                    var anio_futuro = future.getFullYear();
+                        var mes_futuro = this.array_meses[future.getMonth()];
+                        var anio_futuro = future.getFullYear();
 
-                    var json = {
-                        value: e.id,
-                        label:
-                            mes_fecha_base +
-                            " " +
-                            e.anio_inicio +
-                            " a " +
-                            mes_futuro +
-                            " " +
-                            anio_futuro,
-                    };
-                    this.options_periodo.push(json);
+                        var json = {
+                            value: e.id,
+                            label:
+                                mes_fecha_base +
+                                " " +
+                                e.anio_inicio +
+                                " a " +
+                                mes_futuro +
+                                " " +
+                                anio_futuro,
+                        };
+                        this.options_periodo.push(json);
+                    }
                 });
             }
         },

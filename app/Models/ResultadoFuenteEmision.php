@@ -24,6 +24,7 @@ class ResultadoFuenteEmision extends Model
         'fuentetable_id',
         'tipo',
         'fuente_emision',
+        'descripcion_fuente_emision',
         'dato_1',
         'dato_2',
         'dato_3',

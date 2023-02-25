@@ -58,6 +58,8 @@ class UpdateCombustibleRequest extends FormRequest
             'incertidumbre_n2o_1_fuente_movil' => ['required', 'numeric'],
             'incertidumbre_n2o_2_fuente_movil' => ['required', 'numeric'],
             'fuente_bibliografica_n2o_fuente_movil' => ['required', 'string'],
+            'tipo' => ['required', 'string'],
+            'biogenico' => ['required', 'numeric'],
         ];
     }
 }

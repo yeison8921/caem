@@ -8,6 +8,7 @@ use App\Http\Requests\Api\UserRegister\updateRegisterRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -56,6 +57,7 @@ class UserController extends Controller
                 'rol',
                 'empresa',
                 'empresaSede',
+                'estado'
             ])
             ->allowedSorts([
                 'id',
@@ -134,5 +136,25 @@ class UserController extends Controller
         }
 
         return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
+    }
+
+    public function checkContrasenaActual(Request $request)
+    {
+        return $this->userRepository->checkContrasenaActual($request);
+    }
+
+    public function actualizarContrasena(Request $request)
+    {
+        return $this->userRepository->actualizarContrasena($request);
+    }
+
+    public function enviarNotificacionRegistroSinConvenio()
+    {
+        return $this->userRepository->enviarNotificacionRegistroSinConvenio();
+    }
+
+    public function enviarNotificacionAprobacionSinConvenio(Request $request)
+    {
+        return $this->userRepository->enviarNotificacionAprobacionSinConvenio($request);
     }
 }

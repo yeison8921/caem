@@ -392,7 +392,18 @@
                             required
                         />
                     </div>
-
+                    <div class="mb-3">
+                        <label class="form-label required">Biogénico</label>
+                        <Multiselect
+                            v-model="combustible.biogenico"
+                            :options="[
+                                { value: 0, label: 'No' },
+                                { value: 1, label: 'Si' },
+                            ]"
+                            placeholder="Seleccione una opción"
+                            required
+                        />
+                    </div>
                     <div class="mb-3">
                         <div class="col-lg-4 offset-lg-4">
                             <div class="d-grid gap-2">
