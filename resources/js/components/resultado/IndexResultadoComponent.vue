@@ -279,13 +279,13 @@
                                 <h5>
                                     {{
                                         total_huella_carbono_unidad_produccion ==
-                                        0
+                                        -1
                                             ? "No se registró información"
                                             : ""
                                     }}
                                     {{
                                         total_huella_carbono_unidad_produccion ==
-                                        0
+                                        -1
                                             ? ""
                                             : total_huella_carbono_unidad_produccion +
                                               " ton/u"
@@ -537,6 +537,7 @@ export default {
                             " %";
 
                         setTimeout(() => {
+                            this.$refs.huellaCarbonoDirectaIndirecta.cargarGrafica();
                             this.$refs.huellaCarbonoCategoria.cargarGrafica();
                             this.$refs.huellaCarbonoGeiBar.cargarGrafica();
                             this.$refs.huellaCarbonoTipoBar.cargarGrafica();

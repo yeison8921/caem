@@ -221,25 +221,24 @@
                         </template>
                     </sidenav-collapse>
                 </li>
-                <li class="nav-item" v-if="isLoggedIn">
-                    <a
-                        href="videotutoriales"
-                        target="_blank"
-                        class="mb-0 btn btn-sm btn-round me-1 bg-gradient-info"
-                        style="margin-left: 40px; bottom: 8vh; position: fixed"
-                        >&nbsp&nbsp&nbsp&nbspTutoriales&nbsp&nbsp&nbsp&nbsp</a
-                    >
-                </li>
-                <li class="nav-item" v-if="isLoggedIn">
-                    <a
-                        href="#"
-                        class="mb-2 btn btn-sm btn-round me-1 bg-gradient-info"
-                        style="margin-left: 40px; bottom: 3vh; position: fixed"
-                        @click="logout()"
-                        >Cerrar sesión</a
-                    >
-                </li>
             </ul>
+        </div>
+        <div class="pt-5 mt-5 sidenav-footer">
+            <a
+                href="videotutoriales"
+                target="_blank"
+                class="mb-2 btn btn-sm btn-round me-1 bg-gradient-info"
+                style="margin-left: 40px"
+                >&nbsp&nbsp&nbsp&nbspTutoriales&nbsp&nbsp&nbsp&nbsp</a
+            >
+            <br />
+            <a
+                href="#"
+                class="mb-2 btn btn-sm btn-round me-1 bg-gradient-info"
+                style="margin-left: 40px"
+                @click="logout()"
+                >Cerrar sesión</a
+            >
         </div>
     </div>
 </template>

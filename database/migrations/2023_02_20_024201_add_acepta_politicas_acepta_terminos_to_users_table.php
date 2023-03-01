@@ -14,8 +14,8 @@ class AddAceptaPoliticasAceptaTerminosToUserstable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('acepta_politicas')->after('sede_id');
-            $table->tinyInteger('acepta_terminos')->after('acepta_politicas');
+            $table->tinyInteger('acepta_politicas')->nullable()->after('sede_id');
+            $table->tinyInteger('acepta_terminos')->nullable()->after('acepta_politicas');
         });
     }
 

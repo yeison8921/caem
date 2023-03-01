@@ -320,6 +320,44 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
 
         if ($request->reporte == 'corporativo') {
             $request->reporte = '';
+            $array_categorias = [
+                ['fuentes_fijas', 'fuentes_moviles', 'emisiones'],
+                ['electricidad_importada', 'energia_importada'],
+                ['transportes_fuentes_moviles', 'transportes_carga_pasajeros'],
+                ['bienes_productos', 'servicios'],
+                ['usos', 'fines', 'activos', 'inversiones'],
+                ['otros'],
+                ['trasversales'],
+            ];
+        } else {
+            $array_categorias = [
+                [
+                    'fuentes_fijas',
+                    'fuentes_fijas_biogenico_26',
+                    'fuentes_fijas_biogenico_27',
+                    'fuentes_fijas_biogenico_37',
+                    'fuentes_fijas_biogenico_38',
+                    'fuentes_moviles',
+                    'fuentes_moviles_biogenico_26',
+                    'fuentes_moviles_biogenico_27',
+                    'fuentes_moviles_biogenico_37',
+                    'fuentes_moviles_biogenico_38',
+                ],
+                [
+                    'energia_importada',
+                    'energia_importada_biogenico_26',
+                    'energia_importada_biogenico_27',
+                    'energia_importada_biogenico_37',
+                    'energia_importada_biogenico_38',
+                ],
+                [
+                    'transportes_fuentes_moviles',
+                    'transportes_fuentes_moviles_biogenico_26',
+                    'transportes_fuentes_moviles_biogenico_27',
+                    'transportes_fuentes_moviles_biogenico_37',
+                    'transportes_fuentes_moviles_biogenico_38',
+                ],
+            ];
         }
 
         $total_huella_carbono = 0;
@@ -327,16 +365,6 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
         $array_labels_directa = ['Directas', 'Indirectas'];
         $array_totales_directa = [0, 0];
         $array_colores_directa = [];
-
-        $array_categorias = [
-            ['fuentes_fijas', 'fuentes_moviles', 'emisiones'],
-            ['electricidad_importada', 'energia_importada'],
-            ['transportes_fuentes_moviles', 'transportes_carga_pasajeros'],
-            ['bienes_productos', 'servicios'],
-            ['usos', 'fines', 'activos', 'inversiones'],
-            ['otros'],
-            ['trasversales'],
-        ];
 
         $array_labels_fuente = [
             'Consumo de combustibles solidos',
@@ -466,7 +494,7 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                 } else {
                     if (in_array($resultado['fuentetable']['nombre'], $this->array_biogenicos)) {
                         if ($resultado['resultado']['huella_carbono' . $request->reporte . $request->ar] > 0) {
-                            array_push($array_labels_tipo, $resultado['fuentetable']['nombre'] . ' - ' . $resultado['tipo_mostrar']);
+                            array_push($array_labels_tipo, $resultado['fuentetable']['nombre'] . '<br>' . $resultado['tipo_mostrar']);
                             array_push($array_totales_tipo, $resultado['resultado']['huella_carbono' . $request->reporte . $request->ar]);
                         }
                     }
@@ -571,7 +599,7 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
 
 
         if (is_null($unidades_producidas)) {
-            $total_huella_carbono_unidad_produccion = 0;
+            $total_huella_carbono_unidad_produccion = -1;
         } else {
             $total_huella_carbono_unidad_produccion = ($total_huella_carbono / $unidades_producidas);
         }

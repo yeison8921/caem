@@ -2421,6 +2421,7 @@
                                 v-bind:key="i"
                             >
                                 <p
+                                    v-if="c != ''"
                                     style="font-size: 14px"
                                     class="accordion-header"
                                     :id="'heading-categoria-' + i"
