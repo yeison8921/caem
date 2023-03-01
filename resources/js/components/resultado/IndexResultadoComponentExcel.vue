@@ -3,7 +3,7 @@
         <div class="row">
             <div class="form-group">
                 <br />
-                <h2>Resultados</h2>
+                <h2>Resultados excel</h2>
             </div>
         </div>
 
@@ -17,6 +17,7 @@
                             valueProp="id"
                             label="nombre"
                             placeholder="Empresa"
+                            :searchable="true"
                             required
                             @input="getOptionsSede()"
                         />
@@ -28,6 +29,7 @@
                             v-model="sede"
                             :options="options_sede"
                             placeholder="Sede"
+                            :searchable="true"
                             @input="getOptionsPeriodo()"
                             required
                         />
@@ -37,6 +39,7 @@
                             v-model="periodo"
                             :options="options_periodo"
                             placeholder="Periodo"
+                            :searchable="true"
                             required
                         />
                     </div>
@@ -1827,7 +1830,9 @@ export default {
                 .then((response) => {
                     this.user = response.data;
                     if (this.user.rol_id != 2) {
-                        this.getOptionsEmpresa();
+                        this.user.rol_id == 4
+                            ? this.getOptionsEmpresa(this.user.convenio_id)
+                            : this.getOptionsEmpresa();
                     } else {
                         this.empresa = response.data.empresa_id;
                         this.getOptionsSede();
@@ -1835,68 +1840,77 @@ export default {
                 })
                 .catch((error) => {});
         },
-        async getOptionsEmpresa() {
-            this.options_empresa = await Empresa.get();
+        async getOptionsEmpresa(convenio_id = "") {
+            if (convenio_id == "") {
+                this.options_empresa = await Empresa.get();
+            } else {
+                this.options_empresa = await Empresa.where(
+                    "convenios.id",
+                    convenio_id
+                ).get();
+            }
         },
         async getOptionsSede() {
-            let options =
-                this.user.rol_id != 2
-                    ? await EmpresaSede.where(
-                          "empresa_id",
-                          this.user.empresa_id
-                      ).get()
-                    : await EmpresaSede.where(
-                          "empresa_id",
-                          this.user.empresa_id
-                      ).get();
+            this.options_sede = [];
+            this.options_periodo = [];
+            this.sede = "";
+            this.periodo = "";
 
-            options.forEach((e) => {
-                this.options_sede.push(e);
-            });
+            if (this.empresa != "" && this.empresa != null) {
+                let options = await EmpresaSede.where(
+                    "empresa_id",
+                    this.empresa
+                ).get();
+
+                options.forEach((e) => {
+                    this.options_sede.push(e);
+                });
+            }
         },
         async getOptionsPeriodo() {
             this.options_periodo = [];
             this.periodo = "";
             if (this.sede != "" && this.sede != null) {
-                let informacion_empresa = await InformacionEmpresa.where(
-                    "sede_id",
-                    this.sede
-                ).get();
+                var informacion_empresa = await InformacionEmpresa.where({
+                    empresa_id: this.empresa,
+                    sede_id: this.sede,
+                }).get();
 
                 informacion_empresa.forEach((e) => {
-                    let fecha_base = new Date(
-                        e.anio_inicio + "-" + e.mes_inicio + "-01 00:00"
-                    );
+                    if (e.anio_inicio != null) {
+                        let fecha_base = new Date(
+                            e.anio_inicio + "-" + e.mes_inicio + "-01 00:00"
+                        );
 
-                    var future = new Date(
-                        fecha_base.getFullYear(),
-                        fecha_base.getMonth() + 12,
-                        1
-                    );
+                        var future = new Date(
+                            fecha_base.getFullYear(),
+                            fecha_base.getMonth() + 12,
+                            1
+                        );
 
-                    let mes_fecha_base =
-                        this.array_meses[fecha_base.getMonth()];
+                        let mes_fecha_base =
+                            this.array_meses[fecha_base.getMonth()];
 
-                    var mes_futuro = this.array_meses[future.getMonth()];
-                    var anio_futuro = future.getFullYear();
+                        var mes_futuro = this.array_meses[future.getMonth()];
+                        var anio_futuro = future.getFullYear();
 
-                    var json = {
-                        value: e.id,
-                        label:
-                            mes_fecha_base +
-                            " " +
-                            e.anio_inicio +
-                            " a " +
-                            mes_futuro +
-                            " " +
-                            anio_futuro,
-                    };
-                    this.options_periodo.push(json);
+                        var json = {
+                            value: e.id,
+                            label:
+                                mes_fecha_base +
+                                " " +
+                                e.anio_inicio +
+                                " a " +
+                                mes_futuro +
+                                " " +
+                                anio_futuro,
+                        };
+                        this.options_periodo.push(json);
+                    }
                 });
             }
         },
         fuentes(fila, tipo, array_fuente_emision, $biogenico) {
-            console.log(tipo);
             let fuentes = [];
             if (fila != "") {
                 Object.keys(this.resultado).forEach((key) => {

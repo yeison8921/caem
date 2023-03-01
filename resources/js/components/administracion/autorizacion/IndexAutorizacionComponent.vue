@@ -3,7 +3,7 @@
         <div class="row">
             <div class="form-group">
                 <br />
-                <h2>Registros</h2>
+                <h4>Registros</h4>
             </div>
         </div>
         <div class="card">

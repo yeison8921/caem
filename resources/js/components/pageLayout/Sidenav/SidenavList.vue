@@ -8,7 +8,7 @@
             <ul class="navbar-nav">
                 <li class="mt-2 nav-item">
                     <h6
-                        class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
+                        class="mb-3 text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
                         :class="'me-4'"
                         style="margin: 0 1rem"
                     >
@@ -50,7 +50,7 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
-                                        [1, 2, 3].includes(
+                                        [1, 2, 3, 4].includes(
                                             parseInt(userLogged.rol_id)
                                         )
                                     "
@@ -233,7 +233,7 @@
                 <li class="nav-item" v-if="isLoggedIn">
                     <a
                         href="#"
-                        class="mb-0 btn btn-sm btn-round me-1 bg-gradient-info"
+                        class="mb-2 btn btn-sm btn-round me-1 bg-gradient-info"
                         style="margin-left: 40px; bottom: 3vh; position: fixed"
                         @click="logout()"
                         >Cerrar sesión</a

@@ -57,7 +57,8 @@ class UserController extends Controller
                 'rol',
                 'empresa',
                 'empresaSede',
-                'estado'
+                'estado',
+                'convenio'
             ])
             ->allowedSorts([
                 'id',

@@ -24,7 +24,7 @@
                 >{{ navText }}</span
             >
         </a>
-        <div :id="collapseRef" class="collapse">
+        <div :id="collapseRef" class="collapse show">
             <slot name="list"></slot>
         </div>
     </div>

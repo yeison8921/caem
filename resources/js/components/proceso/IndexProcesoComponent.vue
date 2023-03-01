@@ -3,12 +3,32 @@
         <div class="row">
             <div class="form-group">
                 <br />
-                <h2>Ingresar datos</h2>
+                <h4>Ingresar datos</h4>
+                <label>
+                    Para realizar el cálculo de la huella de carbono de la sede
+                    de la empresa, a continuación deberá ingresar información
+                    técnica respecto a los procesos productivos, consumos de
+                    combustibles, energía, etc, equipos, fuente de emisión de
+                    gases efecto invernadero, entre otras, asociadas a un
+                    periodo de tiempo específico (12 meses, donde debe indicar
+                    mes de inicio y año). Por favor tenga a la mano la
+                    información, le invitamos a consultar el listado de
+                    preguntas y de datos requeridos
+                    <a
+                        href="pdf/guia_ingreso_datos.pdf"
+                        target="_blank"
+                        style="color: #208943"
+                        >aquí.</a
+                    >
+                </label>
             </div>
         </div>
         <div class="col-lg-12" v-if="user.rol_id == 2">
             <div v-if="huellas.length != 0">
-                <table class="table align-items-center mb-3 w-100">
+                <table
+                    class="table table-sm align-items-center mb-3 w-100"
+                    style="font-size: 0.75rem"
+                >
                     <thead>
                         <tr>
                             <th>Huella</th>
@@ -29,7 +49,12 @@
                             <td>
                                 <button
                                     type="button"
-                                    class="btn btn-warning btn-sm"
+                                    class="s btn btn-warning btn-sm"
+                                    :ref="
+                                        h.estado == 1
+                                            ? 'huellaActiva'
+                                            : 'huellaInactiva'
+                                    "
                                     @click="
                                         ie_id = h.id;
                                         nombre_huella = 'Huella ' + (i + 1);
@@ -154,7 +179,6 @@
                     role="tab"
                     aria-controls="construccion-proceso"
                     aria-selected="false"
-                    ref="tabConstruccionProceso"
                     @click="recargarProcesos()"
                 >
                     3
@@ -2672,9 +2696,6 @@
                                                                                                             etc)
                                                                                                         </small>
                                                                                                     </label>
-                                                                                                    {{
-                                                                                                        fuente.fuentetable_id
-                                                                                                    }}
                                                                                                     <input
                                                                                                         v-if="
                                                                                                             ac.includes(
@@ -2960,7 +2981,6 @@ export default {
         this.getParametros(12, "options_metodologia");
         this.cargarVariableFuentes();
         this.getOptionsFuenteEmision();
-        // this.tabActiva();
     },
     methods: {
         tabActiva() {
@@ -2981,11 +3001,9 @@ export default {
                     case 5:
                         $("#construccion-anio-tab").click();
                         break;
-                    default:
-                        break;
                 }
                 Swal.close();
-            }, 3000);
+            }, 2500);
         },
         async getUserLogged() {
             await axios
@@ -3083,7 +3101,9 @@ export default {
             ).get();
 
             if (this.huellas.length == 0) {
+                this.etapa = 1;
                 this.recargarFormularioEmisiones();
+                this.tabActiva();
             } else {
                 this.huellas.forEach((e) => {
                     let fecha_base = new Date(
@@ -3565,7 +3585,6 @@ export default {
                 .then((response) => {
                     if (response.data.length != 0) {
                         this.fuentes = response.data;
-                        this.editar_fuente = this.user.rol_id == 2 ? 0 : 1;
                         this.etapa = 3;
                         this.recargarProcesos();
                     } else {
@@ -3605,7 +3624,6 @@ export default {
                 .then((response) => {
                     if (response.data.length != 0) {
                         this.procesos = response.data;
-                        this.editar_procesos = this.user.rol_id == 2 ? 0 : 1;
                         this.etapa = 4;
                         this.recargarInformacionInicio();
                     } else {
@@ -3626,7 +3644,6 @@ export default {
             let informacionEmpresa = await InformacionEmpresa.find(this.ie.id);
 
             if (informacionEmpresa.anio_inicio != null) {
-                this.editar_inicio = this.user.rol_id == 2 ? 0 : 1;
                 this.etapa = 5;
                 this.getFuentesEmision();
             } else {
@@ -3661,6 +3678,8 @@ export default {
             this.array_consumos.push("FUENTE");
         },
         async getFuentesEmision() {
+            this.editar_consumos = 1;
+
             axios
                 .post("api/getFuentesEmision", {
                     empresa_id: this.empresa_id,
@@ -3672,13 +3691,16 @@ export default {
                     Object.keys(r).forEach((key) => {
                         Object.keys(r[key]).forEach((k) => {
                             if (r[key][k]["resultado"]["id"] != "") {
-                                this.editar_consumos = 0;
+                                if (this.user.rol_id == 2) {
+                                    this.editar_fuente = 0;
+                                    this.editar_procesos = 0;
+                                    this.editar_inicio = 0;
+                                    this.editar_consumos = 0;
+                                }
                             }
                         });
                     });
-                    if (this.user.rol_id == 3) {
-                        this.editar_consumos = 1;
-                    }
+
                     this.fuentes_emision = response.data;
                 })
                 .catch((error) => {});
@@ -3869,18 +3891,7 @@ export default {
             this.ie.usuario_creacion_id = this.user.id;
             this.ie.estado = 1;
             this.ie.save();
-
-            Swal.close();
             this.ie_id = "";
-            this.etapa = 1;
-            this.editar_formulario = 1;
-            this.editar_fuente = 1;
-            this.editar_procesos = 1;
-            this.editar_inicio = 1;
-            this.editar_consumos = 1;
-
-            this.recargarFormularioEmisiones();
-            this.tabActiva();
 
             setTimeout(() => {
                 this.$root.mostrarMensaje(
@@ -3888,7 +3899,14 @@ export default {
                     "Huella generada correctamente",
                     "success"
                 );
+                this.getHuellas();
             }, 500);
+
+            setTimeout(() => {
+                this.$refs["huellaActiva"][0].click();
+            }, 1000);
+
+            Swal.close();
         },
         agregarFuenteBiogenico(key, k, val) {
             let array = [26, 27, 37, 38];

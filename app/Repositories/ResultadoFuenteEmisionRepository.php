@@ -571,9 +571,9 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
 
 
         if (is_null($unidades_producidas)) {
-            $total_huella_carbono_unidad_produccion = 'No se registraron unidades de producción para el periodo seleccionado';
+            $total_huella_carbono_unidad_produccion = 0;
         } else {
-            $total_huella_carbono_unidad_produccion = 'Total Huella de Carbono CO2 equivalente por unidad de producción = ' . ($total_huella_carbono / $unidades_producidas) . ' ton/u';
+            $total_huella_carbono_unidad_produccion = ($total_huella_carbono / $unidades_producidas);
         }
 
         $array_resultados['promedio_cumplimiento'] = $suma / count($array_cumplimiento);

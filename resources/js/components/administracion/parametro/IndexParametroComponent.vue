@@ -3,7 +3,7 @@
         <div class="row">
             <div class="form-group">
                 <br />
-                <h2>Administración parámetros</h2>
+                <h4>Administración parámetros</h4>
             </div>
         </div>
         <div class="card">

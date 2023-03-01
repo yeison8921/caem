@@ -21,8 +21,6 @@ use App\Http\Controllers\Api\RefrigeranteController;
 use App\Http\Controllers\Api\TrasversalController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ViajeController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Models\PorcentajeCombustible;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -50,10 +48,6 @@ Route::get('/', function () {
 //Restablecer contraseña
 Route::get('/forgot-password', function () {
     return view('auth/passwords/email');
-    // if (!auth()->user()) {
-    // } else {
-    //     return view('auth/passwords/reset');
-    // }
 });
 
 
@@ -222,10 +216,17 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Resultado
     Route::get('/resultados',  function () {
-        return view('resultado/index_resultado');
-    });
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM, User::TYPE_EMPRESARIO, User::TYPE_LIDER_CONVENIO])) {
+            return view('resultado/index_resultado');
+        }
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
+    })->name('resultados');
+
     Route::get('/resultados-excel',  function () {
-        return view('resultado/index_resultado_excel');
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM, User::TYPE_LIDER_CONVENIO])) {
+            return view('resultado/index_resultado_excel');
+        }
+        return redirect()->route('resultados')->withFlashDanger(__('You do not have access to do that.'));
     });
 
     //Video tutoriales

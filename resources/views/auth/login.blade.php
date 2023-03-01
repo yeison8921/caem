@@ -50,8 +50,8 @@
                   </form>
                 </div>
                 @if($errors->has('error'))
-                <div class="alert alert-danger">
-                  Su cuenta no ha sido activada
+                <div class="alert btn-danger text-center">
+                  Disculpe, su cuenta aún no ha sido activada
                 </div>
                 @endif
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">

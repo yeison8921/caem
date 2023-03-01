@@ -19,7 +19,7 @@ class User extends Authenticatable
     public const TYPE_ADMIN = 1;
     public const TYPE_EMPRESARIO = 2;
     public const TYPE_LIDER_CAEM = 3;
-    // public const TYPE_LIDER_CONVENIO = 3;
+    public const TYPE_LIDER_CONVENIO = 4;
 
     /**
      * The attributes that are mass assignable.
@@ -39,7 +39,7 @@ class User extends Authenticatable
         'sede_id',
         'acepta_politicas',
         'acepta_terminos',
-
+        'convenio_id'
     ];
 
     /**
@@ -81,6 +81,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Rol::class);
     }
+
     /**
      * Obtiene la empresa.
      */
@@ -88,11 +89,20 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Empresa::class);
     }
+
     /**
      * Obtiene la sede de la empresa.
      */
     public function empresaSede()
     {
         return $this->belongsTo(EmpresaSede::class, 'sede_id', 'id');
+    }
+
+    /**
+     * Obtiene el convenio.
+     */
+    public function convenio()
+    {
+        return $this->belongsTo(Convenio::class);
     }
 }

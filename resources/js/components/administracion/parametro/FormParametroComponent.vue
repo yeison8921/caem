@@ -3,7 +3,7 @@
         <div class="row">
             <div class="form-group">
                 <br />
-                <h2>{{ datos.accion }} {{ tipo_parametro.nombre }}</h2>
+                <h4>{{ datos.accion }} {{ tipo_parametro.nombre }}</h4>
             </div>
         </div>
         <div class="card">

@@ -3,7 +3,7 @@
         <div class="row">
             <div class="form-group">
                 <br />
-                <h2>Administración fuentes de emisión</h2>
+                <h4>Administración fuentes de emisión</h4>
             </div>
         </div>
         <div class="card">

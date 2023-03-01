@@ -3,7 +3,7 @@
         <div class="row">
             <div class="form-group">
                 <br />
-                <h2>Actualizar empresa</h2>
+                <h4>Actualizar empresa</h4>
             </div>
         </div>
         <div class="card">

@@ -3,7 +3,7 @@
         <div class="row">
             <div class="form-group">
                 <br />
-                <h2>{{ datos.accion }} refrigerante</h2>
+                <h4>{{ datos.accion }} refrigerante</h4>
             </div>
         </div>
         <div class="card">

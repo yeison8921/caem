@@ -3,18 +3,19 @@
         id="sidenav-main"
         class="my-3 overflow-auto border-0 sidenav navbar bg-white navbar-vertical navbar-expand-xs border-radius-xl"
         :class="'me-3 rotate-caret'"
+        style="box-shadow: 0 20px 27px 0 rgb(0 0 0 / 40%); !important"
     >
         <div class="sidenav-header">
             <i
                 id="iconSidenav"
-                class="top-0 p-3 cursor-pointer fas fa-times text-secondary opacity-5 position-absolute end-0 d-none d-xl-none"
+                class="top-0 p-1 cursor-pointer fas fa-times text-secondary opacity-5 position-absolute end-0 d-none d-xl-none"
                 aria-hidden="true"
             ></i>
             <a class="m-0 navbar-brand" href="/">
                 <img
                     src="../../../../img/Carbontest - Horizontal.svg"
                     class="navbar-brand-img"
-                    style="max-height: 150px !important"
+                    style="max-height: 180px !important"
                     alt="main_logo"
                 />
                 <!-- <span class="ms-1 font-weight-bold">Carbontest</span> -->

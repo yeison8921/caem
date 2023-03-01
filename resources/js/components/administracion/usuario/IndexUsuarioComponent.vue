@@ -3,7 +3,7 @@
         <div class="row">
             <div class="form-group">
                 <br />
-                <h2>Usuarios</h2>
+                <h4>Usuarios</h4>
             </div>
         </div>
         <div class="card">
@@ -33,6 +33,7 @@
                                 <th>Nombres</th>
                                 <th>Celular</th>
                                 <th>Rol</th>
+                                <th>Convenio</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -43,6 +44,13 @@
                                 <td>{{ u.phone }}</td>
                                 <td>
                                     {{ u.rol.nombre }}
+                                </td>
+                                <td>
+                                    {{
+                                        u.convenio_id == null
+                                            ? "No aplica"
+                                            : u.convenio.nombre_convenio
+                                    }}
                                 </td>
                                 <td>
                                     <a
@@ -92,9 +100,9 @@ export default {
     methods: {
         async getUsuarios() {
             this.$root.mostrarCargando();
-            this.usuarios = await User.whereIn("rol_id", [1, 3])
+            this.usuarios = await User.whereIn("rol_id", [1, 3, 4])
                 .where("estado", 1)
-                .include("rol", "empresa", "empresaSede")
+                .include("rol", "empresa", "empresaSede", "convenio")
                 .get();
             $("#tabla-usuarios").DataTable().destroy();
             this.$tablaGlobal("#tabla-usuarios");

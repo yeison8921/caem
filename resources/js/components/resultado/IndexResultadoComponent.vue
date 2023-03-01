@@ -16,6 +16,7 @@
                             valueProp="id"
                             label="nombre"
                             placeholder="Empresa"
+                            :searchable="true"
                             required
                             @input="getOptionsSede()"
                         />
@@ -27,6 +28,7 @@
                             valueProp="id"
                             label="nombre"
                             placeholder="Sede"
+                            :searchable="true"
                             required
                             @input="getOptionsPeriodo()"
                         />
@@ -36,6 +38,7 @@
                             v-model="periodo"
                             :options="options_periodo"
                             placeholder="Periodo"
+                            :searchable="true"
                             required
                         />
                     </div>
@@ -227,8 +230,7 @@
                     <div class="col-lg-6 mb-3">
                         <div class="card">
                             <h6 class="text-center">
-                                Cumplimiento de principios<br />
-                                (Ton CO2 eq)
+                                Cumplimiento de principios
                             </h6>
                             <div class="chart">
                                 <cumplimiento-principios-bar
@@ -250,7 +252,7 @@
                                     }"
                                 />
                             </div>
-                            <div class="text-end">
+                            <div class="p-3 text-start">
                                 <p>
                                     <b>
                                         {{ promedio_cumplimiento }}
@@ -267,13 +269,44 @@
                             style="height: 360px"
                         >
                             <div>
+                                <h6>
+                                    Total Huella de Carbono CO2 eq<br />por
+                                    unidad de producción
+                                </h6>
+                                <br />
+                                <br />
+
                                 <h5>
-                                    {{ total_huella_carbono_unidad_produccion }}
+                                    {{
+                                        total_huella_carbono_unidad_produccion ==
+                                        0
+                                            ? "No se registró información"
+                                            : ""
+                                    }}
+                                    {{
+                                        total_huella_carbono_unidad_produccion ==
+                                        0
+                                            ? ""
+                                            : total_huella_carbono_unidad_produccion +
+                                              " ton/u"
+                                    }}
                                 </h5>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div
+                class="col-lg-9 offset-lg-3 text-start"
+                v-if="mostrar_graficas && user.rol_id != 2"
+            >
+                <a
+                    href="resultados-excel"
+                    target="_blank"
+                    class="btn btn-primary"
+                >
+                    Descargar resultados globales
+                </a>
             </div>
         </div>
     </div>
@@ -282,6 +315,7 @@
 import User from "../../models/User";
 import Empresa from "../../models/Empresa";
 import EmpresaSede from "../../models/EmpresaSede";
+import Convenio from "../../models/Convenio";
 import InformacionEmpresa from "../../models/InformacionEmpresa";
 import HuellaCarbonoDirectaIndirectaBar from "./HuellaCarbonoDirectaIndirectaBar.vue";
 import HuellaCarbonoCategoriaBar from "./HuellaCarbonoCategoriaBar.vue";
@@ -305,6 +339,7 @@ export default {
 
     data() {
         return {
+            convenio: "",
             empresa: "",
             sede: "",
             periodo: "",
@@ -321,6 +356,7 @@ export default {
             array_cumplimiento: [],
             promedio_cumplimiento: "",
             total_huella_carbono_unidad_produccion: "",
+            options_convenio: [],
             options_empresa: [],
             options_sede: [{ id: -1, nombre: "Todas" }],
             options_periodo: [],
@@ -361,7 +397,9 @@ export default {
                 .then((response) => {
                     this.user = response.data;
                     if (this.user.rol_id != 2) {
-                        this.getOptionsEmpresa();
+                        this.user.rol_id == 4
+                            ? this.getOptionsEmpresa(this.user.convenio_id)
+                            : this.getOptionsEmpresa();
                     } else {
                         this.empresa = response.data.empresa_id;
                         this.getOptionsSede();
@@ -369,28 +407,44 @@ export default {
                 })
                 .catch((error) => {});
         },
-        async getOptionsEmpresa() {
-            this.options_empresa = await Empresa.get();
+        async getOptionsEmpresa(convenio_id = "") {
+            if (convenio_id == "") {
+                this.options_empresa = await Empresa.get();
+            } else {
+                this.options_empresa = await Empresa.where(
+                    "convenios.id",
+                    convenio_id
+                ).get();
+            }
         },
         async getOptionsSede() {
-            this.options_sede = [{ id: -1, nombre: "Todas" }];
+            this.options_sede = [];
             this.sede = "";
-            let options =
-                this.user.rol_id != 2
-                    ? await EmpresaSede.where("empresa_id", this.empresa).get()
-                    : await EmpresaSede.where(
-                          "empresa_id",
-                          this.user.empresa_id
-                      ).get();
+            this.options_periodo = [];
+            this.periodo = "";
 
-            options.forEach((e) => {
-                this.options_sede.push(e);
-            });
+            if (this.empresa != "" && this.empresa != null) {
+                this.options_sede = [{ id: -1, nombre: "Todas" }];
+                let options =
+                    this.user.rol_id != 2
+                        ? await EmpresaSede.where(
+                              "empresa_id",
+                              this.empresa
+                          ).get()
+                        : await EmpresaSede.where(
+                              "empresa_id",
+                              this.user.empresa_id
+                          ).get();
+
+                options.forEach((e) => {
+                    this.options_sede.push(e);
+                });
+            }
         },
         async getOptionsPeriodo() {
+            this.options_periodo = [];
+            this.periodo = "";
             if (this.sede != "" && this.sede != null) {
-                this.options_periodo = [];
-                this.periodo = "";
                 var informacion_empresa;
                 if (this.sede == -1) {
                     informacion_empresa = await InformacionEmpresa.where({
@@ -468,11 +522,11 @@ export default {
                         this.array_huella_carbono_tipo =
                             response.data["huella_carbono_tipo"];
                         this.array_cumplimiento = response.data["cumplimiento"];
-                        this.total_huella_carbono_unidad_produccion =
+                        this.total_huella_carbono_unidad_produccion = Number(
                             response.data[
                                 "total_huella_carbono_unidad_produccion"
-                            ];
-
+                            ].toFixed(2)
+                        ).toLocaleString("es-co");
                         this.promedio_cumplimiento =
                             "Total obtenido = " +
                             Number(
