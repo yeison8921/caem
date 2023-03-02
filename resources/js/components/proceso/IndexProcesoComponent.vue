@@ -2382,9 +2382,9 @@
                         />
                     </div>
                     <div class="mb-3">
-                        <label>Unidades producidas </label>
-                        <label style="color: red"
-                            >(Valor total para todo el periodo)</label
+                        <label>Unidades producidas o servicios prestados</label>
+                        <label style="color: red">
+                            (Valor total para todo el periodo)</label
                         >
                         <input
                             v-model="ie.unidades_producidas"

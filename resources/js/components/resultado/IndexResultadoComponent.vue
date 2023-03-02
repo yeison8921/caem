@@ -271,7 +271,7 @@
                             <div>
                                 <h6>
                                     Total Huella de Carbono CO2 eq<br />por
-                                    unidad de producción
+                                    unidad de producción o servicio
                                 </h6>
                                 <br />
                                 <br />
