@@ -1705,7 +1705,7 @@
                                                                 val.Transporte_carga
                                                             "
                                                             :options="
-                                                                options_viaje
+                                                                options_carga
                                                             "
                                                             mode="tags"
                                                             valueProp="id"
@@ -1727,7 +1727,29 @@
                                                                 val.Transporte_pasajeros
                                                             "
                                                             :options="
-                                                                options_viaje
+                                                                options_pasajero
+                                                            "
+                                                            mode="tags"
+                                                            valueProp="id"
+                                                            label="nombre"
+                                                            placeholder="Selección múltiple"
+                                                            :searchable="true"
+                                                            :disabled="
+                                                                !editar_fuente
+                                                            "
+                                                        />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label
+                                                            >Viajes
+                                                            aéreos</label
+                                                        >
+                                                        <Multiselect
+                                                            v-model="
+                                                                val.Transporte_aereo
+                                                            "
+                                                            :options="
+                                                                options_aereo
                                                             "
                                                             mode="tags"
                                                             valueProp="id"
@@ -2643,135 +2665,225 @@
                                                                                                 index
                                                                                             "
                                                                                         >
-                                                                                            <div
-                                                                                                class="mb-3"
-                                                                                                v-for="(
-                                                                                                    ac,
-                                                                                                    ci
-                                                                                                ) in array_consumos"
-                                                                                                v-bind:key="
-                                                                                                    ci
+                                                                                            <template
+                                                                                                v-if="
+                                                                                                    fuente
+                                                                                                        .fuentetable
+                                                                                                        .nombre ==
+                                                                                                        tk &&
+                                                                                                    fuente.fuente_emision !=
+                                                                                                        'Transporte_aereo'
                                                                                                 "
                                                                                             >
-                                                                                                <template
-                                                                                                    v-if="
-                                                                                                        fuente
-                                                                                                            .fuentetable
-                                                                                                            .nombre ==
-                                                                                                        tk
+                                                                                                <div
+                                                                                                    class="mb-3"
+                                                                                                    v-for="(
+                                                                                                        ac,
+                                                                                                        ci
+                                                                                                    ) in array_consumos"
+                                                                                                    v-bind:key="
+                                                                                                        ci
                                                                                                     "
                                                                                                 >
-                                                                                                    <label>
-                                                                                                        {{
-                                                                                                            ac.includes(
-                                                                                                                "FUENTE"
-                                                                                                            )
-                                                                                                                ? ac +
-                                                                                                                  " DE CONSUMO"
-                                                                                                                : ac
-                                                                                                        }}
-                                                                                                        <i
+                                                                                                    <template
+                                                                                                        v-if="
+                                                                                                            fuente
+                                                                                                                .fuentetable
+                                                                                                                .nombre ==
+                                                                                                            tk
+                                                                                                        "
+                                                                                                    >
+                                                                                                        <label>
+                                                                                                            {{
+                                                                                                                ac.includes(
+                                                                                                                    "FUENTE"
+                                                                                                                )
+                                                                                                                    ? ac +
+                                                                                                                      " DE CONSUMO"
+                                                                                                                    : ac
+                                                                                                            }}
+                                                                                                            <i
+                                                                                                                v-if="
+                                                                                                                    ac.includes(
+                                                                                                                        'INCERTIDUMBRE'
+                                                                                                                    )
+                                                                                                                "
+                                                                                                                class="fas fa-question-circle"
+                                                                                                                data-bs-toggle="popover"
+                                                                                                                title="Título ayuda"
+                                                                                                                data-bs-content="Texto ayuda"
+                                                                                                            ></i>
+                                                                                                            <small
+                                                                                                                v-if="
+                                                                                                                    ac.includes(
+                                                                                                                        'FUENTE'
+                                                                                                                    )
+                                                                                                                "
+                                                                                                            >
+                                                                                                                Por
+                                                                                                                ejemplo:
+                                                                                                                (Caldera,
+                                                                                                                montacarga,
+                                                                                                                camión,
+                                                                                                                procesadora
+                                                                                                                etc)
+                                                                                                            </small>
+                                                                                                        </label>
+                                                                                                        <input
                                                                                                             v-if="
+                                                                                                                ac.includes(
+                                                                                                                    'CONSUMO'
+                                                                                                                ) &&
+                                                                                                                fuente.fuente_emision !=
+                                                                                                                    'Transporte_aereo'
+                                                                                                            "
+                                                                                                            v-model="
+                                                                                                                fuente
+                                                                                                                    .resultado[
+                                                                                                                    'dato_' +
+                                                                                                                        (ci +
+                                                                                                                            1)
+                                                                                                                ]
+                                                                                                            "
+                                                                                                            class="form-control"
+                                                                                                            type="number"
+                                                                                                            step="any"
+                                                                                                            @change="
+                                                                                                                fuente.tipo ==
+                                                                                                                    'fuentes_moviles' ||
+                                                                                                                'fuentes_fijas' ||
+                                                                                                                'energia_importada' ||
+                                                                                                                'transportes_fuentes_moviles'
+                                                                                                                    ? agregarDatosFuenteBiogenica(
+                                                                                                                          fuente.tipo,
+                                                                                                                          fuente.fuentetable_id,
+                                                                                                                          'dato_' +
+                                                                                                                              (ci +
+                                                                                                                                  1)
+                                                                                                                      )
+                                                                                                                    : ''
+                                                                                                            "
+                                                                                                            :disabled="
+                                                                                                                !editar_consumos
+                                                                                                            "
+                                                                                                        />
+                                                                                                        <input
+                                                                                                            v-if="
+                                                                                                                ac.includes(
+                                                                                                                    'CONSUMO'
+                                                                                                                ) &&
+                                                                                                                fuente.fuente_emision ==
+                                                                                                                    'Transporte_aereo'
+                                                                                                            "
+                                                                                                            v-model="
+                                                                                                                fuente
+                                                                                                                    .resultado[
+                                                                                                                    'dato_' +
+                                                                                                                        (1 +
+                                                                                                                            1)
+                                                                                                                ]
+                                                                                                            "
+                                                                                                            class="form-control"
+                                                                                                            type="number"
+                                                                                                            step="any"
+                                                                                                            :disabled="
+                                                                                                                !editar_consumos
+                                                                                                            "
+                                                                                                        />
+                                                                                                        <input
+                                                                                                            v-else-if="
                                                                                                                 ac.includes(
                                                                                                                     'INCERTIDUMBRE'
-                                                                                                                )
+                                                                                                                ) &&
+                                                                                                                fuente.fuente_emision !=
+                                                                                                                    'Transporte_aereo'
                                                                                                             "
-                                                                                                            class="fas fa-question-circle"
-                                                                                                            data-bs-toggle="popover"
-                                                                                                            title="Título ayuda"
-                                                                                                            data-bs-content="Texto ayuda"
-                                                                                                        ></i>
-                                                                                                        <small
-                                                                                                            v-if="
+                                                                                                            v-model="
+                                                                                                                fuente
+                                                                                                                    .resultado[
+                                                                                                                    'incertidumbre_sistematica_adicional'
+                                                                                                                ]
+                                                                                                            "
+                                                                                                            class="form-control"
+                                                                                                            type="number"
+                                                                                                            step="any"
+                                                                                                            :disabled="
+                                                                                                                !editar_consumos
+                                                                                                            "
+                                                                                                        />
+                                                                                                        <input
+                                                                                                            v-else-if="
                                                                                                                 ac.includes(
                                                                                                                     'FUENTE'
-                                                                                                                )
+                                                                                                                ) &&
+                                                                                                                fuente.fuente_emision !=
+                                                                                                                    'Transporte_aereo'
                                                                                                             "
-                                                                                                        >
-                                                                                                            Por
-                                                                                                            ejemplo:
-                                                                                                            (Caldera,
-                                                                                                            montacarga,
-                                                                                                            camión,
-                                                                                                            procesadora
-                                                                                                            etc)
-                                                                                                        </small>
-                                                                                                    </label>
+                                                                                                            v-model="
+                                                                                                                fuente
+                                                                                                                    .resultado[
+                                                                                                                    'descripcion_fuente_emision'
+                                                                                                                ]
+                                                                                                            "
+                                                                                                            class="form-control"
+                                                                                                            type="text"
+                                                                                                            :disabled="
+                                                                                                                !editar_consumos
+                                                                                                            "
+                                                                                                        />
+                                                                                                    </template>
+                                                                                                </div>
+                                                                                            </template>
+                                                                                            <template
+                                                                                                v-if="
+                                                                                                    fuente
+                                                                                                        .fuentetable
+                                                                                                        .nombre ==
+                                                                                                        tk &&
+                                                                                                    fuente.fuente_emision ==
+                                                                                                        'Transporte_aereo'
+                                                                                                "
+                                                                                            >
+                                                                                                <div
+                                                                                                    class="mb-3"
+                                                                                                >
+                                                                                                    <label
+                                                                                                        >CONSUMO
+                                                                                                        TOTAL
+                                                                                                        <small
+                                                                                                            >(Ingrese
+                                                                                                            total
+                                                                                                            de
+                                                                                                            toneladas
+                                                                                                            de
+                                                                                                            CO2
+                                                                                                            generadas)
+                                                                                                            <a
+                                                                                                                href="https://www.icao.int/environmental-protection/CarbonOffset/Pages/default.aspx"
+                                                                                                                target="_blank"
+                                                                                                                style="
+                                                                                                                    color: #208943;
+                                                                                                                "
+                                                                                                                >Guía</a
+                                                                                                            ></small
+                                                                                                        ></label
+                                                                                                    >
                                                                                                     <input
-                                                                                                        v-if="
-                                                                                                            ac.includes(
-                                                                                                                'CONSUMO'
-                                                                                                            )
-                                                                                                        "
                                                                                                         v-model="
                                                                                                             fuente
                                                                                                                 .resultado[
-                                                                                                                'dato_' +
-                                                                                                                    (ci +
-                                                                                                                        1)
+                                                                                                                'dato_1'
                                                                                                             ]
                                                                                                         "
                                                                                                         class="form-control"
                                                                                                         type="number"
                                                                                                         step="any"
-                                                                                                        @change="
-                                                                                                            fuente.tipo ==
-                                                                                                                'fuentes_moviles' ||
-                                                                                                            'fuentes_fijas' ||
-                                                                                                            'energia_importada' ||
-                                                                                                            'transportes_fuentes_moviles'
-                                                                                                                ? agregarDatosFuenteBiogenica(
-                                                                                                                      fuente.tipo,
-                                                                                                                      fuente.fuentetable_id,
-                                                                                                                      'dato_' +
-                                                                                                                          (ci +
-                                                                                                                              1)
-                                                                                                                  )
-                                                                                                                : ''
-                                                                                                        "
                                                                                                         :disabled="
                                                                                                             !editar_consumos
                                                                                                         "
                                                                                                     />
-                                                                                                    <input
-                                                                                                        v-else-if="
-                                                                                                            ac.includes(
-                                                                                                                'INCERTIDUMBRE'
-                                                                                                            )
-                                                                                                        "
-                                                                                                        v-model="
-                                                                                                            fuente
-                                                                                                                .resultado[
-                                                                                                                'incertidumbre_sistematica_adicional'
-                                                                                                            ]
-                                                                                                        "
-                                                                                                        class="form-control"
-                                                                                                        type="number"
-                                                                                                        step="any"
-                                                                                                        :disabled="
-                                                                                                            !editar_consumos
-                                                                                                        "
-                                                                                                    />
-                                                                                                    <input
-                                                                                                        v-else-if="
-                                                                                                            ac.includes(
-                                                                                                                'FUENTE'
-                                                                                                            )
-                                                                                                        "
-                                                                                                        v-model="
-                                                                                                            fuente
-                                                                                                                .resultado[
-                                                                                                                'descripcion_fuente_emision'
-                                                                                                            ]
-                                                                                                        "
-                                                                                                        class="form-control"
-                                                                                                        type="text"
-                                                                                                        :disabled="
-                                                                                                            !editar_consumos
-                                                                                                        "
-                                                                                                    />
-                                                                                                </template>
-                                                                                            </div>
+                                                                                                </div>
+                                                                                            </template>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -2946,7 +3058,9 @@ export default {
             options_fertilizante: [],
             options_cal: [],
             options_electricidad: [],
-            options_viaje: [],
+            options_pasajero: [],
+            options_carga: [],
+            options_aereo: [],
             options_producto: [],
             options_equipo: [],
             options_materia_prima: [],
@@ -3200,7 +3314,12 @@ export default {
             this.filtroArrayOpciones(fertilizantes, "options_cal", "cal");
 
             this.options_electricidad = await Electricidad.get();
-            this.options_viaje = await Viaje.get();
+
+            let viajes = await Viaje.get();
+
+            this.filtroArrayOpciones(viajes, "options_pasajero", "pasajero");
+            this.filtroArrayOpciones(viajes, "options_carga", "carga");
+            this.filtroArrayOpciones(viajes, "options_aereo", "aereo");
 
             let productos = await Producto.get();
             this.filtroArrayOpciones(
@@ -3777,6 +3896,7 @@ export default {
                     transportes_carga_pasajeros: {
                         Transporte_carga: [],
                         Transporte_pasajeros: [],
+                        Transporte_aereo: [],
                     },
 
                     transportes_fuentes_moviles_biogenico_26: {

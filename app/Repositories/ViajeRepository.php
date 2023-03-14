@@ -29,10 +29,11 @@ class ViajeRepository extends BaseRepository
     }
 
 
-    public function formViaje($id_viaje)
+    public function formViaje($tipo, $id_viaje)
     {
         $data = [];
         $data['id_viaje'] = $id_viaje;
+        $data['tipo'] = $tipo;
         if ($id_viaje != '') {
             $data['accion'] = 'Actualizar';
         } else {
@@ -40,7 +41,6 @@ class ViajeRepository extends BaseRepository
         }
         return view('fuente/viaje/form_viaje', $data);
     }
-
 
     /**
      * @param array $data

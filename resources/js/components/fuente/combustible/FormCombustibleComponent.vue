@@ -436,14 +436,15 @@ export default {
             this.datos.tipo != "gaseoso"
         ) {
             this.$root.mostrarMensaje(
-                "error",
+                "Error",
                 "No existe el tipo de combustible especificado",
                 "error"
             );
             this.$root.redirectIndex("/fuentes");
-        }
-        if (this.datos.accion == "Actualizar") {
-            this.getCombustible();
+        } else {
+            if (this.datos.accion == "Actualizar") {
+                this.getCombustible();
+            }
         }
     },
     methods: {

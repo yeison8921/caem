@@ -183,6 +183,9 @@ class FuenteEmision extends Model
             case 'Transporte_pasajeros':
                 $texto = 'Transporte de pasajeros';
                 break;
+            case 'Transporte_aereo':
+                $texto = 'Transporte aéreo';
+                break;
             case 'Producto':
                 $texto = 'Productos';
                 break;

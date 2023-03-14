@@ -196,8 +196,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/electricidades/edit/{id}', [ElectricidadController::class, 'formElectricidad']);
 
     //Viajes
-    Route::get('/viajes/create', [ViajeController::class, 'formViaje']);
-    Route::get('/viajes/edit/{id}', [ViajeController::class, 'formViaje']);
+    Route::get('/viajes/{tipo}/create', [ViajeController::class, 'formViaje']);
+    Route::get('/viajes/{tipo}/edit/{id}', [ViajeController::class, 'formViaje']);
 
     //Productos
     Route::get('/productos/{tipo}/create', [ProductoController::class, 'formProducto']);

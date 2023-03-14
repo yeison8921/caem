@@ -23,7 +23,10 @@
                         <div class="col-lg-1 offset-lg-11">
                             <div
                                 class="d-grid gap-2"
-                                v-if="fuente != 'porcentajes'"
+                                v-if="
+                                    fuente != 'porcentajes' &&
+                                    fuente != 'viajes_aereo'
+                                "
                             >
                                 <a
                                     :href="
@@ -119,89 +122,115 @@ export default {
         return {
             options_fuente: [
                 {
-                    value: "combustibles_liquido",
-                    label: "Consumo de combustible líquido",
-                },
-                {
-                    value: "combustibles_solido",
-                    label: "Consumo de combustible sólido",
-                },
-                {
-                    value: "combustibles_gaseoso",
-                    label: "Consumo de combustible gaseoso",
-                },
-                {
-                    value: "refrigerantes",
-                    label: "Consumo de refrigerantes y espumantes",
-                },
-                { value: "extintores", label: "Uso de extintores" },
-                { value: "lubricantes", label: "Consumo de lubricantes" },
-                { value: "fugas", label: "Fugas de CO2 en proceso" },
-                {
-                    value: "aislamientos",
                     label: "Consumo de aislante eléctrico",
-                },
-
-                {
-                    value: "emisiones_embalse",
-                    label: "Uso de embalses o represamientos de agua",
-                },
-                { value: "emisiones_mineria", label: "Procesos de minería" },
-                {
-                    value: "emisiones_industrial",
-                    label: "Procesos industriales",
+                    value: "aislamientos",
                 },
                 {
-                    value: "emisiones_residuo",
-                    label: "Procesos de gestión de residuos",
-                },
-
-                {
-                    value: "fermentaciones",
-                    label: "Procesos agricolas (ganadería - fermentación entérica)",
-                },
-
-                {
-                    value: "estiercoles_estiercol",
-                    label: "Procesos agrícolas (manejo de estiércol)",
+                    label: "Consumo de combustible gaseoso",
+                    value: "combustibles_gaseoso",
                 },
                 {
-                    value: "estiercoles_residuo",
-                    label: "Proceso agrícolas (manejo de residuos agropecuarios) ",
+                    label: "Consumo de combustible líquido",
+                    value: "combustibles_liquido",
                 },
-
                 {
-                    value: "fertilizantes_fertilizante",
-                    label: "Procesos agrícolas (uso de fertilizantes)",
+                    label: "Consumo de combustible sólido",
+                    value: "combustibles_solido",
                 },
-                { value: "fertilizantes_cal", label: "Procesos con cal" },
-
                 {
-                    value: "electricidades",
                     label: "Consumo de energía eléctrica",
-                },
-                { value: "viajes", label: "Viajes" },
-
-                {
-                    value: "productos_utiliza",
-                    label: "Productos que utiliza la organización",
+                    value: "electricidades",
                 },
                 {
-                    value: "productos_uso",
-                    label: "Uso de productos de la organización",
+                    label: "Consumo de lubricantes",
+                    value: "lubricantes",
                 },
-
-                { value: "trasversales", label: "Trasversales" },
-                { value: "otros", label: "Otros" },
                 {
-                    value: "porcentajes",
+                    label: "Consumo de refrigerantes y espumantes",
+                    value: "refrigerantes",
+                },
+                {
+                    label: "Fugas de CO2 en proceso",
+                    value: "fugas",
+                },
+                {
+                    label: "Otros viajes aéreos de pasajeros",
+                    value: "viajes_aereo",
+                },
+                {
+                    label: "Otros",
+                    value: "otros",
+                },
+                {
                     label: "Porcentaje corporativo y biogenico",
+                    value: "porcentajes",
+                },
+                {
+                    label: "Proceso agrícolas (manejo de residuos agropecuarios) ",
+                    value: "estiercoles_residuo",
+                },
+                {
+                    label: "Procesos agricolas (ganadería - fermentación entérica)",
+                    value: "fermentaciones",
+                },
+                {
+                    label: "Procesos agrícolas (manejo de estiércol)",
+                    value: "estiercoles_estiercol",
+                },
+                {
+                    label: "Procesos agrícolas (uso de fertilizantes)",
+                    value: "fertilizantes_fertilizante",
+                },
+                {
+                    label: "Procesos con cal",
+                    value: "fertilizantes_cal",
+                },
+                {
+                    label: "Procesos de gestión de residuos",
+                    value: "emisiones_residuo",
+                },
+                {
+                    label: "Procesos de minería",
+                    value: "emisiones_mineria",
+                },
+                {
+                    label: "Procesos industriales",
+                    value: "emisiones_industrial",
+                },
+                {
+                    label: "Productos que utiliza la organización",
+                    value: "productos_utiliza",
+                },
+                {
+                    label: "Transporte de carga",
+                    value: "viajes_carga",
+                },
+                {
+                    label: "Transporte de pasajeros",
+                    value: "viajes_pasajero",
+                },
+                {
+                    label: "Trasversales",
+                    value: "trasversales",
+                },
+                {
+                    label: "Uso de embalses o represamientos de agua",
+                    value: "emisiones_embalse",
+                },
+                {
+                    label: "Uso de extintores",
+                    value: "extintores",
+                },
+                {
+                    label: "Uso de productos de la organización",
+                    value: "productos_uso",
                 },
             ],
             fuente: "",
             fuentes: "",
         };
     },
+    mounted() {},
     methods: {
         async getFuentes() {
             this.$root.mostrarCargando();
@@ -230,7 +259,7 @@ export default {
                 modelo = Fermentacion;
             } else if (this.fuente == "electricidades") {
                 modelo = Electricidad;
-            } else if (this.fuente == "viajes") {
+            } else if (this.fuente.includes("viajes")) {
                 modelo = Viaje;
             } else if (this.fuente.includes("productos")) {
                 modelo = Producto;

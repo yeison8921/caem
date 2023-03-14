@@ -3,7 +3,7 @@
         <div class="row">
             <div class="form-group">
                 <br />
-                <h4>{{ datos.accion }} viaje</h4>
+                <h4>{{ datos.accion }} transporte {{ datos.tipo }}</h4>
             </div>
         </div>
         <div class="card">
@@ -114,8 +114,21 @@ export default {
     props: ["datos"],
 
     mounted() {
-        if (this.datos.accion == "Actualizar") {
-            this.getviaje();
+        if (
+            this.datos.tipo != "pasajero" &&
+            this.datos.tipo != "carga" &&
+            this.datos.tipo != "aereo"
+        ) {
+            this.$root.mostrarMensaje(
+                "Error",
+                "No existe el tipo de transporte especificado",
+                "error"
+            );
+            this.$root.redirectIndex("/fuentes");
+        } else {
+            if (this.datos.accion == "Actualizar") {
+                this.getviaje();
+            }
         }
     },
     methods: {

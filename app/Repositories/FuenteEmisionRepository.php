@@ -270,6 +270,7 @@ class FuenteEmisionRepository extends BaseRepository
         $jtcp = new stdClass();
         $jtcp->Transporte_carga = [];
         $jtcp->Transporte_pasajeros = [];
+        $jtcp->Transporte_aereo = [];
 
         //json transporte biogenico
         $jtb26 = new stdClass();

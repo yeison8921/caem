@@ -8,6 +8,7 @@ use App\Http\Requests\Api\Viaje\UpdateViajeRequest;
 use App\Models\User;
 use App\Models\Viaje;
 use App\Repositories\ViajeRepository;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 /**
@@ -27,7 +28,7 @@ class ViajeController extends Controller
      */
     public function __construct(ViajeRepository $viajeRepository)
     {
-        $this->vaijeRepository = $viajeRepository;
+        $this->viajeRepository = $viajeRepository;
     }
 
     /**
@@ -37,7 +38,9 @@ class ViajeController extends Controller
      */
     public function index()
     {
-        $query = QueryBuilder::for(Viaje::class);
+        $query = QueryBuilder::for(Viaje::class)->allowedFilters([
+            AllowedFilter::exact('tipo'),
+        ]);
 
         return $query->get();
     }
@@ -53,10 +56,10 @@ class ViajeController extends Controller
         return QueryBuilder::for(Viaje::whereId($viaje->id))->first();
     }
 
-    public function formViaje($id_viaje = '')
+    public function formViaje($tipo, $id_viaje = '')
     {
         if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
-            return $this->vaijeRepository->formViaje($id_viaje);
+            return $this->viajeRepository->formViaje($tipo, $id_viaje);
         }
 
         return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
@@ -67,7 +70,7 @@ class ViajeController extends Controller
      */
     protected function store(StoreViajeRequest $data)
     {
-        return $this->vaijeRepository->create($data->all());
+        return $this->viajeRepository->create($data->all());
     }
 
     /**
@@ -79,6 +82,6 @@ class ViajeController extends Controller
      */
     public function update(UpdateViajeRequest $request, $viaje)
     {
-        return $this->vaijeRepository->update($request, $viaje);
+        return $this->viajeRepository->update($request, $viaje);
     }
 }
