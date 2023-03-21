@@ -250,11 +250,16 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                         $fuentes_emision[$kfe][$skfe]['resultado']['unidad_factor_emision_' . $e . $ar] = $fe['fuentetable']['unidad_factor_emision_' . $e . $unidad_factor];
                         $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton' . $biogenico . $ar] = ($fuentes_emision[$kfe][$skfe]['resultado']['total'] * $fuentes_emision[$kfe][$skfe]['resultado']['factor_emision_' . $e . $biogenico . $ar]) / 1000;
 
-                        if ($fuentes_emision[$kfe][$skfe]['fuentetable']['tipo'] == 'aereo') {
-                            $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton_eq' . $biogenico . $ar] = $fuentes_emision[$kfe][$skfe]['resultado']['dato_1'];
+                        if ($fuentes_emision[$kfe][$skfe]['tipo'] == 'transportes_carga_pasajeros') {
+                            if ($fuentes_emision[$kfe][$skfe]['fuentetable']['tipo'] == 'aereo') {
+                                $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton_eq' . $biogenico . $ar] = $fuentes_emision[$kfe][$skfe]['resultado']['dato_1'] / 1000;
+                            } else {
+                                $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton_eq' . $biogenico . $ar] = $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton' . $biogenico . $ar] * $this->json_geis->$ar->$e;
+                            }
                         } else {
                             $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton_eq' . $biogenico . $ar] = $fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton' . $biogenico . $ar] * $this->json_geis->$ar->$e;
                         }
+
 
                         if ($fuentes_emision[$kfe][$skfe]['resultado']['total'] > 0) {
                             $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_factor_emision_' . $e . $biogenico . $ar] = $fe['fuentetable']['incertidumbre_' . $e . '_2' . $incertidumbre_factor];
@@ -265,8 +270,12 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                         $fuentes_emision[$kfe][$skfe]['resultado']['columna_auxiliar_' . $e . $biogenico . $ar] = pow(($fuentes_emision[$kfe][$skfe]['resultado']['emision_' . $e . '_ton_eq' . $biogenico . $ar] * $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_emision_' . $e . $biogenico . $ar]), 2);
 
                         if ($biogenico == '') {
-                            if ($fuentes_emision[$kfe][$skfe]['fuentetable']['tipo'] == 'aereo') {
-                                $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono' . $ar] = $fuentes_emision[$kfe][$skfe]['resultado']['dato_1'];
+                            if ($fuentes_emision[$kfe][$skfe]['tipo'] == 'transportes_carga_pasajeros') {
+                                if ($fuentes_emision[$kfe][$skfe]['fuentetable']['tipo'] == 'aereo') {
+                                    $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono' . $ar] = $fuentes_emision[$kfe][$skfe]['resultado']['dato_1'] / 1000;
+                                } else {
+                                    $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono' . $ar] = $fuentes_emision[$kfe][$skfe]['resultado']['emision_co2_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_ch4_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_n2o_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_compuestos_fluorados_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_sf6_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_nf3_ton_eq' . $ar];
+                                }
                             } else {
                                 $fuentes_emision[$kfe][$skfe]['resultado']['huella_carbono' . $ar] = $fuentes_emision[$kfe][$skfe]['resultado']['emision_co2_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_ch4_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_n2o_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_compuestos_fluorados_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_sf6_ton_eq' . $ar] + $fuentes_emision[$kfe][$skfe]['resultado']['emision_nf3_ton_eq' . $ar];
                             }

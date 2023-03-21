@@ -2854,17 +2854,33 @@
                                                                                                             >(Ingrese
                                                                                                             total
                                                                                                             de
-                                                                                                            toneladas
+                                                                                                            kilogramos
                                                                                                             de
                                                                                                             CO2
-                                                                                                            generadas)
+                                                                                                            generados
+                                                                                                            por
+                                                                                                            viajes
+                                                                                                            aéreos
+                                                                                                            de
+                                                                                                            pasajeros
+                                                                                                            en
+                                                                                                            el
+                                                                                                            periodo).
+                                                                                                            Para
+                                                                                                            calcular
+                                                                                                            el
+                                                                                                            valor
+                                                                                                            de
+                                                                                                            cada
+                                                                                                            viaje
+                                                                                                            ingrese
                                                                                                             <a
                                                                                                                 href="https://www.icao.int/environmental-protection/CarbonOffset/Pages/default.aspx"
                                                                                                                 target="_blank"
                                                                                                                 style="
                                                                                                                     color: #208943;
                                                                                                                 "
-                                                                                                                >Guía</a
+                                                                                                                >AQUÍ</a
                                                                                                             ></small
                                                                                                         ></label
                                                                                                     >
