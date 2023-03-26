@@ -110,7 +110,9 @@ export default {
             this.$root.mostrarCargando("Consultando información");
             this.informacion_empresa = await InformacionEmpresa.include(
                 "empresa",
-                "empresaSede"
+                "empresaSede",
+                "empresaSede.ciudad",
+                "empresaSede.departamento"
             ).find(this.periodo_id);
 
             let fecha_base = new Date(
@@ -568,8 +570,9 @@ export default {
                                 ["NIT.:", this.informacion_empresa.empresa.nit],
                                 [
                                     "Dirección:",
-                                    this.informacion_empresa.empresa.direccion
-                                        ? this.informacion_empresa.empresa
+                                    this.informacion_empresa.empresa_sede
+                                        .direccion
+                                        ? this.informacion_empresa.empresa_sede
                                               .direccion
                                         : "N/R",
                                 ],
@@ -597,7 +600,9 @@ export default {
                             this.informacion_empresa.empresa.nombre +
                                 " / " +
                                 this.informacion_empresa.empresa_sede.nombre,
-                            " para el periodo de PERIODO DE DILIGENCIAMIENTO, exponiendo las fuentes de generación de GEI clasificadas por emisiones, como estrategia para la mejora del desempeño ambiental empresarial y la reducción de las emisiones de gases de efecto invernadero en cumplimiento con las políticas nacionales y organizacionales.",
+                            " para el periodo de " +
+                                this.informacion_empresa.label +
+                                ", exponiendo las fuentes de generación de GEI clasificadas por emisiones, como estrategia para la mejora del desempeño ambiental empresarial y la reducción de las emisiones de gases de efecto invernadero en cumplimiento con las políticas nacionales y organizacionales.",
                         ],
                         style: "paragraph",
                     },
@@ -626,10 +631,19 @@ export default {
                     {
                         text: [
                             "",
-                            this.informacion_empresa.empresa.nombre +
-                                " / " +
-                                this.informacion_empresa.empresa_sede.nombre,
-                            " está localizada en el municipio de DIRECCIÓN, MUNICIPIO, DEPARTAMENTO.",
+                            this.informacion_empresa.empresa.nombre,
+                            " / ",
+                            this.informacion_empresa.empresa_sede.nombre,
+                            " está localizada en ",
+                            this.informacion_empresa.empresa_sede.direccion
+                                ? this.informacion_empresa.empresa_sede
+                                      .direccion
+                                : "",
+                            ", ",
+                            this.informacion_empresa.empresa_sede.ciudad.nombre,
+                            ", ",
+                            this.informacion_empresa.empresa_sede.departamento
+                                .nombre,
                         ],
                         style: "paragraph",
                     },
@@ -651,7 +665,8 @@ export default {
                             this.informacion_empresa.empresa.nombre +
                                 " / " +
                                 this.informacion_empresa.empresa_sede.nombre,
-                            " el presente informe contempla la medición realizada corresponde a la vigencia del periodo comprendido entre PERIODO DE MEDICIÓN",
+                            " el presente informe contempla la medición realizada corresponde a la vigencia del periodo comprendido entre " +
+                                this.informacion_empresa.label,
                         ],
                         style: "paragraph",
                     },
