@@ -63,6 +63,14 @@
                             Calcular
                         </button>
                     </div>
+                    <div class="mb-3 text-end">
+                        <generar-reporte-component
+                            :empresa_id="empresa"
+                            :sede_id="sede"
+                            :periodo_id="periodo"
+                            v-if="empresa && sede && periodo"
+                        />
+                    </div>
                 </form>
             </div>
             <div class="col-lg-9" v-if="mostrar_graficas">
@@ -323,6 +331,7 @@ import HuellaCarbonoGeiBar from "./HuellaCarbonoGeiBar.vue";
 import HuellaCarbonoFuenteBar from "./HuellaCarbonoFuenteBar.vue";
 import HuellaCarbonoFuentePie from "./HuellaCarbonoFuentePie.vue";
 import HuellaCarbonoTipoBar from "./HuellaCarbonoTipoBar.vue";
+import GenerarReporteComponent from "./GenerarReporteComponent.vue";
 import CumplimientoPrincipiosBar from "./CumplimientoPrincipiosBar.vue";
 
 export default {
@@ -335,10 +344,12 @@ export default {
         HuellaCarbonoFuentePie,
         HuellaCarbonoTipoBar,
         CumplimientoPrincipiosBar,
+        GenerarReporteComponent,
     },
 
     data() {
         return {
+            showGenerarReporte: false,
             convenio: "",
             empresa: "",
             sede: "",
@@ -504,6 +515,7 @@ export default {
                 })
                 .then((response) => {
                     if (response.data["total_huella_carbono"] != 0) {
+                        this.showGenerarReporte = true;
                         this.mostrar_graficas = true;
 
                         this.total_huella_carbono = Number(
@@ -547,6 +559,7 @@ export default {
                             Swal.close();
                         }, 1000);
                     } else {
+                        this.showGenerarReporte = false;
                         this.mostrar_graficas = false;
                         Swal.close();
                         this.$root.mostrarMensaje(
@@ -558,6 +571,7 @@ export default {
                 })
                 .catch((error) => {
                     Swal.close();
+                    this.showGenerarReporte = false;
                     this.$root.mostrarMensaje(
                         "Atención",
                         "No se ha registrado Información para la sede seleccionada",

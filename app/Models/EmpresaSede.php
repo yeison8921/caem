@@ -16,6 +16,7 @@ class EmpresaSede extends Model
         'empresa_id',
         'departamento_id',
         'ciudad_id',
+        'direccion',
     ];
 
     /**

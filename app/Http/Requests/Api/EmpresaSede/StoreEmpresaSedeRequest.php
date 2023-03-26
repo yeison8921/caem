@@ -31,6 +31,7 @@ class StoreEmpresaSedeRequest extends FormRequest
             'empresa_id' => ['required', 'integer'],
             'departamento_id' => ['required', 'integer'],
             'ciudad_id' => ['required', 'integer'],
+            'direccion' => ['required', 'string'],
         ];
     }
 }

@@ -79,6 +79,23 @@
                             >
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label required">Dirección</label>
+                        <input
+                            v-model.trim="form.direccion"
+                            type="text"
+                            class="form-control"
+                            :class="{
+                                'is-invalid': $v.form.direccion.$error,
+                                'is-valid': !$v.form.direccion.$invalid,
+                            }"
+                        />
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.form.direccion.required">{{
+                                required
+                            }}</span>
+                        </div>
+                    </div>
 
                     <div class="mb-3">
                         <div class="col-lg-4 offset-lg-4">
@@ -109,6 +126,7 @@ export default {
                 empresa_id: "",
                 departamento_id: "",
                 ciudad_id: "",
+                direccion: "",
             },
             nombre_empresa: "",
             required: "Este campo es requerido",
@@ -121,6 +139,7 @@ export default {
                 empresa_id: "",
                 departamento_id: "",
                 ciudad_id: "",
+                direccion: "",
             }),
         };
     },
@@ -134,6 +153,9 @@ export default {
                 required,
             },
             ciudad_id: {
+                required,
+            },
+            direccion: {
                 required,
             },
         },
@@ -189,6 +211,7 @@ export default {
             this.form.empresa_id = sede.empresa_id;
             this.form.departamento_id = sede.departamento_id;
             this.form.ciudad_id = sede.ciudad_id;
+            this.form.direccion = sede.direccion;
             this.nombre_empresa = sede.empresa.nombre;
         },
 
@@ -218,6 +241,7 @@ export default {
                 this.empresa_sede.empresa_id = this.form.empresa_id;
                 this.empresa_sede.departamento_id = this.form.departamento_id;
                 this.empresa_sede.ciudad_id = this.form.ciudad_id;
+                this.empresa_sede.direccion = this.form.direccion;
                 await this.empresa_sede.save();
 
                 Swal.close();

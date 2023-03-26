@@ -60,6 +60,7 @@
                                 <th>Nombre</th>
                                 <th>Departamento</th>
                                 <th>Ciudad</th>
+                                <th>Dirección</th>
                                 <th>Empresario(s)</th>
                                 <th>Acciones</th>
                             </tr>
@@ -71,6 +72,7 @@
                                 <td>
                                     {{ s.ciudad.nombre }}
                                 </td>
+                                <td>{{ s.direccion }}</td>
                                 <td>
                                     <ol>
                                         <li

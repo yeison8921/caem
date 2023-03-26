@@ -55,7 +55,7 @@ class InformacionEmpresaController extends Controller
      */
     public function show(InformacionEmpresa $informacion_empresa)
     {
-        return QueryBuilder::for(InformacionEmpresa::whereId($informacion_empresa->id))->first();
+        return QueryBuilder::for(InformacionEmpresa::whereId($informacion_empresa->id))->allowedIncludes('empresa', 'empresaSede')->first();
     }
 
     /**

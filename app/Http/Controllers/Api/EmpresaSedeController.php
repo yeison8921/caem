@@ -42,6 +42,7 @@ class EmpresaSedeController extends Controller
             AllowedFilter::exact('empresa_id'),
             AllowedFilter::exact('departamento_id'),
             AllowedFilter::exact('ciudad_id'),
+            AllowedFilter::exact('direccion'),
         ])->allowedIncludes('empresa', 'departamento', 'ciudad', 'empresarios');
 
         return $query->get();
