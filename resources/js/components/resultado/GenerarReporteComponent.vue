@@ -158,12 +158,130 @@ export default {
                 .catch((error) => {
                     // Handle the error
                 });
-
-            this.resultados.fuentes_moviles = await this.getFuentesByTipo(
+            this.resultados.fuentes_moviles = {};
+            this.resultados.fuentes_moviles.data = await this.getFuentesByTipo(
                 this.empresa_id,
                 this.sede_id,
                 this.periodo_id,
                 "fuentes_moviles"
+            );
+            this.resultados.emision_directa = {};
+            this.resultados.emision_directa.total_huella_carbono_ar6 = 0;
+            this.resultados.emision_directa.total_incertidumbre_ar6 = 0;
+            this.resultados.fuentes_moviles.total_huella_carbono_ar6 = 0;
+            this.resultados.fuentes_moviles.total_incertidumbre_ar6 = 0;
+            this.resultados.tabla1Body = [
+                // CREAR TABLA
+                [
+                    { text: "", style: "headerTableResult" },
+                    {
+                        colSpan: 5,
+                        text: "FUENTES MÓVILES",
+                        style: "headerTableResult",
+                    },
+                    {},
+                    {},
+                    {},
+                    {},
+                ],
+                [
+                    {
+                        rowSpan: 2,
+                        text: "FUENTE DE EMISIÓN DE GEI",
+                        style: "headerTableResult",
+                    },
+                    {
+                        rowSpan: 2,
+                        text: "TIPO DE COMBUSTIBLE / REFRIGERANTE",
+                        style: "headerTableResult",
+                    },
+                    {
+                        colSpan: 2,
+                        text: "CONSUMO",
+                        style: "headerTableResult",
+                    },
+                    {},
+                    {
+                        rowSpan: 2,
+                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        style: "headerTableResult",
+                    },
+                    {
+                        rowSpan: 2,
+                        text: "INCERTIDUMBRE DE LA FUENTE",
+                        style: "headerTableResult",
+                    },
+                ],
+                [
+                    {},
+                    {},
+                    {
+                        text: "UNIDAD",
+                        style: "headerTableResult",
+                    },
+                    {
+                        text: "CANTIDAD",
+                        style: "headerTableResult",
+                    },
+                    {},
+                    {},
+                ],
+            ];
+            Object.values(this.resultados.fuentes_moviles.data).forEach(
+                (_element) => {
+                    _element.forEach((_fuente) => {
+                        this.resultados.fuentes_moviles.total_huella_carbono_ar6 =
+                            this.resultados.fuentes_moviles
+                                .total_huella_carbono_ar6 +
+                            _fuente.resultado.huella_carbono_ar6;
+                        this.resultados.fuentes_moviles.total_incertidumbre_ar6 =
+                            this.resultados.fuentes_moviles
+                                .total_incertidumbre_ar6 +
+                            _fuente.resultado.incertidumbre_fuente_ar6;
+                        // TODO:  push rows to table
+                        this.resultados.tabla1Body.push([
+                            _fuente.fuente_emision_mostrar,
+                            _fuente.fuentetable.nombre,
+                            _fuente.fuentetable.unidad_consumo,
+                            _fuente.resultado.promedio,
+                            _fuente.resultado.huella_carbono_ar6,
+                            _fuente.resultado.incertidumbre_fuente_ar6,
+                        ]);
+                    });
+                }
+            );
+
+            this.resultados.tabla1Body.push([
+                // Footer of TABLA
+                {
+                    colSpan: 4,
+                    text: "SUBTOTAL FUENTES MÓVILES",
+                    style: "footerTableResult",
+                },
+                "",
+                "",
+                "",
+                {
+                    text: this.resultados.fuentes_moviles
+                        .total_huella_carbono_ar6,
+                    fillColor: "#348c4f",
+                    style: "footerTableResult",
+                },
+                {
+                    text: this.resultados.fuentes_moviles
+                        .total_incertidumbre_ar6,
+                    fillColor: "#348c4f",
+                    style: "footerTableResult",
+                },
+            ]);
+
+            // TODO: this.resultados.fuentes_moviles.total_porcentaje_huella_total =
+
+            this.resultados.fuentes_fijas = await this.getFuentesByTipo(
+                this.empresa_id,
+                this.sede_id,
+                this.periodo_id,
+                "fuentes_fijas"
             );
             console.log(this.resultados.fuentes_moviles);
         },
@@ -734,7 +852,13 @@ export default {
 
                     {
                         text: [
-                            "Las emisiones directas corresponden a emisiones generadas por la organización dentro de los límites señalados para el presente informe. El total de emisiones directas es de XXX tCO2e, las cuales representa aproximadamente el XX% del total de la huella de carbono de la empresa, con un rango de incertidumbre de +/- XX% que, de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “XXX”. ",
+                            "Las emisiones directas corresponden a emisiones generadas por la organización dentro de los límites señalados para el presente informe. El total de emisiones directas es de " +
+                                this.resultados.emision_directa
+                                    .total_huella_carbono_ar6 +
+                                " tCO2e, las cuales representa aproximadamente el " +
+                                this.resultados.emision_directa
+                                    .total_porcentaje_huella_total +
+                                "% del total de la huella de carbono de la empresa, con un rango de incertidumbre de +/- XX% que, de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “XXX”. ",
                         ],
                         style: "paragraph",
                     },
@@ -816,84 +940,7 @@ export default {
                                 "auto",
                             ],
                             headerRows: 3,
-                            body: [
-                                [
-                                    { text: "", style: "headerTableResult" },
-                                    {
-                                        colSpan: 5,
-                                        text: "FUENTES MÓVILES",
-                                        style: "headerTableResult",
-                                    },
-                                    {},
-                                    {},
-                                    {},
-                                    {},
-                                ],
-                                [
-                                    {
-                                        rowSpan: 2,
-                                        text: "FUENTE DE EMISIÓN DE GEI",
-                                        style: "headerTableResult",
-                                    },
-                                    {
-                                        rowSpan: 2,
-                                        text: "TIPO DE COMBUSTIBLE / REFRIGERANTE",
-                                        style: "headerTableResult",
-                                    },
-                                    {
-                                        colSpan: 2,
-                                        text: "CONSUMO",
-                                        style: "headerTableResult",
-                                    },
-                                    {},
-                                    {
-                                        rowSpan: 2,
-                                        text: "HUELLA DE CARBONO \n (t CO2 e)",
-                                        style: "headerTableResult",
-                                    },
-                                    {
-                                        rowSpan: 2,
-                                        text: "INCERTIDUMBRE DE LA FUENTE",
-                                        style: "headerTableResult",
-                                    },
-                                ],
-                                [
-                                    {},
-                                    {},
-                                    {
-                                        text: "UNIDAD",
-                                        style: "headerTableResult",
-                                    },
-                                    {
-                                        text: "CANTIDAD",
-                                        style: "headerTableResult",
-                                    },
-                                    {},
-                                    {},
-                                ],
-                                ["2", "", "", "", "", ""],
-                                ["3", "", "", "", "", ""],
-                                [
-                                    {
-                                        colSpan: 4,
-                                        text: "SUBTOTAL FUENTES MÓVILES",
-                                        style: "footerTableResult",
-                                    },
-                                    "",
-                                    "",
-                                    "",
-                                    {
-                                        text: "1",
-                                        fillColor: "#348c4f",
-                                        style: "footerTableResult",
-                                    },
-                                    {
-                                        text: "1",
-                                        fillColor: "#348c4f",
-                                        style: "footerTableResult",
-                                    },
-                                ],
-                            ],
+                            body: this.resultados.tabla1Body,
                         },
                         alignment: "center",
                     },
