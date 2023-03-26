@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Api\FuenteEmision\UpdateFuenteEmisionRequest;
 use App\Models\FuenteEmision;
 use App\Repositories\FuenteEmisionRepository;
-use App\Http\Requests\Api\FuenteEmision\UpdateFuenteEmisionRequest;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -15,7 +15,6 @@ use Spatie\QueryBuilder\QueryBuilder;
  */
 class FuenteEmisionController extends Controller
 {
-
     /**
      * @var FuenteEmisionRepository
      */
@@ -47,6 +46,7 @@ class FuenteEmisionController extends Controller
             'subproceso.proceso',
             'fuentetable',
         ]);
+
         return $query->get();
     }
 
@@ -90,6 +90,11 @@ class FuenteEmisionController extends Controller
     public function getFuentesEmision(Request $request)
     {
         return $this->fuenteEmisionRepository->getFuentesEmision($request);
+    }
+
+    public function getFuentesByTipo(Request $request)
+    {
+        return $this->fuenteEmisionRepository->getFuentesByTipo($request);
     }
 
     public function recargarFuentesEmision(Request $request)

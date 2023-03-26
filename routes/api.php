@@ -145,6 +145,7 @@ Route::group(['as' => 'auth.'], function () {
         Route::post('guardarFuentesEmision', [FuenteEmisionController::class, 'guardarFuentesEmision']);
         Route::post('recargarFuentesEmision', [FuenteEmisionController::class, 'recargarFuentesEmision']);
         Route::post('getFuentesEmision', [FuenteEmisionController::class, 'getFuentesEmision']);
+        Route::post('getFuentesByTipo', [FuenteEmisionController::class, 'getFuentesByTipo']);
 
         // Resultados fuente emision
         Route::apiResource('resultados_fuente_emision', ResultadoFuenteEmisionController::class);

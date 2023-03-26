@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Exceptions\GeneralException;
 use App\Models\FuenteEmision;
-use App\Models\InformacionEmpresa;
 use App\Models\ResultadoFuenteEmision;
 use Illuminate\Support\Facades\DB;
 use stdClass;
@@ -122,7 +121,7 @@ class FuenteEmisionRepository extends BaseRepository
 
                             if (str_contains($sk, 'Combustible')) {
                                 $modelo .= explode("_", $sk)[0];
-                            } else if (str_contains($sk, 'Transporte')) {
+                            } elseif (str_contains($sk, 'Transporte')) {
                                 $modelo .= 'Viaje';
                             } elseif ($sk == 'Embalse' || $sk == 'Mineria' || $sk == 'Industrial' || $sk == 'Residuo_organizacional') {
                                 $modelo .= 'Emision';
@@ -469,7 +468,7 @@ class FuenteEmisionRepository extends BaseRepository
             ->where([
                 ['empresa_id', $request->empresa_id],
                 ['sede_id', $request->sede_id],
-                ['informacion_empresa_id', $request->informacion_empresa_id]
+                ['informacion_empresa_id', $request->informacion_empresa_id],
             ])
             ->whereNull('subproceso_id')
             ->get()
@@ -618,6 +617,24 @@ class FuenteEmisionRepository extends BaseRepository
                 }
             }
         }
+
+        return response()->json($fuentes)->setEncodingOptions(JSON_NUMERIC_CHECK);
+    }
+    public function getFuentesByTipo($request)
+    {
+        $fuentes = FuenteEmision::groupBy('fuentetable_type', 'fuentetable_id', 'tipo')
+            ->with('fuentetable', 'resultado')
+            ->where([
+                ['empresa_id', $request->empresa_id],
+                ['sede_id', $request->sede_id],
+                ['informacion_empresa_id', $request->informacion_empresa_id],
+                ['tipo', $request->tipo],
+            ])
+            ->whereNull('subproceso_id')
+            ->get()
+            ->groupBy('tipo_mostrar');
+
+        $fuentes = collect($fuentes)->toArray();
 
         return response()->json($fuentes)->setEncodingOptions(JSON_NUMERIC_CHECK);
     }

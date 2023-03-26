@@ -56,6 +56,7 @@ export default {
                 "NOVIEMBRE",
                 "DICIEMBRE",
             ],
+            resultados: {},
         };
     },
     mounted() {
@@ -157,6 +158,14 @@ export default {
                 .catch((error) => {
                     // Handle the error
                 });
+
+            this.resultados.fuentes_moviles = await this.getFuentesByTipo(
+                this.empresa_id,
+                this.sede_id,
+                this.periodo_id,
+                "fuentes_moviles"
+            );
+            console.log(this.resultados.fuentes_moviles);
         },
         getFuentesEmision(empresa_id, sede_id, informacion_empresa_id) {
             return new Promise((resolve, reject) => {
@@ -165,6 +174,24 @@ export default {
                         empresa_id: empresa_id,
                         sede_id: sede_id,
                         informacion_empresa_id: informacion_empresa_id,
+                    })
+                    .then((response) => {
+                        resolve(response.data);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        },
+        //get fuentes moviles
+        getFuentesByTipo(empresa_id, sede_id, informacion_empresa_id, tipo) {
+            return new Promise((resolve, reject) => {
+                axios
+                    .post("api/getFuentesByTipo", {
+                        empresa_id: empresa_id,
+                        sede_id: sede_id,
+                        informacion_empresa_id: informacion_empresa_id,
+                        tipo: tipo,
                     })
                     .then((response) => {
                         resolve(response.data);
