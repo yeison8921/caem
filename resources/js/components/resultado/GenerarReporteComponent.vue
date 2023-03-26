@@ -960,12 +960,23 @@ export default {
                         text: [
                             "El resultado total de las ",
                             {
-                                text: "emisiones para las fuentes móviles es de XX tCO2e",
+                                text:
+                                    "emisiones para las fuentes móviles es de " +
+                                    this.resultados.fuentes_moviles
+                                        .total_huella_carbono_ar6 +
+                                    " tCO2e",
                                 bold: true,
                             },
                             "; con una ",
-                            { text: "incertidumbre de +/- XX%", bold: true },
-                            ", que de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “Buena (Good)”.",
+                            {
+                                text:
+                                    "incertidumbre de +/- " +
+                                    this.resultados.fuentes_moviles
+                                        .total_incertidumbre_ar6 +
+                                    "%",
+                                bold: true,
+                            },
+                            ", que de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “??????”.",
                         ],
                         style: "paragraph",
                     },
