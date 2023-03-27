@@ -92,9 +92,9 @@ class FuenteEmisionController extends Controller
         return $this->fuenteEmisionRepository->getFuentesEmision($request);
     }
 
-    public function getFuentesByTipo(Request $request)
+    public function getTablesAndTotals(Request $request)
     {
-        return $this->fuenteEmisionRepository->getFuentesByTipo($request);
+        return $this->fuenteEmisionRepository->getTablesAndTotals($request);
     }
 
     public function recargarFuentesEmision(Request $request)

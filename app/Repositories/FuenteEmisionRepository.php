@@ -620,7 +620,92 @@ class FuenteEmisionRepository extends BaseRepository
 
         return response()->json($fuentes)->setEncodingOptions(JSON_NUMERIC_CHECK);
     }
-    public function getFuentesByTipo($request)
+    /*
+    Tabla 1. Emisiones generadas por fuentes móviles
+    Tabla 2. Fuentes fijas", ""
+    Tabla 3. Emisiones de proceso", ""
+    Tabla 4 Resultados de Fuentes Directas", ""
+    Tabla 5. Emisiones Indirectas", ""
+    Tabla 6 Emisiones generadas por otras fuentes de emisión
+    Tabla 7 Emisiones generadas por otras fuentes de emisión
+    Tabla 8 Emisiones generadas por otras fuentes de emisión
+    Tabla 9 Emisiones generadas por otras fuentes de emisión
+    Tabla 10 Emisiones Directas Discriminadas por GEI
+    Tabla 11. Total Emisiones Discriminadas por GEI
+    Tabla 12. Resultados totales del inventario corporativo de GEI
+    Tabla 13. Factores de emisión", ""
+    Tabla 14. Potenciales de Calentamiento Global
+     */
+    public function getTablesAndTotals($request)
+    {
+        $fuentesMoviles = $this->getFuentesByTipo($request, 'fuentes_moviles');
+        $fuentesFijas = $this->getFuentesByTipo($request, 'fuentes_fijas');
+        $fuentesEmisiones = $this->getFuentesByTipo($request, 'emisiones');
+
+        $fuentesT3 = $this->getFuentesByTipo($request, 'fuentes_proceso');
+        $fuentesT5 = $this->getFuentesByTipo($request, 'fuentes_indirectas');
+        $fuentesT6 = $this->getFuentesByTipo($request, 'fuentes_otros');
+        //fuentes moviles
+        $fuentes = [
+            'fuentes_moviles' => [ // round to 5 decimals
+                'total_huella_carbono_ar6' => round($fuentesMoviles->sum('resultado.huella_carbono_ar6'), 5),
+                'total_incertidumbre_fuente_ar6' =>  round($fuentesMoviles->sum('resultado.incertidumbre_fuente_ar6'), 5),
+                'data' => $fuentesMoviles,
+            ],
+        ];
+        //fuentes fijas
+        $fuentes = array_merge($fuentes, [
+            'fuentes_fijas' => [
+                'total_huella_carbono_ar6' =>  round($fuentesFijas->sum('resultado.huella_carbono_ar6'), 5),
+                'total_incertidumbre_fuente_ar6' =>  round($fuentesFijas->sum('resultado.incertidumbre_fuente_ar6'), 5),
+                'data' => $fuentesFijas,
+            ],
+        ]);
+        //fuentes emisiones
+        $fuentes = array_merge($fuentes, [
+            'emisiones' => [
+                'total_huella_carbono_ar6' =>  round($fuentesEmisiones->sum('resultado.huella_carbono_ar6'), 5),
+                'total_incertidumbre_fuente_ar6' =>  round($fuentesEmisiones->sum('resultado.incertidumbre_fuente_ar6'), 5),
+                'data' => $fuentesEmisiones,
+            ],
+        ]);
+        //fuentes fuentes_directas
+        $fuentes = array_merge($fuentes, [
+            'fuentes_directas' => [
+                'data' => [
+                    [
+                        'fuente' => 'fuentes_moviles',
+                        'huella_carbono' => $fuentes['fuentes_moviles']['total_huella_carbono_ar6'],
+                        'representacion' => '',
+                        'incertidumbre' => $fuentes['fuentes_moviles']['total_incertidumbre_fuente_ar6'],
+                    ],
+                    [
+                        'fuente' => 'fuentes_fijas',
+                        'huella_carbono' => $fuentes['fuentes_fijas']['total_huella_carbono_ar6'],
+                        'representacion' => '',
+                        'incertidumbre' => $fuentes['fuentes_fijas']['total_incertidumbre_fuente_ar6'],
+                    ],
+                    [
+                        'fuente' => 'emisiones',
+                        'huella_carbono' => $fuentes['emisiones']['total_huella_carbono_ar6'],
+                        'representacion' => '',
+                        'incertidumbre' => $fuentes['emisiones']['total_incertidumbre_fuente_ar6'],
+                    ],
+                ],
+                'total_huella_carbono' =>  round($fuentes['fuentes_moviles']['total_huella_carbono_ar6'] + $fuentes['fuentes_fijas']['total_huella_carbono_ar6'] + $fuentes['emisiones']['total_huella_carbono_ar6'], 5),
+                'total_incertidumbre' =>  round($fuentes['fuentes_moviles']['total_incertidumbre_fuente_ar6'] + $fuentes['fuentes_fijas']['total_incertidumbre_fuente_ar6'] + $fuentes['emisiones']['total_incertidumbre_fuente_ar6'], 5),
+            ],
+        ]);
+        ///
+        $fuentes = array_merge($fuentes, [
+            'fuentes_proceso' => $fuentesT3,
+            'fuentes_indirectas' => $fuentesT5,
+            'fuentes_otros' => $fuentesT6,
+        ]);
+
+        return response()->json($fuentes)->setEncodingOptions(JSON_NUMERIC_CHECK);
+    }
+    public function getFuentesByTipo($request, $tipo)
     {
         $fuentes = FuenteEmision::groupBy('fuentetable_type', 'fuentetable_id', 'tipo')
             ->with('fuentetable', 'resultado')
@@ -628,14 +713,11 @@ class FuenteEmisionRepository extends BaseRepository
                 ['empresa_id', $request->empresa_id],
                 ['sede_id', $request->sede_id],
                 ['informacion_empresa_id', $request->informacion_empresa_id],
-                ['tipo', $request->tipo],
+                ['tipo', $tipo],
             ])
             ->whereNull('subproceso_id')
-            ->get()
-            ->groupBy('tipo_mostrar');
+            ->get();
 
-        $fuentes = collect($fuentes)->toArray();
-
-        return response()->json($fuentes)->setEncodingOptions(JSON_NUMERIC_CHECK);
+        return $fuentes;
     }
 }
