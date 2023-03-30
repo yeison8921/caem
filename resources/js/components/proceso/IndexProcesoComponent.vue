@@ -235,51 +235,6 @@
                     <div v-if="paso == 1">
                         <div class="mb-3">
                             <label class="required"
-                                >¿La información que reportará para el cálculo
-                                de la huella de carbono incluye datos de sus
-                                proveedores?
-                            </label>
-                            <Multiselect
-                                v-model="ie.datos_proveedores"
-                                :options="options_si_no"
-                                placeholder="Seleccione una opción"
-                                :disabled="!editar_formulario"
-                                required
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label class="required"
-                                >¿La empresa cuenta con fuentes móviles
-                                propiedad de la compañía o que la organización
-                                asume el combustible?
-                            </label>
-                            <Multiselect
-                                v-model="ie.fuentes_moviles"
-                                :options="options_si_no"
-                                placeholder="Seleccione una opción"
-                                :disabled="!editar_formulario"
-                                required
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <label class="required"
-                                >¿La empresa realiza algún tipo de actividad
-                                agrícola?
-                            </label>
-                            <Multiselect
-                                v-model="ie.actividad_agricola"
-                                :options="options_si_no"
-                                placeholder="Seleccione una opción"
-                                :disabled="!editar_formulario"
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <!-- Paso 2 -->
-                    <div v-if="paso == 2">
-                        <div class="mb-3">
-                            <label class="required"
                                 >¿La empresa ha calculado su huella de carbono
                                 organizacional para un año base?
                             </label>
@@ -396,8 +351,8 @@
                         </div>
                     </div>
 
-                    <!-- Paso 3 -->
-                    <div v-if="paso == 3">
+                    <!-- Paso 2 -->
+                    <div v-if="paso == 2">
                         <div class="mb-3">
                             <label class="required"
                                 >¿La empresa ha realizado un proceso de revisión
@@ -491,8 +446,8 @@
                         </div>
                     </div>
 
-                    <!-- Paso 4 -->
-                    <div v-if="paso == 4">
+                    <!-- Paso 3 -->
+                    <div v-if="paso == 3">
                         <div class="mb-3">
                             <label class="required"
                                 >¿En la empresa se ha planteado metas de
@@ -635,8 +590,8 @@
                         </div>
                     </div>
 
-                    <!-- Paso 5 -->
-                    <div v-if="paso == 5">
+                    <!-- Paso 4 -->
+                    <div v-if="paso == 4">
                         <div class="mb-3">
                             <p><b>Pertinencia</b></p>
                         </div>
@@ -835,10 +790,10 @@
                                 v-if="paso != 1"
                                 @click="
                                     paso =
-                                        paso == 4
+                                        paso == 3
                                             ? ie.huella_base == 0
-                                                ? (paso = 2)
-                                                : 3
+                                                ? (paso = 1)
+                                                : 2
                                             : paso - 1
                                 "
                             >
@@ -849,9 +804,9 @@
                             <button
                                 type="submit"
                                 class="btn btn-primary"
-                                :disabled="paso == 5 && !editar_formulario"
+                                :disabled="paso == 4 && !editar_formulario"
                             >
-                                {{ this.paso != 5 ? "Siguiente" : "Guardar" }}
+                                {{ this.paso != 4 ? "Siguiente" : "Guardar" }}
                             </button>
                         </div>
                     </div>
@@ -3493,21 +3448,21 @@ export default {
         },
 
         async guardarInformacion(e) {
-            if (this.paso == 2) {
+            if (this.paso == 1) {
                 if (this.ie.huella_base == 0) {
-                    this.paso = 4;
+                    this.paso = 3;
                 } else {
                     this.paso++;
                 }
             } else {
-                if (!this.editar_formulario && this.paso == 5) {
-                    this.paso = 5;
+                if (!this.editar_formulario && this.paso == 4) {
+                    this.paso = 4;
                 } else {
                     this.paso++;
                 }
             }
 
-            if (this.paso == 6 && this.editar_formulario) {
+            if (this.paso == 5 && this.editar_formulario) {
                 this.$root.mostrarCargando("Guardando información");
 
                 await this.ie.save();
