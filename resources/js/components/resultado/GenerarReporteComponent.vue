@@ -478,6 +478,572 @@ export default {
                     this.resultados.fuentes_directas.total_incertidumbre,
                 ],
             ];
+
+            ////////////////// tabla 5 //////////////////////////////
+
+            this.resultados.fuentes_indirectas = {};
+            this.resultados.fuentes_indirectas.total_huella_carbono_ar6 =
+                tablasAndTotals.fuentes_indirectas.total_huella_carbono_ar6;
+            this.resultados.fuentes_indirectas.total_incertidumbre_fuente_ar6 =
+                tablasAndTotals.fuentes_indirectas.total_incertidumbre_fuente_ar6;
+            this.resultados.tabla5Body = [
+                [
+                    {
+                        rowSpan: 2,
+                        text: "FUENTE DE EMISIÓN DE GEI",
+                        fillColor: "#fabf8f",
+                        bold: true,
+                    },
+                    {
+                        rowSpan: 2,
+                        text: "FACTOR DE EMISION USADO",
+                        fillColor: "#fabf8f",
+                        bold: true,
+                    },
+                    {
+                        colSpan: 2,
+                        text: "CONSUMO",
+                        fillColor: "#fabf8f",
+                        bold: true,
+                    },
+                    {},
+                    {
+                        rowSpan: 2,
+                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        fillColor: "#fabf8f",
+                        bold: true,
+                    },
+                    {
+                        rowSpan: 2,
+                        text: "INCERTIDUMBRE DE LA FUENTE",
+                        fillColor: "#fabf8f",
+                        bold: true,
+                    },
+                ],
+                [
+                    {},
+                    {},
+                    {
+                        text: "UNIDAD",
+                        fillColor: "#fabf8f",
+                        bold: true,
+                    },
+                    {
+                        text: "CANTIDAD",
+                        fillColor: "#fabf8f",
+                        bold: true,
+                    },
+                    {},
+                    {},
+                ],
+            ];
+            tablasAndTotals.fuentes_indirectas.data?.forEach((_fuente) => {
+                // TODO:  push rows to table
+                this.resultados.tabla5Body.push([
+                    _fuente.fuente_emision_mostrar,
+                    _fuente.fuentetable.nombre,
+                    _fuente.fuentetable.unidad_consumo,
+                    _fuente.resultado.promedio,
+                    _fuente.resultado.huella_carbono_ar6,
+                    _fuente.resultado.incertidumbre_fuente_ar6,
+                ]);
+            });
+            this.resultados.tabla5Body.push([
+                // Footer of TABLA
+                {
+                    colSpan: 4,
+                    text: "SUBTOTAL EMISIONES INDIRECTAS",
+                    style: "footerTableResult",
+                    fillColor: "#fabf8f",
+                },
+                "",
+                "",
+                "",
+                {
+                    text: this.resultados.fuentes_indirectas
+                        .total_huella_carbono_ar6,
+                    fillColor: "#fabf8f",
+                    style: "footerTableResult",
+                },
+                {
+                    text: this.resultados.fuentes_indirectas
+                        .total_incertidumbre_fuente_ar6,
+                    fillColor: "#fabf8f",
+                    style: "footerTableResult",
+                },
+            ]);
+
+            //this.resultados.tabla5Body.push();
+
+            ////////////////Emisiones Indirectas por transporte - categoría 3 - Tabla 6 fuentes_C3 //////////////
+            this.resultados.fuentes_C3 = {};
+            this.resultados.fuentes_C3.total_huella_carbono_ar6 =
+                tablasAndTotals.fuentes_C3.total_huella_carbono_ar6;
+            this.resultados.fuentes_C3.total_incertidumbre_fuente_ar6 =
+                tablasAndTotals.fuentes_C3.total_incertidumbre_fuente_ar6;
+            this.resultados.tabla6Body = [
+                [
+                    {
+                        rowSpan: 2,
+                        text: "FUENTE DE EMISIÓN DE GEI",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        rowSpan: 2,
+                        text: "CARGA AMBIENTAL",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        colSpan: 2,
+                        text: "CONSUMO",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {},
+                    {
+                        rowSpan: 2,
+                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        rowSpan: 2,
+                        text: "INCERTIDUMBRE DE LA FUENTE",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                ],
+                [
+                    {},
+                    {},
+                    {
+                        text: "UNIDAD",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        text: "CANTIDAD",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {},
+                    {},
+                ],
+            ];
+            tablasAndTotals.fuentes_C3.data?.forEach((_fuente) => {
+                // TODO:  push rows to table
+                this.resultados.tabla6Body.push([
+                    _fuente.fuente_emision_mostrar,
+                    _fuente.fuentetable.nombre,
+                    _fuente.fuentetable.unidad_consumo,
+                    _fuente.resultado.promedio,
+                    _fuente.resultado.huella_carbono_ar6,
+                    _fuente.resultado.incertidumbre_fuente_ar6,
+                ]);
+            });
+            this.resultados.tabla6Body.push([
+                {
+                    colSpan: 4,
+                    text: "SUBTOTAL OTRAS FUENTES",
+                    fillColor: "#e5b8b7",
+                    bold: true,
+                },
+                "",
+                "",
+                "",
+                {
+                    text: this.resultados.fuentes_C3.total_huella_carbono_ar6,
+                    fillColor: "#e5b8b7",
+                    bold: true,
+                },
+                {
+                    text: this.resultados.fuentes_C3
+                        .total_incertidumbre_fuente_ar6,
+                    fillColor: "#e5b8b7",
+                    bold: true,
+                },
+            ]);
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////Emisiones Indirectas por productos que utiliza la organización - categoría 4 - Tabla 7 fuentes_C4 //////////////
+            this.resultados.fuentes_C4 = {};
+            this.resultados.fuentes_C4.total_huella_carbono_ar6 =
+                tablasAndTotals.fuentes_C4.total_huella_carbono_ar6;
+            this.resultados.fuentes_C4.total_incertidumbre_fuente_ar6 =
+                tablasAndTotals.fuentes_C4.total_incertidumbre_fuente_ar6;
+            this.resultados.tabla7Body = [
+                [
+                    {
+                        rowSpan: 2,
+                        text: "FUENTE DE EMISIÓN DE GEI",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        rowSpan: 2,
+                        text: "CARGA AMBIENTAL",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        colSpan: 2,
+                        text: "CONSUMO",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {},
+                    {
+                        rowSpan: 2,
+                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        rowSpan: 2,
+                        text: "INCERTIDUMBRE DE LA FUENTE",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                ],
+                [
+                    {},
+                    {},
+                    {
+                        text: "UNIDAD",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        text: "CANTIDAD",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {},
+                    {},
+                ],
+            ];
+            tablasAndTotals.fuentes_C4.data?.forEach((_fuente) => {
+                // TODO:  push rows to table
+                this.resultados.tabla7Body.push([
+                    _fuente.fuente_emision_mostrar,
+                    _fuente.fuentetable.nombre,
+                    _fuente.fuentetable.unidad_consumo,
+                    _fuente.resultado.promedio,
+                    _fuente.resultado.huella_carbono_ar6,
+                    _fuente.resultado.incertidumbre_fuente_ar6,
+                ]);
+            });
+            this.resultados.tabla7Body.push([
+                {
+                    colSpan: 4,
+                    text: "SUBTOTAL OTRAS FUENTES",
+                    fillColor: "#e5b8b7",
+                    bold: true,
+                },
+                "",
+                "",
+                "",
+                {
+                    text: this.resultados.fuentes_C4.total_huella_carbono_ar6,
+                    fillColor: "#e5b8b7",
+                    bold: true,
+                },
+                {
+                    text: this.resultados.fuentes_C4
+                        .total_incertidumbre_fuente_ar6,
+                    fillColor: "#e5b8b7",
+                    bold: true,
+                },
+            ]);
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////Emisiones Indirectas por uso de productos de la organización - categoría 5 - Tabla 8 fuentes_C5 //////////////
+            this.resultados.fuentes_C5 = {};
+            this.resultados.fuentes_C5.total_huella_carbono_ar6 =
+                tablasAndTotals.fuentes_C5.total_huella_carbono_ar6;
+            this.resultados.fuentes_C5.total_incertidumbre_fuente_ar6 =
+                tablasAndTotals.fuentes_C5.total_incertidumbre_fuente_ar6;
+            this.resultados.tabla8Body = [
+                [
+                    {
+                        rowSpan: 2,
+                        text: "FUENTE DE EMISIÓN DE GEI",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        rowSpan: 2,
+                        text: "CARGA AMBIENTAL",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        colSpan: 2,
+                        text: "CONSUMO",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {},
+                    {
+                        rowSpan: 2,
+                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        rowSpan: 2,
+                        text: "INCERTIDUMBRE DE LA FUENTE",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                ],
+                [
+                    {},
+                    {},
+                    {
+                        text: "UNIDAD",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        text: "CANTIDAD",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {},
+                    {},
+                ],
+            ];
+            tablasAndTotals.fuentes_C5.data?.forEach((_fuente) => {
+                // TODO:  push rows to table
+                this.resultados.tabla8Body.push([
+                    _fuente.fuente_emision_mostrar,
+                    _fuente.fuentetable.nombre,
+                    _fuente.fuentetable.unidad_consumo,
+                    _fuente.resultado.promedio,
+                    _fuente.resultado.huella_carbono_ar6,
+                    _fuente.resultado.incertidumbre_fuente_ar6,
+                ]);
+            });
+            this.resultados.tabla8Body.push([
+                {
+                    colSpan: 4,
+                    text: "SUBTOTAL OTRAS FUENTES",
+                    fillColor: "#e5b8b7",
+                    bold: true,
+                },
+                "",
+                "",
+                "",
+                {
+                    text: this.resultados.fuentes_C5.total_huella_carbono_ar6,
+                    fillColor: "#e5b8b7",
+                    bold: true,
+                },
+                {
+                    text: this.resultados.fuentes_C5
+                        .total_incertidumbre_fuente_ar6,
+                    fillColor: "#e5b8b7",
+                    bold: true,
+                },
+            ]);
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////Emisiones Indirectas proveniente de otras fuentes - categoría 6 - Tabla 9 fuentes_C6 //////////////
+            this.resultados.fuentes_C6 = {};
+            this.resultados.fuentes_C6.total_huella_carbono_ar6 =
+                tablasAndTotals.fuentes_C6.total_huella_carbono_ar6;
+            this.resultados.fuentes_C6.total_incertidumbre_fuente_ar6 =
+                tablasAndTotals.fuentes_C6.total_incertidumbre_fuente_ar6;
+            this.resultados.tabla9Body = [
+                [
+                    {
+                        rowSpan: 2,
+                        text: "FUENTE DE EMISIÓN DE GEI",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        rowSpan: 2,
+                        text: "CARGA AMBIENTAL",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        colSpan: 2,
+                        text: "CONSUMO",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {},
+                    {
+                        rowSpan: 2,
+                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        rowSpan: 2,
+                        text: "INCERTIDUMBRE DE LA FUENTE",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                ],
+                [
+                    {},
+                    {},
+                    {
+                        text: "UNIDAD",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {
+                        text: "CANTIDAD",
+                        fillColor: "#e5b8b7",
+                        bold: true,
+                    },
+                    {},
+                    {},
+                ],
+            ];
+            tablasAndTotals.fuentes_C6.data?.forEach((_fuente) => {
+                // TODO:  push rows to table
+                this.resultados.tabla9Body.push([
+                    _fuente.fuente_emision_mostrar,
+                    _fuente.fuentetable.nombre,
+                    _fuente.fuentetable.unidad_consumo,
+                    _fuente.resultado.promedio,
+                    _fuente.resultado.huella_carbono_ar6,
+                    _fuente.resultado.incertidumbre_fuente_ar6,
+                ]);
+            });
+            this.resultados.tabla9Body.push([
+                {
+                    colSpan: 4,
+                    text: "SUBTOTAL OTRAS FUENTES",
+                    fillColor: "#e5b8b7",
+                    bold: true,
+                },
+                "",
+                "",
+                "",
+                {
+                    text: this.resultados.fuentes_C6.total_huella_carbono_ar6,
+                    fillColor: "#e5b8b7",
+                    bold: true,
+                },
+                {
+                    text: this.resultados.fuentes_C6
+                        .total_incertidumbre_fuente_ar6,
+                    fillColor: "#e5b8b7",
+                    bold: true,
+                },
+            ]);
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////  Tabla 10  /////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////
+            this.resultados.tabla_10 = {};
+            this.resultados.tabla_10.total_huella_carbono_ar6 =
+                tablasAndTotals.tabla_10.total_huella_carbono_ar6;
+            this.resultados.tabla_10.total_incertidumbre_fuente_ar6 =
+                tablasAndTotals.tabla_10.total_incertidumbre_fuente_ar6;
+            this.resultados.tabla10Body = [
+                [
+                    {
+                        text: "GAS EFECTO INVERNADERO (GEI)",
+                        fillColor: "#215967",
+                        bold: true,
+                        color: "white",
+                    },
+                    {
+                        text: "CANTIDAD GEI \n [ton GEI/año]",
+                        fillColor: "#215967",
+                        bold: true,
+                        color: "white",
+                    },
+                    {
+                        text: "EMISIONES DIRECTAS \n [ton CO2-eq/año]",
+                        fillColor: "#215967",
+                        bold: true,
+                        color: "white",
+                    },
+                    {
+                        text: "REPRESENTACIÓN DIRECTAS",
+                        fillColor: "#215967",
+                        bold: true,
+                        color: "white",
+                    },
+                ],
+            ];
+            this.resultados.tabla10Body.push(
+                [
+                    "CO2",
+                    tablasAndTotals.tabla_10.total_CO2.cantidad,
+                    tablasAndTotals.tabla_10.total_CO2.emisiones,
+                    tablasAndTotals.tabla_10.total_CO2.representacion,
+                ],
+                [
+                    "CH4",
+                    tablasAndTotals.tabla_10.total_CH4.cantidad,
+                    tablasAndTotals.tabla_10.total_CH4.emisiones,
+                    tablasAndTotals.tabla_10.total_CH4.representacion,
+                ],
+                [
+                    "N2O",
+                    tablasAndTotals.tabla_10.total_N2O.cantidad,
+                    tablasAndTotals.tabla_10.total_N2O.emisiones,
+                    tablasAndTotals.tabla_10.total_N2O.representacion,
+                ],
+                [
+                    "Compuestos Fluorados",
+                    tablasAndTotals.tabla_10.total_compuestos_fluorados
+                        .cantidad,
+                    tablasAndTotals.tabla_10.total_compuestos_fluorados
+                        .emisiones,
+                    tablasAndTotals.tabla_10.total_compuestos_fluorados
+                        .representacion,
+                ],
+                [
+                    "SF6",
+                    tablasAndTotals.tabla_10.total_SF6.cantidad,
+                    tablasAndTotals.tabla_10.total_SF6.emisiones,
+                    tablasAndTotals.tabla_10.total_SF6.representacion,
+                ],
+                [
+                    {
+                        text: "TOTAL ALCANCE 1",
+                        fillColor: "#31869b",
+                        bold: true,
+                        color: "white",
+                    },
+                    {
+                        text: tablasAndTotals.tabla_10.total_cantidad,
+                        fillColor: "#31869b",
+                        bold: true,
+                        color: "white",
+                    },
+                    {
+                        text: tablasAndTotals.tabla_10.total_emisiones,
+                        fillColor: "#31869b",
+                        bold: true,
+                        color: "white",
+                    },
+                    {
+                        text: tablasAndTotals.tabla_10.total_representacion,
+                        fillColor: "#31869b",
+                        bold: true,
+                        color: "white",
+                    },
+                ]
+            );
+            console.log(
+                "this.resultados.tabla10Body",
+                this.resultados.tabla10Body
+            );
+
             Swal.close();
         },
         getFuentesEmision(empresa_id, sede_id, informacion_empresa_id) {
@@ -1468,59 +2034,7 @@ export default {
                                 "auto",
                             ],
                             headerRows: 2,
-                            body: [
-                                [
-                                    {
-                                        rowSpan: 2,
-                                        text: "FUENTE DE EMISIÓN DE GEI",
-                                        fillColor: "#fabf8f",
-                                        bold: true,
-                                    },
-                                    {
-                                        rowSpan: 2,
-                                        text: "FACTOR DE EMISION USADO",
-                                        fillColor: "#fabf8f",
-                                        bold: true,
-                                    },
-                                    {
-                                        colSpan: 2,
-                                        text: "CONSUMO",
-                                        fillColor: "#fabf8f",
-                                        bold: true,
-                                    },
-                                    {},
-                                    {
-                                        rowSpan: 2,
-                                        text: "HUELLA DE CARBONO \n (t CO2 e)",
-                                        fillColor: "#fabf8f",
-                                        bold: true,
-                                    },
-                                    {
-                                        rowSpan: 2,
-                                        text: "INCERTIDUMBRE DE LA FUENTE",
-                                        fillColor: "#fabf8f",
-                                        bold: true,
-                                    },
-                                ],
-                                [
-                                    {},
-                                    {},
-                                    {
-                                        text: "UNIDAD",
-                                        fillColor: "#fabf8f",
-                                        bold: true,
-                                    },
-                                    {
-                                        text: "CANTIDAD",
-                                        fillColor: "#fabf8f",
-                                        bold: true,
-                                    },
-                                    {},
-                                    {},
-                                ],
-                                ["2", "", "", "", "", ""],
-                                ["3", "", "", "", "", ""],
-                            ],
+                            body: this.resultados.tabla5Body,
                         },
                         alignment: "center",
                     },
@@ -1603,80 +2117,7 @@ export default {
                                 "auto",
                             ],
                             headerRows: 2,
-                            body: [
-                                [
-                                    {
-                                        rowSpan: 2,
-                                        text: "FUENTE DE EMISIÓN DE GEI",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        rowSpan: 2,
-                                        text: "CARGA AMBIENTAL",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        colSpan: 2,
-                                        text: "CONSUMO",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {},
-                                    {
-                                        rowSpan: 2,
-                                        text: "HUELLA DE CARBONO \n (t CO2 e)",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        rowSpan: 2,
-                                        text: "INCERTIDUMBRE DE LA FUENTE",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                ],
-                                [
-                                    {},
-                                    {},
-                                    {
-                                        text: "UNIDAD",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        text: "CANTIDAD",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {},
-                                    {},
-                                ],
-                                ["2", "", "", "", "", ""],
-                                ["3", "", "", "", "", ""],
-                                [
-                                    {
-                                        colSpan: 4,
-                                        text: "SUBTOTAL OTRAS FUENTES",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    "",
-                                    "",
-                                    "",
-                                    {
-                                        text: "1",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        text: "1",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                ],
-                            ],
+                            body: this.resultados.tabla6Body,
                         },
                         alignment: "center",
                     },
@@ -1731,80 +2172,7 @@ export default {
                                 "auto",
                             ],
                             headerRows: 2,
-                            body: [
-                                [
-                                    {
-                                        rowSpan: 2,
-                                        text: "FUENTE DE EMISIÓN DE GEI",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        rowSpan: 2,
-                                        text: "CARGA AMBIENTAL",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        colSpan: 2,
-                                        text: "CONSUMO",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {},
-                                    {
-                                        rowSpan: 2,
-                                        text: "HUELLA DE CARBONO \n (t CO2 e)",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        rowSpan: 2,
-                                        text: "INCERTIDUMBRE DE LA FUENTE",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                ],
-                                [
-                                    {},
-                                    {},
-                                    {
-                                        text: "UNIDAD",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        text: "CANTIDAD",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {},
-                                    {},
-                                ],
-                                ["2", "", "", "", "", ""],
-                                ["3", "", "", "", "", ""],
-                                [
-                                    {
-                                        colSpan: 4,
-                                        text: "SUBTOTAL OTRAS FUENTES",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    "",
-                                    "",
-                                    "",
-                                    {
-                                        text: "1",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        text: "1",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                ],
-                            ],
+                            body: this.resultados.tabla7Body,
                         },
                         alignment: "center",
                     },
@@ -1859,80 +2227,7 @@ export default {
                                 "auto",
                             ],
                             headerRows: 2,
-                            body: [
-                                [
-                                    {
-                                        rowSpan: 2,
-                                        text: "FUENTE DE EMISIÓN DE GEI",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        rowSpan: 2,
-                                        text: "CARGA AMBIENTAL",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        colSpan: 2,
-                                        text: "CONSUMO",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {},
-                                    {
-                                        rowSpan: 2,
-                                        text: "HUELLA DE CARBONO \n (t CO2 e)",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        rowSpan: 2,
-                                        text: "INCERTIDUMBRE DE LA FUENTE",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                ],
-                                [
-                                    {},
-                                    {},
-                                    {
-                                        text: "UNIDAD",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        text: "CANTIDAD",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {},
-                                    {},
-                                ],
-                                ["2", "", "", "", "", ""],
-                                ["3", "", "", "", "", ""],
-                                [
-                                    {
-                                        colSpan: 4,
-                                        text: "SUBTOTAL OTRAS FUENTES",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    "",
-                                    "",
-                                    "",
-                                    {
-                                        text: "1",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        text: "1",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                ],
-                            ],
+                            body: this.resultados.tabla8Body,
                         },
                         alignment: "center",
                     },
@@ -1987,80 +2282,8 @@ export default {
                                 "auto",
                             ],
                             headerRows: 2,
-                            body: [
-                                [
-                                    {
-                                        rowSpan: 2,
-                                        text: "FUENTE DE EMISIÓN DE GEI",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        rowSpan: 2,
-                                        text: "CARGA AMBIENTAL",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        colSpan: 2,
-                                        text: "CONSUMO",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {},
-                                    {
-                                        rowSpan: 2,
-                                        text: "HUELLA DE CARBONO \n (t CO2 e)",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        rowSpan: 2,
-                                        text: "INCERTIDUMBRE DE LA FUENTE",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                ],
-                                [
-                                    {},
-                                    {},
-                                    {
-                                        text: "UNIDAD",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        text: "CANTIDAD",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {},
-                                    {},
-                                ],
-                                ["2", "", "", "", "", ""],
-                                ["3", "", "", "", "", ""],
-                                [
-                                    {
-                                        colSpan: 4,
-                                        text: "SUBTOTAL OTRAS FUENTES",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    "",
-                                    "",
-                                    "",
-                                    {
-                                        text: "1",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                    {
-                                        text: "1",
-                                        fillColor: "#e5b8b7",
-                                        bold: true,
-                                    },
-                                ],
-                            ],
+
+                            body: this.resultados.tabla9Body,
                         },
                         alignment: "center",
                     },
@@ -2104,65 +2327,7 @@ export default {
                         table: {
                             widths: ["auto", "auto", "auto", "auto"],
                             headerRows: 2,
-                            body: [
-                                [
-                                    {
-                                        text: "GAS EFECTO INVERNADERO (GEI)",
-                                        fillColor: "#215967",
-                                        bold: true,
-                                        color: "white",
-                                    },
-                                    {
-                                        text: "CANTIDAD GEI \n [ton GEI/año]",
-                                        fillColor: "#215967",
-                                        bold: true,
-                                        color: "white",
-                                    },
-                                    {
-                                        text: "EMISIONES DIRECTAS \n [ton CO2-eq/año]",
-                                        fillColor: "#215967",
-                                        bold: true,
-                                        color: "white",
-                                    },
-                                    {
-                                        text: "REPRESENTACIÓN DIRECTAS",
-                                        fillColor: "#215967",
-                                        bold: true,
-                                        color: "white",
-                                    },
-                                ],
-                                ["CO2", {}, {}, {}],
-                                ["CH4", "", "", ""],
-                                ["N2O", "", "", ""],
-                                ["Compuestos Fluorados", "", "", ""],
-                                ["SF6", "", "", ""],
-                                [
-                                    {
-                                        text: "TOTAL ALCANCE 1",
-                                        fillColor: "#31869b",
-                                        bold: true,
-                                        color: "white",
-                                    },
-                                    {
-                                        text: "",
-                                        fillColor: "#31869b",
-                                        bold: true,
-                                        color: "white",
-                                    },
-                                    {
-                                        text: "",
-                                        fillColor: "#31869b",
-                                        bold: true,
-                                        color: "white",
-                                    },
-                                    {
-                                        text: "",
-                                        fillColor: "#31869b",
-                                        bold: true,
-                                        color: "white",
-                                    },
-                                ],
-                            ],
+                            body: this.resultados.tabla10Body,
                         },
                         alignment: "center",
                     },
