@@ -67,8 +67,9 @@
                         <generar-reporte-component
                             :empresa_id="empresa"
                             :sede_id="sede"
+                            :ar="ar"
                             :periodo_id="periodo"
-                            v-if="empresa && sede && periodo"
+                            v-if="empresa && sede && periodo && ar && reporte"
                         />
                     </div>
                 </form>

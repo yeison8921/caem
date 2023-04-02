@@ -630,44 +630,33 @@ class FuenteEmisionRepository extends BaseRepository
     public function getTablesAndTotals($request)
     {
 
+        $arSelected = $request->ar;
         //fuentes moviles
         $fuentesMoviles = $this->getFuentesByTipo($request, [
             'fuentes_moviles',
-            'fuentes_moviles_biogenico_26',
-            'fuentes_moviles_biogenico_37',
-            'fuentes_moviles_biogenico_27',
-            'fuentes_moviles_biogenico_38',
+            //'fuentes_moviles_biogenico_26',
+            //'fuentes_moviles_biogenico_37',
+            //'fuentes_moviles_biogenico_27',
+            //'fuentes_moviles_biogenico_38',
         ]);
         $fuentes = [
-            'fuentes_moviles' => [ // round to 5 decimals
-                'total_huella_carbono_ar6' => round($fuentesMoviles->sum('resultado.huella_carbono_ar6'), 5),
-                'total_incertidumbre_fuente_ar6' =>  round($fuentesMoviles->sum('resultado.incertidumbre_fuente_ar6'), 5),
-                'data' => $fuentesMoviles,
-            ],
+            'fuentes_moviles' => $this->getDataEmision($fuentesMoviles, $arSelected)
         ];
         //fuentes fijas
         $fuentesFijas = $this->getFuentesByTipo($request, [
             'fuentes_fijas',
-            'fuentes_fijas_biogenico_26',
-            'fuentes_fijas_biogenico_37',
-            'fuentes_fijas_biogenico_27',
-            'fuentes_fijas_biogenico_38',
+            //'fuentes_fijas_biogenico_26',
+            //'fuentes_fijas_biogenico_37',
+            //'fuentes_fijas_biogenico_27',
+            //'fuentes_fijas_biogenico_38',
         ]);
         $fuentes = array_merge($fuentes, [
-            'fuentes_fijas' => [
-                'total_huella_carbono_ar6' =>  round($fuentesFijas->sum('resultado.huella_carbono_ar6'), 5),
-                'total_incertidumbre_fuente_ar6' =>  round($fuentesFijas->sum('resultado.incertidumbre_fuente_ar6'), 5),
-                'data' => $fuentesFijas,
-            ],
+            'fuentes_fijas' => $this->getDataEmision($fuentesFijas, $arSelected)
         ]);
         //fuentes emisiones
         $fuentesEmisiones = $this->getFuentesByTipo($request, 'emisiones');
         $fuentes = array_merge($fuentes, [
-            'emisiones' => [
-                'total_huella_carbono_ar6' =>  round($fuentesEmisiones->sum('resultado.huella_carbono_ar6'), 5),
-                'total_incertidumbre_fuente_ar6' =>  round($fuentesEmisiones->sum('resultado.incertidumbre_fuente_ar6'), 5),
-                'data' => $fuentesEmisiones,
-            ],
+            'emisiones' => $this->getDataEmision($fuentesEmisiones, $arSelected)
         ]);
         //fuentes fuentes_directas
         $fuentes = array_merge($fuentes, [
@@ -675,68 +664,56 @@ class FuenteEmisionRepository extends BaseRepository
                 'data' => [
                     [
                         'fuente' => 'fuentes_moviles',
-                        'huella_carbono' => $fuentes['fuentes_moviles']['total_huella_carbono_ar6'],
+                        'huella_carbono' => $fuentes['fuentes_moviles']['total_huella_carbono'],
                         'representacion' => '',
-                        'incertidumbre' => $fuentes['fuentes_moviles']['total_incertidumbre_fuente_ar6'],
+                        'incertidumbre' => $fuentes['fuentes_moviles']['total_incertidumbre_fuente'],
                     ],
                     [
                         'fuente' => 'fuentes_fijas',
-                        'huella_carbono' => $fuentes['fuentes_fijas']['total_huella_carbono_ar6'],
+                        'huella_carbono' => $fuentes['fuentes_fijas']['total_huella_carbono'],
                         'representacion' => '',
-                        'incertidumbre' => $fuentes['fuentes_fijas']['total_incertidumbre_fuente_ar6'],
+                        'incertidumbre' => $fuentes['fuentes_fijas']['total_incertidumbre_fuente'],
                     ],
                     [
                         'fuente' => 'emisiones',
-                        'huella_carbono' => $fuentes['emisiones']['total_huella_carbono_ar6'],
+                        'huella_carbono' => $fuentes['emisiones']['total_huella_carbono'],
                         'representacion' => '',
-                        'incertidumbre' => $fuentes['emisiones']['total_incertidumbre_fuente_ar6'],
+                        'incertidumbre' => $fuentes['emisiones']['total_incertidumbre_fuente'],
                     ],
                 ],
-                'total_huella_carbono' =>  round($fuentes['fuentes_moviles']['total_huella_carbono_ar6'] + $fuentes['fuentes_fijas']['total_huella_carbono_ar6'] + $fuentes['emisiones']['total_huella_carbono_ar6'], 5),
-                'total_incertidumbre' =>  round($fuentes['fuentes_moviles']['total_incertidumbre_fuente_ar6'] + $fuentes['fuentes_fijas']['total_incertidumbre_fuente_ar6'] + $fuentes['emisiones']['total_incertidumbre_fuente_ar6'], 5),
+                'total_huella_carbono' =>  round($fuentes['fuentes_moviles']['total_huella_carbono'] + $fuentes['fuentes_fijas']['total_huella_carbono'] + $fuentes['emisiones']['total_huella_carbono'], 4),
+                'total_incertidumbre' =>  round($fuentes['fuentes_moviles']['total_incertidumbre_fuente'] + $fuentes['fuentes_fijas']['total_incertidumbre_fuente'] + $fuentes['emisiones']['total_incertidumbre_fuente'], 4),
             ],
         ]);
         ///fuentes_indirectas
-        $fuentesT5 = $this->getFuentesByTipo($request, [
+        $fuentesC2 = $this->getFuentesByTipo($request, [
             'electricidad_importada',
             'energia_importada',
-            'energia_importada_biogenico_26',
-            'energia_importada_biogenico_37',
-            'energia_importada_biogenico_27',
-            'energia_importada_biogenico_38',
+            //'energia_importada_biogenico_26',
+            //'energia_importada_biogenico_37',
+            //'energia_importada_biogenico_27',
+            //'energia_importada_biogenico_38',
         ]);
         $fuentes = array_merge($fuentes, [
-            'fuentes_indirectas' => [
-                'total_huella_carbono_ar6' =>  round($fuentesT5->sum('resultado.huella_carbono_ar6'), 5),
-                'total_incertidumbre_fuente_ar6' =>  round($fuentesT5->sum('resultado.incertidumbre_fuente_ar6'), 5),
-                'data' => $fuentesT5,
-            ],
+            'fuentes_indirectas' => $this->getDataEmision($fuentesC2, $arSelected)
         ]);
         //Emisiones Indirectas por transporte - categoría 3 - Tabla 6
         $fuentesC3 = $this->getFuentesByTipo($request, [
             'transportes_fuentes_moviles',
             'transportes_carga_pasajeros',
-            'transportes_fuentes_moviles_biogenico_26',
-            'transportes_fuentes_moviles_biogenico_37',
-            'transportes_fuentes_moviles_biogenico_27',
-            'transportes_fuentes_moviles_biogenico_38',
+            //'transportes_fuentes_moviles_biogenico_26',
+            //'transportes_fuentes_moviles_biogenico_37',
+            //'transportes_fuentes_moviles_biogenico_27',
+            //'transportes_fuentes_moviles_biogenico_38',
         ]);
         $fuentes = array_merge($fuentes, [
-            'fuentes_C3' => [
-                'total_huella_carbono_ar6' =>  round($fuentesC3->sum('resultado.huella_carbono_ar6'), 5),
-                'total_incertidumbre_fuente_ar6' =>  round($fuentesC3->sum('resultado.incertidumbre_fuente_ar6'), 5),
-                'data' => $fuentesC3,
-            ],
+            'fuentes_C3' => $this->getDataEmision($fuentesC3, $arSelected)
         ]);
 
         //Emisiones Indirectas por productos que utiliza la organización - categoría 4 - Tabla 7
         $fuentesC4 = $this->getFuentesByTipo($request, ['bienes_productos', 'servicios']);
         $fuentes = array_merge($fuentes, [
-            'fuentes_C4' => [
-                'total_huella_carbono_ar6' =>  round($fuentesC4->sum('resultado.huella_carbono_ar6'), 5),
-                'total_incertidumbre_fuente_ar6' =>  round($fuentesC4->sum('resultado.incertidumbre_fuente_ar6'), 5),
-                'data' => $fuentesC4,
-            ],
+            'fuentes_C4' => $this->getDataEmision($fuentesC4, $arSelected)
         ]);
         //Emisiones Indirectas por uso de productos de la organización - categoría 5 - Tabla 8
         $fuentesC5 = $this->getFuentesByTipo($request, [
@@ -746,84 +723,101 @@ class FuenteEmisionRepository extends BaseRepository
             'inversiones',
         ]);
         $fuentes = array_merge($fuentes, [
-            'fuentes_C5' => [
-                'total_huella_carbono_ar6' =>  round($fuentesC5->sum('resultado.huella_carbono_ar6'), 5),
-                'total_incertidumbre_fuente_ar6' =>  round($fuentesC5->sum('resultado.incertidumbre_fuente_ar6'), 5),
-                'data' => $fuentesC5,
-            ],
+            'fuentes_C5' => $this->getDataEmision($fuentesC5, $arSelected)
         ]);
         //Emisiones Indirectas proveniente de otras fuentes - categoría 6 - Tabla 9
         $fuentesC6 = $this->getFuentesByTipo($request, ['otros']);
         $fuentes = array_merge($fuentes, [
-            'fuentes_C6' => [
-                'total_huella_carbono_ar6' =>  round($fuentesC6->sum('resultado.huella_carbono_ar6'), 5),
-                'total_incertidumbre_fuente_ar6' =>  round($fuentesC6->sum('resultado.incertidumbre_fuente_ar6'), 5),
-                'data' => $fuentesC6,
-            ],
+            'fuentes_C6' => $this->getDataEmision($fuentesC6, $arSelected)
         ]);
+
+        // subtotals table
+        $fuentes = array_merge($fuentes, [
+            'subtotals' => [
+                'emisiones_directas' => $this->getSubtotals($fuentes, ['fuentes_moviles', 'fuentes_fijas', 'emisiones']),
+                'emisiones_indirectas' => $this->getSubtotals($fuentes, ['fuentes_indirectas']),
+                'emisiones_otras_indirectas' => $this->getSubtotals($fuentes, ['fuentes_C3', 'fuentes_C4', 'fuentes_C5', 'fuentes_C6']),
+                'totals' => $this->getSubtotals($fuentes, ['fuentes_moviles', 'fuentes_fijas', 'emisiones', 'fuentes_indirectas', 'fuentes_C3', 'fuentes_C4', 'fuentes_C5', 'fuentes_C6']),
+            ]
+
+        ]);
+
+
         $fuentes = array_merge($fuentes, [
             'tabla_10' => [
                 'total_CO2' => [
-                    'cantidad' => $fuentesMoviles->where('resultado.emision_co2_ton_eq_ar6', '!=', 0)->count('id') +
-                        $fuentesFijas->where('resultado.emision_co2_ton_eq_ar6', '!=', 0)->count('id') +
-                        $fuentesEmisiones->where('resultado.emision_co2_ton_eq_ar6', '!=', 0)->count('id'),
+                    'cantidad' => $fuentesMoviles->where('resultado.emision_co2_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesFijas->where('resultado.emision_co2_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesEmisiones->where('resultado.emision_co2_ton_eq' . $arSelected, '!=', 0)->count('id'),
                     'emisiones' => round(
-                        $fuentesMoviles->sum('resultado.emision_co2_ton_eq_ar6') +
-                            $fuentesFijas->sum('resultado.emision_co2_ton_eq_ar6') +
-                            $fuentesEmisiones->sum('resultado.emision_co2_ton_eq_ar6'),
-                        5
+                        $fuentesMoviles->sum('resultado.emision_co2_ton_eq' . $arSelected) +
+                            $fuentesFijas->sum('resultado.emision_co2_ton_eq' . $arSelected) +
+                            $fuentesEmisiones->sum('resultado.emision_co2_ton_eq' . $arSelected),
+                        4
                     ),
                     'representacion' => 0
                 ],
                 'total_CH4' => [
-                    'cantidad' => $fuentesMoviles->where('resultado.emision_ch4_ton_eq_ar6', '!=', 0)->count('id') +
-                        $fuentesFijas->where('resultado.emision_ch4_ton_eq_ar6', '!=', 0)->count('id') +
-                        $fuentesEmisiones->where('resultado.emision_ch4_ton_eq_ar6', '!=', 0)->count('id'),
+                    'cantidad' => $fuentesMoviles->where('resultado.emision_ch4_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesFijas->where('resultado.emision_ch4_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesEmisiones->where('resultado.emision_ch4_ton_eq' . $arSelected, '!=', 0)->count('id'),
                     'emisiones' => round(
-                        $fuentesMoviles->sum('resultado.emision_ch4_ton_eq_ar6') +
-                            $fuentesFijas->sum('resultado.emision_ch4_ton_eq_ar6') +
-                            $fuentesEmisiones->sum('resultado.emision_ch4_ton_eq_ar6'),
-                        5
+                        $fuentesMoviles->sum('resultado.emision_ch4_ton_eq' . $arSelected) +
+                            $fuentesFijas->sum('resultado.emision_ch4_ton_eq' . $arSelected) +
+                            $fuentesEmisiones->sum('resultado.emision_ch4_ton_eq' . $arSelected),
+                        4
                     ),
                     'representacion' => 0
                 ],
                 'total_N2O' => [
-                    'cantidad' => $fuentesMoviles->where('resultado.emision_n2o_ton_eq_ar6', '!=', 0)->count('id') +
-                        $fuentesFijas->where('resultado.emision_n2o_ton_eq_ar6', '!=', 0)->count('id') +
-                        $fuentesEmisiones->where('resultado.emision_n2o_ton_eq_ar6', '!=', 0)->count('id'),
+                    'cantidad' => $fuentesMoviles->where('resultado.emision_n2o_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesFijas->where('resultado.emision_n2o_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesEmisiones->where('resultado.emision_n2o_ton_eq' . $arSelected, '!=', 0)->count('id'),
                     'emisiones' => round(
-                        $fuentesMoviles->sum('resultado.emision_n2o_ton_eq_ar6') +
-                            $fuentesFijas->sum('resultado.emision_n2o_ton_eq_ar6') +
-                            $fuentesEmisiones->sum('resultado.emision_n2o_ton_eq_ar6'),
-                        5
+                        $fuentesMoviles->sum('resultado.emision_n2o_ton_eq' . $arSelected) +
+                            $fuentesFijas->sum('resultado.emision_n2o_ton_eq' . $arSelected) +
+                            $fuentesEmisiones->sum('resultado.emision_n2o_ton_eq' . $arSelected),
+                        4
                     ), 'representacion' => 0
                 ],
                 'total_compuestos_fluorados' => [
-                    'cantidad' => $fuentesMoviles->where('resultado.emision_compuestos_fluorados_ton_eq_ar6', '!=', 0)->count('id') +
-                        $fuentesFijas->where('resultado.emision_compuestos_fluorados_ton_eq_ar6', '!=', 0)->count('id') +
-                        $fuentesEmisiones->where('resultado.emision_compuestos_fluorados_ton_eq_ar6', '!=', 0)->count('id'),
+                    'cantidad' => $fuentesMoviles->where('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesFijas->where('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesEmisiones->where('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected, '!=', 0)->count('id'),
                     'emisiones' => round(
-                        $fuentesMoviles->sum('resultado.emision_compuestos_fluorados_ton_eq_ar6') +
-                            $fuentesFijas->sum('resultado.emision_compuestos_fluorados_ton_eq_ar6') +
-                            $fuentesEmisiones->sum('resultado.emision_compuestos_fluorados_ton_eq_ar6'),
-                        5
+                        $fuentesMoviles->sum('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected) +
+                            $fuentesFijas->sum('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected) +
+                            $fuentesEmisiones->sum('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected),
+                        4
                     ),
                     'representacion' => 0
                 ],
                 'total_SF6' => [
-                    'cantidad' => $fuentesMoviles->where('resultado.emision_sf6_ton_eq_ar6', '!=', 0)->count('id') +
-                        $fuentesFijas->where('resultado.emision_sf6_ton_eq_ar6', '!=', 0)->count('id') +
-                        $fuentesEmisiones->where('resultado.emision_sf6_ton_eq_ar6', '!=', 0)->count('id'),
+                    'cantidad' => $fuentesMoviles->where('resultado.emision_sf6_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesFijas->where('resultado.emision_sf6_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesEmisiones->where('resultado.emision_sf6_ton_eq' . $arSelected, '!=', 0)->count('id'),
                     'emisiones' => round(
-                        $fuentesMoviles->sum('resultado.emision_sf6_ton_eq_ar6') +
-                            $fuentesFijas->sum('resultado.emision_sf6_ton_eq_ar6') +
-                            $fuentesEmisiones->sum('resultado.emision_sf6_ton_eq_ar6'),
-                        5
+                        $fuentesMoviles->sum('resultado.emision_sf6_ton_eq' . $arSelected) +
+                            $fuentesFijas->sum('resultado.emision_sf6_ton_eq' . $arSelected) +
+                            $fuentesEmisiones->sum('resultado.emision_sf6_ton_eq' . $arSelected),
+                        4
                     ),
                     'representacion' => 0
                 ],
             ],
         ]);
+        $totalCantidadesDirectas = $fuentes['tabla_10']['total_CO2']['cantidad'] +
+            $fuentes['tabla_10']['total_CH4']['cantidad'] +
+            $fuentes['tabla_10']['total_N2O']['cantidad'] +
+            $fuentes['tabla_10']['total_compuestos_fluorados']['cantidad'] +
+            $fuentes['tabla_10']['total_SF6']['cantidad'];
+
+        $fuentes['tabla_10']['total_CO2']['representacion'] = $totalCantidadesDirectas ? round(($fuentes['tabla_10']['total_CO2']['cantidad'] / $totalCantidadesDirectas) * 100) : 0;
+        $fuentes['tabla_10']['total_CH4']['representacion'] = $totalCantidadesDirectas ? round(($fuentes['tabla_10']['total_CH4']['cantidad'] / $totalCantidadesDirectas) * 100) : 0;
+        $fuentes['tabla_10']['total_N2O']['representacion'] = $totalCantidadesDirectas ? round(($fuentes['tabla_10']['total_N2O']['cantidad'] / $totalCantidadesDirectas) * 100) : 0;
+        $fuentes['tabla_10']['total_compuestos_fluorados']['representacion'] = $totalCantidadesDirectas ? round(($fuentes['tabla_10']['total_compuestos_fluorados']['cantidad'] / $totalCantidadesDirectas) * 100) : 0;
+        $fuentes['tabla_10']['total_SF6']['representacion'] = $totalCantidadesDirectas ? round(($fuentes['tabla_10']['total_SF6']['cantidad'] / $totalCantidadesDirectas) * 100) : 0;
+
 
         $fuentes['tabla_10']['total_cantidad'] = $fuentes['tabla_10']['total_CO2']['cantidad'] +
             $fuentes['tabla_10']['total_CH4']['cantidad'] +
@@ -844,32 +838,109 @@ class FuenteEmisionRepository extends BaseRepository
         $fuentes = array_merge($fuentes, [
             'tabla_11' => [
                 'total_CO2' => [
-                    'cantidad' => 0,
-                    'emisiones' => 0,
+                    'cantidad' =>
+                    $fuentesC2->where('resultado.emision_co2_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC3->where('resultado.emision_co2_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC4->where('resultado.emision_co2_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC5->where('resultado.emision_co2_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC6->where('resultado.emision_co2_ton_eq' . $arSelected, '!=', 0)->count('id'),
+                    'emisiones' => round(
+                        $fuentesC2->sum('resultado.emision_co2_ton_eq' . $arSelected) +
+                            $fuentesC3->sum('resultado.emision_co2_ton_eq' . $arSelected) +
+                            $fuentesC4->sum('resultado.emision_co2_ton_eq' . $arSelected) +
+                            $fuentesC5->sum('resultado.emision_co2_ton_eq' . $arSelected) +
+                            $fuentesC6->sum('resultado.emision_co2_ton_eq' . $arSelected),
+                        4
+                    ),
                     'representacion' => 0
                 ],
                 'total_CH4' => [
-                    'cantidad' => 0,
-                    'emisiones' => 0,
+                    'cantidad' =>
+                    $fuentesC2->where('resultado.emision_ch4_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC3->where('resultado.emision_ch4_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC4->where('resultado.emision_ch4_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC5->where('resultado.emision_ch4_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC6->where('resultado.emision_ch4_ton_eq' . $arSelected, '!=', 0)->count('id'),
+                    'emisiones' =>
+                    round(
+                        $fuentesC2->sum('resultado.emision_ch4_ton_eq' . $arSelected) +
+                            $fuentesC3->sum('resultado.emision_ch4_ton_eq' . $arSelected) +
+                            $fuentesC4->sum('resultado.emision_ch4_ton_eq' . $arSelected) +
+                            $fuentesC5->sum('resultado.emision_ch4_ton_eq' . $arSelected) +
+                            $fuentesC6->sum('resultado.emision_ch4_ton_eq' . $arSelected),
+                        4
+                    ),
                     'representacion' => 0
                 ],
                 'total_N2O' => [
-                    'cantidad' => 0,
-                    'emisiones' => 0,
+                    'cantidad' =>
+                    $fuentesC2->where('resultado.emision_n2o_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC3->where('resultado.emision_n2o_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC4->where('resultado.emision_n2o_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC5->where('resultado.emision_n2o_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC6->where('resultado.emision_n2o_ton_eq' . $arSelected, '!=', 0)->count('id'),
+                    'emisiones' =>
+                    round(
+                        $fuentesC2->sum('resultado.emision_n2o_ton_eq' . $arSelected) +
+                            $fuentesC3->sum('resultado.emision_n2o_ton_eq' . $arSelected) +
+                            $fuentesC4->sum('resultado.emision_n2o_ton_eq' . $arSelected) +
+                            $fuentesC5->sum('resultado.emision_n2o_ton_eq' . $arSelected) +
+                            $fuentesC6->sum('resultado.emision_n2o_ton_eq' . $arSelected),
+                        4
+                    ),
                     'representacion' => 0
                 ],
                 'total_compuestos_fluorados' => [
-                    'cantidad' => 0,
-                    'emisiones' => 0,
+                    'cantidad' =>
+                    $fuentesC2->where('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC3->where('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC4->where('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC5->where('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC6->where('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected, '!=', 0)->count('id'),
+                    'emisiones' =>
+                    round(
+                        $fuentesC2->sum('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected) +
+                            $fuentesC3->sum('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected) +
+                            $fuentesC4->sum('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected) +
+                            $fuentesC5->sum('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected) +
+                            $fuentesC6->sum('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected),
+                        4
+                    ),
                     'representacion' => 0
                 ],
                 'total_SF6' => [
-                    'cantidad' => 0,
-                    'emisiones' => 0,
+                    'cantidad' =>
+                    $fuentesC2->where('resultado.emision_sf6_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC3->where('resultado.emision_sf6_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC4->where('resultado.emision_sf6_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC5->where('resultado.emision_sf6_ton_eq' . $arSelected, '!=', 0)->count('id') +
+                        $fuentesC6->where('resultado.emision_sf6_ton_eq' . $arSelected, '!=', 0)->count('id'),
+                    'emisiones' =>
+                    round(
+                        $fuentesC2->sum('resultado.emision_sf6_ton_eq' . $arSelected) +
+                            $fuentesC3->sum('resultado.emision_sf6_ton_eq' . $arSelected) +
+                            $fuentesC4->sum('resultado.emision_sf6_ton_eq' . $arSelected) +
+                            $fuentesC5->sum('resultado.emision_sf6_ton_eq' . $arSelected) +
+                            $fuentesC6->sum('resultado.emision_sf6_ton_eq' . $arSelected),
+                        4
+                    ),
                     'representacion' => 0
                 ],
             ],
         ]);
+        $totalCantidades = $fuentes['tabla_11']['total_CO2']['cantidad'] +
+            $fuentes['tabla_11']['total_CH4']['cantidad'] +
+            $fuentes['tabla_11']['total_N2O']['cantidad'] +
+            $fuentes['tabla_11']['total_compuestos_fluorados']['cantidad'] +
+            $fuentes['tabla_11']['total_SF6']['cantidad'];
+
+        $fuentes['tabla_11']['total_CO2']['representacion'] = $totalCantidades ? round(($fuentes['tabla_11']['total_CO2']['cantidad'] / $totalCantidades) * 100) : 0;
+        $fuentes['tabla_11']['total_CH4']['representacion'] = $totalCantidades ? round(($fuentes['tabla_11']['total_CH4']['cantidad'] / $totalCantidades) * 100) : 0;
+        $fuentes['tabla_11']['total_N2O']['representacion'] = $totalCantidades ? round(($fuentes['tabla_11']['total_N2O']['cantidad'] / $totalCantidades) * 100) : 0;
+        $fuentes['tabla_11']['total_compuestos_fluorados']['representacion'] = $totalCantidades ? round(($fuentes['tabla_11']['total_compuestos_fluorados']['cantidad'] / $totalCantidades) * 100) : 0;
+        $fuentes['tabla_11']['total_SF6']['representacion'] = $totalCantidades ? round(($fuentes['tabla_11']['total_SF6']['cantidad'] / $totalCantidades) * 100) : 0;
+
+
         $fuentes['tabla_11']['total_cantidad'] = $fuentes['tabla_11']['total_CO2']['cantidad'] +
             $fuentes['tabla_11']['total_CH4']['cantidad'] +
             $fuentes['tabla_11']['total_N2O']['cantidad'] +
@@ -886,7 +957,158 @@ class FuenteEmisionRepository extends BaseRepository
             $fuentes['tabla_11']['total_compuestos_fluorados']['representacion'] +
             $fuentes['tabla_11']['total_SF6']['representacion'];
 
+
+
+
+
+        $fuentes_bio = $this->getFuentesByTipo($request, [
+            'fuentes_moviles_biogenico_26',
+            'fuentes_moviles_biogenico_37',
+            'fuentes_moviles_biogenico_27',
+            'fuentes_moviles_biogenico_38',
+            'fuentes_fijas_biogenico_26',
+            'fuentes_fijas_biogenico_37',
+            'fuentes_fijas_biogenico_27',
+            'fuentes_fijas_biogenico_38',
+            'energia_importada_biogenico_26',
+            'energia_importada_biogenico_37',
+            'energia_importada_biogenico_27',
+            'energia_importada_biogenico_38',
+            'transportes_fuentes_moviles_biogenico_26',
+            'transportes_fuentes_moviles_biogenico_37',
+            'transportes_fuentes_moviles_biogenico_27',
+            'transportes_fuentes_moviles_biogenico_38',
+        ]);
+
+
+        $fuentes = array_merge($fuentes, [
+            'tabla_12' => [
+                'total_CO2' => [
+                    'cantidad' =>
+                    $fuentes_bio->where('resultado.emision_co2_ton_eq' . $arSelected, '!=', 0)->count('id'),
+                    'emisiones' => round(
+                        $fuentes_bio->sum('resultado.emision_co2_ton_eq' . $arSelected),
+                        4
+                    ),
+                    'representacion' => 0
+                ],
+                'total_CH4' => [
+                    'cantidad' =>
+                    $fuentes_bio->where('resultado.emision_ch4_ton_eq' . $arSelected, '!=', 0)->count('id'),
+                    'emisiones' =>
+                    round(
+                        $fuentes_bio->sum('resultado.emision_ch4_ton_eq' . $arSelected),
+                        4
+                    ),
+                    'representacion' => 0
+                ],
+                'total_N2O' => [
+                    'cantidad' =>
+                    $fuentes_bio->where('resultado.emision_n2o_ton_eq' . $arSelected, '!=', 0)->count('id'),
+                    'emisiones' =>
+                    round(
+                        $fuentes_bio->sum('resultado.emision_n2o_ton_eq' . $arSelected),
+                        4
+                    ),
+                    'representacion' => 0
+                ],
+                'total_compuestos_fluorados' => [
+                    'cantidad' =>
+                    $fuentes_bio->where('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected, '!=', 0)->count('id'),
+                    'emisiones' =>
+                    round(
+                        $fuentes_bio->sum('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected),
+                        4
+                    ),
+                    'representacion' => 0
+                ],
+                'total_SF6' => [
+                    'cantidad' =>
+                    $fuentes_bio->where('resultado.emision_sf6_ton_eq' . $arSelected, '!=', 0)->count('id'),
+                    'emisiones' =>
+                    round(
+                        $fuentes_bio->sum('resultado.emision_sf6_ton_eq' . $arSelected),
+                        4
+                    ),
+                    'representacion' => 0
+                ],
+            ],
+        ]);
+        $totalCantidades = $fuentes['tabla_12']['total_CO2']['cantidad'] +
+            $fuentes['tabla_12']['total_CH4']['cantidad'] +
+            $fuentes['tabla_12']['total_N2O']['cantidad'] +
+            $fuentes['tabla_12']['total_compuestos_fluorados']['cantidad'] +
+            $fuentes['tabla_12']['total_SF6']['cantidad'];
+
+        $fuentes['tabla_12']['total_CO2']['representacion'] = $totalCantidades ? round(($fuentes['tabla_12']['total_CO2']['cantidad'] / $totalCantidades) * 100) : 0;
+        $fuentes['tabla_12']['total_CH4']['representacion'] = $totalCantidades ? round(($fuentes['tabla_12']['total_CH4']['cantidad'] / $totalCantidades) * 100) : 0;
+        $fuentes['tabla_12']['total_N2O']['representacion'] = $totalCantidades ? round(($fuentes['tabla_12']['total_N2O']['cantidad'] / $totalCantidades) * 100) : 0;
+        $fuentes['tabla_12']['total_compuestos_fluorados']['representacion'] = $totalCantidades ? round(($fuentes['tabla_12']['total_compuestos_fluorados']['cantidad'] / $totalCantidades) * 100) : 0;
+        $fuentes['tabla_12']['total_SF6']['representacion'] = $totalCantidades ? round(($fuentes['tabla_12']['total_SF6']['cantidad'] / $totalCantidades) * 100) : 0;
+
+
+        $fuentes['tabla_12']['total_cantidad'] = $fuentes['tabla_12']['total_CO2']['cantidad'] +
+            $fuentes['tabla_12']['total_CH4']['cantidad'] +
+            $fuentes['tabla_12']['total_N2O']['cantidad'] +
+            $fuentes['tabla_12']['total_compuestos_fluorados']['cantidad'] +
+            $fuentes['tabla_12']['total_SF6']['cantidad'];
+        $fuentes['tabla_12']['total_emisiones'] = $fuentes['tabla_12']['total_CO2']['emisiones'] +
+            $fuentes['tabla_12']['total_CH4']['emisiones'] +
+            $fuentes['tabla_12']['total_N2O']['emisiones'] +
+            $fuentes['tabla_12']['total_compuestos_fluorados']['emisiones'] +
+            $fuentes['tabla_12']['total_SF6']['emisiones'];
+        $fuentes['tabla_12']['total_representacion'] = $fuentes['tabla_12']['total_CO2']['representacion'] +
+            $fuentes['tabla_12']['total_CH4']['representacion'] +
+            $fuentes['tabla_12']['total_N2O']['representacion'] +
+            $fuentes['tabla_12']['total_compuestos_fluorados']['representacion'] +
+            $fuentes['tabla_12']['total_SF6']['representacion'];
+
         return response()->json($fuentes)->setEncodingOptions(JSON_NUMERIC_CHECK);
+    }
+    public function getSubtotals($fuentes, $arrFuentesNames)
+    {
+        $result = [
+            'emision_co2_ton_eq' => 0,
+            'emision_ch4_ton_eq' => 0,
+            'emision_n2o_ton_eq' => 0,
+            'emision_compuestos_fluorados_ton_eq' => 0,
+            'emision_sf6_ton_eq' => 0,
+            'total_huella_carbono' => 0,
+            'representacion' => '',
+            'total_incertidumbre_fuente' => 0,
+        ];
+        foreach ($arrFuentesNames as $fuenteName) {
+            $result['emision_co2_ton_eq'] += $fuentes[$fuenteName]['emision_co2_ton_eq'];
+            $result['emision_ch4_ton_eq'] += $fuentes[$fuenteName]['emision_ch4_ton_eq'];
+            $result['emision_n2o_ton_eq'] += $fuentes[$fuenteName]['emision_n2o_ton_eq'];
+            $result['emision_compuestos_fluorados_ton_eq'] += $fuentes[$fuenteName]['emision_compuestos_fluorados_ton_eq'];
+            $result['emision_sf6_ton_eq'] += $fuentes[$fuenteName]['emision_sf6_ton_eq'];
+            $result['total_huella_carbono'] += $fuentes[$fuenteName]['total_huella_carbono'];
+            $result['total_incertidumbre_fuente'] += $fuentes[$fuenteName]['total_incertidumbre_fuente'];
+        }
+        // round values
+        $result['emision_co2_ton_eq'] = round($result['emision_co2_ton_eq'], 4);
+        $result['emision_ch4_ton_eq'] = round($result['emision_ch4_ton_eq'], 4);
+        $result['emision_n2o_ton_eq'] = round($result['emision_n2o_ton_eq'], 4);
+        $result['emision_compuestos_fluorados_ton_eq'] = round($result['emision_compuestos_fluorados_ton_eq'], 4);
+        $result['emision_sf6_ton_eq'] = round($result['emision_sf6_ton_eq'], 4);
+        $result['total_huella_carbono'] = round($result['total_huella_carbono'], 4);
+        $result['total_incertidumbre_fuente'] = round($result['total_incertidumbre_fuente'], 4);
+        return $result;
+    }
+    public function getDataEmision($fuente, $arSelected)
+    {
+        return [
+            'total_huella_carbono' =>  round($fuente->sum('resultado.huella_carbono' . $arSelected), 4),
+            'total_incertidumbre_fuente' =>  round($fuente->sum('resultado.incertidumbre_fuente' . $arSelected), 4),
+            'emision_co2_ton_eq' =>  round($fuente->sum('resultado.emision_co2_ton_eq' . $arSelected), 4),
+            'emision_ch4_ton_eq' => round($fuente->sum('resultado.emision_ch4_ton_eq' . $arSelected), 4),
+            'emision_n2o_ton_eq' => round($fuente->sum('resultado.emision_n2o_ton_eq' . $arSelected), 4),
+            'emision_compuestos_fluorados_ton_eq' => round($fuente->sum('resultado.emision_compuestos_fluorados_ton_eq' . $arSelected), 4),
+            'emision_sf6_ton_eq' => round($fuente->sum('resultado.emision_sf6_ton_eq' . $arSelected), 4),
+            'representacion' => '',
+            'data' => $fuente,
+        ];
     }
     public function getFuentesByTipo($request, $tipo)
     {
