@@ -1230,7 +1230,11 @@ export default {
             ////////////////////////////////////////////////////////////////////////////////////////////////////////
             ///////////////////////////////////////  Tabla 13  /////////////////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////////////////////////////////
-            this.resultados.tabla_13 = {};
+            this.resultados.tabla13 = {};
+            this.resultados.tabla13.total_huella_carbono =
+                tablasAndTotals.subtotals.totals.total_huella_carbono;
+            this.resultados.tabla13.total_incertidumbre_fuente =
+                tablasAndTotals.subtotals.totals.total_incertidumbre_fuente;
             this.resultados.tabla13Body = [
                 [
                     {
@@ -1924,6 +1928,25 @@ export default {
 
             Swal.close();
         },
+        getCalificacionInventario(value) {
+            let listaIncertidumbre = [
+                { name: "High  (alta)", value: 5 },
+                { name: "Good (buena)", value: 15 },
+                { name: "Fair (favorable)", value: 30 },
+                { name: "Poor (pobre)", value: 30 },
+            ];
+            let clasificacion = "";
+            if (value <= listaIncertidumbre[0].value) {
+                clasificacion = listaIncertidumbre[0].name;
+            } else if (value <= listaIncertidumbre[1].value) {
+                clasificacion = listaIncertidumbre[1].name;
+            } else if (value <= listaIncertidumbre[2].value) {
+                clasificacion = listaIncertidumbre[2].name;
+            } else if (value >= listaIncertidumbre[3].value) {
+                clasificacion = listaIncertidumbre[3].name;
+            }
+            return clasificacion;
+        },
         getFuentesEmision(empresa_id, sede_id, informacion_empresa_id) {
             return new Promise((resolve, reject) => {
                 axios
@@ -2501,8 +2524,10 @@ export default {
                                 this.resultados.fuentes_directas
                                     .total_incertidumbre +
                                 "% que, de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “" +
-                                this.resultados.fuentes_directas
-                                    .nivel_precision +
+                                this.getCalificacionInventario(
+                                    this.resultados.fuentes_directas
+                                        .total_incertidumbre
+                                ) +
                                 "”. ",
                         ],
                         style: "paragraph",
@@ -2621,7 +2646,12 @@ export default {
                                     "%",
                                 bold: true,
                             },
-                            ", que de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “??????”.",
+                            ", que de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “" +
+                                this.getCalificacionInventario(
+                                    this.resultados.fuentes_moviles
+                                        .total_incertidumbre_fuente
+                                ) +
+                                "”.",
                         ],
                         style: "paragraph",
                     },
@@ -2728,7 +2758,12 @@ export default {
                                     "%",
                                 bold: true,
                             },
-                            ", que de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “Buena (Good)”.",
+                            ", que de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “" +
+                                this.getCalificacionInventario(
+                                    this.resultados.fuentes_fijas
+                                        .total_incertidumbre_fuente
+                                ) +
+                                "”.",
                         ],
                         style: "paragraph",
                     },
@@ -2809,7 +2844,12 @@ export default {
                                     "%",
                                 bold: true,
                             },
-                            " que, de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “Buena (Good)”.",
+                            " que, de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “" +
+                                this.getCalificacionInventario(
+                                    this.resultados.emisiones
+                                        .total_incertidumbre_fuente
+                                ) +
+                                "”.",
                         ],
                         style: "paragraph",
                     },
@@ -2949,7 +2989,12 @@ export default {
                                     "%",
                                 bold: true,
                             },
-                            " que de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre se considera de “buena (Good)” precisión.",
+                            " que de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre se considera de “" +
+                                this.getCalificacionInventario(
+                                    this.resultados.fuentes_indirectas
+                                        .total_incertidumbre_fuente
+                                ) +
+                                "” precisión.",
                         ],
                         style: "paragraph",
                     },
@@ -3359,13 +3404,28 @@ export default {
                                         " / " +
                                         this.informacion_empresa.empresa_sede
                                             .nombre,
-                                    " para el periodo base fue de XXX t CO2e",
+                                    " para el periodo base fue de " +
+                                        this.resultados.tabla13
+                                            .total_huella_carbono,
+                                    "t CO2e",
                                 ],
                                 bold: true,
                             },
                             ", con una ",
-                            { text: "incertidumbre de +/- XX%", bold: true },
-                            " que, de acuerdo con la orientación del GHG Protocol sobre evaluación de incertidumbre, se considera un inventario con una precisión “Buena (Good)”.",
+                            {
+                                text:
+                                    "incertidumbre de +/- " +
+                                    this.resultados.tabla13
+                                        .total_incertidumbre_fuente +
+                                    "%",
+                                bold: true,
+                            },
+                            " que, de acuerdo con la orientación del GHG Protocol sobre evaluación de incertidumbre, se considera un inventario con una precisión “" +
+                                this.getCalificacionInventario(
+                                    this.resultados.tabla13
+                                        .total_incertidumbre_fuente
+                                ) +
+                                "”.",
                         ],
                         style: "paragraph",
                     },
