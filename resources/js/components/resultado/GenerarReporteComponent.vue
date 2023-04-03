@@ -65,7 +65,6 @@ export default {
     },
     mounted() {
         this.loadAndConvertImages();
-        this.loadAndConvertImages();
     },
     methods: {
         async loadAndConvertImages() {
@@ -89,6 +88,23 @@ export default {
                     error
                 );
             }
+        },
+        convertCanvasToBase64(elementId) {
+            const canvas = document.getElementById(elementId);
+
+            const tempCanvas = document.createElement("canvas");
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = canvas.height;
+
+            const ctx = tempCanvas.getContext("2d");
+
+            //white transparent background
+            ctx.fillStyle = "#ffffffb3";
+            ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+            ctx.drawImage(canvas, 0, 0);
+
+            return tempCanvas.toDataURL("image/png");
         },
         loadImageAndConvertToBase64(imageUrl) {
             return new Promise((resolve, reject) => {
@@ -3439,7 +3455,11 @@ export default {
                         bold: true,
                     },
                     {
-                        text: ["DIAGRAMA BARRAS"],
+                        //text: ["DIAGRAMA BARRAS"],
+                        image: this.convertCanvasToBase64(
+                            "huella-carbono-directa-indirecta-bar"
+                        ),
+                        width: 200,
                         alignment: "center",
                     },
                     {
@@ -3463,7 +3483,10 @@ export default {
                         bold: true,
                     },
                     {
-                        text: ["DIAGRAMA TORTAS"],
+                        image: this.convertCanvasToBase64(
+                            "huella-carbono-fuente-pie"
+                        ),
+                        width: 200,
                         alignment: "center",
                     },
                     {

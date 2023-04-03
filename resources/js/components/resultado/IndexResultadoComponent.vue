@@ -18,6 +18,7 @@
                             placeholder="Empresa"
                             :searchable="true"
                             required
+                            @change="mostrar_graficas = false"
                             @input="getOptionsSede()"
                         />
                     </div>
@@ -30,6 +31,7 @@
                             placeholder="Sede"
                             :searchable="true"
                             required
+                            @change="mostrar_graficas = false"
                             @input="getOptionsPeriodo()"
                         />
                     </div>
@@ -40,6 +42,7 @@
                             placeholder="Periodo"
                             :searchable="true"
                             required
+                            @change="mostrar_graficas = false"
                         />
                     </div>
                     <div class="mb-3">
@@ -48,6 +51,7 @@
                             :options="options_ar"
                             placeholder="Reporte (AR5 / AR6)"
                             required
+                            @change="mostrar_graficas = false"
                         />
                     </div>
                     <div class="mb-3">
@@ -56,6 +60,7 @@
                             :options="options_reporte"
                             placeholder="Reporte"
                             required
+                            @change="mostrar_graficas = false"
                         />
                     </div>
                     <div class="mb-3 text-end">
@@ -69,7 +74,7 @@
                             :sede_id="sede"
                             :ar="ar"
                             :periodo_id="periodo"
-                            v-if="empresa && sede && periodo && ar && reporte"
+                            v-if="mostrar_graficas && reporte == 'corporativo'"
                         />
                     </div>
                 </form>
@@ -196,7 +201,6 @@
                             <div class="chart">
                                 <huella-carbono-fuente-pie
                                     ref="huellaCarbonoFuentePie"
-                                    id="pie-chart-component"
                                     height="300"
                                     :chart="{
                                         labels: array_huella_carbono_fuente_torta[0],

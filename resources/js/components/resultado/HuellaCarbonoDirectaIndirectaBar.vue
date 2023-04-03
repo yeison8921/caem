@@ -46,6 +46,7 @@ export default {
 
             this.grafica = new Chart(ctx, {
                 type: "bar",
+                backgroundColor: "red",
                 data: {
                     labels: this.chart.labels,
                     datasets: [
