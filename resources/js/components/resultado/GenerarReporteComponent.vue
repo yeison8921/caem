@@ -132,10 +132,14 @@ export default {
                 _fuente.fuente_emision_mostrar,
                 _fuente.fuentetable.nombre,
                 _fuente.fuentetable.unidad_consumo,
-                _fuente.resultado.promedio,
-                _fuente.resultado["huella_carbono" + this.ar],
+                _fuente.resultado ? _fuente.resultado.promedio : "NR",
+                _fuente.resultado
+                    ? _fuente.resultado["huella_carbono" + this.ar]
+                    : "NR",
                 "+/- " +
-                    _fuente.resultado["incertidumbre_fuente" + this.ar] +
+                    (_fuente.resultado
+                        ? _fuente.resultado["incertidumbre_fuente" + this.ar]
+                        : "NR") +
                     "%",
             ];
         },
@@ -505,7 +509,9 @@ export default {
                     },
                     this.resultados.fuentes_directas.total_huella_carbono,
                     "",
-                    this.resultados.fuentes_directas.total_incertidumbre,
+                    "+/- " +
+                        this.resultados.fuentes_directas.total_incertidumbre +
+                        "%",
                 ],
             ];
 
