@@ -138,7 +138,8 @@ export default {
                     : "NR",
                 "+/- " +
                     (_fuente.resultado
-                        ? _fuente.resultado["incertidumbre_fuente" + this.ar]
+                        ? _fuente.resultado["incertidumbre_fuente" + this.ar] *
+                          100
                         : "NR") +
                     "%",
             ];
@@ -191,7 +192,8 @@ export default {
             this.resultados.fuentes_moviles.total_huella_carbono =
                 tablasAndTotals.fuentes_moviles.total_huella_carbono;
             this.resultados.fuentes_moviles.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_moviles.total_incertidumbre_fuente;
+                tablasAndTotals.fuentes_moviles.total_incertidumbre_fuente *
+                100;
             this.resultados.tabla1Body = [
                 // CREAR TABLA
                 [
@@ -288,7 +290,7 @@ export default {
             this.resultados.fuentes_fijas.total_huella_carbono =
                 tablasAndTotals.fuentes_fijas.total_huella_carbono;
             this.resultados.fuentes_fijas.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_fijas.total_incertidumbre_fuente;
+                tablasAndTotals.fuentes_fijas.total_incertidumbre_fuente * 100;
             this.resultados.tabla2Body = [
                 [
                     {
@@ -372,7 +374,7 @@ export default {
             this.resultados.emisiones.total_huella_carbono =
                 tablasAndTotals.emisiones.total_huella_carbono;
             this.resultados.emisiones.total_incertidumbre_fuente =
-                tablasAndTotals.emisiones.total_incertidumbre_fuente;
+                tablasAndTotals.emisiones.total_incertidumbre_fuente * 100;
             this.resultados.tabla3Body = [
                 [
                     {
@@ -454,7 +456,7 @@ export default {
             this.resultados.fuentes_directas.total_huella_carbono =
                 tablasAndTotals.fuentes_directas.total_huella_carbono;
             this.resultados.fuentes_directas.total_incertidumbre =
-                tablasAndTotals.fuentes_directas.total_incertidumbre;
+                tablasAndTotals.fuentes_directas.total_incertidumbre * 100;
             this.resultados.fuentes_directas.total_porcentaje_huella_total = 0; //TODO: calcular
             this.resultados.fuentes_directas.nivel_precision = "SIN CALCULAR"; //TODO: calcular
             this.resultados.tabla4Body = [
@@ -521,7 +523,8 @@ export default {
             this.resultados.fuentes_indirectas.total_huella_carbono =
                 tablasAndTotals.fuentes_indirectas.total_huella_carbono;
             this.resultados.fuentes_indirectas.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_indirectas.total_incertidumbre_fuente;
+                tablasAndTotals.fuentes_indirectas.total_incertidumbre_fuente *
+                100;
             this.resultados.tabla5Body = [
                 [
                     {
@@ -614,7 +617,7 @@ export default {
             this.resultados.fuentes_C3.total_huella_carbono =
                 tablasAndTotals.fuentes_C3.total_huella_carbono;
             this.resultados.fuentes_C3.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_C3.total_incertidumbre_fuente;
+                tablasAndTotals.fuentes_C3.total_incertidumbre_fuente * 100;
             this.resultados.tabla6Body = [
                 [
                     {
@@ -703,7 +706,7 @@ export default {
             this.resultados.fuentes_C4.total_huella_carbono =
                 tablasAndTotals.fuentes_C4.total_huella_carbono;
             this.resultados.fuentes_C4.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_C4.total_incertidumbre_fuente;
+                tablasAndTotals.fuentes_C4.total_incertidumbre_fuente * 100;
             this.resultados.tabla7Body = [
                 [
                     {
@@ -792,7 +795,7 @@ export default {
             this.resultados.fuentes_C5.total_huella_carbono =
                 tablasAndTotals.fuentes_C5.total_huella_carbono;
             this.resultados.fuentes_C5.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_C5.total_incertidumbre_fuente;
+                tablasAndTotals.fuentes_C5.total_incertidumbre_fuente * 100;
             this.resultados.tabla8Body = [
                 [
                     {
@@ -881,7 +884,7 @@ export default {
             this.resultados.fuentes_C6.total_huella_carbono =
                 tablasAndTotals.fuentes_C6.total_huella_carbono;
             this.resultados.fuentes_C6.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_C6.total_incertidumbre_fuente;
+                tablasAndTotals.fuentes_C6.total_incertidumbre_fuente * 100;
             this.resultados.tabla9Body = [
                 [
                     {
@@ -1256,7 +1259,8 @@ export default {
             this.resultados.tabla13.total_huella_carbono =
                 tablasAndTotals.subtotals.totals.total_huella_carbono;
             this.resultados.tabla13.total_incertidumbre_fuente =
-                tablasAndTotals.subtotals.totals.total_incertidumbre_fuente;
+                tablasAndTotals.subtotals.totals.total_incertidumbre_fuente *
+                100;
             this.resultados.tabla13Body = [
                 [
                     {
@@ -1358,7 +1362,8 @@ export default {
                         text:
                             "+/- " +
                             tablasAndTotals.fuentes_moviles
-                                .total_incertidumbre_fuente +
+                                .total_incertidumbre_fuente *
+                                100 +
                             "%",
                         fillColor: "#aae0bb",
                     },
@@ -1406,7 +1411,8 @@ export default {
                         text:
                             "+/- " +
                             tablasAndTotals.fuentes_fijas
-                                .total_incertidumbre_fuente +
+                                .total_incertidumbre_fuente *
+                                100 +
                             "%",
                         fillColor: "#aae0bb",
                     },
@@ -1453,7 +1459,8 @@ export default {
                         text:
                             "+/- " +
                             tablasAndTotals.emisiones
-                                .total_incertidumbre_fuente +
+                                .total_incertidumbre_fuente *
+                                100 +
                             "%",
                         fillColor: "#aae0bb",
                     },
@@ -1514,7 +1521,8 @@ export default {
                         text:
                             "+/- " +
                             tablasAndTotals.subtotals.emisiones_directas
-                                .total_incertidumbre_fuente +
+                                .total_incertidumbre_fuente *
+                                100 +
                             "%",
                         fillColor: "#348c4f",
                         style: "subtotal",
@@ -1568,7 +1576,8 @@ export default {
                         text:
                             "+/- " +
                             tablasAndTotals.fuentes_indirectas
-                                .total_incertidumbre_fuente +
+                                .total_incertidumbre_fuente *
+                                100 +
                             "%",
                         fillColor: "#fabf8f",
                     },
@@ -1629,7 +1638,8 @@ export default {
                         text:
                             "+/- " +
                             tablasAndTotals.subtotals.emisiones_indirectas
-                                .total_incertidumbre_fuente +
+                                .total_incertidumbre_fuente *
+                                100 +
                             "%",
                         fillColor: "#ff9966",
                         style: "subtotal",
@@ -1678,7 +1688,8 @@ export default {
                         text:
                             "+/- " +
                             tablasAndTotals.fuentes_C3
-                                .total_incertidumbre_fuente +
+                                .total_incertidumbre_fuente *
+                                100 +
                             "%",
                         fillColor: "#e6b8b7",
                     },
@@ -1725,7 +1736,8 @@ export default {
                         text:
                             "+/- " +
                             tablasAndTotals.fuentes_C4
-                                .total_incertidumbre_fuente +
+                                .total_incertidumbre_fuente *
+                                100 +
                             "%",
                         fillColor: "#e6b8b7",
                     },
@@ -1772,7 +1784,8 @@ export default {
                         text:
                             "+/- " +
                             tablasAndTotals.fuentes_C5
-                                .total_incertidumbre_fuente +
+                                .total_incertidumbre_fuente *
+                                100 +
                             "%",
                         fillColor: "#e6b8b7",
                     },
@@ -1819,7 +1832,8 @@ export default {
                         text:
                             "+/- " +
                             tablasAndTotals.fuentes_C6
-                                .total_incertidumbre_fuente +
+                                .total_incertidumbre_fuente *
+                                100 +
                             "%",
                         fillColor: "#e6b8b7",
                     },
@@ -1881,7 +1895,8 @@ export default {
                         text:
                             "+/- " +
                             tablasAndTotals.subtotals.emisiones_otras_indirectas
-                                .total_incertidumbre_fuente +
+                                .total_incertidumbre_fuente *
+                                100 +
                             "%",
                         fillColor: "#963634",
                         style: "subtotal",
@@ -1940,7 +1955,8 @@ export default {
                         text:
                             "+/- " +
                             tablasAndTotals.subtotals.totals
-                                .total_incertidumbre_fuente +
+                                .total_incertidumbre_fuente *
+                                100 +
                             "%",
                         fillColor: "#215967",
                         style: "subtotal",
@@ -2239,11 +2255,11 @@ export default {
                             },
                             body: [
                                 [
-                                    "Figura  1 Distribución de la huella de carbono por categorías",
+                                    "Figura 1 Distribución de la huella de carbono por categorías",
                                     "",
                                 ],
                                 [
-                                    "Figura  2 Distribución porcentual de la huella de carbono por emisiones",
+                                    "Figura 2 Distribución porcentual de la huella de carbono por emisiones",
                                     "",
                                 ],
                             ],
@@ -3454,19 +3470,33 @@ export default {
 
                     {
                         text: [
-                            "Figura  1 Distribución de la huella de carbono por categorías",
+                            "Figura 1 Distribución de la huella de carbono por categorías",
                         ],
                         margin: [0, 0, 0, 10],
                         alignment: "center",
                         bold: true,
                     },
                     {
-                        //text: ["DIAGRAMA BARRAS"],
-                        image: this.convertCanvasToBase64(
-                            "huella-carbono-directa-indirecta-bar"
-                        ),
-                        width: 200,
+                        style: "tableExample",
+                        color: "#444",
+                        margin: [140, 0, 0, 10],
                         alignment: "center",
+                        table: {
+                            widths: ["auto"],
+                            body: [
+                                [
+                                    {
+                                        //text: ["DIAGRAMA BARRAS"],
+                                        image: this.convertCanvasToBase64(
+                                            "huella-carbono-directa-indirecta-bar"
+                                        ),
+                                        width: 250,
+                                        alignment: "center",
+                                        border: [false, false, false, false],
+                                    },
+                                ],
+                            ],
+                        },
                     },
                     {
                         text: [
@@ -3482,19 +3512,51 @@ export default {
 
                     {
                         text: [
-                            "Figura  2 Distribución porcentual de la huella de carbono por emisiones",
+                            "Figura 2 Distribución porcentual de la huella de carbono por emisiones",
                         ],
                         margin: [0, 0, 0, 10],
                         alignment: "center",
                         bold: true,
                     },
                     {
-                        image: this.convertCanvasToBase64(
-                            "huella-carbono-fuente-pie"
-                        ),
+                        style: "tableExample",
+                        color: "#444",
+                        alignment: "center",
+                        table: {
+                            widths: ["auto", "auto"],
+                            body: [
+                                [
+                                    {
+                                        image: this.convertCanvasToBase64(
+                                            "huella-carbono-fuente-bar"
+                                        ),
+                                        //text: ["DIAGRAMA TORTA"],
+                                        width: 250,
+                                        alignment: "center",
+                                        border: [false, false, false, false],
+                                    },
+                                    {
+                                        image: this.convertCanvasToBase64(
+                                            "huella-carbono-fuente-pie"
+                                        ),
+                                        //text: ["DIAGRAMA TORTA"],
+                                        width: 250,
+                                        alignment: "center",
+                                        border: [false, false, false, false],
+                                    },
+                                ],
+                            ],
+                        },
+                    },
+                    {
+                        //image: this.convertCanvasToBase64(
+                        //    "huella-carbono-fuente-pie"
+                        //),
+                        text: ["DIAGRAMA TORTA"],
                         width: 200,
                         alignment: "center",
                     },
+
                     {
                         text: [
                             "Fuente: Herramienta de cálculo HCC CAEM – ",
@@ -3622,205 +3684,210 @@ export default {
                         ],
                         style: "paragraph",
                     },
-
                     {
-                        text: [
-                            "Tabla 13. Resultados totales del inventario corporativo de GEI",
+                        stack: [
+                            {
+                                text: [
+                                    "Tabla 13. Resultados totales del inventario corporativo de GEI",
+                                ],
+                                margin: [0, 0, 0, 10],
+                                alignment: "center",
+                                bold: true,
+                            },
+                            {
+                                fontSize: 11,
+                                unbreakable: true,
+                                color: "#5e90b3",
+                                alignment: "center",
+                                table: {
+                                    widths: ["*", "*", "*", "*"],
+                                    body: [
+                                        [
+                                            {
+                                                text: "Carga Ambiental",
+                                                bold: true,
+                                                fillColor: "#215967",
+                                                color: "white",
+                                            },
+                                            {
+                                                text: "Factor de emisión",
+                                                bold: true,
+                                                fillColor: "#215967",
+                                                color: "white",
+                                            },
+                                            {
+                                                text: "Unidad",
+                                                bold: true,
+                                                fillColor: "#215967",
+                                                color: "white",
+                                            },
+                                            {
+                                                text: "Fuente Bibliográfica",
+                                                bold: true,
+                                                fillColor: "#215967",
+                                                color: "white",
+                                            },
+                                        ],
+                                        [
+                                            {
+                                                text: "Fuentes Móviles",
+                                                colSpan: 4,
+                                                bold: true,
+                                                alignment: "left",
+                                            },
+                                            { text: "" },
+                                            { text: "" },
+                                            { text: "" },
+                                        ],
+                                        [
+                                            {
+                                                text: "Diesel (ACPM)",
+                                                rowSpan: 3,
+                                                alignment: "left",
+                                            },
+                                            { text: "10,149" },
+                                            { text: "kgCO2/gal" },
+                                            { text: "FECOC UPME 2016" },
+                                        ],
+                                        [
+                                            { text: "" },
+                                            { text: "0,00001" },
+                                            { text: "KgCH4/gal" },
+                                            { text: "FECOC UPME 2016" },
+                                        ],
+                                        [
+                                            { text: "" },
+                                            { text: "0,00001" },
+                                            { text: "kgN2O/gal" },
+                                            { text: "FECOC UPME 2016" },
+                                        ],
+                                        [
+                                            {
+                                                text: "Biodiesel Palma",
+                                                rowSpan: 3,
+                                                alignment: "left",
+                                            },
+                                            { text: "6,88" },
+                                            { text: "kgCO2/gal" },
+                                            { text: "FECOC UPME 2016" },
+                                        ],
+                                        [
+                                            { text: "" },
+                                            { text: "0,00003" },
+                                            { text: "KgCH4/gal" },
+                                            { text: "FECOC UPME 2016" },
+                                        ],
+                                        [
+                                            { text: "" },
+                                            { text: "6,88" },
+                                            { text: "kgCO2/gal" },
+                                            { text: "FECOC UPME 2016" },
+                                        ],
+                                        [
+                                            {
+                                                text: "Fuentes Fijas",
+                                                colSpan: 4,
+                                                bold: true,
+                                                alignment: "left",
+                                            },
+                                            { text: "" },
+                                            { text: "" },
+                                            { text: "" },
+                                        ],
+                                        [
+                                            {
+                                                text: "Extintores CO2",
+                                                alignment: "left",
+                                            },
+                                            { text: "1" },
+                                            { text: "kg CO2 e/kg" },
+                                            { text: "IPCC 2019" },
+                                        ],
+                                        [
+                                            {
+                                                text: "Gas Natural Genérico",
+                                                rowSpan: 3,
+                                                alignment: "left",
+                                            },
+                                            { text: "1,980" },
+                                            { text: "kg CO2/m3" },
+                                            { text: "IPCC 2019" },
+                                        ],
+                                        [
+                                            { text: "" },
+                                            { text: "0,0000357" },
+                                            { text: "kg CH4/m3" },
+                                            { text: "IPCC 2019" },
+                                        ],
+                                        [
+                                            { text: "" },
+                                            { text: "0,00000" },
+                                            { text: "kg N2O/m3" },
+                                            { text: "IPCC 2019" },
+                                        ],
+                                        [
+                                            {
+                                                text: "Energía Eléctrica",
+                                                colSpan: 4,
+                                                bold: true,
+                                                alignment: "left",
+                                            },
+                                            { text: "" },
+                                            { text: "" },
+                                            { text: "" },
+                                        ],
+                                        [
+                                            {
+                                                text: "Energía Eléctrica adquirida",
+                                                alignment: "left",
+                                            },
+                                            { text: "0,12" },
+                                            { text: "kg CO2 e/KWh" },
+                                            { text: "FECOC UPME 2021" },
+                                        ],
+                                        [
+                                            {
+                                                text: "Otras Fuentes Indirectas",
+                                                colSpan: 4,
+                                                bold: true,
+                                                alignment: "left",
+                                            },
+                                            { text: "" },
+                                            { text: "" },
+                                            { text: "" },
+                                        ],
+                                        [
+                                            {
+                                                text: "Incineración controlada residuos sólidos industriales (continua-cargador mecánico)",
+                                                alignment: "left",
+                                            },
+                                            { text: "0,00000020" },
+                                            { text: "kgCH4/kg húmedo" },
+                                            { text: "IPCC 2019" },
+                                        ],
+                                        [
+                                            {
+                                                text: "Incineración controlada residuos sólidos lodos aguas residuales (continua-cargador mecánico)",
+                                                alignment: "left",
+                                            },
+                                            { text: "0,00000020" },
+                                            { text: "kgCH4/kg húmedo" },
+                                            { text: "IPCC 2019" },
+                                        ],
+                                        [
+                                            {
+                                                text: "Residuos sólidos a relleno sanitario anaeróbico ",
+                                                alignment: "left",
+                                            },
+                                            { text: "0,05259000" },
+                                            { text: "kgCH4/kg húmedo" },
+                                            { text: "IPCC 2019" },
+                                        ],
+                                    ],
+                                },
+                            },
                         ],
-                        margin: [0, 0, 0, 10],
-                        alignment: "center",
-                        bold: true,
-                    },
-                    {
-                        fontSize: 11,
                         unbreakable: true,
-                        color: "#5e90b3",
-                        alignment: "center",
-                        table: {
-                            body: [
-                                [
-                                    {
-                                        text: "Carga Ambiental",
-                                        bold: true,
-                                        fillColor: "#215967",
-                                        color: "white",
-                                    },
-                                    {
-                                        text: "Factor de emisión",
-                                        bold: true,
-                                        fillColor: "#215967",
-                                        color: "white",
-                                    },
-                                    {
-                                        text: "Unidad",
-                                        bold: true,
-                                        fillColor: "#215967",
-                                        color: "white",
-                                    },
-                                    {
-                                        text: "Fuente Bibliográfica",
-                                        bold: true,
-                                        fillColor: "#215967",
-                                        color: "white",
-                                    },
-                                ],
-                                [
-                                    {
-                                        text: "Fuentes Móviles",
-                                        colSpan: 4,
-                                        bold: true,
-                                        alignment: "left",
-                                    },
-                                    { text: "" },
-                                    { text: "" },
-                                    { text: "" },
-                                ],
-                                [
-                                    {
-                                        text: "Diesel (ACPM)",
-                                        rowSpan: 3,
-                                        alignment: "left",
-                                    },
-                                    { text: "10,149" },
-                                    { text: "kgCO2/gal" },
-                                    { text: "FECOC UPME 2016" },
-                                ],
-                                [
-                                    { text: "" },
-                                    { text: "0,00001" },
-                                    { text: "KgCH4/gal" },
-                                    { text: "FECOC UPME 2016" },
-                                ],
-                                [
-                                    { text: "" },
-                                    { text: "0,00001" },
-                                    { text: "kgN2O/gal" },
-                                    { text: "FECOC UPME 2016" },
-                                ],
-                                [
-                                    {
-                                        text: "Biodiesel Palma",
-                                        rowSpan: 3,
-                                        alignment: "left",
-                                    },
-                                    { text: "6,88" },
-                                    { text: "kgCO2/gal" },
-                                    { text: "FECOC UPME 2016" },
-                                ],
-                                [
-                                    { text: "" },
-                                    { text: "0,00003" },
-                                    { text: "KgCH4/gal" },
-                                    { text: "FECOC UPME 2016" },
-                                ],
-                                [
-                                    { text: "" },
-                                    { text: "6,88" },
-                                    { text: "kgCO2/gal" },
-                                    { text: "FECOC UPME 2016" },
-                                ],
-                                [
-                                    {
-                                        text: "Fuentes Fijas",
-                                        colSpan: 4,
-                                        bold: true,
-                                        alignment: "left",
-                                    },
-                                    { text: "" },
-                                    { text: "" },
-                                    { text: "" },
-                                ],
-                                [
-                                    {
-                                        text: "Extintores CO2",
-                                        alignment: "left",
-                                    },
-                                    { text: "1" },
-                                    { text: "kg CO2 e/kg" },
-                                    { text: "IPCC 2019" },
-                                ],
-                                [
-                                    {
-                                        text: "Gas Natural Genérico",
-                                        rowSpan: 3,
-                                        alignment: "left",
-                                    },
-                                    { text: "1,980" },
-                                    { text: "kg CO2/m3" },
-                                    { text: "IPCC 2019" },
-                                ],
-                                [
-                                    { text: "" },
-                                    { text: "0,0000357" },
-                                    { text: "kg CH4/m3" },
-                                    { text: "IPCC 2019" },
-                                ],
-                                [
-                                    { text: "" },
-                                    { text: "0,00000" },
-                                    { text: "kg N2O/m3" },
-                                    { text: "IPCC 2019" },
-                                ],
-                                [
-                                    {
-                                        text: "Energía Eléctrica",
-                                        colSpan: 4,
-                                        bold: true,
-                                        alignment: "left",
-                                    },
-                                    { text: "" },
-                                    { text: "" },
-                                    { text: "" },
-                                ],
-                                [
-                                    {
-                                        text: "Energía Eléctrica adquirida",
-                                        alignment: "left",
-                                    },
-                                    { text: "0,12" },
-                                    { text: "kg CO2 e/KWh" },
-                                    { text: "FECOC UPME 2021" },
-                                ],
-                                [
-                                    {
-                                        text: "Otras Fuentes Indirectas",
-                                        colSpan: 4,
-                                        bold: true,
-                                        alignment: "left",
-                                    },
-                                    { text: "" },
-                                    { text: "" },
-                                    { text: "" },
-                                ],
-                                [
-                                    {
-                                        text: "Incineración controlada residuos sólidos industriales (continua-cargador mecánico)",
-                                        alignment: "left",
-                                    },
-                                    { text: "0,00000020" },
-                                    { text: "kgCH4/kg húmedo" },
-                                    { text: "IPCC 2019" },
-                                ],
-                                [
-                                    {
-                                        text: "Incineración controlada residuos sólidos lodos aguas residuales (continua-cargador mecánico)",
-                                        alignment: "left",
-                                    },
-                                    { text: "0,00000020" },
-                                    { text: "kgCH4/kg húmedo" },
-                                    { text: "IPCC 2019" },
-                                ],
-                                [
-                                    {
-                                        text: "Residuos sólidos a relleno sanitario anaeróbico ",
-                                        alignment: "left",
-                                    },
-                                    { text: "0,05259000" },
-                                    { text: "kgCH4/kg húmedo" },
-                                    { text: "IPCC 2019" },
-                                ],
-                            ],
-                        },
                     },
                     {
                         text: [
@@ -3958,7 +4025,7 @@ export default {
                                                 color: "white",
                                             },
                                             {
-                                                text: "AR5 (2014) ",
+                                                text: "AR6 (2021)",
                                                 bold: true,
                                                 style: "cellSpaced",
                                                 fillColor: "#215967",

@@ -63,12 +63,12 @@
                             @change="mostrar_graficas = false"
                         />
                     </div>
-                    <div class="mb-3 text-end">
+                    <div class="mb-3 text-start">
                         <button type="submit" class="btn btn-primary">
                             Calcular
                         </button>
                     </div>
-                    <div class="mb-3 text-end">
+                    <div class="mb-3 text-start">
                         <generar-reporte-component
                             :empresa_id="empresa"
                             :sede_id="sede"
