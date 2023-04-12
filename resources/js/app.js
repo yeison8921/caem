@@ -21,6 +21,7 @@ import "../css/nucleo-svg.css";
 import jszip from 'jszip/dist/jszip';
 import "./nav-pills.js";
 import "../scss/soft-ui-dashboard.scss";
+import 'popper.js';
 
 var moment = require("moment-timezone");
 var momentDurationFormatSetup = require("moment-duration-format");

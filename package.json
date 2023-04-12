@@ -36,6 +36,7 @@
         "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.38",
         "pdfmake": "^0.2.7",
+        "popper.js": "^1.16.1",
         "sweetalert2": "^11.4.38",
         "vue-api-query": "^1.10.0",
         "vuelidate": "^0.7.7",

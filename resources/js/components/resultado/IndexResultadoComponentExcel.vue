@@ -47,7 +47,7 @@
                         <Multiselect
                             v-model="ar"
                             :options="options_ar"
-                            placeholder="Reporte (AR5 / AR6)"
+                            placeholder="IPCC (AR5 / AR6)"
                             required
                         />
                     </div>

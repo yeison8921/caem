@@ -211,7 +211,7 @@ class FuenteEmision extends Model
                 $texto = 'Otros';
                 break;
             case 'Trasversales':
-                $texto = 'Trasversales';
+                $texto = 'Transversales';
                 break;
         }
         return $texto;
@@ -230,7 +230,7 @@ class FuenteEmision extends Model
             $texto = 'CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI';
         }
         if ($this->tipo == 'electricidad_importada' || $this->tipo == 'energia_importada') {
-            $texto = 'CATEGORIA 2 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR ENERGÍA IMPORTADA';
+            $texto = 'CATEGORIA 2 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR CONSUMO DE ENERGÍA';
         }
         if ($this->tipo == 'transportes_fuentes_moviles' || $this->tipo == 'transportes_carga_pasajeros') {
             $texto = 'CATEGORIA 3 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR EL TRANSPORTE';
@@ -245,7 +245,7 @@ class FuenteEmision extends Model
             $texto = 'CATEGORIA 6 - EMISIONES INDIRECTAS DE GEI PROVENIENTES DE OTRAS FUENTES';
         }
         if ($this->tipo == 'trasversales') {
-            $texto = 'CATEGORIA 7 - EMISIONES TRASVERSALES';
+            $texto = 'CATEGORIA 7 - EMISIONES TRANSVERSALES';
         }
         return $texto;
     }

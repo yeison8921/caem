@@ -7,77 +7,84 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3">
-                <form @submit.prevent="getDatosGraficas">
-                    <div class="mb-3" v-if="user.rol_id != 2">
-                        <Multiselect
-                            v-model="empresa"
-                            :options="options_empresa"
-                            valueProp="id"
-                            label="nombre"
-                            placeholder="Empresa"
-                            :searchable="true"
-                            required
-                            @change="mostrar_graficas = false"
-                            @input="getOptionsSede()"
-                        />
-                    </div>
-                    <div class="mb-3">
-                        <Multiselect
-                            v-model="sede"
-                            :options="options_sede"
-                            valueProp="id"
-                            label="nombre"
-                            placeholder="Sede"
-                            :searchable="true"
-                            required
-                            @change="mostrar_graficas = false"
-                            @input="getOptionsPeriodo()"
-                        />
-                    </div>
-                    <div class="mb-3">
-                        <Multiselect
-                            v-model="periodo"
-                            :options="options_periodo"
-                            placeholder="Periodo"
-                            :searchable="true"
-                            required
-                            @change="mostrar_graficas = false"
-                        />
-                    </div>
-                    <div class="mb-3">
-                        <Multiselect
-                            v-model="ar"
-                            :options="options_ar"
-                            placeholder="Reporte (AR5 / AR6)"
-                            required
-                            @change="mostrar_graficas = false"
-                        />
-                    </div>
-                    <div class="mb-3">
-                        <Multiselect
-                            v-model="reporte"
-                            :options="options_reporte"
-                            placeholder="Reporte"
-                            required
-                            @change="mostrar_graficas = false"
-                        />
-                    </div>
-                    <div class="mb-3 text-start">
-                        <button type="submit" class="btn btn-primary">
-                            Calcular
-                        </button>
-                    </div>
-                    <div class="mb-3 text-start">
-                        <generar-reporte-component
-                            :empresa_id="empresa"
-                            :sede_id="sede"
-                            :ar="ar"
-                            :periodo_id="periodo"
-                            v-if="mostrar_graficas && reporte == 'corporativo'"
-                        />
-                    </div>
-                </form>
+            <div class="col-lg-3 mb-3">
+                <div class="card">
+                    <form @submit.prevent="getDatosGraficas" class="card-body">
+                        <div class="mb-3" v-if="user.rol_id != 2">
+                            <Multiselect
+                                v-model="empresa"
+                                :options="options_empresa"
+                                valueProp="id"
+                                label="nombre"
+                                placeholder="Empresa"
+                                :searchable="true"
+                                required
+                                @change="mostrar_graficas = false"
+                                @input="getOptionsSede()"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <Multiselect
+                                v-model="sede"
+                                :options="options_sede"
+                                valueProp="id"
+                                label="nombre"
+                                placeholder="Sede"
+                                :searchable="true"
+                                required
+                                @change="mostrar_graficas = false"
+                                @input="getOptionsPeriodo()"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <Multiselect
+                                v-model="periodo"
+                                :options="options_periodo"
+                                placeholder="Periodo"
+                                :searchable="true"
+                                required
+                                @change="mostrar_graficas = false"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <Multiselect
+                                v-model="ar"
+                                :options="options_ar"
+                                placeholder="IPCC (AR5 / AR6)"
+                                required
+                                @change="mostrar_graficas = false"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <Multiselect
+                                v-model="reporte"
+                                :options="options_reporte"
+                                placeholder="Tipo de reporte"
+                                required
+                                @change="mostrar_graficas = false"
+                            />
+                        </div>
+                        <div class="d-grid gap-2 col-lg-8 text-start">
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-sm"
+                            >
+                                Calcular
+                            </button>
+                        </div>
+                        <div class="d-grid gap-2 col-lg-8 text-start">
+                            <generar-reporte-component
+                                :empresa_id="empresa"
+                                :sede_id="sede"
+                                :ar="ar"
+                                :periodo_id="periodo"
+                                v-if="
+                                    mostrar_graficas && reporte == 'corporativo'
+                                "
+                            />
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="col-lg-9" v-if="mostrar_graficas">
                 <div class="row mb-5">

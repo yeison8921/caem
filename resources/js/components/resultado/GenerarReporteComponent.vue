@@ -1,14 +1,12 @@
 <template>
-    <div>
-        <button
-            type="button"
-            v-on:click="handleGenerarReporte"
-            class="btn btn-success"
-            :disabled="Object.keys(base64Images).length === 0"
-        >
-            Generar Reporte
-        </button>
-    </div>
+    <button
+        type="button"
+        v-on:click="handleGenerarReporte"
+        class="btn btn-success btn-sm"
+        :disabled="Object.keys(base64Images).length === 0"
+    >
+        Descargar reporte
+    </button>
 </template>
 
 <script>

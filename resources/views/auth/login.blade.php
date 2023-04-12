@@ -57,7 +57,7 @@
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-4 text-sm">
                     ¿No tiene una cuenta?
-                    <a href="/register" class="text-success text-gradient font-weight-bold">Registrese aquí</a>
+                    <a href="/register" class="text-success text-gradient font-weight-bold">Regístrese aquí</a>
                   </p>
                 </div>
               </div>

@@ -323,8 +323,8 @@
                             <div class="mb-3">
                                 <label class="required"
                                     >¿Se realizó una priorización de fuentes de
-                                    emisión para definir el Otras Emisiones
-                                    Indirectas?
+                                    emisión para definir otras emisiones
+                                    indirectas?
                                 </label>
                                 <Multiselect
                                     v-model="ie.priorizacion"
@@ -450,7 +450,7 @@
                     <div v-if="paso == 3">
                         <div class="mb-3">
                             <label class="required"
-                                >¿En la empresa se ha planteado metas de
+                                >¿En la empresa se han planteado metas de
                                 mitigación de Gases Efecto Invernadero (GEI)?
                             </label>
                             <Multiselect
@@ -597,9 +597,9 @@
                         </div>
                         <div class="mb-3">
                             <label class="required"
-                                >¿La organización para el desarrollo de sus
-                                actividades productivas y/o administrativas ha
-                                identificado las fuentes de gases de efecto
+                                >¿Para el desarrollo de sus actividades
+                                productivas y/o administrativas, la organización
+                                ha identificado las fuentes de gases de efecto
                                 invernadero?
                             </label>
                             <Multiselect
@@ -613,7 +613,8 @@
                         <div class="mb-3">
                             <label class="required"
                                 >¿La organización tiene sumideros y/o
-                                reservorios en los límites de sus instalaciones?
+                                reservorios de carbono en los límites de sus
+                                instalaciones?
                             </label>
                             <Multiselect
                                 v-model="ie.sumideros"
@@ -628,8 +629,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="required"
-                                >¿En la organización cuentan con información
-                                mensual de consumos de todas las fuentes GEI?
+                                >¿La organización cuenta con información mensual
+                                de consumos de todas las fuentes GEI?
                             </label>
                             <Multiselect
                                 v-model="ie.informacion_mensual"
@@ -690,7 +691,7 @@
                             </label>
                             <Multiselect
                                 v-model="ie.soportes_consumos"
-                                :options="options_puntaje_1"
+                                :options="options_puntaje_2"
                                 :disabled="!editar_formulario"
                                 placeholder="Seleccione una opción"
                                 required
@@ -770,7 +771,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="required"
-                                >¿El reporte de huella de carbono es previsto
+                                >¿El reporte de huella de carbono es utilizado
                                 para la toma de decisiones?
                             </label>
                             <Multiselect
@@ -2123,7 +2124,10 @@
                                         />
                                     </div>
                                     <div
-                                        style="padding-left: 30px"
+                                        style="
+                                            padding-left: 30px;
+                                            padding-right: 30px;
+                                        "
                                         class="accordion"
                                         id="accordionSubprocesos"
                                     >
@@ -2248,14 +2252,15 @@
                                                                           0,
                                                                           {
                                                                               id: '',
-                                                                              nombre: 'Nuevo subproceso',
+                                                                              nombre: '',
                                                                               descripcion:
                                                                                   '',
                                                                           }
                                                                       )
                                                             "
                                                         >
-                                                            Agregar subproceso
+                                                            Agregar nuevo
+                                                            subproceso
                                                         </button>
                                                     </div>
                                                 </div>
@@ -2291,11 +2296,11 @@
                                                           0,
                                                           {
                                                               id: '',
-                                                              nombre: 'Nuevo proceso',
+                                                              nombre: '',
                                                               subprocesos: [
                                                                   {
                                                                       id: '',
-                                                                      nombre: 'Nuevo subproceso',
+                                                                      nombre: '',
                                                                       descripcion:
                                                                           '',
                                                                   },
@@ -2333,7 +2338,9 @@
                 <br />
                 <form @submit.prevent="guardarInicioConsumo">
                     <div class="mb-3">
-                        <label class="required">Año de incio de consumos</label>
+                        <label class="required"
+                            >Año de reporte de consumos</label
+                        >
                         <Multiselect
                             v-model="ie.anio_inicio"
                             :options="options_anio"
@@ -2346,7 +2353,9 @@
                         />
                     </div>
                     <div class="mb-3">
-                        <label class="required">Mes de incio de consumos</label>
+                        <label class="required"
+                            >Mes de incio de reporte de consumos</label
+                        >
                         <Multiselect
                             v-model="ie.mes_inicio"
                             :options="options_mes"
@@ -2359,9 +2368,9 @@
                         />
                     </div>
                     <div class="mb-3">
-                        <label>Unidades producidas o servicios prestados</label>
-                        <label style="color: red">
-                            (Valor total para todo el periodo)</label
+                        <label
+                            >Unidades producidas o servicios prestados (valor
+                            total para todo el periodo)</label
                         >
                         <input
                             v-model="ie.unidades_producidas"
@@ -2657,17 +2666,37 @@
                                                                                                                       " DE CONSUMO"
                                                                                                                     : ac
                                                                                                             }}
+
                                                                                                             <i
                                                                                                                 v-if="
                                                                                                                     ac.includes(
                                                                                                                         'INCERTIDUMBRE'
                                                                                                                     )
                                                                                                                 "
-                                                                                                                class="fas fa-question-circle"
-                                                                                                                data-bs-toggle="popover"
-                                                                                                                title="Título ayuda"
-                                                                                                                data-bs-content="Texto ayuda"
+                                                                                                                class="fas fa-question-circle fas-2x"
+                                                                                                                :ref="
+                                                                                                                    'popoverTrigger' +
+                                                                                                                    index +
+                                                                                                                    ci
+                                                                                                                "
+                                                                                                                @click="
+                                                                                                                    togglePopover(
+                                                                                                                        'popoverTrigger' +
+                                                                                                                            index +
+                                                                                                                            ci
+                                                                                                                    )
+                                                                                                                "
                                                                                                             ></i>
+                                                                                                            <div
+                                                                                                                ref="popoverContent"
+                                                                                                                class="d-none"
+                                                                                                            >
+                                                                                                                <p>
+                                                                                                                    Texto
+                                                                                                                    de
+                                                                                                                    ayuda
+                                                                                                                </p>
+                                                                                                            </div>
                                                                                                             <small
                                                                                                                 v-if="
                                                                                                                     ac.includes(
@@ -2925,12 +2954,12 @@ export default {
 
             ac: {
                 c1: "CATEGORIA 1 - EMISIONES Y REMOCIONES DIRECTAS DE GEI",
-                c2: "CATEGORIA 2 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR ENERGÍA IMPORTADA",
+                c2: "CATEGORIA 2 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR CONSUMO DE ENERGÍA",
                 c3: "CATEGORIA 3 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR EL TRANSPORTE",
                 c4: "CATEGORIA 4 - EMISIONES INDIRECTAS DE GEI CAUSADAS POR PRODUCTOS QUE UTILIZA LA ORGANIZACIÓN",
                 c5: "CATEGORIA 5 - EMISIONES INDIRECTAS DE GEI ASOCIADAS CON EL USO DE LOS PRODUCTOS DE LA ORGANIZACIÓN",
                 c6: "CATEGORIA 6 - EMISIONES INDIRECTAS DE GEI PROVENIENTES DE OTRAS FUENTES",
-                c7: "CATEGORIA 7 - EMISIONES TRASVERSALES",
+                c7: "CATEGORIA 7 - EMISIONES TRANSVERSALES",
             },
 
             asc: {
@@ -2960,11 +2989,11 @@ export default {
             procesos: [
                 {
                     id: "",
-                    nombre: "Proceso 1",
+                    nombre: "",
                     subprocesos: [
                         {
                             id: "",
-                            nombre: "Subproceso 1",
+                            nombre: "",
                             descripcion: "",
                         },
                     ],
@@ -3469,7 +3498,7 @@ export default {
 
                 Swal.close();
                 this.$root.mostrarMensaje(
-                    "Éxito",
+                    "Guardado con éxito",
                     "Información guardada exitosamente",
                     "success"
                 );
@@ -3496,7 +3525,7 @@ export default {
                     .then((response) => {
                         Swal.close();
                         this.$root.mostrarMensaje(
-                            "Éxito",
+                            "Guardado con éxito",
                             "Información guardada exitosamente",
                             "success"
                         );
@@ -3526,7 +3555,7 @@ export default {
                     .then((response) => {
                         Swal.close();
                         this.$root.mostrarMensaje(
-                            "Éxito",
+                            "Guardado con éxito",
                             "Información guardada exitosamente",
                             "success"
                         );
@@ -3552,7 +3581,7 @@ export default {
 
                 Swal.close();
                 this.$root.mostrarMensaje(
-                    "Éxito",
+                    "Guardado con éxito",
                     "Información guardada exitosamente",
                     "success"
                 );
@@ -3567,14 +3596,13 @@ export default {
             if (this.editar_consumos) {
                 let texto_adicional =
                     this.user.rol_id == 2
-                        ? ", una vez guardados no podrá modificar la información"
+                        ? ", una vez guardados no podrá modificarlos."
                         : "";
                 Swal.fire({
                     title: "Atención",
                     html:
-                        "¿Está seguro que quiere guardar los datos de consumo" +
-                        texto_adicional +
-                        "?",
+                        "¿Está seguro que quiere guardar los datos?" +
+                        texto_adicional,
                     icon: "question",
                     showCancelButton: true,
                     cancelButtonText: "No",
@@ -3590,7 +3618,7 @@ export default {
                                 .then((response) => {
                                     Swal.close();
                                     this.$root.mostrarMensaje(
-                                        "Éxito",
+                                        "Guardado con éxito",
                                         "Información guardada exitosamente",
                                         "success"
                                     );
@@ -3623,7 +3651,7 @@ export default {
         },
 
         async recargarFormularioEmisiones() {
-            this.$root.mostrarCargando("Cargando información huella");
+            this.$root.mostrarCargando("Cargando información");
 
             this.editar_formulario = 1;
 
@@ -3653,7 +3681,7 @@ export default {
                     ? informacionEmpresa
                     : this.ie;
 
-            if (informacionEmpresa.datos_proveedores != null) {
+            if (informacionEmpresa.huella_base != null) {
                 this.paso = 1;
                 this.huella_existe = 1;
                 this.editar_formulario = this.user.rol_id == 2 ? 0 : 1;
@@ -3696,11 +3724,11 @@ export default {
             this.procesos = [
                 {
                     id: "",
-                    nombre: "Proceso 1",
+                    nombre: "",
                     subprocesos: [
                         {
                             id: "",
-                            nombre: "Subproceso 1",
+                            nombre: "",
                             descripcion: "",
                         },
                     ],
@@ -3765,7 +3793,7 @@ export default {
                     "CONSUMO MES " + (i + 1) + " (" + month + " " + year + ")"
                 );
             }
-            this.array_consumos.push("INCERTIDUMBRE SISTEMATICA ADICIONAL");
+            this.array_consumos.push("INCERTIDUMBRE SISTEMÁTICA ADICIONAL");
             this.array_consumos.push("FUENTE");
         },
         async getFuentesEmision() {
@@ -3793,6 +3821,7 @@ export default {
                     });
 
                     this.fuentes_emision = response.data;
+                    Swal.close();
                 })
                 .catch((error) => {});
 
@@ -3987,7 +4016,7 @@ export default {
 
             setTimeout(() => {
                 this.$root.mostrarMensaje(
-                    "Éxito",
+                    "Guardado con éxito",
                     "Huella generada correctamente",
                     "success"
                 );
@@ -4061,6 +4090,13 @@ export default {
                 });
             });
         },
+        togglePopover(el) {
+            $(this.$refs[el]).popover({
+                content: $(this.$refs.popoverContent).html(),
+                html: true,
+            });
+            $(this.$refs[el]).popover("toggle");
+        },
     },
 };
 </script>
@@ -4082,6 +4118,9 @@ textarea.form-control {
 #tabs-ingresar-datos .nav-link {
     color: #000 !important;
     background-color: #f8f9fa !important;
+}
+.nav-pills .nav-link {
+    border: 1px solid #2ec761;
 }
 #tabs-ingresar-datos .nav-link:hover,
 #tabs-ingresar-datos .nav-link:focus {

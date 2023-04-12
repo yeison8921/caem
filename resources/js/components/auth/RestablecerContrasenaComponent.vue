@@ -1,9 +1,9 @@
 <template>
     <div class="col-lg-6 offset-lg-3">
         <div class="row">
-            <div class="form-group">
+            <div class="form-group text-center">
                 <br />
-                <h2>Restablecer contraseña</h2>
+                <h4>Restablecer contraseña</h4>
             </div>
         </div>
         <div class="card">
@@ -59,7 +59,7 @@ export default {
                         "Éxito",
                         "Se ha generado y enviado una nueva contraseña, por favor revise su correo electrónico",
                         "success",
-                        3000
+                        10000
                     );
                     this.email = "";
                 })
@@ -69,7 +69,7 @@ export default {
                             "Error",
                             "No se encontró el correo electrónico solicitado, por favor confirme que haya quedado bien escrito y vuelva a intentarlo",
                             "error",
-                            3000
+                            10000
                         );
                     }, 500);
                 });
