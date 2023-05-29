@@ -18,8 +18,8 @@
                         href="pdf/guia_ingreso_datos.pdf"
                         target="_blank"
                         style="color: #208943"
-                        >aquí.</a
-                    >
+                        ><b><u>AQUÍ.</u></b>
+                    </a>
                 </label>
             </div>
         </div>
@@ -38,7 +38,12 @@
                     </thead>
                     <tbody>
                         <tr v-for="(h, i) in huellas" v-bind:key="i">
-                            <td>Huella {{ i + 1 }}</td>
+                            <td>
+                                {{
+                                    h.nombre == null ? "Sin definir" : h.nombre
+                                }}
+                            </td>
+                            <!-- <td>Huella {{ i + 1 }}</td> -->
                             <td>
                                 {{
                                     h.anio_inicio == null
@@ -57,7 +62,6 @@
                                     "
                                     @click="
                                         ie_id = h.id;
-                                        nombre_huella = 'Huella ' + (i + 1);
                                         recargarFormularioEmisiones();
                                         tabActiva();
                                     "
@@ -134,7 +138,15 @@
         <hr />
         <br />
 
-        <h4>{{ nombre_huella }}</h4>
+        <h4>
+            {{
+                Object.keys(ie).length === 0
+                    ? ""
+                    : ie.nombre == null
+                    ? "Sin definir"
+                    : ie.nombre
+            }}
+        </h4>
         <ul
             class="nav nav-pills nav-fill mb-3"
             id="tabs-ingresar-datos"
@@ -233,6 +245,16 @@
                 <form @submit.prevent="guardarInformacion">
                     <!-- Paso 1 -->
                     <div v-if="paso == 1">
+                        <div class="mb-3">
+                            <label class="required">Nombre de la huella</label>
+                            <input
+                                v-model="ie.nombre"
+                                class="form-control"
+                                type="text"
+                                :disabled="!editar_formulario"
+                                required
+                            />
+                        </div>
                         <div class="mb-3">
                             <label class="required"
                                 >¿La empresa ha calculado su huella de carbono
@@ -2370,10 +2392,20 @@
                     <div class="mb-3">
                         <label
                             >Unidades producidas o servicios prestados (valor
-                            total para todo el periodo)</label
+                            total para todo el periodo, por ejemplo toneladas,
+                            botellas, transacciones, etc)</label
                         >
                         <input
                             v-model="ie.unidades_producidas"
+                            class="form-control"
+                            type="number"
+                            :disabled="!editar_inicio"
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <label>Tipo de unidad</label>
+                        <input
+                            v-model="ie.tipo_unidad"
                             class="form-control"
                             type="text"
                             :disabled="!editar_inicio"
@@ -3227,7 +3259,7 @@ export default {
 
                     var future = new Date(
                         fecha_base.getFullYear(),
-                        fecha_base.getMonth() + 12,
+                        fecha_base.getMonth() + 11,
                         1
                     );
 

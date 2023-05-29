@@ -12,6 +12,7 @@ class InformacionEmpresa extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'nombre',
         'datos_proveedores',
         'fuentes_moviles',
         'actividad_agricola',
@@ -49,6 +50,7 @@ class InformacionEmpresa extends Model
         'compartira_reporte',
         'toma_decisiones',
         'unidades_producidas',
+        'tipo_unidad',
         'anio_inicio',
         'mes_inicio',
         'estado',

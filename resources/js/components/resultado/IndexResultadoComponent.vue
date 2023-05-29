@@ -303,12 +303,20 @@
                                             ? "No se registró información"
                                             : ""
                                     }}
-                                    {{
+                                    <!-- {{
                                         total_huella_carbono_unidad_produccion ==
                                         -1
                                             ? ""
                                             : total_huella_carbono_unidad_produccion +
                                               " ton/u"
+                                    }} -->
+                                    {{
+                                        total_huella_carbono_unidad_produccion ==
+                                        -1
+                                            ? ""
+                                            : total_huella_carbono_unidad_produccion +
+                                              " ton/" +
+                                              tipo_unidad
                                     }}
                                 </h5>
                             </div>
@@ -379,6 +387,7 @@ export default {
             array_cumplimiento: [],
             promedio_cumplimiento: "",
             total_huella_carbono_unidad_produccion: "",
+            tipo_unidad: "",
             options_convenio: [],
             options_empresa: [],
             options_sede: [{ id: -1, nombre: "Todas" }],
@@ -502,6 +511,8 @@ export default {
                         var json = {
                             value: e.id,
                             label:
+                                e.nombre.toUpperCase() +
+                                " - " +
                                 mes_fecha_base +
                                 " " +
                                 e.anio_inicio +
@@ -559,6 +570,8 @@ export default {
                                 )
                             ).toLocaleString("es-co") +
                             " %";
+
+                        this.tipo_unidad = response.data["tipo_unidad"];
 
                         setTimeout(() => {
                             this.$refs.huellaCarbonoDirectaIndirecta.cargarGrafica();
