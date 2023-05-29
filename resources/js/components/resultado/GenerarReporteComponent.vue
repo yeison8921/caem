@@ -130,17 +130,35 @@ export default {
                 _fuente.fuente_emision_mostrar,
                 _fuente.fuentetable.nombre,
                 _fuente.fuentetable.unidad_consumo,
-                _fuente.resultado ? _fuente.resultado.promedio : "NR",
                 _fuente.resultado
-                    ? _fuente.resultado["huella_carbono" + this.ar]
+                    ? this.parseDotToComma(_fuente.resultado.promedio)
+                    : "NR",
+                _fuente.resultado
+                    ? this.parseDotToComma(
+                          _fuente.resultado["huella_carbono" + this.ar]
+                      )
                     : "NR",
                 "+/- " +
                     (_fuente.resultado
-                        ? _fuente.resultado["incertidumbre_fuente" + this.ar] *
-                          100
+                        ? this.parseDotToComma(
+                              this.parseTwoDecimals(
+                                  _fuente.resultado[
+                                      "incertidumbre_fuente" + this.ar
+                                  ] * 100
+                              )
+                          )
                         : "NR") +
                     "%",
             ];
+        },
+        parseDotToComma(_value) {
+            return _value.toString().replace(".", ",");
+        },
+        parseTwoDecimals(_value) {
+            if (typeof _value === "number" && !isNaN(_value)) {
+                return _value.toFixed(2);
+            }
+            return _value;
         },
         async getReportData() {
             this.$root.mostrarCargando("Consultando información");
@@ -188,10 +206,18 @@ export default {
                 this.ar
             );
             this.resultados.fuentes_moviles.total_huella_carbono =
-                tablasAndTotals.fuentes_moviles.total_huella_carbono;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_moviles.total_huella_carbono
+                    )
+                );
             this.resultados.fuentes_moviles.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_moviles.total_incertidumbre_fuente *
-                100;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_moviles
+                            .total_incertidumbre_fuente * 100
+                    )
+                );
             this.resultados.tabla1Body = [
                 // CREAR TABLA
                 [
@@ -225,7 +251,7 @@ export default {
                     {},
                     {
                         rowSpan: 2,
-                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        text: "HUELLA DE CARBONO \n (Ton CO2 eq)",
                         style: "headerTableResult",
                     },
                     {
@@ -266,15 +292,23 @@ export default {
                 "",
                 "",
                 {
-                    text: this.resultados.fuentes_moviles.total_huella_carbono,
+                    text: this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            this.resultados.fuentes_moviles.total_huella_carbono
+                        )
+                    ),
                     fillColor: "#348c4f",
                     style: "footerTableResult",
                 },
                 {
                     text:
                         "+/- " +
-                        this.resultados.fuentes_moviles
-                            .total_incertidumbre_fuente +
+                        this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                this.resultados.fuentes_moviles
+                                    .total_incertidumbre_fuente
+                            )
+                        ) +
                         "%",
                     fillColor: "#348c4f",
                     style: "footerTableResult",
@@ -286,9 +320,18 @@ export default {
             // Fientes Fijas
             this.resultados.fuentes_fijas = {};
             this.resultados.fuentes_fijas.total_huella_carbono =
-                tablasAndTotals.fuentes_fijas.total_huella_carbono;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_fijas.total_huella_carbono
+                    )
+                );
             this.resultados.fuentes_fijas.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_fijas.total_incertidumbre_fuente * 100;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_fijas
+                            .total_incertidumbre_fuente * 100
+                    )
+                );
             this.resultados.tabla2Body = [
                 [
                     {
@@ -309,7 +352,7 @@ export default {
                     {},
                     {
                         rowSpan: 2,
-                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        text: "HUELLA DE CARBONO \n (Ton CO2 eq)",
                         style: "headerTableResult",
                     },
                     {
@@ -351,15 +394,23 @@ export default {
                 "",
                 "",
                 {
-                    text: this.resultados.fuentes_fijas.total_huella_carbono,
+                    text: this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            this.resultados.fuentes_fijas.total_huella_carbono
+                        )
+                    ),
                     fillColor: "#348c4f",
                     style: "footerTableResult",
                 },
                 {
                     text:
                         "+/- " +
-                        this.resultados.fuentes_fijas
-                            .total_incertidumbre_fuente +
+                        this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                this.resultados.fuentes_fijas
+                                    .total_incertidumbre_fuente
+                            )
+                        ) +
                         "%",
                     fillColor: "#348c4f",
                     style: "footerTableResult",
@@ -370,9 +421,18 @@ export default {
 
             this.resultados.emisiones = {};
             this.resultados.emisiones.total_huella_carbono =
-                tablasAndTotals.emisiones.total_huella_carbono;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.emisiones.total_huella_carbono
+                    )
+                );
             this.resultados.emisiones.total_incertidumbre_fuente =
-                tablasAndTotals.emisiones.total_incertidumbre_fuente * 100;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.emisiones.total_incertidumbre_fuente *
+                            100
+                    )
+                );
             this.resultados.tabla3Body = [
                 [
                     {
@@ -393,7 +453,7 @@ export default {
                     {},
                     {
                         rowSpan: 2,
-                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        text: "HUELLA DE CARBONO \n (Ton CO2 eq)",
                         style: "headerTableResult",
                     },
                     {
@@ -435,14 +495,18 @@ export default {
                 "",
                 "",
                 {
-                    text: this.resultados.emisiones.total_huella_carbono,
+                    text: this.parseDotToComma(
+                        this.resultados.emisiones.total_huella_carbono
+                    ),
                     fillColor: "#348c4f",
                     style: "footerTableResult",
                 },
                 {
                     text:
                         "+/- " +
-                        this.resultados.emisiones.total_incertidumbre_fuente +
+                        this.parseDotToComma(
+                            this.resultados.emisiones.total_incertidumbre_fuente
+                        ) +
                         "%",
                     fillColor: "#348c4f",
                     style: "footerTableResult",
@@ -452,9 +516,18 @@ export default {
             // Tabla 4 Resultados de Fuentes Directas
             this.resultados.fuentes_directas = {};
             this.resultados.fuentes_directas.total_huella_carbono =
-                tablasAndTotals.fuentes_directas.total_huella_carbono;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_directas.total_huella_carbono
+                    )
+                );
             this.resultados.fuentes_directas.total_incertidumbre =
-                tablasAndTotals.fuentes_directas.total_incertidumbre * 100;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_directas.total_incertidumbre *
+                            100
+                    )
+                );
             this.resultados.fuentes_directas.total_porcentaje_huella_total = 0; //TODO: calcular
             this.resultados.fuentes_directas.nivel_precision = "SIN CALCULAR"; //TODO: calcular
             this.resultados.tabla4Body = [
@@ -464,7 +537,7 @@ export default {
                         style: "headerTableResult",
                     },
                     {
-                        text: "HUELLA CARBONO TOTAL [TON CO2-EQ/AÑO]",
+                        text: "HUELLA CARBONO TOTAL [Ton CO2 eq/AÑO]",
                         style: "headerTableResult",
                     },
                     {
@@ -478,28 +551,53 @@ export default {
                 ],
                 [
                     "Fuentes Móviles",
-                    this.resultados.fuentes_moviles.total_huella_carbono,
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            this.resultados.fuentes_moviles.total_huella_carbono
+                        )
+                    ),
                     "",
                     "+/- " +
-                        this.resultados.fuentes_moviles
-                            .total_incertidumbre_fuente +
+                        this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                this.resultados.fuentes_moviles
+                                    .total_incertidumbre_fuente
+                            )
+                        ) +
                         "%",
                 ],
                 [
                     "Fuentes Fijas",
-                    this.resultados.fuentes_fijas.total_huella_carbono,
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            this.resultados.fuentes_fijas.total_huella_carbono
+                        )
+                    ),
                     "",
                     "+/- " +
-                        this.resultados.fuentes_fijas
-                            .total_incertidumbre_fuente +
+                        this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                this.resultados.fuentes_fijas
+                                    .total_incertidumbre_fuente
+                            )
+                        ) +
                         "%",
                 ],
                 [
                     "Emisiones de Proceso",
-                    this.resultados.emisiones.total_huella_carbono,
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            this.resultados.emisiones.total_huella_carbono
+                        )
+                    ),
                     "",
                     "+/- " +
-                        this.resultados.emisiones.total_incertidumbre_fuente +
+                        this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                this.resultados.emisiones
+                                    .total_incertidumbre_fuente
+                            )
+                        ) +
                         "%",
                 ],
                 [
@@ -507,10 +605,20 @@ export default {
                         text: "SUBTOTAL",
                         style: "footerTableResult",
                     },
-                    this.resultados.fuentes_directas.total_huella_carbono,
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            this.resultados.fuentes_directas
+                                .total_huella_carbono
+                        )
+                    ),
                     "",
                     "+/- " +
-                        this.resultados.fuentes_directas.total_incertidumbre +
+                        this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                this.resultados.fuentes_directas
+                                    .total_incertidumbre
+                            )
+                        ) +
                         "%",
                 ],
             ];
@@ -519,10 +627,18 @@ export default {
 
             this.resultados.fuentes_indirectas = {};
             this.resultados.fuentes_indirectas.total_huella_carbono =
-                tablasAndTotals.fuentes_indirectas.total_huella_carbono;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_indirectas.total_huella_carbono
+                    )
+                );
             this.resultados.fuentes_indirectas.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_indirectas.total_incertidumbre_fuente *
-                100;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_indirectas
+                            .total_incertidumbre_fuente * 100
+                    )
+                );
             this.resultados.tabla5Body = [
                 [
                     {
@@ -546,7 +662,7 @@ export default {
                     {},
                     {
                         rowSpan: 2,
-                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        text: "HUELLA DE CARBONO \n (Ton CO2 eq)",
                         fillColor: "#fabf8f",
                         bold: true,
                     },
@@ -592,16 +708,24 @@ export default {
                 "",
                 "",
                 {
-                    text: this.resultados.fuentes_indirectas
-                        .total_huella_carbono,
+                    text: this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            this.resultados.fuentes_indirectas
+                                .total_huella_carbono
+                        )
+                    ),
                     fillColor: "#fabf8f",
                     style: "footerTableResult",
                 },
                 {
                     text:
                         "+/- " +
-                        this.resultados.fuentes_indirectas
-                            .total_incertidumbre_fuente +
+                        this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                this.resultados.fuentes_indirectas
+                                    .total_incertidumbre_fuente
+                            )
+                        ) +
                         "%",
                     fillColor: "#fabf8f",
                     style: "footerTableResult",
@@ -613,9 +737,18 @@ export default {
             ////////////////Emisiones Indirectas por transporte - categoría 3 - Tabla 6 fuentes_C3 //////////////
             this.resultados.fuentes_C3 = {};
             this.resultados.fuentes_C3.total_huella_carbono =
-                tablasAndTotals.fuentes_C3.total_huella_carbono;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_C3.total_huella_carbono
+                    )
+                );
             this.resultados.fuentes_C3.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_C3.total_incertidumbre_fuente * 100;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_C3.total_incertidumbre_fuente *
+                            100
+                    )
+                );
             this.resultados.tabla6Body = [
                 [
                     {
@@ -639,7 +772,7 @@ export default {
                     {},
                     {
                         rowSpan: 2,
-                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        text: "HUELLA DE CARBONO \n (Ton CO2 eq)",
                         fillColor: "#e5b8b7",
                         bold: true,
                     },
@@ -684,14 +817,19 @@ export default {
                 "",
                 "",
                 {
-                    text: this.resultados.fuentes_C3.total_huella_carbono,
+                    text: this.parseDotToComma(
+                        this.resultados.fuentes_C3.total_huella_carbono
+                    ),
                     fillColor: "#e5b8b7",
                     bold: true,
                 },
                 {
                     text:
                         "+/- " +
-                        this.resultados.fuentes_C3.total_incertidumbre_fuente +
+                        this.parseDotToComma(
+                            this.resultados.fuentes_C3
+                                .total_incertidumbre_fuente
+                        ) +
                         "%",
                     fillColor: "#e5b8b7",
                     bold: true,
@@ -702,9 +840,18 @@ export default {
             ////////////////Emisiones Indirectas por productos que utiliza la organización - categoría 4 - Tabla 7 fuentes_C4 //////////////
             this.resultados.fuentes_C4 = {};
             this.resultados.fuentes_C4.total_huella_carbono =
-                tablasAndTotals.fuentes_C4.total_huella_carbono;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_C4.total_huella_carbono
+                    )
+                );
             this.resultados.fuentes_C4.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_C4.total_incertidumbre_fuente * 100;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_C4.total_incertidumbre_fuente *
+                            100
+                    )
+                );
             this.resultados.tabla7Body = [
                 [
                     {
@@ -728,7 +875,7 @@ export default {
                     {},
                     {
                         rowSpan: 2,
-                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        text: "HUELLA DE CARBONO \n (Ton CO2 eq)",
                         fillColor: "#e5b8b7",
                         bold: true,
                     },
@@ -773,14 +920,19 @@ export default {
                 "",
                 "",
                 {
-                    text: this.resultados.fuentes_C4.total_huella_carbono,
+                    text: this.parseDotToComma(
+                        this.resultados.fuentes_C4.total_huella_carbono
+                    ),
                     fillColor: "#e5b8b7",
                     bold: true,
                 },
                 {
                     text:
                         "+/- " +
-                        this.resultados.fuentes_C4.total_incertidumbre_fuente +
+                        this.parseDotToComma(
+                            this.resultados.fuentes_C4
+                                .total_incertidumbre_fuente
+                        ) +
                         "%",
                     fillColor: "#e5b8b7",
                     bold: true,
@@ -791,9 +943,18 @@ export default {
             ////////////////Emisiones Indirectas por uso de productos de la organización - categoría 5 - Tabla 8 fuentes_C5 //////////////
             this.resultados.fuentes_C5 = {};
             this.resultados.fuentes_C5.total_huella_carbono =
-                tablasAndTotals.fuentes_C5.total_huella_carbono;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_C5.total_huella_carbono
+                    )
+                );
             this.resultados.fuentes_C5.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_C5.total_incertidumbre_fuente * 100;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_C5.total_incertidumbre_fuente *
+                            100
+                    )
+                );
             this.resultados.tabla8Body = [
                 [
                     {
@@ -817,7 +978,7 @@ export default {
                     {},
                     {
                         rowSpan: 2,
-                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        text: "HUELLA DE CARBONO \n (Ton CO2 eq)",
                         fillColor: "#e5b8b7",
                         bold: true,
                     },
@@ -862,14 +1023,19 @@ export default {
                 "",
                 "",
                 {
-                    text: this.resultados.fuentes_C5.total_huella_carbono,
+                    text: this.parseDotToComma(
+                        this.resultados.fuentes_C5.total_huella_carbono
+                    ),
                     fillColor: "#e5b8b7",
                     bold: true,
                 },
                 {
                     text:
                         "+/- " +
-                        this.resultados.fuentes_C5.total_incertidumbre_fuente +
+                        this.parseDotToComma(
+                            this.resultados.fuentes_C5
+                                .total_incertidumbre_fuente
+                        ) +
                         "%",
                     fillColor: "#e5b8b7",
                     bold: true,
@@ -880,9 +1046,18 @@ export default {
             ////////////////Emisiones Indirectas proveniente de otras fuentes - categoría 6 - Tabla 9 fuentes_C6 //////////////
             this.resultados.fuentes_C6 = {};
             this.resultados.fuentes_C6.total_huella_carbono =
-                tablasAndTotals.fuentes_C6.total_huella_carbono;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_C6.total_huella_carbono
+                    )
+                );
             this.resultados.fuentes_C6.total_incertidumbre_fuente =
-                tablasAndTotals.fuentes_C6.total_incertidumbre_fuente * 100;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.fuentes_C6.total_incertidumbre_fuente *
+                            100
+                    )
+                );
             this.resultados.tabla9Body = [
                 [
                     {
@@ -906,7 +1081,7 @@ export default {
                     {},
                     {
                         rowSpan: 2,
-                        text: "HUELLA DE CARBONO \n (t CO2 e)",
+                        text: "HUELLA DE CARBONO \n (Ton CO2 eq)",
                         fillColor: "#e5b8b7",
                         bold: true,
                     },
@@ -951,14 +1126,23 @@ export default {
                 "",
                 "",
                 {
-                    text: this.resultados.fuentes_C6.total_huella_carbono,
+                    text: this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            this.resultados.fuentes_C6.total_huella_carbono
+                        )
+                    ),
                     fillColor: "#e5b8b7",
                     bold: true,
                 },
                 {
                     text:
                         "+/- " +
-                        this.resultados.fuentes_C6.total_incertidumbre_fuente +
+                        this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                this.resultados.fuentes_C6
+                                    .total_incertidumbre_fuente
+                            )
+                        ) +
                         "%",
                     fillColor: "#e5b8b7",
                     bold: true,
@@ -984,7 +1168,7 @@ export default {
                         color: "white",
                     },
                     {
-                        text: "EMISIONES DIRECTAS \n [ton CO2-eq/año]",
+                        text: "EMISIONES DIRECTAS \n [Ton CO2 eq/año]",
                         fillColor: "#215967",
                         bold: true,
                         color: "white",
@@ -1000,36 +1184,96 @@ export default {
             this.resultados.tabla10Body.push(
                 [
                     "CO2",
-                    tablasAndTotals.tabla_10.total_CO2.cantidad,
-                    tablasAndTotals.tabla_10.total_CO2.emisiones,
-                    tablasAndTotals.tabla_10.total_CO2.representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_CO2.cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_CO2.emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_CO2.representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     "CH4",
-                    tablasAndTotals.tabla_10.total_CH4.cantidad,
-                    tablasAndTotals.tabla_10.total_CH4.emisiones,
-                    tablasAndTotals.tabla_10.total_CH4.representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_CH4.cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_CH4.emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_CH4.representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     "N2O",
-                    tablasAndTotals.tabla_10.total_N2O.cantidad,
-                    tablasAndTotals.tabla_10.total_N2O.emisiones,
-                    tablasAndTotals.tabla_10.total_N2O.representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_N2O.cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_N2O.emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_N2O.representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     "Compuestos Fluorados",
-                    tablasAndTotals.tabla_10.total_compuestos_fluorados
-                        .cantidad,
-                    tablasAndTotals.tabla_10.total_compuestos_fluorados
-                        .emisiones,
-                    tablasAndTotals.tabla_10.total_compuestos_fluorados
-                        .representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_compuestos_fluorados
+                                .cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_compuestos_fluorados
+                                .emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_compuestos_fluorados
+                                .representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     "SF6",
-                    tablasAndTotals.tabla_10.total_SF6.cantidad,
-                    tablasAndTotals.tabla_10.total_SF6.emisiones,
-                    tablasAndTotals.tabla_10.total_SF6.representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_SF6.cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_SF6.emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_10.total_SF6.representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     {
@@ -1039,20 +1283,33 @@ export default {
                         color: "white",
                     },
                     {
-                        text: tablasAndTotals.tabla_10.total_cantidad,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.tabla_10.total_cantidad
+                            )
+                        ),
                         fillColor: "#31869b",
                         bold: true,
                         color: "white",
                     },
                     {
-                        text: tablasAndTotals.tabla_10.total_emisiones,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.tabla_10.total_emisiones
+                            )
+                        ),
                         fillColor: "#31869b",
                         bold: true,
                         color: "white",
                     },
                     {
                         text:
-                            tablasAndTotals.tabla_10.total_representacion + "%",
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.tabla_10
+                                        .total_representacion
+                                )
+                            ) + "%",
                         fillColor: "#31869b",
                         bold: true,
                         color: "white",
@@ -1078,7 +1335,7 @@ export default {
                         color: "white",
                     },
                     {
-                        text: "EMISIONES  \n [ton CO2-eq/año]",
+                        text: "EMISIONES  \n [Ton CO2 eq/año]",
                         fillColor: "#215967",
                         bold: true,
                         color: "white",
@@ -1094,36 +1351,96 @@ export default {
             this.resultados.tabla11Body.push(
                 [
                     "CO2",
-                    tablasAndTotals.tabla_11.total_CO2.cantidad,
-                    tablasAndTotals.tabla_11.total_CO2.emisiones,
-                    tablasAndTotals.tabla_11.total_CO2.representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_CO2.cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_CO2.emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_CO2.representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     "CH4",
-                    tablasAndTotals.tabla_11.total_CH4.cantidad,
-                    tablasAndTotals.tabla_11.total_CH4.emisiones,
-                    tablasAndTotals.tabla_11.total_CH4.representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_CH4.cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_CH4.emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_CH4.representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     "N2O",
-                    tablasAndTotals.tabla_11.total_N2O.cantidad,
-                    tablasAndTotals.tabla_11.total_N2O.emisiones,
-                    tablasAndTotals.tabla_11.total_N2O.representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_N2O.cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_N2O.emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_N2O.representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     "Compuestos Fluorados",
-                    tablasAndTotals.tabla_11.total_compuestos_fluorados
-                        .cantidad,
-                    tablasAndTotals.tabla_11.total_compuestos_fluorados
-                        .emisiones,
-                    tablasAndTotals.tabla_11.total_compuestos_fluorados
-                        .representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_compuestos_fluorados
+                                .cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_compuestos_fluorados
+                                .emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_compuestos_fluorados
+                                .representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     "SF6",
-                    tablasAndTotals.tabla_11.total_SF6.cantidad,
-                    tablasAndTotals.tabla_11.total_SF6.emisiones,
-                    tablasAndTotals.tabla_11.total_SF6.representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_SF6.cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_SF6.emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_11.total_SF6.representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     {
@@ -1133,20 +1450,33 @@ export default {
                         color: "white",
                     },
                     {
-                        text: tablasAndTotals.tabla_11.total_cantidad,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.tabla_11.total_cantidad
+                            )
+                        ),
                         fillColor: "#31869b",
                         bold: true,
                         color: "white",
                     },
                     {
-                        text: tablasAndTotals.tabla_11.total_emisiones,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.tabla_11.total_emisiones
+                            )
+                        ),
                         fillColor: "#31869b",
                         bold: true,
                         color: "white",
                     },
                     {
                         text:
-                            tablasAndTotals.tabla_11.total_representacion + "%",
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.tabla_11
+                                        .total_representacion
+                                )
+                            ) + "%",
                         fillColor: "#31869b",
                         bold: true,
                         color: "white",
@@ -1173,7 +1503,7 @@ export default {
                         color: "white",
                     },
                     {
-                        text: "HUELLA DE CARBONO \n (t CO2 e) ",
+                        text: "HUELLA DE CARBONO \n (Ton CO2 eq) ",
                         fillColor: "#4f6228",
                         bold: true,
                         color: "white",
@@ -1189,36 +1519,96 @@ export default {
             this.resultados.tabla12Body.push(
                 [
                     "CO2",
-                    tablasAndTotals.tabla_12.total_CO2.cantidad,
-                    tablasAndTotals.tabla_12.total_CO2.emisiones,
-                    tablasAndTotals.tabla_12.total_CO2.representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_CO2.cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_CO2.emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_CO2.representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     "CH4",
-                    tablasAndTotals.tabla_12.total_CH4.cantidad,
-                    tablasAndTotals.tabla_12.total_CH4.emisiones,
-                    tablasAndTotals.tabla_12.total_CH4.representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_CH4.cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_CH4.emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_CH4.representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     "N2O",
-                    tablasAndTotals.tabla_12.total_N2O.cantidad,
-                    tablasAndTotals.tabla_12.total_N2O.emisiones,
-                    tablasAndTotals.tabla_12.total_N2O.representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_N2O.cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_N2O.emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_N2O.representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     "Compuestos Fluorados",
-                    tablasAndTotals.tabla_12.total_compuestos_fluorados
-                        .cantidad,
-                    tablasAndTotals.tabla_12.total_compuestos_fluorados
-                        .emisiones,
-                    tablasAndTotals.tabla_12.total_compuestos_fluorados
-                        .representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_compuestos_fluorados
+                                .cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_compuestos_fluorados
+                                .emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_compuestos_fluorados
+                                .representacion
+                        )
+                    ) + "%",
                 ],
                 [
                     "SF6",
-                    tablasAndTotals.tabla_12.total_SF6.cantidad,
-                    tablasAndTotals.tabla_12.total_SF6.emisiones,
-                    tablasAndTotals.tabla_12.total_SF6.representacion + "%",
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_SF6.cantidad
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_SF6.emisiones
+                        )
+                    ),
+                    this.parseDotToComma(
+                        this.parseTwoDecimals(
+                            tablasAndTotals.tabla_12.total_SF6.representacion
+                        )
+                    ) + "%",
                 ],
 
                 [
@@ -1229,20 +1619,33 @@ export default {
                         color: "white",
                     },
                     {
-                        text: tablasAndTotals.tabla_12.total_cantidad,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.tabla_12.total_cantidad
+                            )
+                        ),
                         fillColor: "#4f6228",
                         bold: true,
                         color: "white",
                     },
                     {
-                        text: tablasAndTotals.tabla_12.total_emisiones,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.tabla_12.total_emisiones
+                            )
+                        ),
                         fillColor: "#4f6228",
                         bold: true,
                         color: "white",
                     },
                     {
                         text:
-                            tablasAndTotals.tabla_12.total_representacion + "%",
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.tabla_12
+                                        .total_representacion
+                                )
+                            ) + "%",
                         fillColor: "#4f6228",
                         bold: true,
                         color: "white",
@@ -1254,11 +1657,18 @@ export default {
             ///////////////////////////////////////  Tabla 13  /////////////////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////////////////////////////////
             this.resultados.tabla13 = {};
-            this.resultados.tabla13.total_huella_carbono =
-                tablasAndTotals.subtotals.totals.total_huella_carbono;
+            this.resultados.tabla13.total_huella_carbono = this.parseDotToComma(
+                this.parseTwoDecimals(
+                    tablasAndTotals.subtotals.totals.total_huella_carbono
+                )
+            );
             this.resultados.tabla13.total_incertidumbre_fuente =
-                tablasAndTotals.subtotals.totals.total_incertidumbre_fuente *
-                100;
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        tablasAndTotals.subtotals.totals
+                            .total_incertidumbre_fuente * 100
+                    )
+                );
             this.resultados.tabla13Body = [
                 [
                     {
@@ -1272,32 +1682,32 @@ export default {
                         color: "white",
                     },
                     {
-                        text: "EMISIONES CO2 [ton CO2-eq/año]",
+                        text: "EMISIONES CO2 [Ton CO2 eq/año]",
                         fillColor: "#215967",
                         color: "white",
                     },
                     {
-                        text: "EMISIONES CH4 [ton CO2-eq/año]",
+                        text: "EMISIONES CH4 [Ton CO2 eq/año]",
                         fillColor: "#215967",
                         color: "white",
                     },
                     {
-                        text: "EMISIONES N2O [ton CO2-eq/año]",
+                        text: "EMISIONES N2O [Ton CO2 eq/año]",
                         fillColor: "#215967",
                         color: "white",
                     },
                     {
-                        text: "EMISIONES Compuestos Fluorados [ton CO2-eq/año]",
+                        text: "EMISIONES Compuestos Fluorados [Ton CO2 eq/año]",
                         fillColor: "#215967",
                         color: "white",
                     },
                     {
-                        text: "EMISIONES SF6 [ton CO2-eq/año]",
+                        text: "EMISIONES SF6 [Ton CO2 eq/año]",
                         fillColor: "#215967",
                         color: "white",
                     },
                     {
-                        text: "HUELLA CARBONO TOTAL [ton CO2-eq/año]",
+                        text: "HUELLA CARBONO TOTAL [Ton CO2 eq/año]",
                         fillColor: "#215967",
                         color: "white",
                     },
@@ -1323,45 +1733,76 @@ export default {
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_moviles
-                            .emision_co2_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_moviles
+                                    .emision_co2_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_moviles
-                            .emision_ch4_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_moviles
+                                    .emision_ch4_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_moviles
-                            .emision_n2o_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_moviles
+                                    .emision_n2o_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_moviles
-                            .emision_compuestos_fluorados_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_moviles
+                                    .emision_compuestos_fluorados_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_moviles
-                            .emision_sf6_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_moviles
+                                    .emision_sf6_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_moviles
-                            .total_huella_carbono,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_moviles
+                                    .total_huella_carbono
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_moviles.representacion,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_moviles.representacion
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
                         text:
                             "+/- " +
-                            tablasAndTotals.fuentes_moviles
-                                .total_incertidumbre_fuente *
-                                100 +
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.fuentes_moviles
+                                        .total_incertidumbre_fuente * 100
+                                )
+                            ) +
                             "%",
                         fillColor: "#aae0bb",
                     },
@@ -1376,41 +1817,72 @@ export default {
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_fijas.emision_co2_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_fijas.emision_co2_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_fijas.emision_ch4_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_fijas.emision_ch4_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_fijas.emision_n2o_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_fijas.emision_n2o_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_fijas
-                            .emision_compuestos_fluorados_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_fijas
+                                    .emision_compuestos_fluorados_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_fijas.emision_sf6_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_fijas.emision_sf6_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_fijas
-                            .total_huella_carbono,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_fijas
+                                    .total_huella_carbono
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.fuentes_fijas.representacion,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_fijas.representacion
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
                         text:
                             "+/- " +
-                            tablasAndTotals.fuentes_fijas
-                                .total_incertidumbre_fuente *
-                                100 +
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.fuentes_fijas
+                                        .total_incertidumbre_fuente * 100
+                                )
+                            ) +
                             "%",
                         fillColor: "#aae0bb",
                     },
@@ -1425,40 +1897,71 @@ export default {
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.emisiones.emision_co2_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.emisiones.emision_co2_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.emisiones.emision_ch4_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.emisiones.emision_ch4_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.emisiones.emision_n2o_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.emisiones.emision_n2o_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.emisiones
-                            .emision_compuestos_fluorados_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.emisiones
+                                    .emision_compuestos_fluorados_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.emisiones.emision_sf6_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.emisiones.emision_sf6_ton_eq
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.emisiones.total_huella_carbono,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.emisiones.total_huella_carbono
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: tablasAndTotals.emisiones.representacion,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.emisiones.representacion
+                            )
+                        ),
                         fillColor: "#aae0bb",
                     },
                     {
                         text:
                             "+/- " +
-                            tablasAndTotals.emisiones
-                                .total_incertidumbre_fuente *
-                                100 +
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.emisiones
+                                        .total_incertidumbre_fuente * 100
+                                )
+                            ) +
                             "%",
                         fillColor: "#aae0bb",
                     },
@@ -1474,53 +1977,84 @@ export default {
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_directas
-                            .emision_co2_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_directas
+                                    .emision_co2_ton_eq
+                            )
+                        ),
                         fillColor: "#348c4f",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_directas
-                            .emision_ch4_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_directas
+                                    .emision_ch4_ton_eq
+                            )
+                        ),
                         fillColor: "#348c4f",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_directas
-                            .emision_n2o_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_directas
+                                    .emision_n2o_ton_eq
+                            )
+                        ),
                         fillColor: "#348c4f",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_directas
-                            .emision_compuestos_fluorados_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_directas
+                                    .emision_compuestos_fluorados_ton_eq
+                            )
+                        ),
                         fillColor: "#348c4f",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_directas
-                            .emision_sf6_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_directas
+                                    .emision_sf6_ton_eq
+                            )
+                        ),
                         fillColor: "#348c4f",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_directas
-                            .total_huella_carbono,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_directas
+                                    .total_huella_carbono
+                            )
+                        ),
                         fillColor: "#348c4f",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_directas
-                            .representacion,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_directas
+                                    .representacion
+                            )
+                        ),
                         fillColor: "#348c4f",
                         style: "subtotal",
                     },
                     {
                         text:
                             "+/- " +
-                            tablasAndTotals.subtotals.emisiones_directas
-                                .total_incertidumbre_fuente *
-                                100 +
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.subtotals.emisiones_directas
+                                        .total_incertidumbre_fuente * 100
+                                )
+                            ) +
                             "%",
                         fillColor: "#348c4f",
                         style: "subtotal",
@@ -1537,45 +2071,77 @@ export default {
                         fillColor: "#fabf8f",
                     },
                     {
-                        text: tablasAndTotals.fuentes_indirectas
-                            .emision_co2_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_indirectas
+                                    .emision_co2_ton_eq
+                            )
+                        ),
                         fillColor: "#fabf8f",
                     },
                     {
-                        text: tablasAndTotals.fuentes_indirectas
-                            .emision_ch4_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_indirectas
+                                    .emision_ch4_ton_eq
+                            )
+                        ),
                         fillColor: "#fabf8f",
                     },
                     {
-                        text: tablasAndTotals.fuentes_indirectas
-                            .emision_n2o_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_indirectas
+                                    .emision_n2o_ton_eq
+                            )
+                        ),
                         fillColor: "#fabf8f",
                     },
                     {
-                        text: tablasAndTotals.fuentes_indirectas
-                            .emision_compuestos_fluorados_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_indirectas
+                                    .emision_compuestos_fluorados_ton_eq
+                            )
+                        ),
                         fillColor: "#fabf8f",
                     },
                     {
-                        text: tablasAndTotals.fuentes_indirectas
-                            .emision_sf6_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_indirectas
+                                    .emision_sf6_ton_eq
+                            )
+                        ),
                         fillColor: "#fabf8f",
                     },
                     {
-                        text: tablasAndTotals.fuentes_indirectas
-                            .total_huella_carbono,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_indirectas
+                                    .total_huella_carbono
+                            )
+                        ),
                         fillColor: "#fabf8f",
                     },
                     {
-                        text: tablasAndTotals.fuentes_indirectas.representacion,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_indirectas
+                                    .representacion
+                            )
+                        ),
                         fillColor: "#fabf8f",
                     },
                     {
                         text:
                             "+/- " +
-                            tablasAndTotals.fuentes_indirectas
-                                .total_incertidumbre_fuente *
-                                100 +
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.fuentes_indirectas
+                                        .total_incertidumbre_fuente * 100
+                                )
+                            ) +
                             "%",
                         fillColor: "#fabf8f",
                     },
@@ -1591,53 +2157,85 @@ export default {
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_indirectas
-                            .emision_co2_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_indirectas
+                                    .emision_co2_ton_eq
+                            )
+                        ),
                         fillColor: "#ff9966",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_indirectas
-                            .emision_ch4_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_indirectas
+                                    .emision_ch4_ton_eq
+                            )
+                        ),
                         fillColor: "#ff9966",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_indirectas
-                            .emision_n2o_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_indirectas
+                                    .emision_n2o_ton_eq
+                            )
+                        ),
                         fillColor: "#ff9966",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_indirectas
-                            .emision_compuestos_fluorados_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_indirectas
+                                    .emision_compuestos_fluorados_ton_eq
+                            )
+                        ),
                         fillColor: "#ff9966",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_indirectas
-                            .emision_sf6_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_indirectas
+                                    .emision_sf6_ton_eq
+                            )
+                        ),
                         fillColor: "#ff9966",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_indirectas
-                            .total_huella_carbono,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_indirectas
+                                    .total_huella_carbono
+                            )
+                        ),
                         fillColor: "#ff9966",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.emisiones_indirectas
-                            .representacion,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.emisiones_indirectas
+                                    .representacion
+                            )
+                        ),
                         fillColor: "#ff9966",
                         style: "subtotal",
                     },
                     {
                         text:
                             "+/- " +
-                            tablasAndTotals.subtotals.emisiones_indirectas
-                                .total_incertidumbre_fuente *
-                                100 +
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.subtotals
+                                        .emisiones_indirectas
+                                        .total_incertidumbre_fuente * 100
+                                )
+                            ) +
                             "%",
                         fillColor: "#ff9966",
                         style: "subtotal",
@@ -1654,40 +2252,71 @@ export default {
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C3.emision_co2_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C3.emision_co2_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C3.emision_ch4_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C3.emision_ch4_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C3.emision_n2o_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C3.emision_n2o_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C3
-                            .emision_compuestos_fluorados_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C3
+                                    .emision_compuestos_fluorados_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C3.emision_sf6_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C3.emision_sf6_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C3.total_huella_carbono,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C3.total_huella_carbono
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C3.representacion,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C3.representacion
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
                         text:
                             "+/- " +
-                            tablasAndTotals.fuentes_C3
-                                .total_incertidumbre_fuente *
-                                100 +
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.fuentes_C3
+                                        .total_incertidumbre_fuente * 100
+                                )
+                            ) +
                             "%",
                         fillColor: "#e6b8b7",
                     },
@@ -1702,40 +2331,71 @@ export default {
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C4.emision_co2_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C4.emision_co2_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C4.emision_ch4_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C4.emision_ch4_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C4.emision_n2o_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C4.emision_n2o_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C4
-                            .emision_compuestos_fluorados_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C4
+                                    .emision_compuestos_fluorados_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C4.emision_sf6_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C4.emision_sf6_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C4.total_huella_carbono,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C4.total_huella_carbono
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C4.representacion,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C4.representacion
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
                         text:
                             "+/- " +
-                            tablasAndTotals.fuentes_C4
-                                .total_incertidumbre_fuente *
-                                100 +
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.fuentes_C4
+                                        .total_incertidumbre_fuente * 100
+                                )
+                            ) +
                             "%",
                         fillColor: "#e6b8b7",
                     },
@@ -1750,40 +2410,71 @@ export default {
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C5.emision_co2_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C5.emision_co2_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C5.emision_ch4_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C5.emision_ch4_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C5.emision_n2o_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C5.emision_n2o_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C5
-                            .emision_compuestos_fluorados_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C5
+                                    .emision_compuestos_fluorados_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C5.emision_sf6_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C5.emision_sf6_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C5.total_huella_carbono,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C5.total_huella_carbono
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C5.representacion,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C5.representacion
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
                         text:
                             "+/- " +
-                            tablasAndTotals.fuentes_C5
-                                .total_incertidumbre_fuente *
-                                100 +
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.fuentes_C5
+                                        .total_incertidumbre_fuente * 100
+                                )
+                            ) +
                             "%",
                         fillColor: "#e6b8b7",
                     },
@@ -1798,40 +2489,71 @@ export default {
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C6.emision_co2_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C6.emision_co2_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C6.emision_ch4_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C6.emision_ch4_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C6.emision_n2o_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C6.emision_n2o_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C6
-                            .emision_compuestos_fluorados_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C6
+                                    .emision_compuestos_fluorados_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C6.emision_sf6_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C6.emision_sf6_ton_eq
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C6.total_huella_carbono,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C6.total_huella_carbono
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: tablasAndTotals.fuentes_C6.representacion,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.fuentes_C6.representacion
+                            )
+                        ),
                         fillColor: "#e6b8b7",
                     },
                     {
                         text:
                             "+/- " +
-                            tablasAndTotals.fuentes_C6
-                                .total_incertidumbre_fuente *
-                                100 +
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.fuentes_C6
+                                        .total_incertidumbre_fuente * 100
+                                )
+                            ) +
                             "%",
                         fillColor: "#e6b8b7",
                     },
@@ -1847,54 +2569,91 @@ export default {
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals
-                            .emisiones_otras_indirectas.emision_co2_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals
+                                    .emisiones_otras_indirectas
+                                    .emision_co2_ton_eq
+                            )
+                        ),
                         fillColor: "#963634",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals
-                            .emisiones_otras_indirectas.emision_ch4_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals
+                                    .emisiones_otras_indirectas
+                                    .emision_ch4_ton_eq
+                            )
+                        ),
                         fillColor: "#963634",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals
-                            .emisiones_otras_indirectas.emision_n2o_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals
+                                    .emisiones_otras_indirectas
+                                    .emision_n2o_ton_eq
+                            )
+                        ),
                         fillColor: "#963634",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals
-                            .emisiones_otras_indirectas
-                            .emision_compuestos_fluorados_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals
+                                    .emisiones_otras_indirectas
+                                    .emision_compuestos_fluorados_ton_eq
+                            )
+                        ),
                         fillColor: "#963634",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals
-                            .emisiones_otras_indirectas.emision_sf6_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals
+                                    .emisiones_otras_indirectas
+                                    .emision_sf6_ton_eq
+                            )
+                        ),
                         fillColor: "#963634",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals
-                            .emisiones_otras_indirectas.total_huella_carbono,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals
+                                    .emisiones_otras_indirectas
+                                    .total_huella_carbono
+                            )
+                        ),
                         fillColor: "#963634",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals
-                            .emisiones_otras_indirectas.representacion,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals
+                                    .emisiones_otras_indirectas.representacion
+                            )
+                        ),
                         fillColor: "#963634",
                         style: "subtotal",
                     },
                     {
                         text:
                             "+/- " +
-                            tablasAndTotals.subtotals.emisiones_otras_indirectas
-                                .total_incertidumbre_fuente *
-                                100 +
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.subtotals
+                                        .emisiones_otras_indirectas
+                                        .total_incertidumbre_fuente * 100
+                                )
+                            ) +
                             "%",
                         fillColor: "#963634",
                         style: "subtotal",
@@ -1909,52 +2668,83 @@ export default {
                     },
                     {},
                     {
-                        text: tablasAndTotals.subtotals.totals
-                            .emision_co2_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.totals
+                                    .emision_co2_ton_eq
+                            )
+                        ),
                         fillColor: "#215967",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.totals
-                            .emision_ch4_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.totals
+                                    .emision_ch4_ton_eq
+                            )
+                        ),
                         fillColor: "#215967",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.totals
-                            .emision_n2o_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.totals
+                                    .emision_n2o_ton_eq
+                            )
+                        ),
                         fillColor: "#215967",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.totals
-                            .emision_compuestos_fluorados_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.totals
+                                    .emision_compuestos_fluorados_ton_eq
+                            )
+                        ),
                         fillColor: "#215967",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.totals
-                            .emision_sf6_ton_eq,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.totals
+                                    .emision_sf6_ton_eq
+                            )
+                        ),
                         fillColor: "#215967",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.totals
-                            .total_huella_carbono,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.totals
+                                    .total_huella_carbono
+                            )
+                        ),
                         fillColor: "#215967",
                         style: "subtotal",
                     },
                     {
-                        text: tablasAndTotals.subtotals.totals.representacion,
+                        text: this.parseDotToComma(
+                            this.parseTwoDecimals(
+                                tablasAndTotals.subtotals.totals.representacion
+                            )
+                        ),
                         fillColor: "#215967",
                         style: "subtotal",
                     },
                     {
                         text:
                             "+/- " +
-                            tablasAndTotals.subtotals.totals
-                                .total_incertidumbre_fuente *
-                                100 +
+                            this.parseDotToComma(
+                                this.parseTwoDecimals(
+                                    tablasAndTotals.subtotals.totals
+                                        .total_incertidumbre_fuente * 100
+                                )
+                            ) +
                             "%",
                         fillColor: "#215967",
                         style: "subtotal",
@@ -1965,6 +2755,7 @@ export default {
             Swal.close();
         },
         getCalificacionInventario(value) {
+            value = parseFloat(value.toString().replace(",", "."));
             let listaIncertidumbre = [
                 { name: "High  (alta)", value: 5 },
                 { name: "Good (buena)", value: 15 },
@@ -2253,11 +3044,11 @@ export default {
                             },
                             body: [
                                 [
-                                    "Figura 1 Distribución de la huella de carbono por categorías",
+                                    "Figura 1. Distribución de la huella de carbono por categorías",
                                     "",
                                 ],
                                 [
-                                    "Figura 2 Distribución porcentual de la huella de carbono por emisiones",
+                                    "Figura 2. Distribución porcentual de la huella de carbono por emisiones",
                                     "",
                                 ],
                             ],
@@ -2360,7 +3151,7 @@ export default {
 
                     {
                         text: [
-                            "El resultado de la Huella de Carbono Corporativa se expresa en toneladas de CO2 equivalente anuales (tCO2e/año), las cuales incluyen todos los GEI identificados en el inventario corporativo de emisiones.",
+                            "El resultado de la Huella de Carbono Corporativa se expresa en toneladas de CO2 equivalente anuales (Ton CO2 eq/año), las cuales incluyen todos los GEI identificados en el inventario corporativo de emisiones.",
                         ],
                         style: "paragraph",
                     },
@@ -2551,18 +3342,26 @@ export default {
                     {
                         text: [
                             "Las emisiones directas corresponden a emisiones generadas por la organización dentro de los límites señalados para el presente informe. El total de emisiones directas es de " +
-                                this.resultados.fuentes_directas
-                                    .total_huella_carbono +
-                                " tCO2e, las cuales representa aproximadamente el " +
-                                this.resultados.fuentes_directas
-                                    .total_porcentaje_huella_total +
+                                this.parseDotToComma(
+                                    this.resultados.fuentes_directas
+                                        .total_huella_carbono
+                                ) +
+                                " Ton CO2 eq, las cuales representa aproximadamente el " +
+                                this.parseDotToComma(
+                                    this.resultados.fuentes_directas
+                                        .total_porcentaje_huella_total
+                                ) +
                                 "% del total de la huella de carbono de la empresa, con un rango de incertidumbre de +/- " +
-                                this.resultados.fuentes_directas
-                                    .total_incertidumbre +
-                                "% que, de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “" +
-                                this.getCalificacionInventario(
+                                this.parseDotToComma(
                                     this.resultados.fuentes_directas
                                         .total_incertidumbre
+                                ) +
+                                "% que, de acuerdo con la orientación de GHG Protocol sobre evaluación de incertidumbre, se considera un nivel de precisión “" +
+                                this.parseDotToComma(
+                                    this.getCalificacionInventario(
+                                        this.resultados.fuentes_directas
+                                            .total_incertidumbre
+                                    )
                                 ) +
                                 "”. ",
                         ],
@@ -2670,7 +3469,7 @@ export default {
                                     "emisiones para las fuentes móviles es de " +
                                     this.resultados.fuentes_moviles
                                         .total_huella_carbono +
-                                    " tCO2e",
+                                    " Ton CO2 eq",
                                 bold: true,
                             },
                             "; con una ",
@@ -2782,7 +3581,7 @@ export default {
                                     "emisiones para las fuentes fijas es de " +
                                     this.resultados.fuentes_fijas
                                         .total_huella_carbono +
-                                    " tCO2e",
+                                    " Ton CO2 eq",
                                 bold: true,
                             },
                             "; con una ",
@@ -2868,7 +3667,7 @@ export default {
                                     "emisiones de proceso es de " +
                                     this.resultados.emisiones
                                         .total_huella_carbono +
-                                    " tCO2e",
+                                    " Ton CO2 eq",
                                 bold: true,
                             },
                             "; con una ",
@@ -3013,7 +3812,7 @@ export default {
                                     "total de emisiones indirectas es de " +
                                     this.resultados.fuentes_indirectas
                                         .total_huella_carbono +
-                                    " Tco2e",
+                                    " Ton CO2 eq",
                                 bold: true,
                             },
                             ", con un rango de ",
@@ -3278,7 +4077,7 @@ export default {
                     },
                     {
                         text: [
-                            "Según los requerimientos metodológicos de la Norma NTC ISO 14064-1 y el GHG Protocol, es necesario cuantificar la cantidad de emisiones asociada a cada GEI por separado en t CO2e.",
+                            "Según los requerimientos metodológicos de la Norma NTC ISO 14064-1 y el GHG Protocol, es necesario cuantificar la cantidad de emisiones asociada a cada GEI por separado en Ton CO2 eq.",
                             "\nA continuación, se relacionan los valores obtenidos para el inventario de la organización",
                         ],
                         style: "paragraph",
@@ -3443,7 +4242,7 @@ export default {
                                     " para el periodo base fue de " +
                                         this.resultados.tabla13
                                             .total_huella_carbono,
-                                    "t CO2e",
+                                    "Ton CO2 eq",
                                 ],
                                 bold: true,
                             },
@@ -3468,8 +4267,14 @@ export default {
 
                     {
                         text: [
-                            "Figura 1 Distribución de la huella de carbono por categorías",
+                            "Figura 1. Distribución de la huella de carbono por categorías",
                         ],
+                        margin: [0, 0, 0, 10],
+                        alignment: "center",
+                        bold: true,
+                    },
+                    {
+                        text: ["(Ton CO2 eq)"],
                         margin: [0, 0, 0, 10],
                         alignment: "center",
                         bold: true,
@@ -3510,8 +4315,14 @@ export default {
 
                     {
                         text: [
-                            "Figura 2 Distribución porcentual de la huella de carbono por emisiones",
+                            "Figura 2. Distribución porcentual de la huella de carbono por emisiones",
                         ],
+                        margin: [0, 0, 0, 10],
+                        alignment: "center",
+                        bold: true,
+                    },
+                    {
+                        text: ["(Ton CO2 eq)"],
                         margin: [0, 0, 0, 10],
                         alignment: "center",
                         bold: true,
@@ -3528,7 +4339,6 @@ export default {
                                         image: this.convertCanvasToBase64(
                                             "huella-carbono-fuente-bar"
                                         ),
-                                        //text: ["DIAGRAMA TORTA"],
                                         width: 250,
                                         alignment: "center",
                                         border: [false, false, false, false],
@@ -3537,7 +4347,6 @@ export default {
                                         image: this.convertCanvasToBase64(
                                             "huella-carbono-fuente-pie"
                                         ),
-                                        //text: ["DIAGRAMA TORTA"],
                                         width: 250,
                                         alignment: "center",
                                         border: [false, false, false, false],
@@ -3546,15 +4355,6 @@ export default {
                             ],
                         },
                     },
-                    {
-                        //image: this.convertCanvasToBase64(
-                        //    "huella-carbono-fuente-pie"
-                        //),
-                        text: ["DIAGRAMA TORTA"],
-                        width: 200,
-                        alignment: "center",
-                    },
-
                     {
                         text: [
                             "Fuente: Herramienta de cálculo HCC CAEM – ",
