@@ -72,9 +72,9 @@
                     </tbody>
                 </table>
             </div>
-            <div class="text-end">
+            <div class="text-end" v-if="huellas.length != 0">
                 <button
-                    v-if="huella_existe && parseInt(permiso_huella)"
+                    v-if="parseInt(permiso_huella)"
                     type="button"
                     class="btn btn-success"
                     @click="nuevaHuella()"
@@ -3537,13 +3537,22 @@ export default {
 
                 await this.ie.save();
 
+                if (!this.huella_existe) {
+                    let sede = await EmpresaSede.find(this.user.sede_id);
+                    sede.permiso_huella = 0;
+                    await sede.save();
+                    this.getSedeUser();
+                }
+
                 Swal.close();
                 this.$root.mostrarMensaje(
                     "Guardado con éxito",
                     "Información guardada exitosamente",
                     "success"
                 );
-                this.recargarFormularioEmisiones();
+                setTimeout(() => {
+                    this.recargarFormularioEmisiones();
+                }, 300);
                 setTimeout(() => {
                     $("#seleccion-tab").click();
                 }, 500);
