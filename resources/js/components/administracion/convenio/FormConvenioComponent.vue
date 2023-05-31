@@ -110,6 +110,7 @@
                                     <th>Sede</th>
                                     <th>Departamento</th>
                                     <th>Ciudad</th>
+                                    <th>Dirección</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -146,6 +147,7 @@
                                     </td>
                                     <td>{{ ac.nombre_departamento }}</td>
                                     <td>{{ ac.nombre_ciudad }}</td>
+                                    <td>{{ ac.direccion }}</td>
                                     <td>
                                         <button
                                             type="button"
@@ -366,6 +368,26 @@
                                     >
                                 </div>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label required"
+                                    >Dirección</label
+                                >
+                                <input
+                                    v-model.trim="sede.direccion"
+                                    class="form-control"
+                                    type="text"
+                                    :disabled="sede.id != -1"
+                                    :class="{
+                                        'is-invalid': $v.sede.direccion.$error,
+                                        'is-valid': !$v.sede.direccion.$invalid,
+                                    }"
+                                />
+                                <div class="invalid-feedback">
+                                    <span v-if="!$v.sede.direccion.required">
+                                        {{ required }}</span
+                                    >
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button
@@ -422,6 +444,7 @@ export default {
                 nombre: "",
                 departamento_id: "",
                 ciudad_id: "",
+                direccion: "",
             }),
             empresa: new Empresa({
                 nit: "",
@@ -472,6 +495,9 @@ export default {
                 required,
             },
             ciudad_id: {
+                required,
+            },
+            direccion: {
                 required,
             },
         },
@@ -529,6 +555,7 @@ export default {
                     nombre_sede: e.sede.nombre,
                     nombre_departamento: e.sede.departamento.nombre,
                     nombre_ciudad: e.sede.ciudad.nombre,
+                    direccion: e.sede.direccion,
                 });
             });
         },
@@ -622,6 +649,7 @@ export default {
                                 this.sede.ciudad_id = e.ciudad_id;
                                 this.sede.departamento_id = e.departamento_id;
                                 this.sede.nombre = e.nombre_sede;
+                                this.sede.direccion = e.direccion;
                                 let sede_creada = await this.sede.save();
                                 id_sede = sede_creada.id;
                             } else {
@@ -691,6 +719,7 @@ export default {
                 this.sede.nombre = sede.nombre;
                 this.sede.empresa_id = sede.empresa_id;
                 this.sede.departamento_id = sede.departamento_id;
+                this.sede.direccion = sede.direccion;
                 this.getOptionsCiudad();
                 this.sede.ciudad_id = sede.ciudad_id;
             }
@@ -750,6 +779,7 @@ export default {
                     nombre_sede: this.sede.nombre,
                     nombre_departamento: nombre_departamento[0].nombre,
                     nombre_ciudad: nombre_ciudad[0].nombre,
+                    direccion: this.sede.direccion,
                 });
                 this.$v.convenio.$reset();
                 this.$refs.cerrarModalAgregarEmpresario.click();

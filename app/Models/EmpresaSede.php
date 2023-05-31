@@ -17,6 +17,7 @@ class EmpresaSede extends Model
         'departamento_id',
         'ciudad_id',
         'direccion',
+        'permiso_huella',
     ];
 
     /**

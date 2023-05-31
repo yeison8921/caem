@@ -43,7 +43,6 @@
                                     h.nombre == null ? "Sin definir" : h.nombre
                                 }}
                             </td>
-                            <!-- <td>Huella {{ i + 1 }}</td> -->
                             <td>
                                 {{
                                     h.anio_inicio == null
@@ -75,12 +74,15 @@
             </div>
             <div class="text-end">
                 <button
-                    v-if="huella_existe"
+                    v-if="huella_existe && parseInt(permiso_huella)"
                     type="button"
                     class="btn btn-success"
                     @click="nuevaHuella()"
                 >
-                    Nueva huella
+                    Generar nueva huella
+                </button>
+                <button v-else type="button" class="btn btn-warning" disabled>
+                    Sin autorización para generar nueva huella
                 </button>
             </div>
         </div>
@@ -3118,6 +3120,7 @@ export default {
             mostrar_formulario: false,
             huellas: [],
             nombre_huella: "",
+            permiso_huella: "",
             user: new User(),
         };
     },
@@ -3157,6 +3160,7 @@ export default {
                 .get("api/user")
                 .then((response) => {
                     this.user = response.data;
+                    this.getSedeUser();
                     if (this.user.rol_id == 2) {
                         this.empresa_id = this.user.empresa_id;
                         this.sede_id = this.user.sede_id;
@@ -3167,6 +3171,11 @@ export default {
                     }
                 })
                 .catch((error) => {});
+        },
+
+        async getSedeUser() {
+            let data = await User.include("empresaSede").find(this.user.id);
+            this.permiso_huella = data.empresa_sede.permiso_huella;
         },
         async getParametros(tipo_parametro_id, variable) {
             //1 departamentos
@@ -4037,6 +4046,12 @@ export default {
             let informacion_empresa = await InformacionEmpresa.find(this.ie_id);
             informacion_empresa.estado = 0;
             informacion_empresa.save();
+
+            let sede = await EmpresaSede.find(informacion_empresa.sede_id);
+            sede.permiso_huella = 0;
+            await sede.save();
+
+            this.getSedeUser();
 
             this.ie = new InformacionEmpresa({});
             this.ie.empresa_id = this.empresa_id;

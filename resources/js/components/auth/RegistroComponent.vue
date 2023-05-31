@@ -658,6 +658,24 @@
                                 >
                             </div>
                         </div>
+                        <div class="mb-4">
+                            <label class="form-label required">Dirección</label>
+                            <input
+                                v-model.trim="sede.direccion"
+                                class="form-control"
+                                type="text"
+                                :disabled="id_sede != -1"
+                                :class="{
+                                    'is-invalid': $v.sede.direccion.$error,
+                                    'is-valid': !$v.sede.direccion.$invalid,
+                                }"
+                            />
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.sede.direccion.required">
+                                    {{ required }}</span
+                                >
+                            </div>
+                        </div>
                         <div class="mb-3">
                             <div class="form-check">
                                 <input
@@ -831,6 +849,7 @@ export default {
                 empresa_id: "",
                 departamento_id: "",
                 ciudad_id: "",
+                direccion: "",
             }),
 
             id_sede: "",
@@ -927,6 +946,9 @@ export default {
                 required,
             },
             ciudad_id: {
+                required,
+            },
+            direccion: {
                 required,
             },
         },
@@ -1163,6 +1185,7 @@ export default {
                 this.sede.nombre = sede.nombre;
                 this.sede.empresa_id = sede.empresa_id;
                 this.sede.departamento_id = sede.departamento_id;
+                this.sede.direccion = sede.direccion;
                 this.getOptionsCiudad();
                 this.sede.ciudad_id = sede.ciudad_id;
             }

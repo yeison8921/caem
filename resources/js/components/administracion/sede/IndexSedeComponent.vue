@@ -100,6 +100,27 @@
                                     >
                                         <i class="fas fa-trash"></i>
                                     </button>
+                                    <button
+                                        v-if="!parseInt(s.permiso_huella)"
+                                        type="button"
+                                        class="btn btn-info"
+                                        @click="
+                                            confirmarActivarHuella(
+                                                s.id,
+                                                s.nombre
+                                            )
+                                        "
+                                    >
+                                        Activar huella
+                                    </button>
+                                    <button
+                                        v-else
+                                        type="button"
+                                        class="btn btn-info"
+                                        disabled
+                                    >
+                                        Huella activada
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -195,6 +216,39 @@ export default {
                     this.getEmpresasSede();
                 }, 2000);
             } catch (e) {}
+        },
+        confirmarActivarHuella(id_sede, nombre_sede) {
+            Swal.fire({
+                title: "Atención",
+                html:
+                    "¿Está seguro que quiere activar el registro de una nueva huella para la sede " +
+                    nombre_sede +
+                    "?",
+                icon: "question",
+                showCancelButton: true,
+                cancelButtonText: "No",
+                confirmButtonText: "Si, activar",
+                confirmButtonColor: "rgb(48, 133, 214)",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.activarHuella(id_sede);
+                }
+            });
+        },
+        async activarHuella(id_sede) {
+            this.$root.mostrarCargando("Activando huella");
+            let sede = await EmpresaSede.find(id_sede);
+            sede.permiso_huella = 1;
+            await sede.save();
+            Swal.close();
+            this.$root.mostrarMensaje(
+                "Éxito",
+                "Huella activada exitosamente",
+                "success"
+            );
+            setTimeout(() => {
+                this.getEmpresasSede();
+            }, 2000);
         },
     },
 };
