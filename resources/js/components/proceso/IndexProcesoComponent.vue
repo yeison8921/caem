@@ -24,7 +24,11 @@
             </div>
         </div>
         <div class="col-lg-12" v-if="user.rol_id == 2">
-            <div v-if="huellas.length != 0">
+            <div
+                v-if="huellas.length != 0"
+                class="form-group"
+                style="overflow-y: scroll; height: 200px"
+            >
                 <table
                     class="table table-sm align-items-center mb-3 w-100"
                     style="font-size: 0.75rem"
@@ -72,7 +76,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="text-end" v-if="huellas.length != 0">
+            <div class="form-group text-end" v-if="huellas.length != 0">
                 <button
                     v-if="parseInt(permiso_huella)"
                     type="button"
@@ -3134,6 +3138,7 @@ export default {
     },
     methods: {
         tabActiva() {
+            this.$root.mostrarCargando("Cargando información");
             setTimeout(() => {
                 switch (this.etapa) {
                     case 1:
@@ -3153,7 +3158,7 @@ export default {
                         break;
                 }
                 Swal.close();
-            }, 2500);
+            }, 2000);
         },
         async getUserLogged() {
             await axios
@@ -3550,9 +3555,7 @@ export default {
                     "Información guardada exitosamente",
                     "success"
                 );
-                setTimeout(() => {
-                    this.recargarFormularioEmisiones();
-                }, 300);
+                this.recargarFormularioEmisiones();
                 setTimeout(() => {
                     $("#seleccion-tab").click();
                 }, 500);
@@ -3701,8 +3704,6 @@ export default {
         },
 
         async recargarFormularioEmisiones() {
-            this.$root.mostrarCargando("Cargando información");
-
             this.editar_formulario = 1;
 
             this.mostrar_formulario = true;

@@ -50,7 +50,11 @@
                                     {{ e.email }}
                                 </td>
                                 <td>
-                                    {{ e.empresa_sede.nombre }}
+                                    {{
+                                        e.empresa_sede == null
+                                            ? ""
+                                            : e.empresa_sede.nombre
+                                    }}
                                 </td>
                                 <td>
                                     {{

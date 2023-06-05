@@ -1087,10 +1087,17 @@ export default {
                                     "Usuario creado sin convenio, a la espera de revisión de pago",
                                     "success"
                                 );
-                                setTimeout(() => {
-                                    this.cancelar();
-                                }, 2000);
+                            })
+                            .catch((error) => {
+                                this.$root.mostrarMensaje(
+                                    "Éxito",
+                                    "Usuario creado sin convenio, a la espera de revisión de pago",
+                                    "success"
+                                );
                             });
+                        setTimeout(() => {
+                            this.cancelar();
+                        }, 2000);
                     } else {
                         this.$root.mostrarMensaje(
                             "Éxito",

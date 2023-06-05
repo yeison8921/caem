@@ -36,7 +36,11 @@
                                     {{ u.empresa.nombre }}
                                 </td>
                                 <td>
-                                    {{ u.empresa_sede.nombre }}
+                                    {{
+                                        u.empresa_sede == null
+                                            ? ""
+                                            : u.empresa_sede.nombre
+                                    }}
                                 </td>
                             </tr>
                         </tbody>
