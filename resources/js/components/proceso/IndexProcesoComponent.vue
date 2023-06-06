@@ -3228,7 +3228,7 @@ export default {
 
                         var future = new Date(
                             fecha_base.getFullYear(),
-                            fecha_base.getMonth() + 12,
+                            fecha_base.getMonth() + 11,
                             1
                         );
 
