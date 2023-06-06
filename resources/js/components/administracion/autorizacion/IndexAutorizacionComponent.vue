@@ -142,10 +142,17 @@ export default {
                                 "Usuario aprobado correctamente",
                                 "success"
                             );
-                            setTimeout(() => {
-                                this.getUsuarios();
-                            }, 1000);
+                        })
+                        .catch((error) => {
+                            this.$root.mostrarMensaje(
+                                "Éxito",
+                                "Usuario aprobado correctamente",
+                                "success"
+                            );
                         });
+                    setTimeout(() => {
+                        this.getUsuarios();
+                    }, 1000);
                 } else {
                     this.$root.mostrarMensaje(
                         "Éxito",
