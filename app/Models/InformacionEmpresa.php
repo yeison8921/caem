@@ -61,6 +61,9 @@ class InformacionEmpresa extends Model
         'empresa_id',
         'sede_id',
     ];
+    protected $casts = [
+        'esta_aprobado' => 'boolean',
+    ];
 
     protected $appends = ['periodo'];
     /**
