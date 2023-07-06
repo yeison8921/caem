@@ -63,6 +63,7 @@ Vue.component('registro-component', require('./components/auth/RegistroComponent
 Vue.component('perfil-component', require('./components/auth/PerfilComponent.vue').default);
 Vue.component('index-parametro-component', require('./components/administracion/parametro/IndexParametroComponent.vue').default);
 Vue.component('index-autorizacion-component', require('./components/administracion/autorizacion/IndexAutorizacionComponent.vue').default);
+Vue.component('index-autorizacion-huella-component', require('./components/administracion/autorizacion/IndexAutorizacionHuellaComponent.vue').default);
 Vue.component('form-parametro-component', require('./components/administracion/parametro/FormParametroComponent.vue').default);
 Vue.component('index-convenio-component', require('./components/administracion/convenio/IndexConvenioComponent.vue').default);
 Vue.component('index-usuario-component', require('./components/administracion/usuario/IndexUsuarioComponent.vue').default);
@@ -273,6 +274,39 @@ Vue.prototype.$tablaSedes = function(nombreTabla) {
     });
 }
 
+Vue.prototype.$tablaHuellas = function(nombreTabla) {
+    this.$nextTick(() => {
+        $(nombreTabla).DataTable({
+            "columnDefs": [
+                { "width": "10%", "targets": 3 }
+            ],
+            responsive: false,
+            dom: "<'row'<'col-sm-12 mb-3'B>><'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            "language": {
+                "lengthMenu": "Ver _MENU_ registros por página",
+                "zeroRecords": "No hay información, lo sentimos.",
+                "info": "Mostrando página _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros disponibles",
+                "infoFiltered": "(Filtrado de _MAX_ registros totales)",
+                "search": "Filtrar:",
+                "paginate": {
+                    "first": "Primera",
+                    "last": "Ultima",
+                    "next": ">",
+                    "previous": "<"
+                },
+            },
+            buttons: [{
+                "extend": "excelHtml5",
+                "text": "<i class='fas fa-file-excel'></i> Excel",
+                "titleAttr": "Exportar a Excel",
+                "className": "btn btn-success"
+            }, ]
+        });
+    });
+}
 Vue.prototype.$tablaUsuarios = function(nombreTabla) {
     this.$nextTick(() => {
         $(nombreTabla).DataTable({

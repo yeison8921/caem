@@ -142,6 +142,15 @@ Route::group(['middleware' => 'auth'], function () {
         return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     });
 
+    // Autorizacion
+    Route::get('/autorizaciones/huella',  function () {
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM])) {
+            return view('autorizacion/index_autorizacion_huella');
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
+    });
+
     // Funtes
     Route::get('/fuentes',  function () {
         if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {

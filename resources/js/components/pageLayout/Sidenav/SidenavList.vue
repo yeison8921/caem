@@ -165,6 +165,18 @@
                                 <sidenav-item
                                     v-if="
                                         isLoggedIn &&
+                                        [1, 3].includes(
+                                            parseInt(userLogged.rol_id)
+                                        )
+                                    "
+                                    :to="{ name: 'Autorización' }"
+                                    :url="'/autorizaciones/huella'"
+                                    mini-icon="A"
+                                    text="Autorización Huella"
+                                />
+                                <sidenav-item
+                                    v-if="
+                                        isLoggedIn &&
                                         [1].includes(
                                             parseInt(userLogged.rol_id)
                                         )

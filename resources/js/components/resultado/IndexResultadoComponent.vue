@@ -78,6 +78,7 @@
                                 :sede_id="sede"
                                 :ar="ar"
                                 :periodo_id="periodo"
+                                :disabled="!esta_aprobado"
                                 v-if="
                                     mostrar_graficas && reporte == 'corporativo'
                                 "
@@ -370,6 +371,7 @@ export default {
     data() {
         return {
             showGenerarReporte: false,
+            esta_aprobado: false,
             convenio: "",
             empresa: "",
             sede: "",
@@ -540,6 +542,7 @@ export default {
                     if (response.data["total_huella_carbono"] != 0) {
                         this.showGenerarReporte = true;
                         this.mostrar_graficas = true;
+                        this.esta_aprobado = response.data["esta_aprobado"];
 
                         this.total_huella_carbono = Number(
                             response.data["total_huella_carbono"].toFixed(1)

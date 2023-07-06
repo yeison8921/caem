@@ -37,7 +37,12 @@ class InformacionEmpresaController extends Controller
      */
     public function index()
     {
-        $query = QueryBuilder::for(InformacionEmpresa::class)->allowedFilters([
+        $query = QueryBuilder::for(InformacionEmpresa::class)->allowedIncludes(
+            'empresa',
+            'empresaSede',
+            'empresaSede.ciudad',
+            'empresaSede.departamento'
+        )->allowedFilters([
             AllowedFilter::exact('id'),
             AllowedFilter::exact('empresa_id'),
             AllowedFilter::exact('sede_id'),

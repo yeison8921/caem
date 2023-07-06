@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -54,11 +55,14 @@ class InformacionEmpresa extends Model
         'anio_inicio',
         'mes_inicio',
         'estado',
+        'fecha_aprobacion',
+        'esta_aprobado',
         'usuario_creacion_id',
         'empresa_id',
         'sede_id',
     ];
 
+    protected $appends = ['periodo'];
     /**
      * Obtiene el usuario que realiza el diligenciamiento de las preguntas.
      */
@@ -81,5 +85,39 @@ class InformacionEmpresa extends Model
     public function empresaSede()
     {
         return $this->belongsTo(EmpresaSede::class, 'sede_id', 'id');
+    }
+
+    public function getPeriodoAttribute()
+    {
+        $array_meses = [
+            "ENERO",
+            "FEBRERO",
+            "MARZO",
+            "ABRIL",
+            "MAYO",
+            "JUNIO",
+            "JULIO",
+            "AGOSTO",
+            "SEPTIEMBRE",
+            "OCTUBRE",
+            "NOVIEMBRE",
+            "DICIEMBRE",
+        ];
+
+        if (!empty($this->anio_inicio) && !empty($this->mes_inicio)) {
+            $fecha_base = new DateTime($this->anio_inicio . '-' . $this->mes_inicio . '-01 00:00');
+
+            $future = new DateTime();
+            $future->setDate($fecha_base->format('Y'), $fecha_base->format('n') + 11, 1);
+
+            $mes_fecha_base = $array_meses[$fecha_base->format('n') - 1];
+
+            $mes_futuro = $array_meses[$future->format('n') - 1];
+            $anio_futuro = $future->format('Y');
+
+            return $mes_fecha_base . ' ' . $this->anio_inicio . ' a ' . $mes_futuro . ' ' . $anio_futuro;
+        } else {
+            return '';
+        }
     }
 }
