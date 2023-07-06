@@ -38,7 +38,7 @@
                                 <td>{{ e.periodo }}</td>
                                 <td>
                                     {{
-                                        e.estado
+                                        e.estado == "1"
                                             ? "Finalizado"
                                             : "Sin Finalizar"
                                     }}
