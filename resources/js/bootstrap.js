@@ -3,7 +3,7 @@ window.Swal = require('sweetalert2');
 
 try {
     window.$ = window.jQuery = require('jquery');
-    require('bootstrap');
+    window.bootstrap = require('bootstrap');
 } catch (e) {}
 
 /**

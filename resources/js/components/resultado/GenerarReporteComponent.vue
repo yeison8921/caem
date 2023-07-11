@@ -1,12 +1,23 @@
 <template>
-    <button
-        type="button"
-        v-on:click="handleGenerarReporte"
-        class="btn btn-success btn-sm"
-        :disabled="Object.keys(base64Images).length === 0 || disabled"
-    >
-        Descargar reporte
-    </button>
+    <div>
+        <button
+            type="button"
+            v-on:click="handleGenerarReporte"
+            :class="
+                'btn btn-success btn-sm ' + (disabled ? 'bg-secondary' : '')
+            "
+            :disabled="Object.keys(base64Images).length === 0"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            :title="
+                disabled
+                    ? 'No es posible descargar el reporte porque aún no se ha autorizado la descarga.'
+                    : ''
+            "
+        >
+            Descargar reporte
+        </button>
+    </div>
 </template>
 
 <script>
@@ -66,6 +77,12 @@ export default {
         };
     },
     mounted() {
+        var tooltipTriggerList = [].slice.call(
+            document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        );
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
         this.loadAndConvertImages();
     },
     methods: {

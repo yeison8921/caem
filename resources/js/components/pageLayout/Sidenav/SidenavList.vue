@@ -169,10 +169,10 @@
                                             parseInt(userLogged.rol_id)
                                         )
                                     "
-                                    :to="{ name: 'Autorización' }"
+                                    :to="{ name: 'Autorizar reportes' }"
                                     :url="'/autorizaciones/huella'"
                                     mini-icon="A"
-                                    text="Autorización Huella"
+                                    text="Autorizar reportes"
                                 />
                                 <sidenav-item
                                     v-if="

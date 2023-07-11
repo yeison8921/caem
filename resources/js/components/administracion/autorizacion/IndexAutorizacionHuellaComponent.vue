@@ -3,7 +3,7 @@
         <div class="row">
             <div class="form-group">
                 <br />
-                <h4>Autorizacion de Huellas</h4>
+                <h4>Autorizar reportes</h4>
             </div>
         </div>
         <div class="card">
@@ -100,8 +100,8 @@ export default {
         async actualizarHuella(huella, esta_aprobado) {
             Swal.fire({
                 title: esta_aprobado
-                    ? "¿Autorizar huella?"
-                    : "¿Rechazar huella?",
+                    ? "¿Autorizar reporte?"
+                    : "¿Rechazar reporte?",
                 icon: "question",
                 showCancelButton: true,
                 cancelButtonText: "No",

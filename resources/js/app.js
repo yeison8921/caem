@@ -22,6 +22,7 @@ import jszip from 'jszip/dist/jszip';
 import "./nav-pills.js";
 import "../scss/soft-ui-dashboard.scss";
 import 'popper.js';
+import './tooltip.js';
 
 var moment = require("moment-timezone");
 var momentDurationFormatSetup = require("moment-duration-format");
