@@ -634,9 +634,9 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
         $array_resultados['huella_carbono_fuente_torta'] = [$array_labels_fuente, $array_totales_fuente_torta, $array_colores_fuente];
         $array_resultados['huella_carbono_tipo'] = [$array_labels_tipo, $array_totales_tipo, $array_colores_tipo];
         $array_resultados['total_huella_carbono_unidad_produccion'] = $total_huella_carbono_unidad_produccion;
-        $array_resultados['tipo_unidad'] = $data[0]->tipo_unidad;
+        $array_resultados['tipo_unidad'] = $unidades_totales_producidas[0]->tipo_unidad;
         $array_resultados['esta_aprobado'] = $unidades_totales_producidas[0]->esta_aprobado;
-        
+
 
         return $array_resultados;
     }
