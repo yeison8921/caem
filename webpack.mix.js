@@ -1,5 +1,5 @@
-const { vue } = require('laravel-mix');
-const mix = require('laravel-mix');
+const { vue } = require("laravel-mix");
+const mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -12,6 +12,23 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix.webpackConfig({
+    module: {
+        rules: [
+            {
+                test: /\.mp4$/i,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            esModule: false,
+                        },
+                    },
+                ],
+            },
+        ],
+    },
+})
+    .js("resources/js/app.js", "public/js")
     .vue()
-    .sass('resources/sass/app.scss', 'public/css');
+    .sass("resources/sass/app.scss", "public/css");

@@ -9,20 +9,24 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-lg-4 offset-lg-2">
-                        <label>Video 1</label>
-                        <video height="240" controls="controls">
+                    <div class="col-lg-5 offset-lg-1">
+                        <label>Video tutorial - Ingresar datos</label>
+                        <video width="500" height="240" controls="controls">
                             <source
-                                src="http://media.w3.org/2010/05/sintel/trailer.mp4"
+                                :src="
+                                    require('../../img/Video_tutorial_-_Ingresar_datos.mp4')
+                                "
                                 type="video/mp4"
                             />
                         </video>
                     </div>
-                    <div class="col-lg-4">
-                        <label>Video 2</label>
-                        <video width="320" height="240" controls="controls">
+                    <div class="col-lg-5">
+                        <label>Video tutorial - Consultar resultados</label>
+                        <video height="240" controls="controls">
                             <source
-                                src="http://media.w3.org/2010/05/sintel/trailer.mp4"
+                                :src="
+                                    require('../../img/Video_tutorial_-_Consultar_resultados.mp4')
+                                "
                                 type="video/mp4"
                             />
                         </video>
