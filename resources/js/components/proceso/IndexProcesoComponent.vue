@@ -2683,7 +2683,7 @@
                                                                                                         ac,
                                                                                                         ci
                                                                                                     ) in array_consumos"
-                                                                                                    v-bind:key="
+                                                                                                    :key="
                                                                                                         ci
                                                                                                     "
                                                                                                 >
@@ -3815,7 +3815,7 @@ export default {
 
             if (informacionEmpresa.anio_inicio != null) {
                 this.etapa = 5;
-                this.getFuentesEmision();
+                await this.getFuentesEmision();
             } else {
                 Swal.close();
             }
@@ -3876,7 +3876,7 @@ export default {
                 })
                 .catch((error) => {});
 
-            this.tablaEmisiones();
+            await this.tablaEmisiones();
         },
         cargarVariableFuentes() {
             this.fuentes = {
