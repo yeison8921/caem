@@ -14,3 +14,4 @@ yarn-error.log
 /.idea
 /.vscode
 caem.zip
+.docker/mariadb/mariadbdata

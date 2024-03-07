@@ -57,7 +57,7 @@
                             <td>
                                 <button
                                     type="button"
-                                    class="s btn btn-warning btn-sm"
+                                    class="btn btn-warning btn-sm"
                                     :ref="
                                         h.estado == 1
                                             ? 'huellaActiva'
@@ -2705,36 +2705,37 @@
                                                                                                                     : ac
                                                                                                             }}
 
-                                                                                                            <i
+                                                                                                            <small
                                                                                                                 v-if="
                                                                                                                     ac.includes(
                                                                                                                         'INCERTIDUMBRE'
                                                                                                                     )
                                                                                                                 "
-                                                                                                                class="fas fa-question-circle fas-2x"
-                                                                                                                :ref="
-                                                                                                                    'popoverTrigger' +
-                                                                                                                    index +
-                                                                                                                    ci
-                                                                                                                "
-                                                                                                                @click="
-                                                                                                                    togglePopover(
-                                                                                                                        'popoverTrigger' +
-                                                                                                                            index +
-                                                                                                                            ci
-                                                                                                                    )
-                                                                                                                "
-                                                                                                            ></i>
-                                                                                                            <div
-                                                                                                                ref="popoverContent"
-                                                                                                                class="d-none"
                                                                                                             >
-                                                                                                                <p>
-                                                                                                                    Texto
-                                                                                                                    de
-                                                                                                                    ayuda
-                                                                                                                </p>
-                                                                                                            </div>
+                                                                                                                (Digite
+                                                                                                                el
+                                                                                                                porcentaje
+                                                                                                                equivalente
+                                                                                                                a
+                                                                                                                la
+                                                                                                                incertidumbre
+                                                                                                                adicional
+                                                                                                                de
+                                                                                                                los
+                                                                                                                datos
+                                                                                                                incorporados.
+                                                                                                                Si
+                                                                                                                la
+                                                                                                                desconoce,
+                                                                                                                deje
+                                                                                                                en
+                                                                                                                blanco
+                                                                                                                este
+                                                                                                                campo
+                                                                                                                del
+                                                                                                                formulario)
+                                                                                                            </small>
+
                                                                                                             <small
                                                                                                                 v-if="
                                                                                                                     ac.includes(
@@ -3565,7 +3566,8 @@ export default {
             if (this.editar_fuente) {
                 this.$root.mostrarCargando("Guardando información");
 
-                let actualizar = this.user.rol_id == 2 ? 0 : 1;
+                // let actualizar = this.user.rol_id == 2 ? 0 : 1;
+                let actualizar = 1;
 
                 axios
                     .post("api/guardarFuentesEmision", {

@@ -55,14 +55,23 @@
                                 <td>
                                     <a
                                         :href="'/usuarios/edit/' + u.id"
-                                        class="btn btn-success"
+                                        class="btn btn-warning"
                                         title="Actualizar usuario"
                                     >
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <button
-                                        class="btn btn-danger"
-                                        title="Desactivar usuario"
+                                        class="btn"
+                                        :class="
+                                            u.estado == 1
+                                                ? 'btn-danger'
+                                                : 'btn-success'
+                                        "
+                                        :title="
+                                            u.estado == 1
+                                                ? 'Desactivar usuario'
+                                                : 'Activar usuario'
+                                        "
                                         :disabled="u.rol_id == 1"
                                         @click="
                                             u.rol_id == 1
@@ -70,11 +79,19 @@
                                                 : confirmarDesactivarUsuario(
                                                       u.id,
                                                       u.first_name,
-                                                      u.last_name
+                                                      u.last_name,
+                                                      !u.estado
                                                   )
                                         "
                                     >
-                                        <i class="fa-solid fa-ban"></i>
+                                        <i
+                                            class="fa-solid"
+                                            :class="
+                                                u.estado == 1
+                                                    ? 'fa-ban'
+                                                    : 'fa-check'
+                                            "
+                                        ></i>
                                     </button>
                                 </td>
                             </tr>
@@ -101,22 +118,22 @@ export default {
         async getUsuarios() {
             this.$root.mostrarCargando();
             this.usuarios = await User.whereIn("rol_id", [1, 3, 4])
-                .where("estado", 1)
                 .include("rol", "empresa", "empresaSede", "convenio")
                 .get();
             $("#tabla-usuarios").DataTable().destroy();
             this.$tablaGlobal("#tabla-usuarios");
             Swal.close();
         },
-        async confirmarDesactivarUsuario(id_usuario, first_name, last_name) {
+        async confirmarDesactivarUsuario(
+            id_usuario,
+            first_name,
+            last_name,
+            estado
+        ) {
+            let accion = estado ? "desactivar" : "activar";
             Swal.fire({
                 title: "Atención",
-                html:
-                    "¿Está seguro que quiere desactivar el usuario " +
-                    first_name +
-                    " " +
-                    last_name +
-                    "?",
+                html: `¿Está seguro que quiere <b>${accion}</b> el usuario <b>${first_name} ${last_name}</b>?`,
                 icon: "question",
                 showCancelButton: true,
                 cancelButtonText: "No",
@@ -124,7 +141,7 @@ export default {
             }).then((result) => {
                 if (result.isConfirmed) {
                     try {
-                        this.desactivarUsuario(id_usuario);
+                        this.desactivarUsuario(id_usuario, estado);
                     } catch (error) {
                         this.$root.mostrarMensaje(
                             "Error",
@@ -135,10 +152,10 @@ export default {
                 }
             });
         },
-        async desactivarUsuario(id_usuario) {
+        async desactivarUsuario(id_usuario, estado) {
             this.$root.mostrarCargando("Desactivando");
             let user = await User.find(id_usuario);
-            user.estado = 0;
+            user.estado = estado;
             user.save();
             Swal.close();
             this.$root.mostrarMensaje(

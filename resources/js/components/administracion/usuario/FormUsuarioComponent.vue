@@ -102,61 +102,71 @@
                         >
                     </div>
                 </div>
-                <div class="mb-3" v-if="datos.accion == 'Crear'">
-                    <label class="form-label required">Contraseña</label>
-                    <input
-                        v-model.trim="user.password"
-                        type="password"
-                        id="contrasena"
-                        class="form-control"
-                        :class="{
-                            'is-invalid': $v.user.password.$error,
-                            'is-valid': !$v.user.password.$invalid,
-                        }"
-                    />
-                    <div class="invalid-feedback">
-                        <span v-if="!$v.user.password.required">{{
-                            required
-                        }}</span>
-                        <span v-if="!$v.user.password.minLength"
-                            >Mínimo 8 caracteres</span
-                        >
+                <template v-if="datos.accion == 'Crear'">
+                    <div class="mb-3">
+                        <label class="form-label required">Contraseña</label>
+                        <div class="input-group">
+                            <input
+                                v-model.trim="user.password"
+                                type="password"
+                                id="contrasena"
+                                class="form-control contrasena"
+                                :class="{
+                                    'is-invalid': $v.user.password.$error,
+                                    'is-valid': !$v.user.password.$invalid,
+                                }"
+                            />
+                            <span
+                                class="input-group-text"
+                                @click="showPassword()"
+                                ><i
+                                    class="fa-solid fa-eye"
+                                    id="ver-contrasena"
+                                ></i
+                            ></span>
+                            <div class="invalid-feedback">
+                                <span v-if="!$v.user.password.required">{{
+                                    required
+                                }}</span>
+                                <span v-if="!$v.user.password.minLength"
+                                    >Mínimo 8 caracteres</span
+                                >
+                                <span
+                                    v-if="
+                                        !$v.user.password.passwordValidator.test
+                                    "
+                                    >La contraseña debe incluir como mínimo una
+                                    mayúscula, una minúscula, un número y
+                                    carácter especial</span
+                                >
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3" v-if="datos.accion == 'Crear'">
-                    <label class="form-label required"
-                        >Confirmar contraseña</label
-                    >
-                    <input
-                        v-model.trim="user.verify_password"
-                        type="password"
-                        id="verify_password"
-                        class="form-control"
-                        :class="{
-                            'is-invalid': $v.user.verify_password.$error,
-                            'is-valid':
-                                user.password != ''
-                                    ? !$v.user.verify_password.$invalid
-                                    : '',
-                        }"
-                    />
-                    <div class="invalid-feedback">
-                        <span v-if="!$v.user.verify_password.required">
-                            La contraseña no coincide</span
+                    <div class="mb-3">
+                        <label class="form-label required"
+                            >Confirmar contraseña</label
                         >
+                        <input
+                            v-model.trim="user.verify_password"
+                            type="password"
+                            id="verify_password"
+                            class="form-control contrasena"
+                            :class="{
+                                'is-invalid': $v.user.verify_password.$error,
+                                'is-valid':
+                                    user.password != ''
+                                        ? !$v.user.verify_password.$invalid
+                                        : '',
+                            }"
+                        />
+                        <div class="invalid-feedback">
+                            <span v-if="!$v.user.verify_password.required">
+                                La contraseña no coincide</span
+                            >
+                        </div>
                     </div>
-                </div>
-
-                <div class="mb-3" v-if="datos.accion == 'Actualizar'">
-                    <label class="form-label">Rol</label>
-                    <input
-                        class="form-control"
-                        type="text"
-                        :value="user.rol.nombre"
-                        disabled
-                    />
-                </div>
-                <div class="mb-3" v-else>
+                </template>
+                <div class="mb-3">
                     <label class="form-label">Rol</label>
                     <Multiselect
                         v-model.trim="user.rol_id"
@@ -219,7 +229,13 @@ import {
     minLength,
     maxLength,
     requiredIf,
+    helpers,
 } from "vuelidate/lib/validators";
+const passwordValidator = helpers.regex(
+    "passwordValidator",
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+);
+
 import User from "../../../models/User";
 import Convenio from "../../../models/Convenio";
 
@@ -266,6 +282,7 @@ export default {
                     return this.datos.accion == "Crear";
                 }),
                 minLength: minLength(8),
+                passwordValidator,
             },
             verify_password: {
                 sameAsPassword: sameAs("password"),
@@ -306,6 +323,23 @@ export default {
                     "success"
                 );
                 this.$root.redirectIndex("/usuarios");
+            }
+        },
+        showPassword() {
+            var fields = document.getElementsByClassName("contrasena");
+            for (var i = 0; i < fields.length; i++) {
+                const type =
+                    fields.item(i).type === "password" ? "text" : "password";
+                fields.item(i).setAttribute("type", type);
+            }
+            var icon = document.getElementById("ver-contrasena");
+
+            if (icon.classList.contains("fa-eye")) {
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
             }
         },
     },
