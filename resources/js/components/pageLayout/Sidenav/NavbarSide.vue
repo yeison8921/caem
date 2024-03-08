@@ -64,7 +64,9 @@
                 </ul>
             </div>
             <div style="position: absolute; right: 15px">
-                <span style="color: white">Un producto de</span>
+                <span style="color: white"
+                    >Ambiente de pruebas - Un producto de</span
+                >
                 <img src="../../../../img/logo-caem-blanco.png" height="60px" />
             </div>
         </div>
