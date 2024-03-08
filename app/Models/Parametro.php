@@ -13,6 +13,7 @@ class Parametro extends Model
 
     protected $fillable = [
         'nombre',
+        'valor',
         'tipo_parametro_id',
         'parametro_id',
     ];

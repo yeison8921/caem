@@ -159,6 +159,10 @@ export default {
                     this.parametro.parametro_id = this.form.parametro_id;
                 }
 
+                if (this.datos.tipo_parametro_id == 7) {
+                    this.parametro.valor = this.form.nombre;
+                }
+
                 if (this.datos.accion == "Actualizar") {
                     this.parametro.id = this.form.id;
                 }

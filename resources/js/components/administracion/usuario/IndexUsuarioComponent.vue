@@ -61,17 +61,9 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <button
-                                        class="btn"
-                                        :class="
-                                            u.estado == 1
-                                                ? 'btn-danger'
-                                                : 'btn-success'
-                                        "
-                                        :title="
-                                            u.estado == 1
-                                                ? 'Desactivar usuario'
-                                                : 'Activar usuario'
-                                        "
+                                        v-if="u.estado == 1"
+                                        class="btn btn-danger"
+                                        title="Desactivar usuario"
                                         :disabled="u.rol_id == 1"
                                         @click="
                                             u.rol_id == 1
@@ -84,14 +76,25 @@
                                                   )
                                         "
                                     >
-                                        <i
-                                            class="fa-solid"
-                                            :class="
-                                                u.estado == 1
-                                                    ? 'fa-ban'
-                                                    : 'fa-check'
-                                            "
-                                        ></i>
+                                        <i class="fa-solid fa-ban"></i>
+                                    </button>
+                                    <button
+                                        v-else
+                                        class="btn btn-success"
+                                        title="Activar usuario"
+                                        :disabled="u.rol_id == 1"
+                                        @click="
+                                            u.rol_id == 1
+                                                ? ''
+                                                : confirmarDesactivarUsuario(
+                                                      u.id,
+                                                      u.first_name,
+                                                      u.last_name,
+                                                      !u.estado
+                                                  )
+                                        "
+                                    >
+                                        <i class="fa-solid fa-check"></i>
                                     </button>
                                 </td>
                             </tr>
