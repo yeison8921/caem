@@ -13,7 +13,7 @@
               <div class="mt-8 card card-plain">
                 <div class="pb-0 card-header text-start">
                   <h3 class="font-weight-bolder text-success text-gradient">
-                    Bienvenido de nuevo
+                    Bienvenido de nuevoss
                   </h3>
                   <p class="mb-0"></p>
                 </div>
@@ -51,7 +51,7 @@
                 </div>
                 @if($errors->has('error'))
                 <div class="alert btn-danger text-center">
-                  Disculpe, su cuenta aún no ha sido activada
+                  Su cuenta se encuentra bloqueda, por favor contacte al administrador
                 </div>
                 @endif
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">

@@ -43,7 +43,7 @@ class LoginController extends Controller
     {
         if (!$user->estado) {
             auth()->logout();
-            return redirect()->route('login')->withErrors(['error' => 'Su cuenta no ha sido activada']);
+            return redirect()->route('login')->withErrors(['error' => 'Su cuenta se encuentra bloqueda, por favor contacte al administrador']);
         }
         if ($user->rol_id != 2) {
             $this->redirectTo = RouteServiceProvider::RESULTADOS;

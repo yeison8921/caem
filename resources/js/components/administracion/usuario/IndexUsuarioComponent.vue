@@ -61,7 +61,7 @@
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <button
-                                        v-if="u.estado == 1"
+                                        v-if="parseInt(u.estado) == 1"
                                         class="btn btn-danger"
                                         title="Desactivar usuario"
                                         :disabled="u.rol_id == 1"
@@ -72,14 +72,14 @@
                                                       u.id,
                                                       u.first_name,
                                                       u.last_name,
-                                                      !u.estado
+                                                      parseInt(0)
                                                   )
                                         "
                                     >
                                         <i class="fa-solid fa-ban"></i>
                                     </button>
                                     <button
-                                        v-else
+                                        v-if="parseInt(u.estado) == 0"
                                         class="btn btn-success"
                                         title="Activar usuario"
                                         :disabled="u.rol_id == 1"
@@ -90,7 +90,7 @@
                                                       u.id,
                                                       u.first_name,
                                                       u.last_name,
-                                                      !u.estado
+                                                      parseInt(1)
                                                   )
                                         "
                                     >
@@ -133,7 +133,7 @@ export default {
             last_name,
             estado
         ) {
-            let accion = estado ? "desactivar" : "activar";
+            let accion = estado ? "activar" : "desactivar";
             Swal.fire({
                 title: "Atención",
                 html: `¿Está seguro que quiere <b>${accion}</b> el usuario <b>${first_name} ${last_name}</b>?`,
@@ -148,7 +148,7 @@ export default {
                     } catch (error) {
                         this.$root.mostrarMensaje(
                             "Error",
-                            "Ha ocurrido un error al desactivar el usuario, por favor intentelo nuevamente",
+                            `Ha ocurrido un error al ${accion} el usuario, por favor intentelo nuevamente`,
                             "error"
                         );
                     }
@@ -156,14 +156,15 @@ export default {
             });
         },
         async desactivarUsuario(id_usuario, estado) {
-            this.$root.mostrarCargando("Desactivando");
+            let accion = estado ? "activado" : "desactivado";
+            this.$root.mostrarCargando("");
             let user = await User.find(id_usuario);
-            user.estado = estado;
+            user.estado = parseInt(estado);
             user.save();
             Swal.close();
             this.$root.mostrarMensaje(
                 "Éxito",
-                "Usuario desactivado correctamente",
+                `Usuario ${accion} correctamente`,
                 "success"
             );
             setTimeout(() => {

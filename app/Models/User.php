@@ -39,7 +39,8 @@ class User extends Authenticatable
         'sede_id',
         'acepta_politicas',
         'acepta_terminos',
-        'convenio_id'
+        'convenio_id',
+        'intentos_fallidos_ingreso',
     ];
 
     /**
