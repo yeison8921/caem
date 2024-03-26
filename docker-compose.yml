@@ -10,13 +10,13 @@ services:
         volumes:
             - .docker/mariadb/mariadbdata:/var/lib/mysql
         ports:
-            - "3306:3306"
+            - "3307:3306"
 
     web:
         container_name: web
         build: .docker/php
         ports:
-            - "3000:8000"
+            - "4000:8000"
         volumes:
             - .:/app
         depends_on:
