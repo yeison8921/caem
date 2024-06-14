@@ -13,7 +13,7 @@
               <div class="mt-8 card card-plain">
                 <div class="pb-0 card-header text-start">
                   <h3 class="font-weight-bolder text-success text-gradient">
-                    Bienvenido de nuevoss
+                    Bienvenido de nuevo
                   </h3>
                   <p class="mb-0"></p>
                 </div>

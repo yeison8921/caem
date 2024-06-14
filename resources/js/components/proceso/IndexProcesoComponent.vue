@@ -3678,8 +3678,11 @@ export default {
                                         "success"
                                     );
                                     setTimeout(() => {
-                                        this.$root.redirectIndex("/resultados");
-                                    }, 100);
+                                        document
+                                            .querySelector("#resultados")
+                                            .getElementsByTagName("a")[0]
+                                            .click();
+                                    }, 1000);
                                 });
                         } catch (error) {
                             this.$root.mostrarMensaje(
@@ -3824,7 +3827,6 @@ export default {
         },
 
         async tablaEmisiones() {
-            this.array_consumos = [];
             let informacion_empresa = await InformacionEmpresa.find(this.ie.id);
 
             this.fecha_base = new Date(
@@ -3833,7 +3835,7 @@ export default {
                     informacion_empresa.mes_inicio +
                     "-01 00:00"
             );
-
+            this.array_consumos = [];
             for (var i = 0; i < 12; i++) {
                 var future = new Date(
                     this.fecha_base.getFullYear(),

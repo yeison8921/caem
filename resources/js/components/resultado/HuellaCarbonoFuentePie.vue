@@ -66,54 +66,54 @@ export default {
                         },
                     ],
                 },
-                plugins: [ChartDataLabels],
+                // plugins: [ChartDataLabels],
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        datalabels: {
-                            color: "black",
-                            align: "end",
-                            formatter: function (value, context) {
-                                return (
-                                    Number(value.toFixed(2)).toLocaleString(
-                                        "es-co"
-                                    ) + " %"
-                                );
-                            },
-                        },
+                        // datalabels: {
+                        //     color: "black",
+                        //     align: "end",
+                        //     formatter: function (value, context) {
+                        //         return (
+                        //             Number(value.toFixed(2)).toLocaleString(
+                        //                 "es-co"
+                        //             ) + " %"
+                        //         );
+                        //     },
+                        // },
                         legend: {
-                            display: false,
+                            position: "bottom",
                         },
                     },
-                    interaction: {
-                        intersect: false,
-                        mode: "index",
-                    },
-                    scales: {
-                        y: {
-                            grid: {
-                                drawBorder: false,
-                                display: false,
-                                drawOnChartArea: false,
-                                drawTicks: false,
-                            },
-                            ticks: {
-                                display: false,
-                            },
-                        },
-                        x: {
-                            grid: {
-                                drawBorder: false,
-                                display: false,
-                                drawOnChartArea: false,
-                                drawTicks: false,
-                            },
-                            ticks: {
-                                display: false,
-                            },
-                        },
-                    },
+                    // interaction: {
+                    //     intersect: false,
+                    //     mode: "index",
+                    // },
+                    // scales: {
+                    //     y: {
+                    //         grid: {
+                    //             drawBorder: false,
+                    //             display: false,
+                    //             drawOnChartArea: false,
+                    //             drawTicks: false,
+                    //         },
+                    //         ticks: {
+                    //             display: false,
+                    //         },
+                    //     },
+                    //     x: {
+                    //         grid: {
+                    //             drawBorder: false,
+                    //             display: false,
+                    //             drawOnChartArea: false,
+                    //             drawTicks: false,
+                    //         },
+                    //         ticks: {
+                    //             display: false,
+                    //         },
+                    //     },
+                    // },
                 },
             });
         },

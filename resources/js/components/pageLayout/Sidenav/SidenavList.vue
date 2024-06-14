@@ -54,6 +54,7 @@
                                             parseInt(userLogged.rol_id)
                                         )
                                     "
+                                    id="resultados"
                                     :to="{ name: 'Resultados' }"
                                     :url="'/resultados'"
                                     mini-icon="P"

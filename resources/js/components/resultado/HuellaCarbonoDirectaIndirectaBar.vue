@@ -8,6 +8,7 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 export default {
     name: "HuellaCarbonoDirectaIndirectaBar",
     grafica: null,
+    max: 0,
     props: {
         id: {
             type: String,
@@ -39,6 +40,11 @@ export default {
         cargarGrafica() {
             // Bar chart
             var ctx = document.getElementById(this.id).getContext("2d");
+
+            this.max = Math.round(
+                Math.ceil((Math.max(...this.chart.datasets.data) + 100) / 100) *
+                    100
+            );
 
             if (this.grafica) {
                 this.grafica.destroy();
@@ -92,6 +98,7 @@ export default {
                                 drawTicks: false,
                                 borderDash: [5, 5],
                             },
+                            max: this.max,
                         },
                         x: {
                             grid: {

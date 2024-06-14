@@ -102,7 +102,68 @@
                         >
                     </div>
                 </div>
-                <template v-if="datos.accion == 'Crear'">
+                <div class="mb-3">
+                    <label class="form-label">Rol</label>
+                    <Multiselect
+                        v-model.trim="user.rol_id"
+                        :options="options_rol"
+                        placeholder="Seleccione una opción"
+                        :class="{
+                            'is-invalid': $v.user.rol_id.$error,
+                            'is-valid': !$v.user.rol_id.$invalid,
+                        }"
+                    />
+                    <div class="invalid-feedback">
+                        <span v-if="!$v.user.rol_id.required">{{
+                            required
+                        }}</span>
+                    </div>
+                </div>
+
+                <div class="mb-3" v-if="user.rol_id == 4">
+                    <label class="form-label">Convenio</label>
+                    <Multiselect
+                        v-model.trim="user.convenio_id"
+                        valueProp="id"
+                        label="nombre_convenio"
+                        :options="options_convenio"
+                        placeholder="Seleccione una opción"
+                        :class="{
+                            'is-invalid': $v.user.convenio_id.$error,
+                            'is-valid': !$v.user.convenio_id.$invalid,
+                        }"
+                    />
+                    <div class="invalid-feedback">
+                        <span v-if="!$v.user.convenio_id.required">{{
+                            required
+                        }}</span>
+                    </div>
+                </div>
+
+                <div class="mb-3" v-if="datos.accion != 'Crear'">
+                    <br />
+                    <div
+                        class="form-check form-switch d-flex justify-content-end"
+                    >
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            role="switch"
+                            id="restablecer-contrasena"
+                            v-model="restablecer_contrasena"
+                        />
+                        <label
+                            class="form-check-label"
+                            for="restablecer-contrasena"
+                        >
+                            Restablecer contraseña</label
+                        >
+                    </div>
+                </div>
+
+                <template
+                    v-if="datos.accion == 'Crear' || restablecer_contrasena"
+                >
                     <div class="mb-3">
                         <label class="form-label required">Contraseña</label>
                         <div class="input-group">
@@ -166,43 +227,6 @@
                         </div>
                     </div>
                 </template>
-                <div class="mb-3">
-                    <label class="form-label">Rol</label>
-                    <Multiselect
-                        v-model.trim="user.rol_id"
-                        :options="options_rol"
-                        placeholder="Seleccione una opción"
-                        :class="{
-                            'is-invalid': $v.user.rol_id.$error,
-                            'is-valid': !$v.user.rol_id.$invalid,
-                        }"
-                    />
-                    <div class="invalid-feedback">
-                        <span v-if="!$v.user.rol_id.required">{{
-                            required
-                        }}</span>
-                    </div>
-                </div>
-
-                <div class="mb-3" v-if="user.rol_id == 4">
-                    <label class="form-label">Convenio</label>
-                    <Multiselect
-                        v-model.trim="user.convenio_id"
-                        valueProp="id"
-                        label="nombre_convenio"
-                        :options="options_convenio"
-                        placeholder="Seleccione una opción"
-                        :class="{
-                            'is-invalid': $v.user.convenio_id.$error,
-                            'is-valid': !$v.user.convenio_id.$invalid,
-                        }"
-                    />
-                    <div class="invalid-feedback">
-                        <span v-if="!$v.user.convenio_id.required">{{
-                            required
-                        }}</span>
-                    </div>
-                </div>
 
                 <div class="mb-3">
                     <div class="col-lg-4 offset-lg-4">
@@ -250,6 +274,7 @@ export default {
             ],
             options_convenio: [],
             required: "Este campo es requerido",
+            restablecer_contrasena: false,
         };
     },
     validations: {
@@ -279,7 +304,10 @@ export default {
             },
             password: {
                 required: requiredIf(function () {
-                    return this.datos.accion == "Crear";
+                    return (
+                        this.datos.accion == "Crear" ||
+                        this.restablecer_contrasena
+                    );
                 }),
                 minLength: minLength(8),
                 passwordValidator,
