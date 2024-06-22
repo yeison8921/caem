@@ -103,7 +103,7 @@
 import { required, minLength, sameAs, helpers } from "vuelidate/lib/validators";
 const passwordValidator = helpers.regex(
     "passwordValidator",
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/])[A-Za-z\d@$!%*?&/]{8,}$/
 );
 export default {
     data() {

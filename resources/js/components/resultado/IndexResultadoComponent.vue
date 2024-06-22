@@ -69,7 +69,7 @@
                                 type="submit"
                                 class="btn btn-primary btn-sm"
                             >
-                                Calcular
+                                Consultar
                             </button>
                         </div>
                         <div class="d-grid gap-2 col-lg-8 text-start">
