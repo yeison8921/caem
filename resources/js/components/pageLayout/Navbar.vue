@@ -202,11 +202,13 @@ export default {
                     this.$root.cerrarCargando();
                 })
                 .catch((error) => {
-                    this.$root.mostrarMensaje(
-                        "error",
-                        "ha ocurrido un error al cerrar sesión",
-                        "error"
-                    );
+                    this.$root.redirectIndex("/login");
+                    this.$root.cerrarCargando();
+                    // this.$root.mostrarMensaje(
+                    //     "error",
+                    //     "ha ocurrido un error al cerrar sesión",
+                    //     "error"
+                    // );
                 });
         },
     },

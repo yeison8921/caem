@@ -152,11 +152,15 @@ export default {
                 _fuente.fuentetable.nombre,
                 _fuente.fuentetable.unidad_consumo,
                 _fuente.resultado
-                    ? this.parseDotToComma(_fuente.resultado.promedio)
+                    ? this.parseTwoDecimals(
+                          this.parseDotToComma(_fuente.resultado.promedio)
+                      )
                     : "NR",
                 _fuente.resultado
                     ? this.parseDotToComma(
-                          _fuente.resultado["huella_carbono" + this.ar]
+                          this.parseTwoDecimals(
+                              _fuente.resultado["huella_carbono" + this.ar]
+                          )
                       )
                     : "NR",
                 "+/- " +
@@ -180,6 +184,16 @@ export default {
                 return _value.toFixed(2);
             }
             return _value;
+        },
+        getRepresentacion(value, total, withPercentage = true) {
+            let res =
+                this.parseDotToComma(
+                    this.parseTwoDecimals(
+                        (parseFloat(value) / parseFloat(total)) * 100
+                    )
+                ) + (withPercentage ? " %" : "");
+
+            return res;
         },
         async getReportData() {
             this.$root.mostrarCargando("Consultando información");
@@ -577,7 +591,10 @@ export default {
                             this.resultados.fuentes_moviles.total_huella_carbono
                         )
                     ),
-                    "",
+                    this.getRepresentacion(
+                        this.resultados.fuentes_moviles.total_huella_carbono,
+                        this.resultados.fuentes_directas.total_huella_carbono
+                    ),
                     "+/- " +
                         this.parseDotToComma(
                             this.parseTwoDecimals(
@@ -594,7 +611,10 @@ export default {
                             this.resultados.fuentes_fijas.total_huella_carbono
                         )
                     ),
-                    "",
+                    this.getRepresentacion(
+                        this.resultados.fuentes_fijas.total_huella_carbono,
+                        this.resultados.fuentes_directas.total_huella_carbono
+                    ),
                     "+/- " +
                         this.parseDotToComma(
                             this.parseTwoDecimals(
@@ -611,7 +631,10 @@ export default {
                             this.resultados.emisiones.total_huella_carbono
                         )
                     ),
-                    "",
+                    this.getRepresentacion(
+                        this.resultados.emisiones.total_huella_carbono,
+                        this.resultados.fuentes_directas.total_huella_carbono
+                    ),
                     "+/- " +
                         this.parseDotToComma(
                             this.parseTwoDecimals(
@@ -632,7 +655,7 @@ export default {
                                 .total_huella_carbono
                         )
                     ),
-                    "",
+                    "100 %",
                     "+/- " +
                         this.parseDotToComma(
                             this.parseTwoDecimals(
@@ -1808,10 +1831,11 @@ export default {
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: this.parseDotToComma(
-                            this.parseTwoDecimals(
-                                tablasAndTotals.fuentes_moviles.representacion
-                            )
+                        text: this.getRepresentacion(
+                            tablasAndTotals.fuentes_moviles
+                                .total_huella_carbono,
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono
                         ),
                         fillColor: "#aae0bb",
                     },
@@ -1888,10 +1912,10 @@ export default {
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: this.parseDotToComma(
-                            this.parseTwoDecimals(
-                                tablasAndTotals.fuentes_fijas.representacion
-                            )
+                        text: this.getRepresentacion(
+                            tablasAndTotals.fuentes_fijas.total_huella_carbono,
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono
                         ),
                         fillColor: "#aae0bb",
                     },
@@ -1967,10 +1991,10 @@ export default {
                         fillColor: "#aae0bb",
                     },
                     {
-                        text: this.parseDotToComma(
-                            this.parseTwoDecimals(
-                                tablasAndTotals.emisiones.representacion
-                            )
+                        text: this.getRepresentacion(
+                            tablasAndTotals.emisiones.total_huella_carbono,
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono
                         ),
                         fillColor: "#aae0bb",
                     },
@@ -2058,11 +2082,11 @@ export default {
                         style: "subtotal",
                     },
                     {
-                        text: this.parseDotToComma(
-                            this.parseTwoDecimals(
-                                tablasAndTotals.subtotals.emisiones_directas
-                                    .representacion
-                            )
+                        text: this.getRepresentacion(
+                            tablasAndTotals.subtotals.emisiones_directas
+                                .total_huella_carbono,
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono
                         ),
                         fillColor: "#348c4f",
                         style: "subtotal",
@@ -2146,11 +2170,11 @@ export default {
                         fillColor: "#fabf8f",
                     },
                     {
-                        text: this.parseDotToComma(
-                            this.parseTwoDecimals(
-                                tablasAndTotals.fuentes_indirectas
-                                    .representacion
-                            )
+                        text: this.getRepresentacion(
+                            tablasAndTotals.fuentes_indirectas
+                                .total_huella_carbono,
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono
                         ),
                         fillColor: "#fabf8f",
                     },
@@ -2238,11 +2262,11 @@ export default {
                         style: "subtotal",
                     },
                     {
-                        text: this.parseDotToComma(
-                            this.parseTwoDecimals(
-                                tablasAndTotals.subtotals.emisiones_indirectas
-                                    .representacion
-                            )
+                        text: this.getRepresentacion(
+                            tablasAndTotals.subtotals.emisiones_indirectas
+                                .total_huella_carbono,
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono
                         ),
                         fillColor: "#ff9966",
                         style: "subtotal",
@@ -2322,10 +2346,10 @@ export default {
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: this.parseDotToComma(
-                            this.parseTwoDecimals(
-                                tablasAndTotals.fuentes_C3.representacion
-                            )
+                        text: this.getRepresentacion(
+                            tablasAndTotals.fuentes_C3.total_huella_carbono,
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono
                         ),
                         fillColor: "#e6b8b7",
                     },
@@ -2401,10 +2425,10 @@ export default {
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: this.parseDotToComma(
-                            this.parseTwoDecimals(
-                                tablasAndTotals.fuentes_C4.representacion
-                            )
+                        text: this.getRepresentacion(
+                            tablasAndTotals.fuentes_C4.total_huella_carbono,
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono
                         ),
                         fillColor: "#e6b8b7",
                     },
@@ -2480,10 +2504,10 @@ export default {
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: this.parseDotToComma(
-                            this.parseTwoDecimals(
-                                tablasAndTotals.fuentes_C5.representacion
-                            )
+                        text: this.getRepresentacion(
+                            tablasAndTotals.fuentes_C5.total_huella_carbono,
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono
                         ),
                         fillColor: "#e6b8b7",
                     },
@@ -2559,10 +2583,10 @@ export default {
                         fillColor: "#e6b8b7",
                     },
                     {
-                        text: this.parseDotToComma(
-                            this.parseTwoDecimals(
-                                tablasAndTotals.fuentes_C6.representacion
-                            )
+                        text: this.getRepresentacion(
+                            tablasAndTotals.fuentes_C6.total_huella_carbono,
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono
                         ),
                         fillColor: "#e6b8b7",
                     },
@@ -2656,11 +2680,11 @@ export default {
                         style: "subtotal",
                     },
                     {
-                        text: this.parseDotToComma(
-                            this.parseTwoDecimals(
-                                tablasAndTotals.subtotals
-                                    .emisiones_otras_indirectas.representacion
-                            )
+                        text: this.getRepresentacion(
+                            tablasAndTotals.subtotals.emisiones_otras_indirectas
+                                .total_huella_carbono,
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono
                         ),
                         fillColor: "#963634",
                         style: "subtotal",
@@ -2749,10 +2773,11 @@ export default {
                         style: "subtotal",
                     },
                     {
-                        text: this.parseDotToComma(
-                            this.parseTwoDecimals(
-                                tablasAndTotals.subtotals.totals.representacion
-                            )
+                        text: this.getRepresentacion(
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono,
+                            tablasAndTotals.subtotals.totals
+                                .total_huella_carbono
                         ),
                         fillColor: "#215967",
                         style: "subtotal",
@@ -4355,12 +4380,20 @@ export default {
                         {
                             style: "tableExample",
                             color: "#444",
-                            margin: [140, 0, 0, 10],
                             alignment: "center",
                             table: {
-                                widths: ["auto"],
+                                widths: [140, "auto"],
                                 body: [
                                     [
+                                        {
+                                            text: "",
+                                            border: [
+                                                false,
+                                                false,
+                                                false,
+                                                false,
+                                            ],
+                                        },
                                         {
                                             //text: ["DIAGRAMA BARRAS"],
                                             image: this.convertCanvasToBase64(
@@ -5100,6 +5133,8 @@ export default {
                         },
                     },
                 };
+                // console.log("docDefinition", JSON.stringify(docDefinition));
+
                 const pdfDoc = pdfMake.createPdf(docDefinition);
                 pdfDoc.open();
             }
