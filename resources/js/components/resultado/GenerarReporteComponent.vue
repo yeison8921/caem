@@ -186,12 +186,13 @@ export default {
             return _value;
         },
         getRepresentacion(value, total, withPercentage = true) {
+            let percentage = (parseFloat(value) / parseFloat(total)) * 100;
+            if (isNaN(percentage)) {
+                percentage = 0;
+            }
             let res =
-                this.parseDotToComma(
-                    this.parseTwoDecimals(
-                        (parseFloat(value) / parseFloat(total)) * 100
-                    )
-                ) + (withPercentage ? " %" : "");
+                this.parseDotToComma(this.parseTwoDecimals(percentage)) +
+                (withPercentage ? " %" : "");
 
             return res;
         },
