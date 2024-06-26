@@ -4620,9 +4620,7 @@ export default {
                         {
                             stack: [
                                 {
-                                    text: [
-                                        "Tabla 13. Resultados totales del inventario corporativo de GEI",
-                                    ],
+                                    text: ["Tabla 14. Factores de emisión"],
                                     margin: [0, 0, 0, 10],
                                     alignment: "center",
                                     bold: true,
@@ -4831,7 +4829,7 @@ export default {
                         },
                         {
                             text: [
-                                "Tabla 14. Potenciales de Calentamiento Global",
+                                "Tabla 15. Potenciales de Calentamiento Global",
                             ],
                             margin: [0, 0, 0, 10],
                             alignment: "center",
