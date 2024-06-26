@@ -152,8 +152,8 @@ export default {
                 _fuente.fuentetable.nombre,
                 _fuente.fuentetable.unidad_consumo,
                 _fuente.resultado
-                    ? this.parseTwoDecimals(
-                          this.parseDotToComma(_fuente.resultado.promedio)
+                    ? this.parseDotToComma(
+                          this.parseTwoDecimals(_fuente.resultado.total) // cambio de promedio a total
                       )
                     : "NR",
                 _fuente.resultado
