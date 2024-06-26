@@ -89,6 +89,14 @@
             </div>
             <div class="col-lg-9" v-if="mostrar_graficas">
                 <div class="row mb-5">
+                    <div class="col-lg-12 mb-3">
+                        <h6>
+                            Los resultados que se muestran a continuación no se
+                            constituyen como información oficial, son de
+                            carácter informativo para el usuario y requieren
+                            validación por parte de los consultores de CAEM.
+                        </h6>
+                    </div>
                     <div class="col-lg-6 mb-3">
                         <div
                             class="card text-center justify-content-center"
