@@ -233,6 +233,32 @@ class FuenteEmisionRepository extends BaseRepository
         $jffb38 = new stdClass();
         $jffb38->Combustible_liquido = [];
 
+        //json fuentes móviles corporativo
+        $jfmc26 = new stdClass();
+        $jfmc26->Combustible_liquido = [];
+
+        $jfmc37 = new stdClass();
+        $jfmc37->Combustible_liquido = [];
+
+        $jfmc27 = new stdClass();
+        $jfmc27->Combustible_liquido = [];
+
+        $jfmc38 = new stdClass();
+        $jfmc38->Combustible_liquido = [];
+
+        //json fuentes fijas corporativo
+        $jffc26 = new stdClass();
+        $jffc26->Combustible_liquido = [];
+
+        $jffc37 = new stdClass();
+        $jffc37->Combustible_liquido = [];
+
+        $jffc27 = new stdClass();
+        $jffc27->Combustible_liquido = [];
+
+        $jffc38 = new stdClass();
+        $jffc38->Combustible_liquido = [];
+
         //json electricidad
         $jel = new stdClass();
         $jel->Energia_electrica = [];
@@ -358,6 +384,30 @@ class FuenteEmisionRepository extends BaseRepository
             if ($d->tipo == 'fuentes_fijas_biogenico_38') {
                 array_push($jffb38->$fuente, $d->fuentetable_id);
             }
+            if ($d->tipo == 'fuentes_moviles_corporativo_26') {
+                array_push($jfmc26->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_moviles_corporativo_37') {
+                array_push($jfmc37->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_moviles_corporativo_27') {
+                array_push($jfmc27->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_moviles_corporativo_38') {
+                array_push($jfmc38->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_fijas_corporativo_26') {
+                array_push($jffc26->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_fijas_corporativo_37') {
+                array_push($jffc37->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_fijas_corporativo_27') {
+                array_push($jffc27->$fuente, $d->fuentetable_id);
+            }
+            if ($d->tipo == 'fuentes_fijas_corporativo_38') {
+                array_push($jffc38->$fuente, $d->fuentetable_id);
+            }
             if ($d->tipo == 'electricidad_importada') {
                 array_push($jel->$fuente, $d->fuentetable_id);
             }
@@ -431,6 +481,14 @@ class FuenteEmisionRepository extends BaseRepository
         $jf->c1->fuentes_fijas_biogenico_37 = $jffb37;
         $jf->c1->fuentes_fijas_biogenico_27 = $jffb27;
         $jf->c1->fuentes_fijas_biogenico_38 = $jffb38;
+        $jf->c1->fuentes_moviles_corporativo_26 = $jfmc26;
+        $jf->c1->fuentes_moviles_corporativo_37 = $jfmc37;
+        $jf->c1->fuentes_moviles_corporativo_27 = $jfmc27;
+        $jf->c1->fuentes_moviles_corporativo_38 = $jfmc38;
+        $jf->c1->fuentes_fijas_corporativo_26 = $jffc26;
+        $jf->c1->fuentes_fijas_corporativo_37 = $jffc37;
+        $jf->c1->fuentes_fijas_corporativo_27 = $jffc27;
+        $jf->c1->fuentes_fijas_corporativo_38 = $jffc38;
 
         $jf->c2->electricidad_importada = $jel;
         $jf->c2->energia_importada = $jen;

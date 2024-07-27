@@ -889,7 +889,10 @@
                                         v-bind:key="k"
                                     >
                                         <p
-                                            v-if="!k.includes('biogenico')"
+                                            v-if="
+                                                !k.includes('biogenico') &&
+                                                !k.includes('corporativo')
+                                            "
                                             style="font-size: 13px"
                                             class="accordion-header"
                                             :id="'heading-sc-' + index + i"
@@ -2771,6 +2774,7 @@
                                                                                                             class="form-control"
                                                                                                             type="number"
                                                                                                             step="any"
+                                                                                                            min="0"
                                                                                                             @change="
                                                                                                                 fuente.tipo ==
                                                                                                                     'fuentes_moviles' ||
@@ -3130,6 +3134,16 @@ export default {
         };
     },
     mounted() {
+        document.addEventListener(
+            "wheel",
+            function (event) {
+                if (document.activeElement.type === "number") {
+                    event.preventDefault();
+                }
+            },
+            { passive: false }
+        );
+
         this.getUserLogged();
         this.getParametros(7, "options_anio");
         this.getParametros(8, "options_mes");
@@ -3913,6 +3927,16 @@ export default {
                         Fertilizante: [],
                         Cal: [],
                     },
+
+                    fuentes_moviles_corporativo_26: { Combustible_liquido: [] },
+                    fuentes_moviles_corporativo_37: { Combustible_liquido: [] },
+                    fuentes_moviles_corporativo_27: { Combustible_liquido: [] },
+                    fuentes_moviles_corporativo_38: { Combustible_liquido: [] },
+                    fuentes_fijas_corporativo_26: { Combustible_liquido: [] },
+                    fuentes_fijas_corporativo_37: { Combustible_liquido: [] },
+                    fuentes_fijas_corporativo_27: { Combustible_liquido: [] },
+                    fuentes_fijas_corporativo_38: { Combustible_liquido: [] },
+
                     fuentes_moviles_biogenico_26: { Combustible_liquido: [] },
                     fuentes_moviles_biogenico_37: { Combustible_liquido: [] },
                     fuentes_moviles_biogenico_27: { Combustible_liquido: [] },
@@ -4092,29 +4116,33 @@ export default {
         },
         agregarFuenteBiogenico(key, k, val) {
             let array = [26, 27, 37, 38];
-            array.forEach((e) => {
-                let id_fuente = e == 26 || e == 37 ? 33 : 34;
-                if (val.Combustible_liquido.includes(e)) {
-                    if (
-                        !this.fuentes[key][k + "_biogenico_" + e][
-                            "Combustible_liquido"
-                        ].includes(id_fuente)
-                    ) {
-                        this.fuentes[key][k + "_biogenico_" + e][
-                            "Combustible_liquido"
-                        ].push(id_fuente);
+            let arrayTipos = ["_biogenico_", "_corporativo_"];
+
+            array.forEach((id) => {
+                let id_fuente = id == 26 || id == 37 ? 33 : 34;
+                arrayTipos.forEach((tipo) => {
+                    if (val.Combustible_liquido.includes(id)) {
+                        if (
+                            !this.fuentes[key][k + tipo + id][
+                                "Combustible_liquido"
+                            ].includes(id_fuente)
+                        ) {
+                            this.fuentes[key][k + tipo + id][
+                                "Combustible_liquido"
+                            ].push(id_fuente);
+                        }
+                    } else {
+                        let index =
+                            this.fuentes[key][k + tipo + id][
+                                "Combustible_liquido"
+                            ].indexOf(id_fuente);
+                        if (index > -1) {
+                            this.fuentes[key][k + tipo + id][
+                                "Combustible_liquido"
+                            ].splice(index, 1);
+                        }
                     }
-                } else {
-                    let index =
-                        this.fuentes[key][k + "_biogenico_" + e][
-                            "Combustible_liquido"
-                        ].indexOf(id_fuente);
-                    if (index > -1) {
-                        this.fuentes[key][k + "_biogenico_" + e][
-                            "Combustible_liquido"
-                        ].splice(index, 1);
-                    }
-                }
+                });
             });
         },
         agregarDatosFuenteBiogenica(tipo, fuentetable_id, dato) {
@@ -4144,6 +4172,13 @@ export default {
                     if (
                         this.fuentes_emision[key][k]["tipo"] ==
                         tipo + "_biogenico_" + fuentetable_id
+                    ) {
+                        this.fuentes_emision[key][k]["resultado"][dato] =
+                            resultado;
+                    }
+                    if (
+                        this.fuentes_emision[key][k]["tipo"] ==
+                        tipo + "_corporativo_" + fuentetable_id
                     ) {
                         this.fuentes_emision[key][k]["resultado"][dato] =
                             resultado;

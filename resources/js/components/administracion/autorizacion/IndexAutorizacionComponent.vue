@@ -33,6 +33,7 @@
                                 <th>NIT</th>
                                 <th>Usuario</th>
                                 <th>Correo</th>
+                                <th>Empresa</th>
                                 <th>Sede</th>
                                 <th>Fecha Registro</th>
                                 <th>Acciones</th>
@@ -48,6 +49,9 @@
                                 </td>
                                 <td>
                                     {{ e.email }}
+                                </td>
+                                <td>
+                                    {{ e.empresa.nombre }}
                                 </td>
                                 <td>
                                     {{

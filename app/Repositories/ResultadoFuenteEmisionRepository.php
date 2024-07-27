@@ -156,6 +156,7 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
     public function guardarDatosConsumos($request)
     {
         $fuentes_emision = $request->fuentes_emision;
+        $datoPorcentaje = true;
 
         foreach ($this->array_ar as $ar) {
             foreach ($fuentes_emision as $kfe => $fuente_emision) {
@@ -167,11 +168,17 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                             if (!is_null($d)) {
                                 $numero_datos++;
                                 if (in_array($fuentes_emision[$kfe][$skfe]['fuentetable_id'], $this->array_combustibles_porcentaje_corporativo)) {
-                                    $total += floatval(($d * $this->array_porcentajes['corporativo']) / 100);
-                                } else if (str_contains($fuentes_emision[$kfe][$skfe]['tipo'], 'biogenico')) {
-                                    $total += floatval(($d * $this->array_porcentajes['biogenico']) / 100);
+                                    if ($datoPorcentaje) {
+                                        $fuentes_emision[$kfe][$skfe]['resultado'][$kd] = floatval($fuentes_emision[$kfe][$skfe]['resultado'][$kd] * $this->array_porcentajes['corporativo'] / 100);
+                                    }
+                                    $total += $fuentes_emision[$kfe][$skfe]['resultado'][$kd];
+                                } else if (str_contains($fuentes_emision[$kfe][$skfe]['tipo'], 'biogenico') || str_contains($fuentes_emision[$kfe][$skfe]['tipo'], 'corporativo')) {
+                                    if ($datoPorcentaje) {
+                                        $fuentes_emision[$kfe][$skfe]['resultado'][$kd] = floatval($fuentes_emision[$kfe][$skfe]['resultado'][$kd] * $this->array_porcentajes['biogenico'] / 100);
+                                    }
+                                    $total += $fuentes_emision[$kfe][$skfe]['resultado'][$kd];
                                 } else {
-                                    $total += floatval($d);
+                                    $total += floatval($fuentes_emision[$kfe][$skfe]['resultado'][$kd]);
                                 }
                             }
                         }
@@ -184,23 +191,24 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                         $fuentes_emision[$kfe][$skfe]['resultado']['promedio'] = $fuentes_emision[$kfe][$skfe]['resultado']['total'] / $fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'];
                     }
 
-                    $total2 = 0;
-                    foreach ($fe['resultado'] as $kd => $d) {
-                        if (str_contains($kd, 'dato_')) {
-                            if (!is_null($d)) {
-                                if (in_array($fuentes_emision[$kfe][$skfe]['fuentetable_id'], $this->array_combustibles_porcentaje_corporativo)) {
-                                    $total2 += (floatval(($d * $this->array_porcentajes['corporativo']) / 100) - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']) * (floatval(($d * $this->array_porcentajes['corporativo']) / 100) - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
-                                } else if (str_contains($fuentes_emision[$kfe][$skfe]['tipo'], 'biogenico')) {
-                                    $total2 += (floatval(($d * $this->array_porcentajes['biogenico']) / 100) - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']) * (floatval(($d * $this->array_porcentajes['biogenico']) / 100) - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
-                                } else {
-                                    $total2 += ($d - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']) * ($d - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
-                                }
-                            }
-                        }
-                    }
+                    // $total2 = 0;
+                    // foreach ($fe['resultado'] as $kd => $d) {
+                    //     if (str_contains($kd, 'dato_')) {
+                    //         if (!is_null($d)) {
+                    //             if (in_array($fuentes_emision[$kfe][$skfe]['fuentetable_id'], $this->array_combustibles_porcentaje_corporativo)) {
+
+                    //                 $total2 += (floatval(($d * $this->array_porcentajes['corporativo']) / 100) - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']) * (floatval(($d * $this->array_porcentajes['corporativo']) / 100) - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
+                    //             } else if (str_contains($fuentes_emision[$kfe][$skfe]['tipo'], 'biogenico')) {
+                    //                 $total2 += (floatval(($d * $this->array_porcentajes['biogenico']) / 100) - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']) * (floatval(($d * $this->array_porcentajes['biogenico']) / 100) - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
+                    //             } else {
+                    //                 $total2 += ($d - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']) * ($d - $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
+                    //             }
+                    //         }
+                    //     }
+                    // }
 
                     if ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] > 1) {
-                        $fuentes_emision[$kfe][$skfe]['resultado']['desviacion_estandar'] = sqrt(($total2 / ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] - 1)));
+                        $fuentes_emision[$kfe][$skfe]['resultado']['desviacion_estandar'] = sqrt(($total / ($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'] - 1)));
                         $fuentes_emision[$kfe][$skfe]['resultado']['incertidumbre_datos'] = 1 - (($fuentes_emision[$kfe][$skfe]['resultado']['promedio'] - (($fuentes_emision[$kfe][$skfe]['resultado']['desviacion_estandar'] * $this->array_factores[$fuentes_emision[$kfe][$skfe]['resultado']['numero_datos']]) / (sqrt($fuentes_emision[$kfe][$skfe]['resultado']['numero_datos'])))) / $fuentes_emision[$kfe][$skfe]['resultado']['promedio']);
                     }
 
@@ -219,7 +227,7 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
 
                         if (($fuentes_emision[$kfe][$skfe]['fuentetable_type'] == 'App\Models\Combustible' || $fuentes_emision[$kfe][$skfe]['fuentetable_type'] == 'App\Models\Trasversal') && $e != 'co2') {
                             //Establecer tipo fuente para combustible
-                            $tipo_fuente = $tipo_fuente = ($fuentes_emision[$kfe][$skfe]['tipo'] == 'fuentes_moviles' || $tipo_fuente = $fuentes_emision[$kfe][$skfe]['tipo'] == 'transportes') ? 'fuente_movil' : 'fuente_fija';
+                            $tipo_fuente = $tipo_fuente = (str_contains($fuentes_emision[$kfe][$skfe]['tipo'], 'fuentes_moviles') || $tipo_fuente = $fuentes_emision[$kfe][$skfe]['tipo'] == 'transportes') ? 'fuente_movil' : 'fuente_fija';
                             $factor_emision = 'kg_' . $tipo_fuente;
                             $unidad_factor = '_' . $tipo_fuente;
                             $incertidumbre_factor = '_' . $tipo_fuente;
@@ -304,6 +312,7 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
                     }
                 }
             }
+            $datoPorcentaje = false;
         }
         return $fuentes_emision;
     }

@@ -239,7 +239,7 @@
                                 <tbody style="font-size: 11px">
                                     <template v-for="a in el">
                                         <tr :key="a.id" class="table-active">
-                                            <td>{{ a[0] }}</td>
+                                            <td v-html="a[0]"></td>
                                             <td style="display;none"></td>
                                             <td style="display;none"></td>
                                             <td style="display;none"></td>
@@ -735,9 +735,9 @@
                                             "
                                             :key="a.id"
                                         >
-                                            <td>
-                                                <b> {{ a[3] }} </b>
-                                            </td>
+                                            <td
+                                                v-html="'<b>' + a[3] + '</b>'"
+                                            ></td>
                                             <td></td>
                                             <td></td>
                                             <td></td>
@@ -1377,6 +1377,30 @@ export default {
                             "SUBTOTAL COMBUSTIBLES FUENTES MÓVILES",
                         ],
                         [
+                            "FUENTES MÓVILES EXTRA<br>Diésel o ACPM (sin mezcla biodiesel)",
+                            ["fuentes_moviles_corporativo_26"],
+                            ["Combustible_liquido"],
+                            "SUBTOTAL FUENTES MÓVILES EXTRA<br>Diésel o ACPM (sin mezcla biodiesel)",
+                        ],
+                        [
+                            "FUENTES MÓVILES EXTRA<br>Gasolina Motor (sin mezcla bioetanol)",
+                            ["fuentes_moviles_corporativo_27"],
+                            ["Combustible_liquido"],
+                            "SUBTOTAL FUENTES MÓVILES EXTRA<br>Gasolina Motor (sin mezcla bioetanol)",
+                        ],
+                        [
+                            "FUENTES MÓVILES EXTRA<br>Diésel B10 (Mezcla comercial)",
+                            ["fuentes_moviles_corporativo_37"],
+                            ["Combustible_liquido"],
+                            "SUBTOTAL FUENTES MÓVILES EXTRA<br>Diésel B10 (Mezcla comercial)",
+                        ],
+                        [
+                            "FUENTES MÓVILES EXTRA<br>Gasolina E10 (Mezcla comercial)",
+                            ["fuentes_moviles_corporativo_38"],
+                            ["Combustible_liquido"],
+                            "SUBTOTAL FUENTES MÓVILES EXTRA<br>Gasolina E10 (Mezcla comercial)",
+                        ],
+                        [
                             "OTROS",
                             ["fuentes_moviles"],
                             ["Refrigerante", "Extintor", "Lubricante"],
@@ -1405,6 +1429,30 @@ export default {
                             "SUBTOTAL OTROS FUENTES FIJAS",
                         ],
                         [
+                            "FUENTES FIJAS EXTRA<br>Diésel o ACPM (sin mezcla biodiesel)",
+                            ["fuentes_fijas_corporativo_26"],
+                            ["Combustible_liquido"],
+                            "SUBTOTAL FUENTES FIJAS EXTRA<br>Diésel o ACPM (sin mezcla biodiesel)",
+                        ],
+                        [
+                            "FUENTES FIJAS EXTRA<br>Gasolina Motor (sin mezcla bioetanol)",
+                            ["fuentes_fijas_corporativo_27"],
+                            ["Combustible_liquido"],
+                            "SUBTOTAL FUENTES FIJAS EXTRA<br>Gasolina Motor (sin mezcla bioetanol)",
+                        ],
+                        [
+                            "FUENTES FIJAS EXTRA<br>Diésel B10 (Mezcla comercial)",
+                            ["fuentes_fijas_corporativo_37"],
+                            ["Combustible_liquido"],
+                            "SUBTOTAL FUENTES FIJAS EXTRA<br>Diésel B10 (Mezcla comercial)",
+                        ],
+                        [
+                            "FUENTES FIJAS EXTRA<br>Gasolina E10 (Mezcla comercial)",
+                            ["fuentes_fijas_corporativo_38"],
+                            ["Combustible_liquido"],
+                            "SUBTOTAL FUENTES FIJAS EXTRA<br>Gasolina E10 (Mezcla comercial)",
+                        ],
+                        [
                             "EMISIONES DE PROCESO",
                             ["emisiones"],
                             [
@@ -1422,7 +1470,19 @@ export default {
                         ],
                         [
                             "",
-                            ["fuentes_fijas", "fuentes_moviles", "emisiones"],
+                            [
+                                "fuentes_fijas",
+                                "fuentes_moviles",
+                                "emisiones",
+                                "fuentes_moviles_corporativo_26",
+                                "fuentes_moviles_corporativo_27",
+                                "fuentes_moviles_corporativo_37",
+                                "fuentes_moviles_corporativo_38",
+                                "fuentes_fijas_corporativo_26",
+                                "fuentes_fijas_corporativo_27",
+                                "fuentes_fijas_corporativo_37",
+                                "fuentes_fijas_corporativo_38",
+                            ],
                             [
                                 "Combustible_solido",
                                 "Combustible_liquido",
