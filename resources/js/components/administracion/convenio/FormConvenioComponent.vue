@@ -89,9 +89,13 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="formFile" class="form-label"
+                        <label for="archivo-correos" class="form-label"
                             >Selecionar excel empresarios</label
                         >
+                        <br />
+                        <label for="archivo-correos" class="btn btn-secondary">
+                            Seleccionar Archivo
+                        </label>
                         <input
                             class="form-control"
                             type="file"
@@ -986,3 +990,15 @@ export default {
     },
 };
 </script>
+<style>
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+</style>
