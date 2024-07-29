@@ -649,6 +649,7 @@ export default {
                             direccion: e[5],
                         });
                     }
+                    let hasAnyError = false;
                     let error = {
                         correo: e[0],
                         correo_error: "",
@@ -661,16 +662,22 @@ export default {
                     };
                     if (correoExist) {
                         error.correo_error = "Correo ya existe";
+                        hasAnyError = true;
                     }
                     if (nitExist) {
                         error.nit_error = "Nit ya existe";
+                        hasAnyError = true;
                     }
                     if (departamento.length == 0) {
                         error.departamento_error = "Departamento no existe";
+                        hasAnyError = true;
                     } else if (ciudad.length == 0) {
                         error.ciudad_error = "Ciudad no existe";
+                        hasAnyError = true;
                     }
-                    arrayErrors.push(error);
+                    if (hasAnyError) {
+                        arrayErrors.push(error);
+                    }
                 }
                 this.$root.cerrarCargando();
                 if (arrayErrors.length > 0) {

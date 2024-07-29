@@ -322,7 +322,6 @@ export default {
                     {
                         colSpan: 6,
                         text: "No se ingresaron datos para esta categoría",
-                        style: "headerTableResult",
                     },
                 ]);
             }
@@ -434,7 +433,6 @@ export default {
                     {
                         colSpan: 6,
                         text: "No se ingresaron datos para esta categoría",
-                        style: "headerTableResult",
                     },
                 ]);
             }
@@ -545,7 +543,6 @@ export default {
                     {
                         colSpan: 6,
                         text: "No se ingresaron datos para esta categoría",
-                        style: "headerTableResult",
                     },
                 ]);
             }
@@ -776,7 +773,6 @@ export default {
                     {
                         colSpan: 6,
                         text: "No se ingresaron datos para esta categoría",
-                        style: "headerTableResult",
                     },
                 ]);
             }
@@ -897,7 +893,6 @@ export default {
                     {
                         colSpan: 6,
                         text: "No se ingresaron datos para esta categoría",
-                        style: "headerTableResult",
                     },
                 ]);
             }
@@ -1011,7 +1006,6 @@ export default {
                     {
                         colSpan: 6,
                         text: "No se ingresaron datos para esta categoría",
-                        style: "headerTableResult",
                     },
                 ]);
             }
@@ -1125,7 +1119,6 @@ export default {
                     {
                         colSpan: 6,
                         text: "No se ingresaron datos para esta categoría",
-                        style: "headerTableResult",
                     },
                 ]);
             }
