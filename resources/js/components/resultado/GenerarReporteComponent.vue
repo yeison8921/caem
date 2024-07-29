@@ -317,6 +317,16 @@ export default {
                 );
             });
 
+            if (tablasAndTotals.fuentes_moviles.data.length == 0) {
+                this.resultados.tabla1Body.push([
+                    {
+                        colSpan: 6,
+                        text: "No se ingresaron datos para esta categoría",
+                        style: "headerTableResult",
+                    },
+                ]);
+            }
+
             this.resultados.tabla1Body.push([
                 // Footer of TABLA
                 {
@@ -419,6 +429,16 @@ export default {
                 );
             });
 
+            if (tablasAndTotals.fuentes_fijas.data?.length == 0) {
+                this.resultados.tabla2Body.push([
+                    {
+                        colSpan: 6,
+                        text: "No se ingresaron datos para esta categoría",
+                        style: "headerTableResult",
+                    },
+                ]);
+            }
+
             this.resultados.tabla2Body.push([
                 // Footer of TABLA
                 {
@@ -519,6 +539,16 @@ export default {
                     this.parseTableContentGeneral(_fuente)
                 );
             });
+
+            if (tablasAndTotals.emisiones.data?.length == 0) {
+                this.resultados.tabla3Body.push([
+                    {
+                        colSpan: 6,
+                        text: "No se ingresaron datos para esta categoría",
+                        style: "headerTableResult",
+                    },
+                ]);
+            }
 
             this.resultados.tabla3Body.push([
                 // Footer of TABLA
@@ -741,6 +771,16 @@ export default {
                     this.parseTableContentGeneral(_fuente)
                 );
             });
+            if (tablasAndTotals.fuentes_indirectas.data?.length == 0) {
+                this.resultados.tabla5Body.push([
+                    {
+                        colSpan: 6,
+                        text: "No se ingresaron datos para esta categoría",
+                        style: "headerTableResult",
+                    },
+                ]);
+            }
+
             this.resultados.tabla5Body.push([
                 // Footer of TABLA
                 {
@@ -851,6 +891,17 @@ export default {
                     this.parseTableContentGeneral(_fuente)
                 );
             });
+
+            if (tablasAndTotals.fuentes_C3.data?.length == 0) {
+                this.resultados.tabla6Body.push([
+                    {
+                        colSpan: 6,
+                        text: "No se ingresaron datos para esta categoría",
+                        style: "headerTableResult",
+                    },
+                ]);
+            }
+
             this.resultados.tabla6Body.push([
                 {
                     colSpan: 4,
@@ -954,6 +1005,17 @@ export default {
                     this.parseTableContentGeneral(_fuente)
                 );
             });
+
+            if (tablasAndTotals.fuentes_C4.data?.length == 0) {
+                this.resultados.tabla7Body.push([
+                    {
+                        colSpan: 6,
+                        text: "No se ingresaron datos para esta categoría",
+                        style: "headerTableResult",
+                    },
+                ]);
+            }
+
             this.resultados.tabla7Body.push([
                 {
                     colSpan: 4,
@@ -1057,6 +1119,17 @@ export default {
                     this.parseTableContentGeneral(_fuente)
                 );
             });
+
+            if (tablasAndTotals.fuentes_C5.data?.length == 0) {
+                this.resultados.tabla8Body.push([
+                    {
+                        colSpan: 6,
+                        text: "No se ingresaron datos para esta categoría",
+                        style: "headerTableResult",
+                    },
+                ]);
+            }
+
             this.resultados.tabla8Body.push([
                 {
                     colSpan: 4,
@@ -1160,6 +1233,16 @@ export default {
                     this.parseTableContentGeneral(_fuente)
                 );
             });
+
+            if (tablasAndTotals.fuentes_C6.data?.length == 0) {
+                this.resultados.tabla9Body.push([
+                    {
+                        colSpan: 6,
+                        text: "No se ingresaron datos para esta categoría",
+                    },
+                ]);
+            }
+
             this.resultados.tabla9Body.push([
                 {
                     colSpan: 4,
@@ -3539,6 +3622,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -3652,6 +3736,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -3740,6 +3825,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -3807,6 +3893,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -3887,6 +3974,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -3988,6 +4076,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -4045,6 +4134,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -4102,6 +4192,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -4160,6 +4251,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -4205,6 +4297,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -4237,6 +4330,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -4257,6 +4351,7 @@ export default {
                                 body: this.resultados.tabla12Body,
                             },
                             alignment: "center",
+                            margin: [15, 10, 10, 20],
                         },
                         {
                             text: [
@@ -4267,6 +4362,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -4324,6 +4420,7 @@ export default {
                                 ", " + this.informacion_empresa.label,
                             ],
                             alignment: "center",
+                            style: "tableDesc",
                             margin: [0, 0, 0, 30],
                         },
 
@@ -4423,6 +4520,7 @@ export default {
                                 ", " + this.informacion_empresa.label,
                             ],
                             alignment: "center",
+                            style: "tableDesc",
                             margin: [0, 0, 0, 30],
                         },
 
@@ -4487,6 +4585,7 @@ export default {
                                         .nombre,
                                 ", " + this.informacion_empresa.label,
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -4824,6 +4923,7 @@ export default {
                             text: [
                                 "Fuente: Documento de Factores de Emisión – CAEM, MVC COLOMBIA",
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [0, 0, 0, 30],
                         },
@@ -4937,6 +5037,7 @@ export default {
                                 { text: "Fuente: ", bold: true },
                                 "IPCC 5th Assessment Report",
                             ],
+                            style: "tableDesc",
                             margin: [150, 0, 0, 30],
                         },
 
@@ -5042,6 +5143,7 @@ export default {
                                 { text: "Fuente: ", bold: true },
                                 "IPCC 6th Assessment Report ",
                             ],
+                            style: "tableDesc",
                             alignment: "center",
                             margin: [10, 0, 0, 30],
                         },
@@ -5113,6 +5215,9 @@ export default {
                         },
                     ],
                     styles: {
+                        tableDesc: {
+                            fontSize: 10,
+                        },
                         paragraph: {
                             margin: [0, 0, 0, 20],
                             alignment: "justify",
