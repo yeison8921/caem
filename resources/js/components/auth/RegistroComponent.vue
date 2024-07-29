@@ -1084,20 +1084,24 @@ export default {
                             .then((response) => {
                                 this.$root.mostrarMensaje(
                                     "Éxito",
-                                    "Usuario creado sin convenio, a la espera de revisión de pago",
+                                    "Usuario creado sin convenio",
                                     "success"
                                 );
+                                setTimeout(() => {
+                                    this.cancelar();
+                                }, 4000);
                             })
                             .catch((error) => {
                                 this.$root.mostrarMensaje(
-                                    "Éxito",
-                                    "Usuario creado sin convenio, a la espera de revisión de pago",
-                                    "success"
+                                    "Atención",
+                                    "El usuario se creó correctamente, sin embargo hubo un problema al enviar el correo de confirmación, por favor contactese con el administrador del sistema",
+                                    "warning",
+                                    4000
                                 );
+                                setTimeout(() => {
+                                    this.cancelar();
+                                }, 4000);
                             });
-                        setTimeout(() => {
-                            this.cancelar();
-                        }, 2000);
                     } else {
                         this.$root.mostrarMensaje(
                             "Éxito",
@@ -1106,7 +1110,7 @@ export default {
                         );
                         setTimeout(() => {
                             this.cancelar();
-                        }, 2000);
+                        }, 4000);
                     }
                 }
             }
