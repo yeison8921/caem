@@ -88,7 +88,7 @@
                             }}</span>
                         </div>
                     </div>
-                    <!-- <div class="mb-3">
+                    <div class="mb-3">
                         <label for="formFile" class="form-label"
                             >Selecionar excel empresarios</label
                         >
@@ -99,7 +99,7 @@
                             accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                             @change="leerData"
                         />
-                    </div> -->
+                    </div>
                     <div class="mb-3 table-responsive">
                         <table class="table table-hover">
                             <thead>
@@ -211,6 +211,7 @@
                                     :options="options_empresa"
                                     placeholder="Seleccione una opción"
                                     valueProp="id"
+                                    :searchable="true"
                                     label="nit"
                                     @input="formularioNit()"
                                     :class="{
@@ -230,6 +231,7 @@
                                     v-model.trim="convenio_email.nit"
                                     type="text"
                                     class="form-control"
+                                    @change="validarNit()"
                                     :disabled="nit != -1"
                                     :class="{
                                         'is-invalid':
@@ -253,6 +255,7 @@
                                     v-model.trim="convenio_email.email"
                                     type="text"
                                     class="form-control"
+                                    @change="validarCorreo()"
                                     :class="{
                                         'is-invalid':
                                             $v.convenio_email.email.$error,
@@ -416,6 +419,7 @@ import ConvenioEmail from "../../../models/ConvenioEmail";
 import Empresa from "../../../models/Empresa";
 import EmpresaSede from "../../../models/EmpresaSede";
 import Parametro from "../../../models/Parametro";
+import User from "../../../models/User";
 
 export default {
     data() {
@@ -581,7 +585,8 @@ export default {
 
             // this.$root.mostrarCargando("Validando archivo");
             var FR = new FileReader();
-            FR.onload = (e) => {
+            FR.onload = async (e) => {
+                this.$root.mostrarCargando("Procesando archivo");
                 var data = new Uint8Array(e.target.result);
                 var workbook = XLSX.read(data, { type: "array" });
                 var firstSheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -594,18 +599,148 @@ export default {
                 });
 
                 array.splice(0, 1);
+                let arrayErrors = [];
+                for (const e of array) {
+                    let departamento = this.options_departamento.filter(
+                        (el) =>
+                            this.cleanString(el.nombre) ==
+                            this.cleanString(e[3])
+                    );
+                    let ciudades = [];
+                    if (departamento.length > 0) {
+                        ciudades = await Parametro.where(
+                            "parametro_id",
+                            departamento[0].id
+                        ).get();
+                    }
+                    let ciudad = ciudades.filter(
+                        (el) =>
+                            this.cleanString(el.nombre) ==
+                            this.cleanString(e[4])
+                    );
 
-                array.forEach((e) => {
-                    this.array_correos.push({
-                        id: "",
-                        email: e[0],
+                    let correoExist = await this.validarCorreoExists(e[0]);
+                    let nitExist = await this.validarNitExist(e[1]);
+                    let nitAlreadyAdded = this.array_correos.filter(
+                        (el) => el.nit == e[1]
+                    );
+                    if (
+                        !correoExist &&
+                        !nitExist &&
+                        departamento.length > 0 &&
+                        ciudad.length > 0 &&
+                        nitAlreadyAdded.length == 0
+                    ) {
+                        this.array_correos.push({
+                            id_correo: "",
+                            id_empresa: "",
+                            email: e[0],
+                            nit: e[1],
+                            id_sede: -1,
+                            ciudad_id: ciudad[0].id,
+                            departamento_id: departamento[0].id,
+                            nombre_sede: e[2],
+                            nombre_departamento: departamento[0].nombre,
+                            nombre_ciudad: ciudad[0].nombre,
+                            direccion: e[5],
+                        });
+                    }
+                    let error = {
+                        correo: e[0],
+                        correo_error: "",
                         nit: e[1],
+                        nit_error: "",
+                        departamento: e[3],
+                        departamento_error: "",
+                        ciudad: e[4],
+                        ciudad_error: "",
+                    };
+                    if (correoExist) {
+                        error.correo_error = "Correo ya existe";
+                    }
+                    if (nitExist) {
+                        error.nit_error = "Nit ya existe";
+                    }
+                    if (departamento.length == 0) {
+                        error.departamento_error = "Departamento no existe";
+                    } else if (ciudad.length == 0) {
+                        error.ciudad_error = "Ciudad no existe";
+                    }
+                    arrayErrors.push(error);
+                }
+                this.$root.cerrarCargando();
+                if (arrayErrors.length > 0) {
+                    Swal.fire({
+                        title: "Atención",
+                        html:
+                            "Se encontraron errores en el archivo, por favor corrija los siguientes errores: <br><br>" +
+                            arrayErrors
+                                .map(
+                                    (e) =>
+                                        "<b>Correo:</b> " +
+                                        e.correo +
+                                        (e.correo_error
+                                            ? " - " + e.correo_error
+                                            : "") +
+                                        "<br>" +
+                                        "<b>Nit:</b> " +
+                                        e.nit +
+                                        (e.nit_error
+                                            ? " - " + e.nit_error
+                                            : "") +
+                                        "<br>" +
+                                        "<b>Departamento:</b> " +
+                                        e.departamento +
+                                        (e.departamento_error
+                                            ? " - " + e.departamento_error
+                                            : "") +
+                                        "<br>" +
+                                        "<b>Ciudad:</b> " +
+                                        e.ciudad +
+                                        (e.ciudad_error
+                                            ? " - " + e.ciudad_error
+                                            : "") +
+                                        "<br><br>"
+                                )
+                                .join(""),
+                        icon: "warning",
+                        confirmButtonText: "Aceptar",
+                        confirmButtonColor: "rgb(48, 133, 214)",
                     });
-                });
+                }
             };
             FR.readAsArrayBuffer(file);
         },
-
+        cleanString(text) {
+            //remover acentos
+            let str = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            //remove dots
+            str = str.replace(/\./g, "");
+            return str.toLowerCase();
+        },
+        async validarCorreoExists(email) {
+            let usuario = await User.where("email", email).first();
+            if (Object.keys(usuario).length > 0) {
+                return true;
+            }
+            let convenioEmail = await ConvenioEmail.where(
+                "email",
+                email
+            ).first();
+            if (Object.keys(convenioEmail).length > 0) {
+                return true;
+            }
+            return false;
+        },
+        async validarNitExist(nit) {
+            let empresa = await Empresa.where("nit", nit)
+                .include("sedes")
+                .first();
+            if (Object.keys(empresa).length > 0) {
+                return true;
+            }
+            return false;
+        },
         async getOptionsNit() {
             this.options_empresa = [{ id: -1, nit: "Nuevo nit" }];
 
@@ -703,9 +838,37 @@ export default {
                     }
                 });
             } else {
+                this.convenio_email.nit = "";
             }
         },
-
+        async validarNit() {
+            let nitExists = await this.validarNitExist(this.convenio_email.nit);
+            if (nitExists) {
+                this.convenio_email.nit = "";
+                Swal.fire({
+                    title: "Atención",
+                    html: "El nit ingresado ya existe, por favor seleccione el nit de la lista desplegable.",
+                    icon: "warning",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "rgb(48, 133, 214)",
+                });
+            }
+        },
+        async validarCorreo() {
+            let correoExist = await this.validarCorreoExists(
+                this.convenio_email.email
+            );
+            if (correoExist) {
+                this.convenio_email.email = "";
+                Swal.fire({
+                    title: "Atención",
+                    html: "El correo ingresado ya existe, por favor ingrese uno diferente.",
+                    icon: "warning",
+                    confirmButtonText: "Aceptar",
+                    confirmButtonColor: "rgb(48, 133, 214)",
+                });
+            }
+        },
         async getSedeById() {
             this.sede.nombre = "";
             this.sede.departamento_id = "";
@@ -781,6 +944,7 @@ export default {
                     nombre_ciudad: nombre_ciudad[0].nombre,
                     direccion: this.sede.direccion,
                 });
+
                 this.$v.convenio.$reset();
                 this.$refs.cerrarModalAgregarEmpresario.click();
             }
