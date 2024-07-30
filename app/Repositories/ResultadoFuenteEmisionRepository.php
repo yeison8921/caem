@@ -460,12 +460,11 @@ class ResultadoFuenteEmisionRepository extends BaseRepository
         foreach ($resultados as $key => $resultado) {
             if ($resultado['resultado'] != null) {
 
-                $total_huella_carbono += $resultado['resultado']['huella_carbono' . $request->reporte . $request->ar];
-
                 //obtener datos directa indirecta
                 //obtener datos categoría
                 foreach ($array_categorias as $key => $value) {
                     if (in_array($resultado['tipo'], $value)) {
+                        $total_huella_carbono += $resultado['resultado']['huella_carbono' . $request->reporte . $request->ar];
                         if ($key == 0) {
                             $array_totales_directa[0] += $resultado['resultado']['huella_carbono' . $request->reporte . $request->ar];
                         } else {
