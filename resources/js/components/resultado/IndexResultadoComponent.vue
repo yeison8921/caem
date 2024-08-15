@@ -72,18 +72,25 @@
                                 Consultar
                             </button>
                         </div>
-                        <div class="d-grid gap-2 col-lg-8 text-start">
-                            <generar-reporte-component
-                                :empresa_id="empresa"
-                                :sede_id="sede"
-                                :ar="ar"
-                                :periodo_id="periodo"
-                                :disabled="!esta_aprobado"
-                                v-if="
-                                    mostrar_graficas && reporte == 'corporativo'
-                                "
-                            />
-                        </div>
+                        <hr />
+                        <generar-reporte-component
+                            :empresa_id="empresa"
+                            :sede_id="sede"
+                            :ar="ar"
+                            :periodo_id="periodo"
+                            :disabled="!esta_aprobado"
+                            v-if="mostrar_graficas && reporte == 'corporativo'"
+                        />
+
+                        <a
+                            v-if="mostrar_graficas && user.rol_id != 2"
+                            style="width: 100%"
+                            :href="`resultados-excel/${empresa}/${sede}/${periodo}/${ar}`"
+                            target="_blank"
+                            class="btn btn-primary btn-sm"
+                        >
+                            Descargar resultados globales
+                        </a>
                     </form>
                 </div>
             </div>
@@ -333,18 +340,6 @@
                     </div>
                 </div>
             </div>
-            <div
-                class="col-lg-9 offset-lg-3 text-start"
-                v-if="mostrar_graficas && user.rol_id != 2"
-            >
-                <a
-                    href="resultados-excel"
-                    target="_blank"
-                    class="btn btn-primary"
-                >
-                    Descargar resultados globales
-                </a>
-            </div>
         </div>
     </div>
 </template>
@@ -352,7 +347,6 @@
 import User from "../../models/User";
 import Empresa from "../../models/Empresa";
 import EmpresaSede from "../../models/EmpresaSede";
-import Convenio from "../../models/Convenio";
 import InformacionEmpresa from "../../models/InformacionEmpresa";
 import HuellaCarbonoDirectaIndirectaBar from "./HuellaCarbonoDirectaIndirectaBar.vue";
 import HuellaCarbonoCategoriaBar from "./HuellaCarbonoCategoriaBar.vue";

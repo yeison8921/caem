@@ -1,6 +1,7 @@
 <template>
     <div>
         <button
+            style="width: 100%"
             v-if="sede_id != -1"
             type="button"
             v-on:click="handleGenerarReporte"

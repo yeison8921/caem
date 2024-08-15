@@ -1338,6 +1338,7 @@ import InformacionEmpresa from "../../models/InformacionEmpresa";
 export default {
     data() {
         return {
+            vars: "",
             empresa: "",
             sede: "",
             periodo: "",
@@ -1888,12 +1889,15 @@ export default {
         };
     },
     mounted() {
+        this.vars = window.location.href
+            .split("/resultados-excel/")[1]
+            .split("/");
         this.getUserLogged();
     },
     methods: {
         async getUserLogged() {
             await axios
-                .get("api/user")
+                .get(window.location.origin + "/api/user")
                 .then((response) => {
                     this.user = response.data;
                     if (this.user.rol_id != 2) {
@@ -1916,6 +1920,11 @@ export default {
                     convenio_id
                 ).get();
             }
+
+            if (this.vars[0] != "") {
+                this.empresa = this.vars[0];
+                this.getOptionsSede();
+            }
         },
         async getOptionsSede() {
             this.options_sede = [];
@@ -1932,6 +1941,10 @@ export default {
                 options.forEach((e) => {
                     this.options_sede.push(e);
                 });
+            }
+            if (this.vars[1] != "") {
+                this.sede = this.vars[1];
+                this.getOptionsPeriodo();
             }
         },
         async getOptionsPeriodo() {
@@ -1975,6 +1988,10 @@ export default {
                         this.options_periodo.push(json);
                     }
                 });
+            }
+            if (this.vars[2] != "") {
+                this.periodo = this.vars[2];
+                this.ar = this.vars[3];
             }
         },
         fuentes(fila, tipo, array_fuente_emision, $biogenico) {

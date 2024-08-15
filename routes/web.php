@@ -231,7 +231,7 @@ Route::group(['middleware' => 'auth'], function () {
         return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     })->name('resultados');
 
-    Route::get('/resultados-excel',  function () {
+    Route::get('/resultados-excel/{empresaId?}/{sedeid?}/{periodoId?}/{tipoReporteId?}',  function () {
         if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM, User::TYPE_LIDER_CONVENIO])) {
             return view('resultado/index_resultado_excel');
         }
