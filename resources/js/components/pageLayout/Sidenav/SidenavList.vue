@@ -188,6 +188,18 @@
                                     text="Fuentes de emisión"
                                 />
                                 <sidenav-item
+                                    v-if="
+                                        isLoggedIn &&
+                                        [1].includes(
+                                            parseInt(userLogged.rol_id)
+                                        )
+                                    "
+                                    :to="{ name: 'Resultados globales' }"
+                                    :url="'/resultados-excel'"
+                                    mini-icon="R"
+                                    text="Resultados globales"
+                                />
+                                <sidenav-item
                                     v-if="!isLoggedIn"
                                     :to="{ name: 'Login' }"
                                     :url="'/login'"

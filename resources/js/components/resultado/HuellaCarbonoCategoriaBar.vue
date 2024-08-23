@@ -42,8 +42,9 @@ export default {
             var ctx = document.getElementById(this.id).getContext("2d");
 
             this.max = Math.round(
-                Math.ceil((Math.max(...this.chart.datasets.data) + 100) / 100) *
-                    100
+                Math.floor(
+                    (Math.max(...this.chart.datasets.data) + 1000) / 100
+                ) * 100
             );
 
             if (this.grafica) {
