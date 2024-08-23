@@ -7,6 +7,7 @@ import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 export default {
     name: "HuellaCarbonoFuenteBar",
+    max: 0,
     grafica: "",
     props: {
         id: {
@@ -39,6 +40,12 @@ export default {
         cargarGrafica() {
             // Bar chart horizontal
             var ctx = document.getElementById(this.id).getContext("2d");
+
+            this.max = Math.round(
+                Math.floor(
+                    (Math.max(...this.chart.datasets.data) + 1000) / 100
+                ) * 100
+            );
 
             if (this.grafica) {
                 this.grafica.destroy();
@@ -104,6 +111,7 @@ export default {
                                 drawOnChartArea: true,
                                 drawTicks: true,
                             },
+                            max: this.max,
                         },
                     },
                 },

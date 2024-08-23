@@ -16,9 +16,7 @@ class OtroRepository extends BaseRepository
      *
      * @return void
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * @return string
@@ -37,7 +35,7 @@ class OtroRepository extends BaseRepository
         } else {
             $data['accion'] = 'Crear';
         }
-        return view('fuente/Otro/form_Otro', $data);
+        return view('fuente/otro/form_otro', $data);
     }
 
     /**
