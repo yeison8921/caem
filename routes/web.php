@@ -38,7 +38,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (auth()->user()) {
-        return view('welcome');
+        if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM, User::TYPE_EMPRESARIO, User::TYPE_LIDER_CONVENIO])) {
+            return view('resultado/index_resultado');
+        }
+
+        return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     } else {
         return view('auth/login');
     }
@@ -50,6 +54,20 @@ Route::get('/forgot-password', function () {
     return view('auth/passwords/email');
 });
 
+// routes/web.php
+Route::post('/refresh-session', function () {
+    session()->regenerate();
+
+    return response()->json(['message' => 'Session refreshed']);
+});
+// routes/web.php
+Route::get('/check-session', function () {
+    if (auth()->check()) {
+        return response()->json(['valid' => true]);
+    } else {
+        return response()->json(['valid' => false]);
+    }
+});
 
 Auth::routes();
 
@@ -67,6 +85,7 @@ Route::group(['middleware' => 'auth'], function () {
         if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN])) {
             return view('administracion/usuario/index_usuario');
         }
+
         return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     });
     Route::get('/usuarios/create', [UserController::class, 'formUsuario']);
@@ -77,6 +96,7 @@ Route::group(['middleware' => 'auth'], function () {
         if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM])) {
             return view('administracion/usuario/index_empresario');
         }
+
         return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     });
 
@@ -228,6 +248,7 @@ Route::group(['middleware' => 'auth'], function () {
         if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM, User::TYPE_EMPRESARIO, User::TYPE_LIDER_CONVENIO])) {
             return view('resultado/index_resultado');
         }
+
         return redirect()->route('welcome')->withFlashDanger(__('You do not have access to do that.'));
     })->name('resultados');
 
@@ -235,6 +256,7 @@ Route::group(['middleware' => 'auth'], function () {
         if (in_array(auth()->user()->rol_id, [User::TYPE_ADMIN, User::TYPE_LIDER_CAEM, User::TYPE_LIDER_CONVENIO])) {
             return view('resultado/index_resultado_excel');
         }
+
         return redirect()->route('resultados')->withFlashDanger(__('You do not have access to do that.'));
     });
 
