@@ -87,7 +87,7 @@ export default {
             this.timeout = setTimeout(() => {
                 Swal.fire({
                     title: "Atención",
-                    html: "tu sesión está a punto de expirar, ¿quieres seguir conectado?",
+                    html: "Tu sesión está a punto de expirar, ¿Quieres seguir conectado?",
                     icon: "question",
                     confirmButtonText: "Si, seguir conectado",
                     confirmButtonColor: "rgb(48, 133, 214)",

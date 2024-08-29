@@ -97,7 +97,7 @@
                     <div class="col-lg-6 mb-3">
                         <div
                             class="card text-center justify-content-center"
-                            style="height: 360px"
+                            style="height: 409px"
                         >
                             <div>
                                 <h5>
