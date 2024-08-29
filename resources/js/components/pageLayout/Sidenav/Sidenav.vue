@@ -62,6 +62,8 @@ export default {
             showSidenav: true,
             isLoggedIn: this.isLogged,
             currentRoute: this.routeSelected,
+            timeout: null,
+            showPopup: true,
         };
     },
     watch: {
@@ -73,6 +75,64 @@ export default {
         },
         userLogged: function (val) {
             this.userLogged = val;
+        },
+    },
+    mounted() {
+        this.startIdleTimer();
+        document.addEventListener("mousemove", this.resetIdleTimer);
+        document.addEventListener("keypress", this.resetIdleTimer);
+    },
+    methods: {
+        startIdleTimer() {
+            this.timeout = setTimeout(() => {
+                Swal.fire({
+                    title: "Atención",
+                    html: "tu sesión está a punto de expirar, ¿quieres seguir conectado?",
+                    icon: "question",
+                    confirmButtonText: "Si, seguir conectado",
+                    confirmButtonColor: "rgb(48, 133, 214)",
+                    timer: 59000,
+                    timerProgressBar: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.stayLoggedIn();
+                    } else {
+                        this.logout();
+                    }
+                });
+            }, 1000 * 60 * 13);
+            //840000); // 13 minutes idle time
+        },
+        resetIdleTimer() {
+            // clearTimeout(this.timeout);
+            // if (this.showPopup) {
+            //     this.stayLoggedIn();
+            // } else {
+            //     this.startIdleTimer();
+            // }
+        },
+        stayLoggedIn() {
+            clearTimeout(this.timeout);
+            axios
+                .post("/refresh-session")
+                .then(() => {
+                    clearTimeout(this.timeout);
+                    this.startIdleTimer();
+                })
+                .catch((error) => {
+                    console.error("Failed to refresh session", error);
+                    this.$root.redirectIndex("/login");
+                });
+        },
+        logout() {
+            axios
+                .post("/logout")
+                .then((response) => {
+                    this.$root.redirectIndex("/login");
+                })
+                .catch((error) => {
+                    this.$root.redirectIndex("/login");
+                });
         },
     },
 };
