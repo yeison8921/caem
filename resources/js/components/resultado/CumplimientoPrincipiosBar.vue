@@ -72,7 +72,7 @@ export default {
                         datalabels: {
                             color: "black",
                             align: "end",
-                            anchor: "end",
+                            anchor: "start",
                             formatter: function (value, context) {
                                 return (
                                     Number(value.toFixed(2)).toLocaleString(
@@ -96,19 +96,15 @@ export default {
                             },
                         },
                         x: {
-                            min: 0,
-                            max: 100,
-                            ticks: {
-                                stepSize: 20,
-                                maxRotation: 0,
-                                minRotation: 0,
-                            },
-
                             grid: {
                                 drawBorder: false,
                                 display: false,
                                 drawOnChartArea: true,
                                 drawTicks: true,
+                            },
+                            ticks: {
+                                maxRotation: 0,
+                                minRotation: 0,
                             },
                         },
                     },

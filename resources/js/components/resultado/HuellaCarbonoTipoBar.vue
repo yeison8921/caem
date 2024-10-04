@@ -87,8 +87,7 @@ export default {
                         datalabels: {
                             color: "black",
                             align: "end",
-                            anchor: "end",
-                            offset: 10,
+                            anchor: "start",
                             formatter: function (value, context) {
                                 return Number(value.toFixed(2)).toLocaleString(
                                     "es-co"
@@ -115,10 +114,6 @@ export default {
                                 display: false,
                                 drawOnChartArea: true,
                                 drawTicks: true,
-                            },
-                            ticks: {
-                                maxRotation: 0,
-                                minRotation: 0,
                             },
                         },
                     },
