@@ -79,7 +79,7 @@ export default {
                             align: "end",
                             anchor: "end",
                             formatter: function (value, context) {
-                                return Number(value.toFixed(1)).toLocaleString(
+                                return Number(value.toFixed(2)).toLocaleString(
                                     "es-co"
                                 );
                             },
@@ -102,9 +102,10 @@ export default {
                             min: 0,
                             max: 500,
                             ticks: {
+                                maxRotation: 0,
+                                minRotation: 0,
                                 stepSize: 100,
                             },
-
                             grid: {
                                 drawBorder: false,
                                 display: false,

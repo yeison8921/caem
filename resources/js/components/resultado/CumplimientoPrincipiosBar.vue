@@ -75,7 +75,7 @@ export default {
                             anchor: "end",
                             formatter: function (value, context) {
                                 return (
-                                    Number(value.toFixed(1)).toLocaleString(
+                                    Number(value.toFixed(2)).toLocaleString(
                                         "es-co"
                                     ) + " %"
                                 );
@@ -100,6 +100,8 @@ export default {
                             max: 100,
                             ticks: {
                                 stepSize: 20,
+                                maxRotation: 0,
+                                minRotation: 0,
                             },
 
                             grid: {

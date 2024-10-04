@@ -9,7 +9,6 @@ import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 export default {
     name: "HuellaCarbonoTipoBar",
-    max: 0,
     grafica: null,
     props: {
         id: {
@@ -42,12 +41,6 @@ export default {
         cargarGrafica() {
             // Bar chart horizontal
             var ctx = document.getElementById(this.id).getContext("2d");
-
-            this.max = Math.round(
-                Math.floor(
-                    (Math.max(...this.chart.datasets.data) + 1000) / 100
-                ) * 100
-            );
 
             if (this.grafica) {
                 this.grafica.destroy();
@@ -97,7 +90,7 @@ export default {
                             anchor: "end",
                             offset: 10,
                             formatter: function (value, context) {
-                                return Number(value.toFixed(1)).toLocaleString(
+                                return Number(value.toFixed(2)).toLocaleString(
                                     "es-co"
                                 );
                             },
@@ -123,7 +116,10 @@ export default {
                                 drawOnChartArea: true,
                                 drawTicks: true,
                             },
-                            max: this.max,
+                            ticks: {
+                                maxRotation: 0,
+                                minRotation: 0,
+                            },
                         },
                     },
                 },

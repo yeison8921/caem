@@ -538,7 +538,7 @@ export default {
                         this.esta_aprobado = response.data["esta_aprobado"];
 
                         this.total_huella_carbono = Number(
-                            response.data["total_huella_carbono"].toFixed(1)
+                            response.data["total_huella_carbono"].toFixed(2)
                         ).toLocaleString("es-co");
                         this.huella_carbono_directa_indirecta =
                             response.data["huella_carbono_directa_indirecta"];
@@ -562,7 +562,7 @@ export default {
                             "Total obtenido = " +
                             Number(
                                 response.data["promedio_cumplimiento"].toFixed(
-                                    1
+                                    2
                                 )
                             ).toLocaleString("es-co") +
                             " %";
