@@ -2439,7 +2439,10 @@
                 aria-labelledby="construccion-anio-tab"
             >
                 <br />
-                <form @submit.prevent="guardarDatosConsumos">
+                <form
+                    @submit.prevent="guardarDatosConsumos"
+                    @keydown.enter="$event.preventDefault()"
+                >
                     <div class="mb-3 table-responsive">
                         <div class="accordion" id="accordion-categorias">
                             <div
