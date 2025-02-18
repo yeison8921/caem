@@ -152,6 +152,20 @@
                             >
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label required">Convenio</label>
+                        <Multiselect
+                            mode="tags"
+                            v-model="empresa.convenios"
+                            :options="options_convenios"
+                            placeholder="Seleccione una opción"
+                            valueProp="id"
+                            label="nombre_convenio"
+                            :searchable="true"
+                            openDirection="top"
+                            :object="true"
+                        />
+                    </div>
 
                     <div class="mb-3">
                         <div class="col-lg-4 offset-lg-4">
@@ -171,6 +185,7 @@
 import { required } from "vuelidate/lib/validators";
 import Empresa from "../../../models/Empresa";
 import Parametro from "../../../models/Parametro";
+import Convenio from "../../../models/Convenio";
 
 export default {
     data() {
@@ -180,6 +195,7 @@ export default {
             options_ciiu: [],
             options_tamano: [],
             options_empleado: [],
+            options_convenios: [],
 
             empresa: new Empresa({
                 id: "",
@@ -191,6 +207,7 @@ export default {
                 empleado_id: "",
                 tamano_id: "",
                 usuario_actualizo_id: "",
+                convenios_selected: [],
             }),
         };
     },
@@ -228,6 +245,7 @@ export default {
         this.getOptionsParametros(4, "options_ciiu");
         this.getOptionsParametros(5, "options_tamano");
         this.getOptionsParametros(6, "options_empleado");
+        this.getConvenios();
         this.getEmpresaById();
     },
     methods: {
@@ -241,18 +259,21 @@ export default {
                 tipo_parametro_id
             ).get();
         },
-
+        async getConvenios() {
+            this.options_convenios = await Convenio.all();
+        },
         async getEmpresaById() {
-            this.empresa = await Empresa.find(this.datos.id_empresa).catch(
-                (error) => {
+            this.empresa = await Empresa.include("convenios")
+                .find(this.datos.id_empresa)
+                .catch((error) => {
                     this.$root.mostrarMensaje(
                         "error",
                         "No existe la empresa",
                         "error"
                     );
                     this.$root.redirectIndex("/empresas");
-                }
-            );
+                });
+            console.log(this.empresa);
         },
 
         async submit() {

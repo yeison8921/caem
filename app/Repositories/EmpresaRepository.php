@@ -57,7 +57,18 @@ class EmpresaRepository extends BaseRepository
     public function update($request, $id_empresa)
     {
         $empresa = Empresa::find($id_empresa);
-        $empresa->update($request->all());
+        // all except convenios
+        $data = $request->except('convenios');
+
+        // if the request has convenios
+        if ($request->has('convenios')) {
+            $convenios = array_map(function ($convenio) {
+                return $convenio['id'];
+            }, $request->get('convenios'));
+            $empresa->convenios()->sync($convenios);
+        }
+        $empresa->update($data);
+        
         return $empresa;
     }
 
@@ -65,6 +76,7 @@ class EmpresaRepository extends BaseRepository
     {
         $data = [];
         $data['id_empresa'] = $id_empresa;
+
         return view('administracion/empresa/form_empresa', $data);
     }
 }
