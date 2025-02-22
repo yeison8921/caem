@@ -921,15 +921,15 @@ export default {
             this.$v.$touch();
             if (!this.$v.convenio_email.$invalid && !this.$v.sede.$invalid) {
                 let option_sede = this.options_sede.filter(
-                    (el) => el.id === this.sede.id
+                    (el) => el.id.toString() === this.sede.id.toString()
                 );
 
                 let nombre_departamento = this.options_departamento.filter(
-                    (el) => el.id === this.sede.departamento_id
+                    (el) => el.id.toString() === this.sede.departamento_id.toString()
                 );
 
                 let nombre_ciudad = this.options_ciudad.filter(
-                    (el) => el.id === this.sede.ciudad_id
+                    (el) => el.id.toString() === this.sede.ciudad_id.toString()
                 );
 
                 let id_empresa = "";
