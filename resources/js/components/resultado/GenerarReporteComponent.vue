@@ -4627,61 +4627,66 @@ export default {
                             style: "paragraph",
                         },
                         {
-                            fillColor: "#dce6f1",
-                            margin: [140, 0, 0, 30],
-                            alignment: "center",
-                            table: {
-                                widths: [100, 100],
-                                body: [
-                                    [
-                                        {
-                                            text: "High (alta)",
-                                            bold: true,
-                                            margin: [0, 3, 0, 3],
-                                        },
-                                        {
-                                            text: "+/- 5%",
-                                            margin: [0, 3, 0, 3],
-                                        },
-                                    ],
-                                    [
-                                        {
-                                            text: "Good (buena)",
-                                            bold: true,
-                                            margin: [0, 3, 0, 3],
-                                        },
-                                        {
-                                            text: "+/- 15%",
-                                            margin: [0, 3, 0, 3],
-                                        },
-                                    ],
-                                    [
-                                        {
-                                            text: "Fair (favorable)",
-                                            bold: true,
-                                            margin: [0, 3, 0, 3],
-                                        },
-                                        {
-                                            text: "+/- 30%",
-                                            margin: [0, 3, 0, 3],
-                                        },
-                                    ],
-                                    [
-                                        {
-                                            text: "Poor (pobre)",
-                                            bold: true,
-                                            margin: [0, 3, 0, 3],
-                                        },
-                                        {
-                                            text: "Mas del +/- 30%",
-                                            margin: [0, 3, 0, 3],
-                                        },
-                                    ],
-                                ],
-                            },
-                            style: "paragraph",
+                            columns: [
+                                { width: "*", text: "" },
+                                {
+                                    margin: [0, 20, 0, 50],
+                                    fillColor: "#dce6f1",
+                                    width: "auto",
+                                    alignment: "center",
+                                    table: {
+                                        widths: [100, 100],
+                                        body: [
+                                            [
+                                                {
+                                                    text: "High (alta)",
+                                                    bold: true,
+                                                    margin: [0, 3, 0, 3],
+                                                },
+                                                {
+                                                    text: "+/- 5%",
+                                                    margin: [0, 3, 0, 3],
+                                                },
+                                            ],
+                                            [
+                                                {
+                                                    text: "Good (buena)",
+                                                    bold: true,
+                                                    margin: [0, 3, 0, 3],
+                                                },
+                                                {
+                                                    text: "+/- 15%",
+                                                    margin: [0, 3, 0, 3],
+                                                },
+                                            ],
+                                            [
+                                                {
+                                                    text: "Fair (favorable)",
+                                                    bold: true,
+                                                    margin: [0, 3, 0, 3],
+                                                },
+                                                {
+                                                    text: "+/- 30%",
+                                                    margin: [0, 3, 0, 3],
+                                                },
+                                            ],
+                                            [
+                                                {
+                                                    text: "Poor (pobre)",
+                                                    bold: true,
+                                                    margin: [0, 3, 0, 3],
+                                                },
+                                                {
+                                                    text: "Mas del +/- 30%",
+                                                    margin: [0, 3, 0, 3],
+                                                },
+                                            ],
+                                        ],
+                                    },
+                                },
+                                { width: "*", text: "" },
+                            ],
                         },
-
                         {
                             text: [
                                 "7. METODOLOGÍA, FACTORES DE EMISIÓN Y PCG UTILIZADOS",
